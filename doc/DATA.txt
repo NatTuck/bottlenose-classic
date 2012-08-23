@@ -1,0 +1,12 @@
+
+Classes
+ - Chapters
+ -- Lessons
+    (A video, a question, a post-question video)
+ -- Assignments
+
+Users
+ - Class Registrations - Teacher or Student
+ - Question Answers
+ - Video Views
+ - Assignment Submissions

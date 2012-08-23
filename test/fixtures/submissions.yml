@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  assignment_id: 1
+  registration_id: 1
+  url: MyString
+  good: 
+  status: MyText
+
+two:
+  assignment_id: 1
+  registration_id: 1
+  url: MyString
+  good: 
+  status: MyText
