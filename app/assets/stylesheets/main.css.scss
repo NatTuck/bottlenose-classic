@@ -1,3 +1,28 @@
+// -*- css -*-
 // Place all the styles related to the main controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.header {
+    border-bottom: thin solid black;
+}
+
+.app-title {
+    float: left;
+    width: 45%;
+    font-family: sans;
+    font-size: larger;
+}
+
+.user-controls {
+    float: right;
+    text-align: right;
+    width: 45%;
+}
+
+.footer {
+    margin-left: 20%;
+    margin-right: 20%;
+    font-size: smaller;
+    text-align: center;
+}
