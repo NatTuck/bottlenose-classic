@@ -11,9 +11,13 @@
 
 <div class="header">
 <div class="app-title">Bottlenose</div>
-<div class="user-controls">Log In</div>
+<div class="user-controls"><%= link_to "Not logged in", "/" %></div>
 <div style="clear: both;"></div>
 </div>
+
+<% unless @page_title.nil? %>
+<h1><%= @page_title %></h1>
+<% end %>
 
 <%= yield %>
 
