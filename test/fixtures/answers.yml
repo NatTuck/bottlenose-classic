@@ -2,10 +2,10 @@
 
 one:
   question_id: 1
-  user_id: 1
+  registration_id: 1
   answer: MyString
 
 two:
   question_id: 1
-  user_id: 1
+  registration_id: 1
   answer: MyString

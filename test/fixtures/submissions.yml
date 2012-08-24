@@ -4,12 +4,12 @@ one:
   assignment_id: 1
   registration_id: 1
   url: MyString
-  good: 
+  score: 100
   status: MyText
 
 two:
   assignment_id: 1
   registration_id: 1
   url: MyString
-  good: 
+  score: 50
   status: MyText
