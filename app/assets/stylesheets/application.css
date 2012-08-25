@@ -11,3 +11,54 @@
  *= require_self
  *= require_tree .
  */
+
+.header {
+    border-bottom: thin solid black;
+}
+
+.app-title {
+    float: left;
+    width: 45%;
+    font-family: sans;
+    font-size: larger;
+}
+
+.user-controls {
+    float: right;
+    text-align: right;
+    width: 45%;
+}
+
+.footer {
+    margin-left: 20%;
+    margin-right: 20%;
+    font-size: smaller;
+    text-align: center;
+}
+
+.form-box {
+    margin: 10%;
+    border: thin solid grey;
+    padding: 2em;
+    text-align: center;
+}
+
+.flash-notice {
+    border: thick solid green;
+    padding: 1em;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.flash-error {
+    border: thick solid red;
+    padding: 1em;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}

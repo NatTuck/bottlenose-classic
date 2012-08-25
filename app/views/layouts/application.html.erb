@@ -11,9 +11,28 @@
 
 <div class="header">
 <div class="app-title">Bottlenose</div>
-<div class="user-controls"><%= link_to "Not logged in", "/" %></div>
+<div class="user-controls">
+  <% if @user.nil? %>
+    <%= link_to "Not logged in", "/" %>
+  <% else %>
+    Hi, <%= @user.email %> |
+    <%= link_to "Log Out", '/main/logout' %>
+  <% end %>
+</div>
 <div style="clear: both;"></div>
 </div>
+
+<% unless flash[:error].nil? %>
+<div class="flash-error">
+<p>Error: <%= flash[:error] %></p>
+</div>
+<% end %>
+
+<% unless flash[:notice].nil? %>
+<div class="flash-notice">
+<p>Notice: <%= flash[:notice] %></p>
+</div>
+<% end %>
 
 <% unless @page_title.nil? %>
 <h1><%= @page_title %></h1>

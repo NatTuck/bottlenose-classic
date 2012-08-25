@@ -90,6 +90,8 @@ ActiveRecord::Schema.define(:version => 20120823181949) do
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "email"
+    t.string   "auth_key"
+    t.boolean  "site_admin"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

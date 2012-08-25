@@ -1,6 +1,9 @@
 Bottlenose::Application.routes.draw do
   get "main/index"
-
+  get "main/auth"
+  post "main/resend_auth"
+  get "main/logout"
+  
   resources :users
   resources :courses
 

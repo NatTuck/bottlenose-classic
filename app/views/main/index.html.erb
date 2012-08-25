@@ -5,7 +5,11 @@ an authentication link by email. Please use that link to log in.</p>
 <p>If you can't find your authentication link, enter your email
 address below to have it resent.</p>
 
-<% form_tag '/main/login' do %>
-<p>Email: <%= email_field_tag :email %></p>
-<p><%= submit_tag %></p>
+<div class="form-box">
+<%= form_tag '/main/resend_auth' do %>
+<p><strong>Lost your authentication link?</strong></p>
+<p>Email Address:<br>
+  <%= email_field_tag :email %></p>
+<p><%= submit_tag "Resend Link" %></p>
 <% end %>
+</div>
