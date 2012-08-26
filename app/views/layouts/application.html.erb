@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= @page_title ? "#{@page_title} - " : "" %> 
-    Bottlenose Course Manager</title>
+  <% default_page_title = "#{params[:controller]} / #{params[:action]}" %>
+  <title><%= @page_title || default_page_title %>
+    - Bottlenose Course Manager</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -10,12 +11,22 @@
 <body>
 
 <div class="header">
-<div class="app-title">Bottlenose</div>
+<div class="page-title">
+  <%= link_to (image_tag "dolphin.svg", { height: 24 }), root_url %>
+  &nbsp; &nbsp;
+  <%= @page_title || default_page_title %>
+</div>
 <div class="user-controls">
-  <% if @user.nil? %>
+  <% if @logged_in_user.nil? %>
     <%= link_to "Not logged in", "/" %>
   <% else %>
-    Hi, <%= @user.email %> |
+    Hi, <%= @logged_in_user.email %> |
+
+    <% if @logged_in_user.site_admin? %>
+      <%= link_to "Manage Users", users_url %> |
+    <% end %>
+
+    <%= link_to "Your Courses", courses_url %> |
     <%= link_to "Log Out", '/main/logout' %>
   <% end %>
 </div>
@@ -32,10 +43,6 @@
 <div class="flash-notice">
 <p>Notice: <%= flash[:notice] %></p>
 </div>
-<% end %>
-
-<% unless @page_title.nil? %>
-<h1><%= @page_title %></h1>
 <% end %>
 
 <%= yield %>

@@ -10,17 +10,18 @@
  *
  *= require_self
  *= require_tree .
+ *= require jquery-ui/smoothness
  */
 
 .header {
     border-bottom: thin solid black;
 }
 
-.app-title {
+.page-title {
     float: left;
     width: 45%;
     font-family: sans;
-    font-size: larger;
+    font-size: 20pt;
 }
 
 .user-controls {
@@ -61,4 +62,36 @@
     margin-right: auto;
     margin-top: 1em;
     margin-bottom: 1em;
+}
+
+.pretty-list td {
+    padding: 1em;
+    border-top: thin dashed grey;
+}
+
+.edit-form td {
+    padding: 1ex;
+}
+
+.ui-combobox {
+    position: relative;
+    display: inline-block;
+}
+
+.ui-combobox-toggle {
+    position: absolute;
+    top: 10px;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+    height: 1.7em;
+}
+
+.ui-combobox-input {
+    margin: 0;
+    padding: 0.3em;
+}
+
+h1, h2, h3, h4 {
+    font-family: sans;
 }

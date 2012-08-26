@@ -1,9 +1,16 @@
-<h1>Listing users</h1>
+<% @page_title = "Manage Users" %>
 
-<table>
+<h2>Add A User</h1>
+
+<%= render 'form' %>
+
+<h2>Existing Users</h2>
+
+<table class="pretty-list">
   <tr>
     <th>Name</th>
     <th>Email</th>
+    <th></th>
     <th></th>
     <th></th>
     <th></th>
@@ -15,7 +22,10 @@
     <td><%= user.email %></td>
     <td><%= link_to 'Show', user %></td>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
-    <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td>
+      <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </td>
+    <td><%= link_to 'Impersonate', user_path(user) + '/impersonate' %></td>
   </tr>
 <% end %>
 </table>

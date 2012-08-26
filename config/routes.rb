@@ -3,10 +3,16 @@ Bottlenose::Application.routes.draw do
   get "main/auth"
   post "main/resend_auth"
   get "main/logout"
-  
-  resources :users
-  resources :courses
 
+  resources :users
+  match 'users/:id/impersonate' => 'users#impersonate'
+
+  resources :courses
+  resources :courses do
+    resources :registrations
+  end
+
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

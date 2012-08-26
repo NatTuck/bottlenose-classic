@@ -1,7 +1,4 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  name: MyString
-
-two:
-  name: MyString
+cs301:
+  name: Organization of Programming Languages

@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  course_id: 1
-  user_id: 1
-  teacher: 
+fred_cs301:
+  course: cs301
+  user: fred
+  teacher: true
 
-two:
-  course_id: 1
-  user_id: 1
+john_cs301:
+  course: cs301
+  user: john
   teacher: 

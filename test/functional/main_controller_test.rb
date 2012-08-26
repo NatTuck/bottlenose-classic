@@ -24,7 +24,7 @@ class MainControllerTest < ActionController::TestCase
     ken = User.find_by_email(ken_email)
     assert ken.site_admin?, "new user should be site admin"
     
-    assert_redirected_to '/'
+    assert_redirected_to root_url
   end
   
   test "lost auth form should resend auth email" do
@@ -35,7 +35,7 @@ class MainControllerTest < ActionController::TestCase
     assert_equal ActionMailer::Base.deliveries.size, num_deliveries + 1, 
       "email should be sent"
     
-    assert_redirected_to '/'
+    assert_redirected_to root_url
   end
   
   test "user can log in" do
@@ -43,7 +43,7 @@ class MainControllerTest < ActionController::TestCase
     assert_match "Logged in", flash[:notice]
     assert_equal session[:user_id], users(:alan).id
     
-    assert_redirected_to '/'
+    assert_redirected_to courses_url
   end
   
   test "John can't log in as Alan" do

@@ -13,14 +13,19 @@ class MainController < ApplicationController
     if @user.nil? or @user.auth_key != @key
       show_error "Authentication failed. Unknown email or bad key."
       session[:user_id] = nil
-      redirect_to '/'
+      redirect_to root_url
       return
     end
 
     session[:user_id] = @user.id
     
     show_notice "Logged in as #{@email}."
-    redirect_to '/'
+    
+    if @user.site_admin?
+      redirect_to users_url
+    else
+      redirect_to courses_url
+    end
   end
   
   def resend_auth
@@ -35,19 +40,19 @@ class MainController < ApplicationController
     
     if @user.nil?
       show_error "Email address [#{@email}] is not known."
-      redirect_to '/'
+      redirect_to root_url
       return
     end
     
     @user.send_auth_link_email!(root_url)
     
     show_notice "Check your email for your authentication link."
-    redirect_to '/'
+    redirect_to root_url
   end
   
   def logout
     session[:user_id] = nil
     show_notice "You have logged out."
-    redirect_to '/'    
+    redirect_to root_url
   end
 end

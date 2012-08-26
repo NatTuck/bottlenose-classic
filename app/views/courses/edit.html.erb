@@ -1,6 +1,42 @@
-<h1>Editing course</h1>
+<h2>Change Title</h2>
 
 <%= render 'form' %>
+
+<h2>Manage Teachers</h2>
+
+<h3>Add a teacher</h3>
+
+<%= form_for [@course, @registration] do |f| %>
+
+<div class="ui-widget">
+  <%= f.select :user_id, @users_by_id, {:include_blank => true} %>
+</div>
+
+  <%= submit_tag "Add" %>
+<% end %>
+
+<%= javascript_tag "$('#registration_user_id').combobox();" %>
+
+<h3>Current Teachers</h3>
+
+<table class="pretty-list">
+<tr>
+  <th>Name</th>
+  <th>Email</th>
+  <th>&nbsp;</th>
+</tr>
+
+<% @course.teacher_registrations.each do |treg| %>
+  <% teacher = treg.user %>
+<tr>
+  <td><%= teacher.name %></td>
+  <td><%= teacher.email %></td>
+  <td><%= link_to 'Destroy', [@course, treg], 
+            { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>
+</tr>
+<% end %>
+
+</table>
 
 <%= link_to 'Show', @course %> |
 <%= link_to 'Back', courses_path %>

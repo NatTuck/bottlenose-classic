@@ -2,6 +2,12 @@ require 'securerandom'
 
 class User < ActiveRecord::Base
   attr_accessible :email, :name, :site_admin, :auth_key
+
+  has_many :registrations
+  has_many :courses, :through => :registrations
+
+  validates :email, :format => { :with => /\@.*\./ }
+  validates :name,  :length => { :minimum => 2 }
   
   def send_auth_link_email!(base_url)
     if self.auth_key.nil?
