@@ -46,7 +46,9 @@ class ApplicationController < ActionController::Base
   end
 
   def find_course
-    @course = Course.find(params[:course_id])
+    if @course.nil?
+      @course = Course.find(params[:course_id])
+    end
   end
 
   def require_teacher

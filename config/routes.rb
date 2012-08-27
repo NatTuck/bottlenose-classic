@@ -12,6 +12,14 @@ Bottlenose::Application.routes.draw do
     resources :chapters
   end
 
+  resources :registratons
+
+  resources :chapters do
+    resources :lessons
+  end
+
+  resources :lessons
+
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

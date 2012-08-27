@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(:version => 20120823181949) do
 
   create_table "lessons", :force => true do |t|
     t.string   "name"
-    t.integer  "course_id"
+    t.integer  "chapter_id"
     t.string   "video"
     t.string   "video2"
     t.integer  "question_id"

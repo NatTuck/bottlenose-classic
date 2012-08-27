@@ -1,8 +1,9 @@
 class ChaptersController < ApplicationController
-  before_filter :find_chapter, :except => [:index, :new, :create]
   before_filter :find_course,  :only   => [:index, :new, :create]
   before_filter :require_logged_in_user, :only   => [:index, :show]
   before_filter :require_teacher,        :except => [:index, :show]
+  prepend_before_filter :find_chapter, :except => [:index, :new, :create]
+
 
   def index
     @chapters = @course.chapters
@@ -23,7 +24,7 @@ class ChaptersController < ApplicationController
     @chapter = Chapter.new(params[:chapter])
 
     if @chapter.save
-      redirect_to [@course, @chapter], notice: 'Chapter was successfully created.'
+      redirect_to @chapter, notice: 'Chapter was successfully created.'
     else
       render action: "new"
     end
@@ -31,7 +32,7 @@ class ChaptersController < ApplicationController
 
   def update
     if @chapter.update_attributes(params[:chapter])
-      redirect_to [@course, @chapter], notice: 'Chapter was successfully updated.'
+      redirect_to @chapter, notice: 'Chapter was successfully updated.'
     else
       render action: "edit"
     end
@@ -45,19 +46,12 @@ class ChaptersController < ApplicationController
   private
 
   def find_chapter
-    find_course
-
-    if @course.nil?
-      show_error "No such course."
-      redirect_to courses_url
-      return
-    end
-
     @chapter = Chapter.find(params[:id])
+    @course  = @chapter.course
 
-    if @chapter.course_id != @course.id
-      show_error "Chapter does not match course"
-      redirect_to @course
+    unless params[:course_id].nil?
+      show_error "Must use unnested route."
+      redirect_to @chapter
       return
     end
   end

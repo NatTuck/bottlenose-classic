@@ -1,15 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  name: MyString
-  course_id: 1
-  video: MyString
-  video2: MyString
+yay_parens:
+  name: Why Lots of Parens are Awesome
+  chapter: intro
+  video: http://www.youtu.be/not_a_real_video
+  video2: http://www.youtu.be/also_not_a_real_video
   question_id: 1
 
-two:
-  name: MyString
-  course_id: 1
-  video: MyString
-  video2: MyString
+yay_lambda:
+  name: Lambda Makes the World Go Round
+  chapter: intro
+  video: http://www.youtu.be/not_a_real_video2
+  video2: http://www.youtu.be/also_not_a_real_video2
   question_id: 1

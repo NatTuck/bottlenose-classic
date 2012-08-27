@@ -26,30 +26,29 @@ class ChaptersControllerTest < ActionController::TestCase
         {user_id: @fred.id}
     end
 
-    assert_redirected_to course_chapter_path(@course, assigns(:chapter))
+    assert_redirected_to assigns(:chapter)
   end
 
   test "should show chapter" do
-    get :show, {course_id: @course.id, id: @intro.id}, {user_id: @fred.id}
+    get :show, {id: @intro.id}, {user_id: @fred.id}
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, {course_id: @course.id, id: @intro.id}, {user_id: @fred.id}
+    get :edit, {id: @intro.id}, {user_id: @fred.id}
     assert_response :success
   end
 
   test "should update chapter" do
-    put :update, {course_id: @course.id, id: @intro.id, 
+    put :update, {id: @intro.id, 
       chapter: {course_id: @course.id, name: "Intro to Haskell" }},
       {user_id: @fred.id}
-    assert_redirected_to course_chapter_path(@course, assigns(:chapter))
+    assert_redirected_to chapter_path(assigns(:chapter))
   end
 
   test "should destroy chapter" do
     assert_difference('Chapter.count', -1) do
-      delete :destroy, {course_id: @course.id, id: @intro.id},
-        {user_id: @fred.id}
+      delete :destroy, {id: @intro.id}, {user_id: @fred.id}
     end
 
     assert_redirected_to course_chapters_path(@course)

@@ -1,7 +1,7 @@
 class RegistrationsController < ApplicationController
-  before_filter :find_registration, :except => [:index, :new, :create]
   before_filter :require_teacher
-  
+  prepend_before_filter :find_registration, :except => [:index, :new, :create]
+
   def index
     @teacher_reg = Registration.new(course_id: @course.id, teacher: true)
     @student_reg = Registration.new(course_id: @course.id)
@@ -70,20 +70,7 @@ class RegistrationsController < ApplicationController
   private
 
   def find_registration
-    find_course
-
-    if @course.nil?
-      show_error "No such course."
-      redirect_to courses_url
-      return
-    end
-
     @registration = Registration.find(params[:id])
-
-    if @registration.course_id != @course.id
-      show_error "Registration does not match course"
-      redirect_to @course
-      return
-    end
+    @course = @registration.course
   end
 end
