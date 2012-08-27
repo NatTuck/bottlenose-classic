@@ -23,13 +23,6 @@ class CoursesController < ApplicationController
       redirect_to course_url(@course)
       return
     end
-    
-    @registration = Registration.new(teacher: true, course_id: @course.id)
-    
-    @users_by_id = {}
-    User.all.each do |user|
-      @users_by_id[user.name] = user.id
-    end
   end
 
   def create

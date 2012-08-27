@@ -14,4 +14,8 @@ class Course < ActiveRecord::Base
   def teacher_registrations
     registrations.find_all {|reg| reg.teacher? }
   end
+
+  def student_registrations
+    registrations.find_all {|reg| !reg.teacher? }
+  end
 end

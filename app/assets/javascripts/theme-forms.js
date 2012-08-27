@@ -1,5 +1,7 @@
 
 $(function() {
+    $('select').combobox();
+
     $('input:text, input:password')
     .button()
     .css({
@@ -9,5 +11,7 @@ $(function() {
         'outline' : 'none',
         'cursor' : 'text'
     });
+
+    $('input:submit').button();
 });
 

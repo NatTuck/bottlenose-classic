@@ -1,10 +1,5 @@
-<p id="notice"><%= notice %></p>
+<% @page_title = @course.name %>
 
-<p>
-  <b>Name:</b>
-  <%= @course.name %>
-</p>
-
-
-<%= link_to 'Edit', edit_course_path(@course) %> |
-<%= link_to 'Back', courses_path %>
+<% if @logged_in_user.site_admin? or @course.taught_by?(@logged_in_user) %>
+  <p><%= link_to 'Manage this Course', edit_course_path(@course) %></p>
+<% end %>

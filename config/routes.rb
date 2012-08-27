@@ -7,7 +7,6 @@ Bottlenose::Application.routes.draw do
   resources :users
   match 'users/:id/impersonate' => 'users#impersonate'
 
-  resources :courses
   resources :courses do
     resources :registrations
   end

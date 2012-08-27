@@ -31,6 +31,9 @@
 }
 
 .footer {
+    margin-top: 4em;
+    padding-top: 1em;
+    border-top: thin dashed grey;
     margin-left: 20%;
     margin-right: 20%;
     font-size: smaller;
@@ -95,3 +98,7 @@
 h1, h2, h3, h4 {
     font-family: sans;
 }
+
+h1 { font-size: 18pt; }
+h2 { font-size: 16pt; }
+h3 { font-size: 14pt; }

@@ -1,4 +1,4 @@
-<%= form_for(@registration) do |f| %>
+<%= form_for [@course, @registration] do |f| %>
   <% if @registration.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@registration.errors.count, "error") %> prohibited this registration from being saved:</h2>
@@ -11,7 +11,29 @@
     </div>
   <% end %>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <table class="edit-form">
+    <tr>
+      <td><%= label :user_id, "User" %></td>
+      <td>
+	<div class="ui-widget">
+	  <%= f.select :user_id, select_user_hash, {:include_blank => true} %>
+	</div>
+      </td>
+    </tr>
+    <tr>
+      <td><%= label :course_id, "Course" %></td>
+      <td>
+	<div class="ui-widget">
+	  <%= f.select :course_id, select_course_hash, {:include_blank => true} %>
+	</div>
+      </td>
+    </tr>
+    <tr>
+      <td><%= label :teacher, "Teacher" %></td>
+      <td><%= f.check_box :teacher %></td>
+    <tr>
+      <td>&nbsp;</td>
+      <td><%= f.submit %></td>
+    </tr>
+  </table>
 <% end %>

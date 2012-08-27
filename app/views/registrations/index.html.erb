@@ -1,24 +1,93 @@
-<h1>Listing registrations</h1>
+<% @page_title = "#{@course.name} - Registrations" %>
 
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<p><%= link_to 'Back to Edit Course', [:edit, @course] %></p>
 
-<% @registrations.each do |registration| %>
+<h1>Add a teacher</h1>
+
+<p>(Must be an existing user.)</p>
+
+<%= form_for [@course, @teacher_reg] do |f| %>
+<%= f.hidden_field :course_id %>
+<%= f.hidden_field :teacher %>
+
+<table class="edit-form">
   <tr>
-    <td><%= registration.user.name %></td>
-    <td><%= link_to 'Show', [@course, registration] %></td>
-    <td><%= link_to 'Edit', [:edit, @course, registration] %></td>
-    <td><%= link_to 'Destroy', [@course, registration], 
-            { method: :delete, data: { confirm: 'Are you sure?' } } %></td>
+    <td><%= label :user_id, "Teacher" %></td>
+    <td>
+      <div class="ui-widget">
+	<%= f.select :user_id, select_user_hash, {:include_blank => true} %>
+      </div>
+    </td>
   </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><%= submit_tag "Add" %></td>
+  </tr>
+</table>
+<% end %>
+
+<h1>Current Teachers</h1>
+
+<table class="pretty-list">
+<tr>
+  <th>Name</th>
+  <th>Email</th>
+  <th>&nbsp;</th>
+</tr>
+
+<% @course.teacher_registrations.each do |treg| %>
+  <% teacher = treg.user %>
+<tr>
+  <td><%= teacher.name %></td>
+  <td><%= teacher.email %></td>
+  <td><%= link_to 'Destroy', [@course, treg], 
+            { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>
+</tr>
 <% end %>
 </table>
 
-<br />
+<h1>Add A Student</h1>
 
-<%= link_to 'New Registration', new_course_registration_url(@course) %>
+<p>(A new user will be created and notified if needed.)</p>
+
+<%= form_for [@course, @student_reg] do |f| %>
+<%= f.hidden_field :course_id %>
+<%= f.hidden_field :teacher %>
+
+<table class="edit-form">
+  <tr>
+    <td><%= label :student_name, "Name" %></td>
+    <td><%= text_field_tag :student_name, "" %></td>
+  </tr>
+  <tr>
+    <td><%= label :student_email, "Name" %></td>
+    <td><%= text_field_tag :student_email, "" %></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><%= submit_tag "Register" %></td>
+  </tr>
+</table>
+<% end %>
+
+</table>
+
+<h1>Current Students</h1>
+
+<table class="pretty-list">
+<tr>
+  <th>Name</th>
+  <th>Email</th>
+  <th>&nbsp;</th>
+</tr>
+
+<% @course.student_registrations.each do |sreg| %>
+  <% student = sreg.user %>
+<tr>
+  <td><%= student.name %></td>
+  <td><%= student.email %></td>
+  <td><%= link_to 'Destroy', [@course, sreg], 
+            { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>
+</tr>
+<% end %>
+</table>

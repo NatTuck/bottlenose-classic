@@ -1,5 +1,16 @@
-<p id="notice"><%= notice %></p>
+<table class="pretty-list">
+  <tr>
+    <td>Course</td>
+    <td><%= @course.name %></td>
+  </tr>
+  <tr>
+    <td>User</td>
+    <td><%= @registration.user.name %></td>
+  </tr>
+  <tr>
+    <td>Teacher?</td>
+    <td><%= @registration.teacher? ? "Yes" : "No" %></td>
+  </tr>
+</table>
 
-
-<%= link_to 'Edit', edit_registration_path(@registration) %> |
-<%= link_to 'Back', registrations_path %>
+<%= link_to 'Back', course_registrations_path(@course) %>
