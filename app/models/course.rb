@@ -2,7 +2,9 @@ class Course < ActiveRecord::Base
   attr_accessible :name
   
   has_many :registrations
-  has_many :courses, :through => :registrations
+  has_many :users, :through => :registrations
+
+  has_many :chapters
 
   validates :name, :length => { :minimum => 2 }
   

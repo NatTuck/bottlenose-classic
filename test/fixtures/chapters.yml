@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  name: MyString
-  course_id: 1
+intro:
+  name: Intro to Scheme
+  course: cs301
 
-two:
-  name: MyString
-  course_id: 1
+sub_model:
+  name: The Substitution Model
+  course_id: cs301

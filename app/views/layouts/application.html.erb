@@ -17,10 +17,8 @@
   <%= @page_title || default_page_title %>
 </div>
 <div class="user-controls">
-  <% if @logged_in_user.nil? %>
-    <%= link_to "Not logged in", "/" %>
-  <% else %>
-    Hi, <%= @logged_in_user.email %> |
+  <% unless @logged_in_user.nil? %>
+    Hi, <%= @logged_in_user.name %> |
 
     <% if @logged_in_user.site_admin? %>
       <%= link_to "Manage Users", users_url %> |
@@ -48,8 +46,11 @@
 <%= yield %>
 
 <div class="footer">
-The development team takes no responsibility for death or serious
-injury that may result from use of this product as intended.
+Copyright &copy 2012 by contributors. Licensed under the <%= link_to(
+"GNU Affero GPL", "/agpl-3.0.txt") %> v3 or later. Source <%= link_to(
+"at github", "http://www.github.com/NatTuck") %>. The development team
+takes no responsibility for death or serious injury that may result
+from use of this product as intended.
 </div>
 
 </body>

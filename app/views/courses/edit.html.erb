@@ -1,14 +1,6 @@
-<% @page_title = "#{@course.name} - Manage Course" %>
+<% @page_title = "#{@course.name} - Edit Course" %>
 
-<p><%= link_to 'View Course Page', @course %></p>
-
-<h1>Change Title</h1>
+<p><%= link_to 'Back to Course', @course %></p>
 
 <%= render 'form' %>
 
-<h1>Things to Manage</h1>
-
-<ul>
-<li><%= link_to "Manage Course Registrations", course_registrations_path(@course) %></li>
-<li>Manage Course Chapters</li>
-</ul>

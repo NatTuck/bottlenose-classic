@@ -11,20 +11,14 @@
     </div>
   <% end %>
 
+  <%= f.hidden_field :course_id %>
+
   <table class="edit-form">
     <tr>
       <td><%= label :user_id, "User" %></td>
       <td>
 	<div class="ui-widget">
 	  <%= f.select :user_id, select_user_hash, {:include_blank => true} %>
-	</div>
-      </td>
-    </tr>
-    <tr>
-      <td><%= label :course_id, "Course" %></td>
-      <td>
-	<div class="ui-widget">
-	  <%= f.select :course_id, select_course_hash, {:include_blank => true} %>
 	</div>
       </td>
     </tr>

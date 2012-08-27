@@ -1,0 +1,39 @@
+<% @page_title = "#{@course.name} - Chapters" %>
+
+<p>
+<%= link_to 'Back to Course', @course %>
+<% if @logged_in_user.course_admin?(@course) %>
+  | <%= link_to 'Back to Manage Course', [:edit, @course] %>
+  | <%= link_to 'New Chapter', new_course_chapter_path(@course) %>
+<% end %>
+</p>
+
+<table class="pretty-list">
+  <tr>
+    <th>Title</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+  </tr>
+
+<% @chapters.each do |chapter| %>
+  <tr>
+    <td><%= chapter.name %></td>
+    <td><%= link_to 'Show', [@course, chapter] %></td>
+    <td>
+      <% if @logged_in_user.course_admin?(@course) %>
+        <%= link_to 'Edit', [:edit, @course, chapter] %>
+      <% end %>
+    </td>
+    <td>
+      <% if @logged_in_user.course_admin?(@course) %>
+        <%= link_to 'Destroy', [@course, chapter], 
+              { method: :delete, data: { confirm: 'Are you sure?' }} %>
+      <% end %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+

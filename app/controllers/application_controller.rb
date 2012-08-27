@@ -44,4 +44,31 @@ class ApplicationController < ActionController::Base
       return
     end
   end
+
+  def find_course
+    @course = Course.find(params[:course_id])
+  end
+
+  def require_teacher
+    find_user_session
+    find_course
+
+    if @logged_in_user.nil?
+      show_error "You need to log in."
+      redirect_to root_url
+      return
+    end
+
+    if @course.nil?
+      show_error "No such course."
+      redirect_to courses_url
+      return
+    end
+    
+    unless @logged_in_user.site_admin? or @course.taught_by?(@logged_in_user)
+      show_error "You're not allowed to go there."
+      redirect_to course_url(@course)
+      return
+    end
+  end
 end

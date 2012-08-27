@@ -1,5 +1,16 @@
 <% @page_title = @course.name %>
 
 <% if @logged_in_user.site_admin? or @course.taught_by?(@logged_in_user) %>
-  <p><%= link_to 'Manage this Course', edit_course_path(@course) %></p>
+<p>
+  <%= link_to "Manage Registrations", course_registrations_path(@course) %> |
+  <%= link_to "Manage Chapters", course_chapters_path(@course) %>
+</p>
 <% end %>
+
+<h1>Chapters</h1>
+
+<ul>
+<% @course.chapters.each do |chapter| %>
+  <li><%= link_to chapter.name, [@course, chapter] %></li>
+<% end %>
+</ul>

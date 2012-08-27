@@ -9,6 +9,7 @@ Bottlenose::Application.routes.draw do
 
   resources :courses do
     resources :registrations
+    resources :chapters
   end
 
   

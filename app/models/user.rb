@@ -17,4 +17,8 @@ class User < ActiveRecord::Base
     
     AuthMailer.auth_link_email(self, base_url).deliver
   end
+
+  def course_admin?(course)
+    self.site_admin? or course.taught_by?(self)
+  end
 end
