@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  question_id: 1
+  lesson_id: 1
   registration_id: 1
   answer: MyString
 
 two:
-  question_id: 1
+  lesson_id: 1
   registration_id: 1
   answer: MyString

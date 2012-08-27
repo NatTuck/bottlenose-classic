@@ -4,12 +4,13 @@ yay_parens:
   name: Why Lots of Parens are Awesome
   chapter: intro
   video: http://www.youtu.be/not_a_real_video
+  question: Why are parens so awesome?
   video2: http://www.youtu.be/also_not_a_real_video
-  question_id: 1
+
 
 yay_lambda:
   name: Lambda Makes the World Go Round
   chapter: intro
   video: http://www.youtu.be/not_a_real_video2
+  question: Are we there yet?
   video2: http://www.youtu.be/also_not_a_real_video2
-  question_id: 1

@@ -3,6 +3,7 @@ require 'test_helper'
 class RegistrationsControllerTest < ActionController::TestCase
   setup do
     @fred = users(:fred)
+    @alan = users(:alan)
     @john = users(:john)
 
     @fred_reg = registrations(:fred_cs301)
@@ -36,7 +37,7 @@ class RegistrationsControllerTest < ActionController::TestCase
   test "should create registration" do
     assert_difference('Registration.count') do
       post :create, { course_id: @cs301.id, 
-        registration: { user_id: @john.id, course_id: @cs301.id }},
+        registration: { user_id: @alan.id, course_id: @cs301.id }},
         {user_id: @fred.id}
     end
 

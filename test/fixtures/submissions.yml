@@ -5,11 +5,11 @@ one:
   registration_id: 1
   url: MyString
   score: 100
-  status: MyText
+  student_notes: MyText
 
 two:
   assignment_id: 1
   registration_id: 1
   url: MyString
   score: 50
-  status: MyText
+  student_notes: MyText

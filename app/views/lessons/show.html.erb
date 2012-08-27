@@ -1,0 +1,24 @@
+<% @page_title = "#{@chapter.name}: #{@lesson.name}" %>
+
+<p>
+<%= link_to "Back to Chapter", @chapter %>
+
+<% if @logged_in_user.course_admin?(@course) %>
+  | <%= link_to 'Edit', edit_lesson_path(@lesson) %>
+<% end %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @lesson.name %>
+</p>
+
+<p>
+  <b>Video:</b>
+  <%= @lesson.video %>
+</p>
+
+<p>
+  <b>Video2:</b>
+  <%= @lesson.video2 %>
+</p>

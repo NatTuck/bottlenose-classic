@@ -4,5 +4,6 @@ class Lesson < ActiveRecord::Base
   belongs_to :chapter
 
   validates :chapter_id, :presence => true
-  validates :name,       :length => { :minimum => 2 }
+  validates :name,       :length => { :minimum => 2 },
+                         :uniqueness => { :scope => :chapter_id }
 end

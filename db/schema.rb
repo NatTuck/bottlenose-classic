@@ -11,10 +11,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120823181949) do
+ActiveRecord::Schema.define(:version => 20120823181654) do
 
   create_table "answers", :force => true do |t|
-    t.integer  "question_id"
+    t.integer  "lesson_id"
     t.integer  "registration_id"
     t.string   "answer"
     t.datetime "created_at",      :null => false
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20120823181949) do
   end
 
   create_table "assignments", :force => true do |t|
+    t.integer  "chapter_id"
     t.string   "name"
     t.string   "url"
     t.datetime "created_at", :null => false
@@ -41,30 +42,12 @@ ActiveRecord::Schema.define(:version => 20120823181949) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "lesson_views", :force => true do |t|
-    t.integer  "lesson_id"
-    t.integer  "registration_id"
-    t.date     "viewed_page"
-    t.date     "viewed_video"
-    t.date     "viewed_video2"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
-  end
-
   create_table "lessons", :force => true do |t|
     t.string   "name"
     t.integer  "chapter_id"
-    t.string   "video"
-    t.string   "video2"
-    t.integer  "question_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  create_table "questions", :force => true do |t|
-    t.integer  "lesson_id"
-    t.text     "text"
-    t.text     "form"
+    t.text     "video"
+    t.text     "question"
+    t.text     "video2"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -81,8 +64,8 @@ ActiveRecord::Schema.define(:version => 20120823181949) do
     t.integer  "assignment_id"
     t.integer  "registration_id"
     t.string   "url"
+    t.text     "student_notes"
     t.integer  "score"
-    t.text     "status"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end

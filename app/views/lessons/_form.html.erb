@@ -1,0 +1,35 @@
+<%= form_for [@chapter, @lesson] do |f| %>
+  <% if @lesson.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@lesson.errors.count, "error") %> prohibited this lesson from being saved:</h2>
+
+      <ul>
+      <% @lesson.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :chapter_id %>
+
+  <table class="edit-form">
+    <tr>
+      <td><%= f.label :name %></td>
+      <td><%= f.text_field :name %></td>
+    </tr>
+    <tr>
+      <td><%= f.label :video %></td>
+      <td><%= f.text_field :video %></td>
+    </tr>
+    <tr>
+      <td><%= f.label :video2 %></td>
+      <td><%= f.text_field :video2 %></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><%= f.submit %></td>
+    </tr>
+  </table>
+
+<% end %>

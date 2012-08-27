@@ -1,0 +1,27 @@
+<% @page_title = "Manage Lessons - #{@chapter.name}" %>
+
+<p><%= link_to 'Back to Chapter', @chapter %> | 
+   <%= link_to 'New Lesson', new_chapter_lesson_path(@chapter) %>
+</p>
+
+<table class="pretty-list">
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @lessons.each do |lesson| %>
+  <tr>
+    <td><%= lesson.name %></td>
+    <td><%= link_to 'Show', lesson %></td>
+    <td><%= link_to 'Edit', edit_lesson_path(lesson) %></td>
+    <td><%= link_to 'Destroy', lesson, {method: :delete, 
+	    data: { confirm: 'Are you sure?' }} %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+

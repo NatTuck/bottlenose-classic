@@ -19,15 +19,15 @@
 <% @chapters.each do |chapter| %>
   <tr>
     <td><%= chapter.name %></td>
-    <td><%= link_to 'Show', [@course, chapter] %></td>
+    <td><%= link_to 'Show', chapter %></td>
     <td>
       <% if @logged_in_user.course_admin?(@course) %>
-        <%= link_to 'Edit', [:edit, @course, chapter] %>
+        <%= link_to 'Edit', [:edit, chapter] %>
       <% end %>
     </td>
     <td>
       <% if @logged_in_user.course_admin?(@course) %>
-        <%= link_to 'Destroy', [@course, chapter], 
+        <%= link_to 'Destroy', chapter, 
               { method: :delete, data: { confirm: 'Are you sure?' }} %>
       <% end %>
     </td>

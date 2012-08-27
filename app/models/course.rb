@@ -6,7 +6,8 @@ class Course < ActiveRecord::Base
 
   has_many :chapters
 
-  validates :name, :length => { :minimum => 2 }
+  validates :name, :length     => { :minimum => 2 },
+                   :uniqueness => true
   
   def taught_by?(user)
     reg = Registration.find_by_course_id_and_user_id(self.id, user.id)

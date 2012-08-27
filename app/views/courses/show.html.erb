@@ -11,6 +11,6 @@
 
 <ul>
 <% @course.chapters.each do |chapter| %>
-  <li><%= link_to chapter.name, [@course, chapter] %></li>
+  <li><%= link_to chapter.name, chapter %></li>
 <% end %>
 </ul>

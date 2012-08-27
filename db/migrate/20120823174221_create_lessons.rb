@@ -3,9 +3,9 @@ class CreateLessons < ActiveRecord::Migration
     create_table :lessons do |t|
       t.string :name
       t.integer :chapter_id
-      t.string :video
-      t.string :video2
-      t.integer :question_id
+      t.text :video
+      t.text :question
+      t.text :video2
 
       t.timestamps
     end

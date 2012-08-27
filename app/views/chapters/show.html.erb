@@ -1,7 +1,15 @@
 <% @page_title = "#{@course.name}: #{@chapter.name}" %>
 
-<p><%= link_to 'Back to Chapter List', course_chapters_path(@course) %></p>
+<p><%= link_to 'Back to Chapter List', course_chapters_path(@course) %>
+<% if @logged_in_user.course_admin?(@course) %>
+  | <%= link_to 'Manage Lessons', chapter_lessons_path(@chapter) %>
+<% end %>
+</p>
 
 <h1>Lessons</h1>
 
-<p>...</p>
+<ul>
+<% @chapter.lessons.each do |lesson| %>
+  <li><%= link_to lesson.name, lesson %></li>
+<% end %>
+</ul>

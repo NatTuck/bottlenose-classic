@@ -4,8 +4,8 @@ class CreateSubmissions < ActiveRecord::Migration
       t.integer :assignment_id
       t.integer :registration_id
       t.string :url
+      t.text :student_notes
       t.integer :score
-      t.text :status
 
       t.timestamps
     end
