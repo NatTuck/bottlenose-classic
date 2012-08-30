@@ -1,6 +1,9 @@
 <% @page_title = "#{@course.name} - Registrations" %>
 
-<p><%= link_to 'Back to Edit Course', [:edit, @course] %></p>
+<p>
+<%= link_to 'Back to Course', @course %> |
+<%= link_to 'Manage Chapters', course_chapters_path(@course) %>
+</p>
 
 <h1>Add a teacher</h1>
 
@@ -60,7 +63,7 @@
     <td><%= text_field_tag :student_name, "" %></td>
   </tr>
   <tr>
-    <td><%= label :student_email, "Name" %></td>
+    <td><%= label :student_email, "Email" %></td>
     <td><%= text_field_tag :student_email, "" %></td>
   </tr>
   <tr>

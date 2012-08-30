@@ -11,11 +11,6 @@
 <body>
 
 <div class="header">
-<div class="page-title">
-  <%= link_to (image_tag "dolphin.svg", { height: 24 }), root_url %>
-  &nbsp; &nbsp;
-  <%= @page_title || default_page_title %>
-</div>
 <div class="user-controls">
   <% unless @logged_in_user.nil? %>
     Hi, <%= @logged_in_user.name %> |
@@ -27,6 +22,11 @@
     <%= link_to "Your Courses", courses_url %> |
     <%= link_to "Log Out", '/main/logout' %>
   <% end %>
+</div>
+<div class="page-title">
+  <%= link_to (image_tag "dolphin.svg", { height: 40 }), root_url %>
+  &nbsp; &nbsp;
+  <%= @page_title || default_page_title %>
 </div>
 <div style="clear: both;"></div>
 </div>

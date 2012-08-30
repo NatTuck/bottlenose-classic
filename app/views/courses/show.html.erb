@@ -1,11 +1,13 @@
 <% @page_title = @course.name %>
 
-<% if @logged_in_user.site_admin? or @course.taught_by?(@logged_in_user) %>
 <p>
-  <%= link_to "Manage Registrations", course_registrations_path(@course) %> |
-  <%= link_to "Manage Chapters", course_chapters_path(@course) %>
-</p>
+<%= link_to "Back to Your Courses", courses_path %>
+
+<% if @logged_in_user.site_admin? or @course.taught_by?(@logged_in_user) %>
+  | <%= link_to "Manage Registrations", course_registrations_path(@course) %>
+  | <%= link_to "Manage Chapters", course_chapters_path(@course) %>
 <% end %>
+</p>
 
 <h1>Chapters</h1>
 

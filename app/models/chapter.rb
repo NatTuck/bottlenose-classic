@@ -7,5 +7,4 @@ class Chapter < ActiveRecord::Base
   validates :course_id, :presence => true
   validates :name, :length => { :minimum => 2 }, 
                    :uniqueness => { :scope => :course_id }
-
 end

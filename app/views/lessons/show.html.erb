@@ -1,24 +1,31 @@
-<% @page_title = "#{@chapter.name}: #{@lesson.name}" %>
+<% @page_title = "Lesson - #{@chapter.name}" %>
 
 <p>
 <%= link_to "Back to Chapter", @chapter %>
 
 <% if @logged_in_user.course_admin?(@course) %>
-  | <%= link_to 'Edit', edit_lesson_path(@lesson) %>
+  | <%= link_to 'Edit Lesson', edit_lesson_path(@lesson) %>
+  | <%= link_to 'View Answers', lesson_answers_path(@lesson) %>
 <% end %>
 </p>
 
-<p>
-  <b>Name:</b>
-  <%= @lesson.name %>
-</p>
+<h1>Lesson: <%= @lesson.name %></h1>
 
-<p>
-  <b>Video:</b>
-  <%= @lesson.video %>
-</p>
+<p>Watch the video then answer the post-video question.</p>
 
-<p>
-  <b>Video2:</b>
-  <%= @lesson.video2 %>
-</p>
+<p><%= raw @lesson.video %></p>
+
+<h2>Post Video Question</h2>
+
+<%= form_for [@lesson, @answer] do %>
+
+<div class="lesson-question">
+<%= raw @lesson.question %>
+</div>
+
+<p><%= submit_tag "Submit Answer" %></p>
+
+<% end %>
+
+<h2>Bonus Video</h2>
+<p><%= raw @lesson.video2 %></p>

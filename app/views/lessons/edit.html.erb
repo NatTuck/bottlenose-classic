@@ -1,6 +1,9 @@
-<h1>Editing lesson</h1>
+<% @page_title = "Edit Lesson: #{@lesson.name}" %>
+
+<p>
+<%= link_to 'Back to Chapter', chapter_lessons_path(@chapter) %> |
+<%= link_to 'Show Lesson', @lesson %> 
+</p>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @lesson %> |
-<%= link_to 'Back', lessons_path %>

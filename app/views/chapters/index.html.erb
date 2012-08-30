@@ -3,7 +3,7 @@
 <p>
 <%= link_to 'Back to Course', @course %>
 <% if @logged_in_user.course_admin?(@course) %>
-  | <%= link_to 'Back to Manage Course', [:edit, @course] %>
+  | <%= link_to 'Manage Registrations', course_registrations_path(@course) %>
   | <%= link_to 'New Chapter', new_course_chapter_path(@course) %>
 <% end %>
 </p>

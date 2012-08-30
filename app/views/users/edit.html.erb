@@ -1,6 +1,9 @@
-<h1>Editing user</h1>
+<% @page_title = "Edit User: #{@user.name}" %>
+
+<p>
+<%= link_to 'Back to List', users_path %> |
+<%= link_to 'Show User', @user %>
+</p>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>

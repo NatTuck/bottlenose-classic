@@ -18,16 +18,13 @@
 }
 
 .page-title {
-    float: left;
-    width: 60%;
+    margin-top: -10px;
     font-family: sans;
     font-size: 20pt;
 }
 
 .user-controls {
-    float: right;
     text-align: right;
-    width: 35%;
 }
 
 .footer {

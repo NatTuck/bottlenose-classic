@@ -1,13 +1,22 @@
-<p>
-  <b>Name:</b>
-  <%= @user.name %>
-</p>
+<% @page_title = "User: #{@user.name}" %>
 
 <p>
-  <b>Email:</b>
-  <%= @user.email %>
+<%= link_to 'Back to List', users_path %> |
+<%= link_to 'Edit User', edit_user_path(@user) %>
 </p>
 
+<table class="pretty-list">
+<tr>
+  <td>Name:</td>
+  <td><%= @user.name %></td>
+</tr>
+<tr>
+  <td>Email:</td>
+  <td><%= @user.email %></td>
+</tr>
+<tr>
+  <td>Site Admin?</td>
+  <td><%= @user.site_admin? ? "Yes" : "No" %></td>
+</tr>
+</table>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
