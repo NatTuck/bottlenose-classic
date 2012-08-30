@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
 
   validates :email, :format => { :with => /\@.*\./ }
   validates :name,  :length => { :minimum => 2 }
+
+  validates :email, :uniqueness => true
+  validates :name,  :uniqueness => true
   
   def send_auth_link_email!(base_url)
     if self.auth_key.nil?

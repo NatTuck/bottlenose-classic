@@ -35,7 +35,7 @@ class AnswersController < ApplicationController
     @answer.lesson_id       = @lesson.id
 
     if @answer.save
-      redirect_to @answer, notice: 'Answer was successfully created.'
+      #redirect_to @answer, notice: 'Answer was successfully created.'
     else
       render action: "new"
     end

@@ -17,7 +17,9 @@
 
 <h2>Post Video Question</h2>
 
-<%= form_for [@lesson, @answer] do %>
+<div id="answer-form">
+
+<%= form_for [@lesson, @answer], :remote => true do %>
 
 <div class="lesson-question">
 <%= raw @lesson.question %>
@@ -27,5 +29,21 @@
 
 <% end %>
 
+</div>
+
+<div id="answer-status">
+
+<p>Your answer has been saved.</p>
+
+</div>
+
+<%= javascript_tag "$('#answer-status').hide();" %>
+
+<div id="bonus-video">
+
 <h2>Bonus Video</h2>
 <p><%= raw @lesson.video2 %></p>
+
+</div>
+
+<%= javascript_tag "$('#bonus-video').hide();" %>
