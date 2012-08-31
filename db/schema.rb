@@ -47,9 +47,10 @@ ActiveRecord::Schema.define(:version => 20120823181654) do
     t.integer  "chapter_id"
     t.text     "video"
     t.text     "question"
+    t.string   "correct_answer"
     t.text     "video2"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "registrations", :force => true do |t|

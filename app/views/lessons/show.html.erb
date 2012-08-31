@@ -25,19 +25,46 @@
 <%= raw @lesson.question %>
 </div>
 
+<% if @reg.nil? %>
+
+<p>Must be registered to answer questions.</p>
+
+<% else %>
+
 <p><%= submit_tag "Submit Answer" %></p>
+
+<% end %>
 
 <% end %>
 
 </div>
 
-<div id="answer-status">
+<div id="answer-right">
 
-<p>Your answer has been saved.</p>
+<table>
+<tr>
+  <td><%= image_tag "check-mark.png", :height => 100 %></td>
+  <td><p>Your correct answer has been saved.</p></td>
+</tr>
+</table>
 
 </div>
 
-<%= javascript_tag "$('#answer-status').hide();" %>
+<div id="answer-wrong">
+
+<table>
+<tr>
+  <td><%= image_tag "cross-mark.png", :height => 100 %></td>
+  <td>
+    <p>Your wrong answer has been saved. Watch the explaination video below, then 
+       <%= link_to_function "click here", "$('#answer-wrong').hide(); $('#answer-form').show()" %>
+       to try the question again.
+    </p>
+  </td>
+</tr>
+</table>
+
+</div>
 
 <div id="bonus-video">
 
@@ -46,4 +73,14 @@
 
 </div>
 
+<%= javascript_tag "$('#answer-wrong').hide();" %>
+
+<% if @right_answer %>
+<%= javascript_tag "$('#answer-form').hide();" %>
+<% else %>
+<%= javascript_tag "$('#answer-right').hide();" %>
 <%= javascript_tag "$('#bonus-video').hide();" %>
+<% end %>
+
+
+

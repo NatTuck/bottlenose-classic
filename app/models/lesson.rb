@@ -1,5 +1,5 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :chapter_id, :name, :question, :video, :video2
+  attr_accessible :chapter_id, :name, :question, :correct_answer, :video, :video2
 
   belongs_to :chapter
   has_many :answers

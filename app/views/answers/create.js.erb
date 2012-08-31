@@ -1,4 +1,21 @@
 
+<% if @saved %>
+
 $('#answer-form').hide();
-$('#answer-status').show();
 $('#bonus-video').show();
+
+<% if @answer.answer == @answer.correct_answer %>
+
+$('#answer-right').show();
+
+<% else %>
+
+$('#answer-wrong').show();
+
+<% end %>
+
+<% else %>
+
+alert("Error saving answer. See log.");
+
+<% end %>

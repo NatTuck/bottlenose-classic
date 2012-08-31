@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  lesson_id: 1
-  registration_id: 1
-  answer: MyString
+right:
+  lesson_id: lessons(:yay_parens)
+  registration_id: registrations(:john_cs301)
+  answer: C
 
-two:
-  lesson_id: 1
-  registration_id: 1
-  answer: MyString
+wrong:
+  lesson_id: lessons(:yay_parens)
+  registration_id: registrations(:john_cs301)
+  answer: yes

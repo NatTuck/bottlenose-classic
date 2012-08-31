@@ -1,24 +1,7 @@
 class AnswersController < ApplicationController
-  before_filter :require_logged_in_user, :only   => [:create]
-  before_filter :require_teacher,        :except => [:create]
-  prepend_before_filter :find_lesson,    :only   => [:index, :new, :create]
-  prepend_before_filter :find_answer,    :except => [:index, :new, :create]
-
-  def index
-    @answers = @lesson.answers
-  end
-
-  def show
-  end
-
-  def new
-    @answer = Answer.new
-  end
-
-  def edit
-    show_error "Edit answer form not implemented."
-    redirect_to chapter_answers_path(@chapter)
-  end
+  before_filter :require_logged_in_user, :only => [:create]
+  before_filter :require_teacher,        :only => [:destroy]
+  prepend_before_filter :find_lesson
 
   def create
     @answer = Answer.new(params[:answer])
@@ -35,37 +18,29 @@ class AnswersController < ApplicationController
     @answer.lesson_id       = @lesson.id
 
     if @answer.save
-      #redirect_to @answer, notice: 'Answer was successfully created.'
+      @saved = true
     else
-      render action: "new"
-    end
-  end
-
-  def update
-    if @answer.update_attributes(params[:answer])
-      redirect_to @answer, notice: 'Answer was successfully updated.'
-    else
-      render action: "edit"
+      @saved = false
     end
   end
 
   def destroy
+    @answer = Answer.find(params[:id])
     @answer.destroy
-    format.html { redirect_to answers_url }
+    show_notice "Answer was deleted."
+    redirect_to @lesson
   end
 
   private
 
   def find_lesson
-    @lesson  = Lesson.find(params[:lesson_id]) if @lesson.nil?
+    if params[:lesson_id]
+      @lesson = Lesson.find(params[:lesson_id])
+    else
+      @answer = Answer.find(params[:id])
+      @lesson = @answer.lesson
+    end
     @chapter = @lesson.chapter if @chapter.nil?
     @course  = @chapter.course if @course.nil?
-  end
-
-  def find_answer
-    @answer  = Answer.find(params[:id])
-    @lesson  = @answer.lesson
-    @chapter = @lesson.chapter
-    @course  = @chapter.course
   end
 end

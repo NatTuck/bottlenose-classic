@@ -22,21 +22,28 @@
       <td><%= f.label :video, "Main Video" %></td>
       <td>
 	<p>(Please paste YouTube embed code here.)</p>
-	<%= f.text_area :video, size: "40x5" %>
+	<p><%= f.text_area :video, size: "40x5" %></p>
       </td>
     </tr>
     <tr>
       <td><%= f.label :question, "Question" %></td>
       <td>
 	<p>(Expects the question and one form field named "answer[answer]".)</p>
-	<%= f.text_area :question, size: "60x8" %>
+	<p><%= f.text_area :question, size: "60x8" %></p>
+      </td>
+    </tr>
+    <tr>
+      <td><%= f.label :correct_answer, "Correct Answer" %></td>
+      <td>
+	<p>(Matched exactly.)</p>
+	<p><%= f.text_field :correct_answer %></p>
       </td>
     </tr>
     <tr>
       <td><%= f.label :video2, "Post-Question Video" %></td>
       <td>
 	<p>(Please paste YouTube embed code here.)</p>
-	<%= f.text_area :video2, size: "40x5" %>
+	<p><%= f.text_area :video2, size: "40x5" %></p>
       </td>
     </tr>
     <tr>
