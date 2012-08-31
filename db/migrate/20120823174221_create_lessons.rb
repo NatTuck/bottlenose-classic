@@ -4,8 +4,6 @@ class CreateLessons < ActiveRecord::Migration
       t.string :name
       t.integer :chapter_id
       t.text :video
-      t.text :question
-      t.string :correct_answer
       t.text :video2
 
       t.timestamps

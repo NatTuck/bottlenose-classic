@@ -13,3 +13,11 @@
   <li><%= link_to lesson.name, lesson %></li>
 <% end %>
 </ul>
+
+<h1>Assignments</h1>
+
+<ul>
+<% @chapter.assignments.each do |assignment| %>
+  <li><%= link_to assignment.name, assignment %></li>
+<% end %>
+</ul>

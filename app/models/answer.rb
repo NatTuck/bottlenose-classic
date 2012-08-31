@@ -1,15 +1,19 @@
 class Answer < ActiveRecord::Base
-  attr_accessible :answer, :lesson_id, :registration_id
+  attr_accessible :answer, :question_id, :user_id
 
-  belongs_to :lesson
-  belongs_to :registration
+  belongs_to :question
+  belongs_to :user
 
   delegate :user,           :to => :registration, :allow_nil => false
   delegate :user_id,        :to => :registration, :allow_nil => false
-  delegate :correct_answer, :to => :lesson,       :allow_nil => false
+  delegate :correct_answer, :to => :question,     :allow_nil => false
 
-  validates :lesson_id,       :presence => true
-  validates :registration_id, :presence => true
+  validates :question_id, :presence => true
+  validates :user_id,     :presence => true
+
+  validate :user_is_registered_for_course
+
+  delegate :course, :to => :question
 
   def score
     if answer == correct_answer
@@ -17,5 +21,11 @@ class Answer < ActiveRecord::Base
     else
       0
     end
+  end
+
+  private
+
+  def user_is_registered_for_course
+    user.courses.any? {|cc| cc.id == course.id }
   end
 end

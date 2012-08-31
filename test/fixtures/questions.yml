@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+parens_awesome:
+  lesson_id: lessons(:yay_parens)
+  question: Why are parens so awesome?
+  correct_answer: C
+
+curlies_dumb:
+  lesson_id: lessons(:yay_parens)
+  question: Why are curly braces dumb?
+  correct_answer: A
+
+there_yet:
+  lesson_id: lessons(:yay_lambda)
+  question: Are we there yet?
+  correct_answer: no
+
