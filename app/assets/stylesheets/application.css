@@ -18,7 +18,8 @@
 }
 
 .page-title {
-    margin-top: -10px;
+    margin-top: -5px;
+    padding-bottom: 0.5ex;
     font-family: sans;
     font-size: 20pt;
 }

@@ -1,7 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  name: MyString
+hello:
+  chapter: intro
+  name: Hello, World
+  url: http://www.example.com/hello-world.tar.gz
 
-two:
-  name: MyString
+lambda_time:
+  chapter: sub_model
+  name: Lambda Time
+  url: http://www.example.com/lambda-time.tar.gz

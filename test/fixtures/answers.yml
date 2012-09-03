@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 right:
-  question_id: questions(:parens_awesome)
-  registration_id: registrations(:john_cs301)
+  question: parens_awesome
+  user: john
   answer: C
 
 wrong:
-  question_id: questions(:there_yet)
-  registration_id: registrations(:john_cs301)
+  question: there_yet
+  user: john
   answer: yes

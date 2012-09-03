@@ -15,72 +15,67 @@
 
 <p><%= raw @lesson.video %></p>
 
-<h2>Post Video Question</h2>
+<h2>Post Video Questions</h2>
 
-<div id="answer-form">
+<% @questions.each do |question| %>
 
-<%= form_for [@lesson, @answer], :remote => true do %>
+  <div id="answer-form-<%= question.id %>">
 
-<div class="lesson-question">
-<%= raw @lesson.question %>
-</div>
+    <%= form_for [question, @answers[question.id]], :remote => true do %>
 
-<% if @reg.nil? %>
+    <div class="lesson-question">
+    <%= raw question.question %>
+    </div>
 
-<p>Must be registered to answer questions.</p>
+    <p><%= submit_tag "Submit Answer" %></p>
 
+    <% end %>
+
+  </div>
+
+  <div id="answer-right-<%= question.id %>">
+
+  <table>
+  <tr>
+    <td><%= image_tag "check-mark.png", :height => 100 %></td>
+    <td><p>Your correct answer has been saved. 
+	<% unless question.video.nil? %>
+	There is an <%= link_to "explaination video", question %> for this question.
+	<% end %>
+    </p></td>
+  </tr>
+  </table>
+
+  </div>
+
+  <div id="answer-wrong-<%= question.id %>">
+
+  <table>
+  <tr>
+    <td><%= image_tag "cross-mark.png", :height => 100 %></td>
+    <td>
+      <p>Your wrong answer has been saved.
+
+	<% unless question.video.nil? %>
+	There is an <%= link_to "explaination video", question %> for this question.
+	<% end %>
+
+	You can <%= link_to_function "click here", "$('#answer-wrong-#{question.id}').hide();" %>
+	to try this question again.
+      </p>
+    </td>
+  </tr>
+  </table>
+
+  </div>
+
+<% if @correct[question.id] %>
+  <%= javascript_tag "$('#answer-form-#{question.id}').hide();" %>
 <% else %>
-
-<p><%= submit_tag "Submit Answer" %></p>
-
+  <%= javascript_tag "$('#answer-right-#{question.id}').hide();" %>
+  <%= javascript_tag "$('#bonus-video-#{question.id}').hide();" %>
 <% end %>
 
+<%= javascript_tag "$('#answer-wrong-#{question.id}').hide();" %>
+
 <% end %>
-
-</div>
-
-<div id="answer-right">
-
-<table>
-<tr>
-  <td><%= image_tag "check-mark.png", :height => 100 %></td>
-  <td><p>Your correct answer has been saved.</p></td>
-</tr>
-</table>
-
-</div>
-
-<div id="answer-wrong">
-
-<table>
-<tr>
-  <td><%= image_tag "cross-mark.png", :height => 100 %></td>
-  <td>
-    <p>Your wrong answer has been saved. Watch the explaination video below, then 
-       <%= link_to_function "click here", "$('#answer-wrong').hide(); $('#answer-form').show()" %>
-       to try the question again.
-    </p>
-  </td>
-</tr>
-</table>
-
-</div>
-
-<div id="bonus-video">
-
-<h2>Bonus Video</h2>
-<p><%= raw @lesson.video2 %></p>
-
-</div>
-
-<%= javascript_tag "$('#answer-wrong').hide();" %>
-
-<% if @right_answer %>
-<%= javascript_tag "$('#answer-form').hide();" %>
-<% else %>
-<%= javascript_tag "$('#answer-right').hide();" %>
-<%= javascript_tag "$('#bonus-video').hide();" %>
-<% end %>
-
-
-

@@ -9,11 +9,15 @@ class LessonsController < ApplicationController
   end
 
   def show
-    @answer = Answer.new()
-    @reg = Registration.find_by_user_id_and_course_id(@logged_in_user.id, @course.id)
+    @questions = @lesson.questions
+    @correct   = {}
+    @answers   = {}
 
-    @user_answers = @lesson.answers.where(:registration_id => @reg.id)
-    @right_answer = @user_answers.any? {|a| a.score == 100 }
+    @questions.each do |qq|
+      user_answers = qq.answers.where(user_id: @logged_in_user.id)
+      @correct[qq.id] = user_answers.any? {|aa| aa.score == 100}
+      @answers[qq.id] = Answer.new
+    end
   end
 
   def new

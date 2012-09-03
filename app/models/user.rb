@@ -5,9 +5,13 @@ class User < ActiveRecord::Base
 
   has_many :registrations
   has_many :courses, :through => :registrations
+  
+  has_many :answers
+  has_many :submissions
 
   validates :email, :format => { :with => /\@.*\./ }
   validates :name,  :length => { :minimum => 2 }
+  validates :auth_key, :presence => true
 
   validates :email, :uniqueness => true
   validates :name,  :uniqueness => true

@@ -3,6 +3,7 @@ class Chapter < ActiveRecord::Base
 
   belongs_to :course
   has_many :lessons
+  has_many :assignments
 
   validates :course_id, :presence => true
   validates :name, :length => { :minimum => 2 }, 

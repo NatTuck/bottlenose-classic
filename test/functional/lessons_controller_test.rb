@@ -29,8 +29,7 @@ class LessonsControllerTest < ActionController::TestCase
   test "should create lesson" do
     assert_difference('Lesson.count') do
       post :create, {chapter_id: @chapter.id, 
-        lesson: { name: "Worst Lesson Ever", chapter_id: @chapter.id, 
-                  video2: @lesson.video2, video: @lesson.video }},
+        lesson: { name: "Worst Lesson Ever", chapter_id: @chapter.id, video: @lesson.video }},
         {user_id: @fred.id}
     end
 
@@ -49,8 +48,7 @@ class LessonsControllerTest < ActionController::TestCase
 
   test "should update lesson" do
     put :update, {id: @lesson, 
-      lesson: { name: "Worst Lesson Ever", chapter_id: @chapter.id, 
-                video2: @lesson.video2, video: @lesson.video }},
+      lesson: { name: "Worst Lesson Ever", chapter_id: @chapter.id, video: @lesson.video }},
       {user_id: @fred.id}
     assert_redirected_to lesson_path(assigns(:lesson))
   end

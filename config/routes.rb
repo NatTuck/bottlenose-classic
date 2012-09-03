@@ -29,10 +29,10 @@ Bottlenose::Application.routes.draw do
   resources :submissions, :only => [:destroy]
 
   resources :lessons do
-    resources :questions, :only => [:create]
+    resources :questions
   end
 
-  resources :questions, :only => [:update, :destroy] do
+  resources :questions, :only => [:edit, :update, :destroy] do
     resources :answers, :only => [:create]
   end
 

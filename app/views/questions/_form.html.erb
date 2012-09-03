@@ -1,4 +1,4 @@
-<%= form_for(@question) do |f| %>
+<%= form_for [@lesson, @question] do |f| %>
   <% if @question.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@question.errors.count, "error") %> prohibited this question from being saved:</h2>
@@ -11,19 +11,25 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :lesson_id %><br />
-    <%= f.number_field :lesson_id %>
-  </div>
-  <div class="field">
-    <%= f.label :question %><br />
-    <%= f.text_area :question %>
-  </div>
-  <div class="field">
-    <%= f.label :correct_answer %><br />
-    <%= f.text_field :correct_answer %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <table class="edit-form">
+    <tr>
+      <td><%= f.label :question %></td>
+      <td><%= f.text_area :question %></td>
+    </tr>
+    <tr>
+      <td><%= f.label :correct_answer %></td>
+      <td><%= f.text_field :correct_answer %></td>
+    </tr>
+    <tr>
+      <td><%= f.label :video, "Explaination Video" %></td>
+      <td>
+	<p>(Please paste YouTube embed code here.)</p>
+	<p><%= f.text_area :video, size: "40x5" %></p>
+      </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><%= f.submit %></td>
+    </tr>
+  </table>
 <% end %>

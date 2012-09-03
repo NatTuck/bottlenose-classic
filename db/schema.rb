@@ -11,73 +11,98 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120823181654) do
+ActiveRecord::Schema.define(:version => 20120831182428) do
 
   create_table "answers", :force => true do |t|
-    t.integer  "lesson_id"
-    t.integer  "registration_id"
-    t.string   "answer"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.integer  "question_id", :null => false
+    t.integer  "user_id",     :null => false
+    t.string   "answer",      :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
+  add_index "answers", ["question_id"], :name => "index_answers_on_question_id"
+  add_index "answers", ["user_id"], :name => "index_answers_on_user_id"
+
   create_table "assignments", :force => true do |t|
-    t.integer  "chapter_id"
-    t.string   "name"
+    t.integer  "chapter_id", :null => false
+    t.string   "name",       :null => false
     t.string   "url"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
+  add_index "assignments", ["chapter_id"], :name => "index_assignments_on_chapter_id"
+
   create_table "chapters", :force => true do |t|
-    t.string   "name"
-    t.integer  "course_id"
+    t.string   "name",       :null => false
+    t.integer  "course_id",  :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
+  add_index "chapters", ["course_id"], :name => "index_chapters_on_course_id"
+
   create_table "courses", :force => true do |t|
-    t.string   "name"
+    t.string   "name",       :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   create_table "lessons", :force => true do |t|
-    t.string   "name"
-    t.integer  "chapter_id"
+    t.string   "name",       :null => false
+    t.integer  "chapter_id", :null => false
     t.text     "video"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "lessons", ["chapter_id"], :name => "index_lessons_on_chapter_id"
+
+  create_table "questions", :force => true do |t|
+    t.integer  "lesson_id",      :null => false
     t.text     "question"
     t.string   "correct_answer"
-    t.text     "video2"
+    t.text     "video"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end
 
+  add_index "questions", ["lesson_id"], :name => "index_questions_on_lesson_id"
+
   create_table "registrations", :force => true do |t|
-    t.integer  "course_id"
-    t.integer  "user_id"
+    t.integer  "course_id",  :null => false
+    t.integer  "user_id",    :null => false
     t.boolean  "teacher"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
+  add_index "registrations", ["course_id"], :name => "index_registrations_on_course_id"
+  add_index "registrations", ["user_id"], :name => "index_registrations_on_user_id"
+
   create_table "submissions", :force => true do |t|
-    t.integer  "assignment_id"
-    t.integer  "registration_id"
+    t.integer  "assignment_id", :null => false
+    t.integer  "user_id",       :null => false
     t.string   "url"
     t.text     "student_notes"
     t.integer  "score"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
+  add_index "submissions", ["assignment_id"], :name => "index_submissions_on_assignment_id"
+  add_index "submissions", ["user_id"], :name => "index_submissions_on_user_id"
+
   create_table "users", :force => true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.string   "auth_key"
+    t.string   "name",       :null => false
+    t.string   "email",      :null => false
+    t.string   "auth_key",   :null => false
     t.boolean  "site_admin"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
 
 end

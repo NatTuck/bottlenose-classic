@@ -1,12 +1,13 @@
 class CreateLessons < ActiveRecord::Migration
   def change
     create_table :lessons do |t|
-      t.string :name
-      t.integer :chapter_id
-      t.text :video
-      t.text :video2
+      t.string  :name,       :null => false
+      t.integer :chapter_id, :null => false
+      t.text    :video
 
       t.timestamps
     end
+
+    add_index :lessons, [:chapter_id]
   end
 end
