@@ -10,12 +10,12 @@ class LessonsController < ApplicationController
 
   def show
     @questions = @lesson.questions
-    @correct   = {}
+    @got_it    = {}
     @answers   = {}
 
     @questions.each do |qq|
       user_answers = qq.answers.where(user_id: @logged_in_user.id)
-      @correct[qq.id] = user_answers.any? {|aa| aa.score == 100}
+      @got_it[qq.id] = user_answers.any? {|aa| aa.score == 100}
       @answers[qq.id] = Answer.new
     end
   end

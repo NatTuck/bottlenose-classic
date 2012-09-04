@@ -3,7 +3,8 @@ class CreateAssignments < ActiveRecord::Migration
     create_table :assignments do |t|
       t.integer :chapter_id, :null => false
       t.string  :name,       :null => false
-      t.string :url
+      t.text    :assignment
+      t.string  :url
 
       t.timestamps
     end

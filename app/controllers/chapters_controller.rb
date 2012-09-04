@@ -47,7 +47,7 @@ class ChaptersController < ApplicationController
 
   def find_chapter
     @chapter = Chapter.find(params[:id])
-    @course  = @chapter.course
+    @course  = @chapter.course or raise Exception.new("Invalid Chapter Object")
 
     unless params[:course_id].nil?
       show_error "Must use unnested route."

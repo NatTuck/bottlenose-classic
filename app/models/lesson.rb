@@ -2,7 +2,7 @@ class Lesson < ActiveRecord::Base
   attr_accessible :chapter_id, :name, :question, :correct_answer, :video
 
   belongs_to :chapter
-  has_many :questions
+  has_many :questions, :dependent => :destroy
 
   validates :chapter_id, :presence => true
   validates :name,       :length => { :minimum => 2 },

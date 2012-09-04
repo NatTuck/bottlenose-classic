@@ -1,6 +1,8 @@
-<% @page_title = "#{@course.name} - New Chapter" %>
+<% @page_title = "New Chapter" %>
 
-<p><%= link_to 'Back', course_chapters_path(@course) %></p>
+<p><%= link_to 'Back to Chapter List', @course %></p>
+
+<h1>Add Chapter for <%= @course.name %></h1>
 
 <%= render 'form' %>
 

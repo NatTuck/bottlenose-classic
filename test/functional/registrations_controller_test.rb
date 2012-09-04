@@ -29,11 +29,6 @@ class RegistrationsControllerTest < ActionController::TestCase
     assert_match "not allowed", flash[:error]
   end
 
-  test "should redirect away from new" do
-    get :new, {:course_id => @cs301.id}, {user_id: @fred.id}
-    assert_response :redirect
-  end
-
   test "should create registration" do
     assert_difference('Registration.count') do
       post :create, { course_id: @cs301.id, 

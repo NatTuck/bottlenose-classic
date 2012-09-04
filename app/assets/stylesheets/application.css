@@ -70,8 +70,13 @@
     border-top: thin dashed grey;
 }
 
+.pretty-list th {
+    padding-right: 2em;
+}
+
 .edit-form td {
     padding: 1ex;
+    vertical-align: top;
 }
 
 .ui-combobox {

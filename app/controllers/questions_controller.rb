@@ -2,6 +2,14 @@ class QuestionsController < ApplicationController
   before_filter :require_teacher
   prepend_before_filter :find_question_and_lesson
 
+  def show
+    @answer = Answer.new
+    @answer.question_id = @question.id
+
+    user_answers = @question.answers.where(user_id: @logged_in_user.id)
+    @correct = user_answers.any? {|aa| aa.score == 100}
+  end
+
   def new
     @question = Question.new
   end

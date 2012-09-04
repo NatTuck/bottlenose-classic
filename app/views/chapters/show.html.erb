@@ -1,23 +1,39 @@
-<% @page_title = "#{@course.name}: #{@chapter.name}" %>
+<% @page_title = "Chapter: #{@chapter.name}" %>
 
-<p><%= link_to 'Back to Chapter List', course_chapters_path(@course) %>
-<% if @logged_in_user.course_admin?(@course) %>
-  | <%= link_to 'Manage Lessons', chapter_lessons_path(@chapter) %>
-<% end %>
-</p>
+<p><%= link_to "Back to Course: #{@course.name}", @course %></p>
 
 <h1>Lessons</h1>
 
 <ul>
 <% @chapter.lessons.each do |lesson| %>
-  <li><%= link_to lesson.name, lesson %></li>
+  <li>
+    <%= link_to lesson.name, lesson %>
+
+    <% if @logged_in_user.course_admin?(@course) %>
+      (<%= link_to 'Edit', edit_lesson_path(lesson) %>)
+      (<%= link_to 'Destroy', lesson, {method: :delete, 
+	    data: { confirm: 'Are you sure?' }} %>)
+    <% end %>
+  </li>
 <% end %>
 </ul>
+
+<p><%= link_to "New Lesson", new_chapter_lesson_path(@chapter) %></p>
 
 <h1>Assignments</h1>
 
 <ul>
 <% @chapter.assignments.each do |assignment| %>
-  <li><%= link_to assignment.name, assignment %></li>
+  <li>
+    <%= link_to assignment.name, assignment %>
+    
+    <% if @logged_in_user.course_admin?(@course) %>
+      (<%= link_to 'Edit', edit_assignment_path(assignment) %>)
+      (<%= link_to 'Destroy', assignment, {method: :delete,
+	    data: { confirm: 'Are you sure?' }} %>)    
+    <% end %>
+  </li>
 <% end %>
 </ul>
+
+<p><%= link_to "New Assignment", new_chapter_assignment_path(@chapter) %></p>

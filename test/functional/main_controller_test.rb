@@ -9,7 +9,7 @@ class MainControllerTest < ActionController::TestCase
   test "lost auth form should create admin on fresh install" do
     ken_email = users(:ken).email
     
-    User.destroy_all
+    User.delete_all
     assert_equal User.count, 0, "should start with no users"
     
     num_deliveries = ActionMailer::Base.deliveries.size

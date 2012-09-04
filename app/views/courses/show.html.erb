@@ -1,18 +1,50 @@
-<% @page_title = @course.name %>
+<% @page_title = "Course: #{@course.name}" %>
 
-<p>
-<%= link_to "Back to Your Courses", courses_path %>
-
-<% if @logged_in_user.site_admin? or @course.taught_by?(@logged_in_user) %>
-  | <%= link_to "Manage Registrations", course_registrations_path(@course) %>
-  | <%= link_to "Manage Chapters", course_chapters_path(@course) %>
-<% end %>
-</p>
+<p><%= link_to "Back to Your Courses", courses_path %></p>
 
 <h1>Chapters</h1>
 
 <ul>
 <% @course.chapters.each do |chapter| %>
-  <li><%= link_to chapter.name, chapter %></li>
+  <li>
+    <%= link_to chapter.name, chapter %>
+    <% if @logged_in_user.course_admin?(@course) %>
+      (<%= link_to "Edit Title", [:edit, chapter] %>)
+      (<%= link_to 'Destroy', chapter, 
+           { method: :delete, data: { confirm: 'Are you sure?' }} %>)
+    <% end %>
+  </li>
 <% end %>
 </ul>
+
+<% if @logged_in_user.course_admin?(@course) %>
+<p><%= link_to 'New Chapter', new_course_chapter_path(@course) %></p>
+<% end %>
+
+
+<% if @logged_in_user.course_admin?(@course) %>
+
+<h1>Students</h1>
+
+<table class="pretty-list">
+  <tr>
+    <th>Name</th>
+    <th>Questions</th>
+    <th>Assignments</th>
+    <th>Status Report</th>
+  </tr>
+
+<% @course.student_registrations.each do |sreg| %>
+  <tr>
+    <td><%= sreg.user.name %></td>
+    <td><%= sreg.answers_done %></td>
+    <td><%= sreg.submissions_done %></td>
+    <td><%= link_to "View", sreg %></td>
+  </tr>
+<% end %>
+
+</table>
+
+<p><%= link_to "Manage Registrations", course_registrations_path(@course) %></p>
+
+<% end %>

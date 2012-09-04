@@ -1,6 +1,10 @@
-<h1>Editing question</h1>
+<% @page_title = "Edit Question" %>
+
+<p>
+<%= link_to "Back to Lesson: #{@lesson.name}", @lesson %> |
+<%= link_to "Show Video", @question %>
+</p>
+
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @question %> |
-<%= link_to 'Back', questions_path %>

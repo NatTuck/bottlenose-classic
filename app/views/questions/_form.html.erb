@@ -13,7 +13,11 @@
 
   <table class="edit-form">
     <tr>
-      <td><%= f.label :question %></td>
+      <td>
+	<p><%= f.label :question %></p>
+	<p>(HTML code. Include a form input<br> 
+	  with name="answer[answer]".)</p>
+      </td>
       <td><%= f.text_area :question %></td>
     </tr>
     <tr>
@@ -21,9 +25,11 @@
       <td><%= f.text_field :correct_answer %></td>
     </tr>
     <tr>
-      <td><%= f.label :video, "Explaination Video" %></td>
       <td>
-	<p>(Please paste YouTube embed code here.)</p>
+	<p><%= f.label :video, "Explaination Video" %></p>
+	<p>(Paste YouTube embed code here.)</p>
+      </td>
+      <td>
 	<p><%= f.text_area :video, size: "40x5" %></p>
       </td>
     </tr>

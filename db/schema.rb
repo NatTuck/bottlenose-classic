@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20120831182428) do
   create_table "assignments", :force => true do |t|
     t.integer  "chapter_id", :null => false
     t.string   "name",       :null => false
+    t.text     "assignment"
     t.string   "url"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false

@@ -13,5 +13,9 @@ $(function() {
     });
 
     $('input:submit').button();
+
+    $('.rich-text').each(function (ii) {
+	new nicEditor({iconsPath: '/assets/nicEditorIcons.gif'}).panelInstance(this.id);
+    });
 });
 

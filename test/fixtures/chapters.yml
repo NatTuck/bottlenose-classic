@@ -6,4 +6,8 @@ intro:
 
 sub_model:
   name: The Substitution Model
-  course_id: cs301
+  course: cs301
+
+long_pants:
+  name: The disadvantages of short pants
+  course: cs301

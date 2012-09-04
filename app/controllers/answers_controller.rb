@@ -12,7 +12,8 @@ class AnswersController < ApplicationController
     if @answer.save
       @saved = true
     else
-      @saved = false
+      @errors = @answer.errors.messages.to_json
+      @saved  = false
     end
   end
 

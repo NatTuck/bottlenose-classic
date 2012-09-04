@@ -1,0 +1,34 @@
+<%= form_for [@chapter, @assignment] do |f| %>
+  <% if @assignment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@assignment.errors.count, "error") %> prohibited this assignment from being saved:</h2>
+
+      <ul>
+      <% @assignment.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :chapter_id %>
+
+  <table class="edit-form">
+    <tr>
+      <td><%= f.label :name %></td>
+      <td><%= f.text_field :name %></td>
+    </tr>
+    <tr>
+      <td><%= f.label :assignment %></td>
+      <td><%= f.text_area :assignment, :class => "rich-text" %></td>
+    </tr>
+    <tr>
+      <td><%= f.label :url %></td>
+      <td><%= f.text_field :url %></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><%= f.submit %></td>
+    </tr>
+  </table>
+<% end %>

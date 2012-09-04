@@ -1,9 +1,6 @@
-<% @page_title = "#{@course.name} - Registrations" %>
+<% @page_title = "Manage Registrations" %>
 
-<p>
-<%= link_to 'Back to Course', @course %> |
-<%= link_to 'Manage Chapters', course_chapters_path(@course) %>
-</p>
+<p><%= link_to "Back to Course: #{@course.name}", @course %></p>
 
 <h1>Add a teacher</h1>
 

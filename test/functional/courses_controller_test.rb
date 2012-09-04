@@ -7,6 +7,7 @@ class CoursesControllerTest < ActionController::TestCase
     @user  = users(:john)
     
     @course = courses(:cs301)
+    @bad_co = courses(:cs599)
   end
 
   test "should get index" do
@@ -57,7 +58,7 @@ class CoursesControllerTest < ActionController::TestCase
 
   test "should destroy course" do
     assert_difference('Course.count', -1) do
-      delete :destroy, {id: @course}, { user_id: @admin.id }
+      delete :destroy, {id: @bad_co}, { user_id: @admin.id }
     end
 
     assert_redirected_to courses_path

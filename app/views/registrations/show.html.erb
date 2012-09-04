@@ -1,3 +1,10 @@
+<% @page_title = "Student Status Report" %>
+
+<p>
+<%= link_to "Back to Course: #{@course.name}", @course %> |
+<%= link_to "Manage Registrations", course_registrations_path(@course) %>
+</p>
+
 <table class="pretty-list">
   <tr>
     <td>Course</td>
@@ -5,12 +12,66 @@
   </tr>
   <tr>
     <td>User</td>
-    <td><%= @registration.user.name %></td>
+    <td><%= @user.name %></td>
   </tr>
   <tr>
     <td>Teacher?</td>
-    <td><%= @registration.teacher? ? "Yes" : "No" %></td>
+    <td>
+      <%= @registration.teacher? ? "Yes" : "No" %>
+      (<%= link_to "Edit", [:edit, @registration] %>)
+    </td>
   </tr>
 </table>
 
-<%= link_to 'Back', course_registrations_path(@course) %>
+<h1>Assignments</h1>
+
+<table class="pretty-list">
+  <tr>
+    <th>Chapter</th>
+    <th>Name</th>
+    <th>Score</th>
+    <th>Status</th>
+  </tr>
+
+<% @course.chapters.each do |chapter| %>
+  <% chapter.assignments.each do |assignment| %>
+    <tr>
+      <td><%= chapter.name %></td>
+      <td><%= assignment.name %></td>
+      <td><%= assignment.best_score_for(@user) %></td>
+      <td><%= image_tag assignment.best_score_image_for(@user), :height => 32 %>
+    </tr>
+  <% end %>
+<% end %>
+
+</table>
+
+<h1>Questions</h1>
+
+<table class="pretty-list">
+  <tr>
+    <th>Chapter</th>
+    <th>Lesson</th>
+    <th>Question #</th>
+    <th>Attempts</th>
+    <th>Status</th>
+  </tr>
+
+<% @course.chapters.each do |chapter| %>
+  <% chapter.lessons.each do |lesson| %>
+    <% lesson.questions.each_index do |ii| %>
+      <% question = lesson.questions[ii] %>
+        <tr>
+	  <td><%= chapter.name %></td>
+	  <td><%= lesson.name %></td>
+	  <td><%= "#{ii + 1} / #{lesson.questions.size} " %></td>
+	  <td><%= question.answers_for(@user).size %></td>
+	  <td><%= image_tag question.best_score_image_for(@user), :height => 32 %></td>
+	</tr>
+    <% end %>
+  <% end %>
+<% end %>
+
+</table>
+
+

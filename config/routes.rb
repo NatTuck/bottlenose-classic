@@ -11,18 +11,18 @@ Bottlenose::Application.routes.draw do
   match 'users/:id/impersonate' => 'users#impersonate'
 
   resources :courses do
-    resources :registrations
+    resources :registrations, :except => [:new]
     resources :chapters
   end
 
-  resources :registratons
+  resources :registrations, :except => [:new]
 
   resources :chapters do
     resources :lessons
-    resources :assignments
+    resources :assignments, :only => [:new, :create, :update]
   end
 
-  resources :assignments do
+  resources :assignments, :only => [:show, :edit, :update, :destroy]  do
     resources :submissions, :only => [:create]
   end
 

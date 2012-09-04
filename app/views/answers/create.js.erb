@@ -1,21 +1,18 @@
 
 <% if @saved %>
 
-$('#answer-form').hide();
-$('#bonus-video').show();
+  $('#submit-button-<%= @question.id %>').hide();
+  $('#bonus-video-<%= @question.id %>').show();
 
-<% if @answer.answer == @answer.correct_answer %>
-
-$('#answer-right').show();
-
-<% else %>
-
-$('#answer-wrong').show();
-
-<% end %>
+  <% if @answer.answer == @answer.correct_answer %>
+    $('#answer-right-<%= @question.id %>').show();
+  <% else %>
+    $('#answer-wrong-<%= @question.id %>').show();
+  <% end %>
 
 <% else %>
 
-alert("Error saving answer. See log.");
+  var messages = JSON.stringify(<%= raw @errors %>);
+  alert("Error saving answer: " + messages);
 
 <% end %>

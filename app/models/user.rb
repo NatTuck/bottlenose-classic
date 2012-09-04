@@ -4,10 +4,10 @@ class User < ActiveRecord::Base
   attr_accessible :email, :name, :site_admin, :auth_key
 
   has_many :registrations
-  has_many :courses, :through => :registrations
+  has_many :courses, :through => :registrations, :dependent => :restrict
   
-  has_many :answers
-  has_many :submissions
+  has_many :answers,     :dependent => :restrict
+  has_many :submissions, :dependent => :restrict
 
   validates :email, :format => { :with => /\@.*\./ }
   validates :name,  :length => { :minimum => 2 }

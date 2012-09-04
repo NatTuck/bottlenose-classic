@@ -1,15 +1,13 @@
-<% @page_title = "Lesson - #{@chapter.name}" %>
+<% @page_title = "Lesson: #{@lesson.name}" %>
 
 <p>
 <%= link_to "Back to Chapter", @chapter %>
 
 <% if @logged_in_user.course_admin?(@course) %>
   | <%= link_to 'Edit Lesson', edit_lesson_path(@lesson) %>
-  | <%= link_to 'View Answers', lesson_answers_path(@lesson) %>
+  | <%= link_to 'View Questions', lesson_questions_path(@lesson) %>
 <% end %>
 </p>
-
-<h1>Lesson: <%= @lesson.name %></h1>
 
 <p>Watch the video then answer the post-video question.</p>
 
@@ -17,65 +15,18 @@
 
 <h2>Post Video Questions</h2>
 
-<% @questions.each do |question| %>
+<% @questions.each_index do |ii| %>
+  <% @question = @questions[ii] %>
+  <% @answer   = @answers[@question.id] %>
+  <% @correct  = @got_it[@question.id] %>
 
-  <div id="answer-form-<%= question.id %>">
-
-    <%= form_for [question, @answers[question.id]], :remote => true do %>
-
-    <div class="lesson-question">
-    <%= raw question.question %>
-    </div>
-
-    <p><%= submit_tag "Submit Answer" %></p>
-
+  <p>
+    Question <%= "#{ii + 1} / #{@questions.size}" %>
+    <% if @logged_in_user.course_admin?(@course) %>
+      (<%= link_to "Edit", [:edit, @question] %>)
     <% end %>
+  </p>
 
-  </div>
-
-  <div id="answer-right-<%= question.id %>">
-
-  <table>
-  <tr>
-    <td><%= image_tag "check-mark.png", :height => 100 %></td>
-    <td><p>Your correct answer has been saved. 
-	<% unless question.video.nil? %>
-	There is an <%= link_to "explaination video", question %> for this question.
-	<% end %>
-    </p></td>
-  </tr>
-  </table>
-
-  </div>
-
-  <div id="answer-wrong-<%= question.id %>">
-
-  <table>
-  <tr>
-    <td><%= image_tag "cross-mark.png", :height => 100 %></td>
-    <td>
-      <p>Your wrong answer has been saved.
-
-	<% unless question.video.nil? %>
-	There is an <%= link_to "explaination video", question %> for this question.
-	<% end %>
-
-	You can <%= link_to_function "click here", "$('#answer-wrong-#{question.id}').hide();" %>
-	to try this question again.
-      </p>
-    </td>
-  </tr>
-  </table>
-
-  </div>
-
-<% if @correct[question.id] %>
-  <%= javascript_tag "$('#answer-form-#{question.id}').hide();" %>
-<% else %>
-  <%= javascript_tag "$('#answer-right-#{question.id}').hide();" %>
-  <%= javascript_tag "$('#bonus-video-#{question.id}').hide();" %>
-<% end %>
-
-<%= javascript_tag "$('#answer-wrong-#{question.id}').hide();" %>
+  <%= render "questions/ask" %>
 
 <% end %>

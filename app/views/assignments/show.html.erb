@@ -1,0 +1,28 @@
+<% @page_title = "Assignment: #{@assignment.name}" %>
+
+<p>
+  <%= link_to "Back to Chapter: #{@chapter.name}", @chapter  %>
+
+<% if @logged_in_user.course_admin?(@course) %>
+  | <%= link_to 'Edit this Assignment', edit_assignment_path(@assignment) %>
+<% end %>
+</p>
+
+
+
+<p>
+  <b>Name:</b>
+  <%= @assignment.name %>
+</p>
+
+<p>
+  <b>Assignment:</b><br>
+  <%= raw @assignment.assignment %>
+</p>
+
+<p>
+  <b>Url:</b>
+  <%= @assignment.url %>
+</p>
+
+

@@ -2,9 +2,9 @@ class Course < ActiveRecord::Base
   attr_accessible :name
   
   has_many :registrations
-  has_many :users, :through => :registrations
+  has_many :users, :through => :registrations, :dependent => :restrict
 
-  has_many :chapters
+  has_many :chapters, :dependent => :restrict
 
   validates :name, :length     => { :minimum => 2 },
                    :uniqueness => true
@@ -20,5 +20,13 @@ class Course < ActiveRecord::Base
 
   def student_registrations
     registrations.find_all {|reg| !reg.teacher? }
+  end
+
+  def assignments
+    chapters.map {|cc| cc.assignments}.flatten
+  end
+
+  def questions
+    chapters.map {|cc| cc.lessons}.flatten.map {|ll| ll.questions}.flatten
   end
 end

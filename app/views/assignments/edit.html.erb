@@ -1,0 +1,8 @@
+<%= @page_title = "Edit Assignment" %>
+
+<p>
+  <%= link_to "Back to Chapter: #{@chapter.name}", @chapter %> |
+  <%= link_to "View Assignment", @assignment %>
+</p>
+
+<%= render 'form' %>

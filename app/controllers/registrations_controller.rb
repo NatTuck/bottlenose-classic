@@ -10,15 +10,6 @@ class RegistrationsController < ApplicationController
   def show
   end
 
-  def new
-    # 'new' is unused
-    redirect_to @course
-    return
-
-    @registration = Registration.new
-    @registration.course_id = @course.id
-  end
-
   def edit
   end
 
@@ -54,7 +45,7 @@ class RegistrationsController < ApplicationController
 
   def update
     if @registration.update_attributes(params[:registration])
-      redirect_to course_registrations_path(@course),
+      redirect_to @registration,
         notice: 'Registration was successfully updated.'
     else
       render action: "edit"
@@ -72,5 +63,6 @@ class RegistrationsController < ApplicationController
   def find_registration
     @registration = Registration.find(params[:id])
     @course = @registration.course
+    @user   = @registration.user
   end
 end

@@ -6,6 +6,7 @@ class ChaptersControllerTest < ActionController::TestCase
     @intro  = chapters(:intro)
     @fred   = users(:fred)
     @john   = users(:john)
+    @bad_ch = chapters(:long_pants)
   end
 
   test "should get index" do
@@ -48,7 +49,7 @@ class ChaptersControllerTest < ActionController::TestCase
 
   test "should destroy chapter" do
     assert_difference('Chapter.count', -1) do
-      delete :destroy, {id: @intro.id}, {user_id: @fred.id}
+      delete :destroy, {id: @bad_ch}, {user_id: @fred.id}
     end
 
     assert_redirected_to course_chapters_path(@course)
