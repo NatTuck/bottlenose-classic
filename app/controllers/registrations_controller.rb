@@ -1,5 +1,6 @@
 class RegistrationsController < ApplicationController
-  before_filter :require_teacher
+  before_filter :require_teacher, :except => [:show]
+  before_filter :require_logged_in_user
   prepend_before_filter :find_registration, :except => [:index, :new, :create]
 
   def index
@@ -8,6 +9,11 @@ class RegistrationsController < ApplicationController
   end
 
   def show
+    unless @logged_in_user.course_admin?(@course) or @registration.user.id == @logged_in_user.id
+      show_error "I can't let you do that."
+      redirect_to @course
+      return
+    end
   end
 
   def edit

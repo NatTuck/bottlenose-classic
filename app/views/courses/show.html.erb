@@ -1,6 +1,9 @@
 <% @page_title = "Course: #{@course.name}" %>
 
-<p><%= link_to "Back to Your Courses", courses_path %></p>
+<p>
+  <%= link_to "Back to Your Courses", courses_path %> |
+  <%= link_to "Status Report", @registration %>
+</p>
 
 <h1>Chapters</h1>
 

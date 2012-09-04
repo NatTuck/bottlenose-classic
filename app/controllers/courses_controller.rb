@@ -9,6 +9,8 @@ class CoursesController < ApplicationController
   end
 
   def show
+    @registration = @logged_in_user.registrations.where(course_id: @course.id).first
+    @registration ||= "javascript:alert('Not registered.');"
   end
 
   def new
