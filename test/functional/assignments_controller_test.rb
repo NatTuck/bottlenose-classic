@@ -15,8 +15,8 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "should create assignment" do
     assert_difference('Assignment.count') do
       post :create, {chapter_id: @hello.chapter_id, assignment: { assignment: "Dance a jig.",  
-          name: "Useful Work", url: "http://example.com", chapter_id: @hello.chapter_id }},
-      {user_id: @fred.id}
+          name: "Useful Work", url: "http://example.com", chapter_id: @hello.chapter_id,
+          due_date: '2019-05-22'}}, {user_id: @fred.id}
     end
 
     assert_redirected_to assignment_path(assigns(:assignment))

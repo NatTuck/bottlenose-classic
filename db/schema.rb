@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20120831182428) do
   create_table "assignments", :force => true do |t|
     t.integer  "chapter_id", :null => false
     t.string   "name",       :null => false
+    t.date     "due_date",   :null => false
     t.text     "assignment"
     t.string   "url"
     t.datetime "created_at", :null => false
@@ -62,6 +63,7 @@ ActiveRecord::Schema.define(:version => 20120831182428) do
 
   create_table "questions", :force => true do |t|
     t.integer  "lesson_id",      :null => false
+    t.date     "due_date",       :null => false
     t.text     "question"
     t.string   "correct_answer"
     t.text     "video"
@@ -87,7 +89,7 @@ ActiveRecord::Schema.define(:version => 20120831182428) do
     t.integer  "user_id",       :null => false
     t.string   "url"
     t.text     "student_notes"
-    t.integer  "score"
+    t.integer  "raw_score"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end

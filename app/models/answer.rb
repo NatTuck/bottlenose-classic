@@ -1,5 +1,5 @@
 class Answer < ActiveRecord::Base
-  attr_accessible :answer, :question_id, :user_id
+  attr_accessible :answer, :question_id, :user_id, :updated_at
 
   belongs_to :question
   belongs_to :user
@@ -14,9 +14,13 @@ class Answer < ActiveRecord::Base
 
   delegate :course, :to => :question
 
+  def late?
+    updated_at > question.due_date
+  end
+
   def score
     if answer == correct_answer
-      100
+      late? ? 50 : 100
     else
       0
     end

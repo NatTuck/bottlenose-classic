@@ -2,6 +2,9 @@ class MainController < ApplicationController
   before_filter :find_user_session, :only => [:index]
   
   def index
+    if session[:user_id]
+      redirect_to courses_path
+    end
   end
   
   def auth

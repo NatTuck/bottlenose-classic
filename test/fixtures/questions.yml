@@ -5,16 +5,19 @@ parens_awesome:
   question: Why are parens so awesome? <input type="text" name="answer[answer]">
   correct_answer: C
   video: http://www.youtu.be/explaination_video
+  due_date: '2040-11-23'
 
 curlies_dumb:
   lesson: yay_parens
   question: Why are curly braces dumb? <input type="text" name="answer[answer]">
   correct_answer: A
   video: http://www.youtu.be/explaination_video
+  due_date: '2040-11-23'
 
 there_yet:
   lesson: yay_lambda
   question: Are we there yet? <input type="text" name="answer[answer]">
   correct_answer: no
   video: http://www.youtu.be/explaination_video
+  due_date: '2040-11-23'
 

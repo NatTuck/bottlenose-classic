@@ -1,5 +1,5 @@
 class Assignment < ActiveRecord::Base
-  attr_accessible :name, :chapter_id, :assignment, :url
+  attr_accessible :name, :chapter_id, :assignment, :url, :due_date
 
   belongs_to :chapter
   has_many :submissions, :dependent => :destroy
@@ -7,6 +7,7 @@ class Assignment < ActiveRecord::Base
   validates :name, :uniqueness => { :scope => :chapter_id }
   validates :name, :presence => true
   validates :chapter_id, :presence => true
+  validates :due_date,   :presence => true
 
   delegate :course, :to => :chapter
 

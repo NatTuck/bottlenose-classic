@@ -1,5 +1,5 @@
 class Question < ActiveRecord::Base
-  attr_accessible :correct_answer, :lesson_id, :question, :video
+  attr_accessible :correct_answer, :lesson_id, :question, :video, :due_date
 
   belongs_to :lesson
   has_many :answers, :dependent => :destroy
@@ -8,6 +8,7 @@ class Question < ActiveRecord::Base
   validates :question,  :format => { 
     :with    => /name=\"answer\[answer\]\"/,  
     :message => "must have a form with an 'answer[answer]' field."}
+  validates :due_date,  :presence => true
   
   delegate :course, :to => :lesson
 
