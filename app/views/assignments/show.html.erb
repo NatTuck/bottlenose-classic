@@ -8,8 +8,6 @@
 <% end %>
 </p>
 
-
-
 <p>
   <b>Name:</b>
   <%= @assignment.name %>
@@ -21,8 +19,8 @@
 </p>
 
 <p>
-  <b>Url:</b>
-  <%= @assignment.url %>
+  <b>Assignment File:</b>
+  <%= link_to @assignment.file_name, @assignment.file_path %>
 </p>
 
 

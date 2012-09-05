@@ -1,8 +1,11 @@
 <% @page_title = "Student Status Report" %>
 
 <p>
-<%= link_to "Back to Course: #{@course.name}", @course %> |
-<%= link_to "Manage Registrations", course_registrations_path(@course) %>
+<%= link_to "Back to Course: #{@course.name}", @course %>
+
+<% if @logged_in_user.course_admin?(@course) %>
+  | <%= link_to "Manage Registrations", course_registrations_path(@course) %>
+<% end %>
 </p>
 
 <table class="pretty-list">

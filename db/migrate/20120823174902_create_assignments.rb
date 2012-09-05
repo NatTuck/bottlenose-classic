@@ -4,8 +4,8 @@ class CreateAssignments < ActiveRecord::Migration
       t.integer :chapter_id, :null => false
       t.string  :name,       :null => false
       t.date    :due_date,   :null => false
+      t.string  :file_name
       t.text    :assignment
-      t.string  :url
 
       t.timestamps
     end

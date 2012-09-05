@@ -8,7 +8,7 @@
 <h1>Chapters</h1>
 
 <ul>
-<% @course.chapters.each do |chapter| %>
+<% @course.chapters.sort_by {|cc| cc.name}.each do |chapter| %>
   <li>
     <%= link_to chapter.name, chapter %>
     <% if @logged_in_user.course_admin?(@course) %>

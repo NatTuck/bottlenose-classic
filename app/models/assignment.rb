@@ -1,5 +1,6 @@
 class Assignment < ActiveRecord::Base
-  attr_accessible :name, :chapter_id, :assignment, :url, :due_date
+  attr_accessible :name, :chapter_id, :assignment, :due_date
+  attr_accessible :file_name, :upload
 
   belongs_to :chapter
   has_many :submissions, :dependent => :destroy
@@ -10,6 +11,21 @@ class Assignment < ActiveRecord::Base
   validates :due_date,   :presence => true
 
   delegate :course, :to => :chapter
+
+  def upload=(data)
+    return unless data
+
+    self.file_name = data.original_filename 
+
+    path = Rails.root.join('public', 'assignments', file_name)
+    File.open(path, 'wb') do |file|
+      file.write(data.read)
+    end
+  end
+
+  def file_path
+    file_name ? "/assignments/" + file_name : ""
+  end
 
   def best_submission_for(user)
     submissions.where(user_id: user.id).sort.last

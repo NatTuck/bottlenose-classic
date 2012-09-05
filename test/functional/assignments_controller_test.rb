@@ -15,7 +15,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "should create assignment" do
     assert_difference('Assignment.count') do
       post :create, {chapter_id: @hello.chapter_id, assignment: { assignment: "Dance a jig.",  
-          name: "Useful Work", url: "http://example.com", chapter_id: @hello.chapter_id,
+          name: "Useful Work", chapter_id: @hello.chapter_id,
           due_date: '2019-05-22'}}, {user_id: @fred.id}
     end
 
@@ -34,7 +34,7 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   test "should update assignment" do
     put :update, {id: @hello, assignment: { assignment: @hello.assignment, 
-        name: "Something different", url: @hello.url }}, {user_id: @fred.id}
+        name: "Something different" }}, {user_id: @fred.id}
     assert_redirected_to assignment_path(assigns(:assignment))
   end
 

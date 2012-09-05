@@ -4,12 +4,10 @@ hello:
   chapter: intro
   name: Hello, World
   assignment: Write a Hello World program.
-  url: http://www.example.com/hello-world.tar.gz
   due_date: '2037-11-09'
 
 lambda_time:
   chapter: sub_model
   name: Lambda Time
   assignment: Demonstrate your understanding of lambdas in the substitution model.
-  url: http://www.example.com/lambda-time.tar.gz
   due_date: '2037-11-09'

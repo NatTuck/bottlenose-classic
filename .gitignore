@@ -18,3 +18,6 @@
 .#*
 \#*#
 *~
+
+# Ignore uploaded files.
+/public/assignments/
