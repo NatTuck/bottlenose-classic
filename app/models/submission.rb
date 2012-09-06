@@ -1,5 +1,7 @@
 class Submission < ActiveRecord::Base
-  attr_accessible :assignment_id, :user_id, :url, :student_notes, :raw_score, :updated_at
+  attr_accessible :assignment_id, :user_id, :student_notes
+  attr_accessible :raw_score, :updated_at, :upload
+  attr_accessible :secret_dir, :file_name
 
   belongs_to :assignment
   belongs_to :user

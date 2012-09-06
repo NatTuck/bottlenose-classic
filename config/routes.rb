@@ -19,14 +19,14 @@ Bottlenose::Application.routes.draw do
 
   resources :chapters do
     resources :lessons
-    resources :assignments, :only => [:new, :create, :update]
+    resources :assignments
   end
 
-  resources :assignments, :only => [:show, :edit, :update, :destroy]  do
-    resources :submissions, :only => [:create]
+  resources :assignments do
+    resources :submissions, :except => [:destroy]
   end
 
-  resources :submissions, :only => [:destroy]
+  resources :submissions
 
   resources :lessons do
     resources :questions

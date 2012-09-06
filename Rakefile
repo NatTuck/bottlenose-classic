@@ -7,9 +7,20 @@ require File.expand_path('../config/application', __FILE__)
 
 Bottlenose::Application.load_tasks
 
+task :clean_uploads do
+  system("rm -rf public/assignments")
+  system("mkdir public/assignments")
+  system("touch public/assignments/empty")
+
+  system("rm -rf public/submissions")
+  system("mkdir public/submissions")
+  system("touch public/submissions/empty")
+end
+
 namespace :db do
   task :nuke do
     system("rake db:drop")
+    system("rake clean_uploads")
     system("rake db:create")
     system("rake db:migrate")
     system("rake db:fixtures:load")

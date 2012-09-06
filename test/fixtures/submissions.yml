@@ -3,13 +3,11 @@
 john_hello:
   assignment: hello
   user: john
-  url: http://www.example.com/john-submission-hello.tar.gz
   raw_score: 100
   student_notes: I did the stuff.
 
 john_lambda:
   assignment: lambda_time
   user: john
-  url: http://www.example.com/john-submission-lambda.tar.gz
   raw_score: 50
   student_notes: This one was harder.

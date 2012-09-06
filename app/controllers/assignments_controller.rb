@@ -14,6 +14,7 @@ class AssignmentsController < ApplicationController
   def new
     @assignment = Assignment.new
     @assignment.chapter_id = @chapter.id
+    @assignment.due_date = Time.now + 1.month
   end
 
   def edit
@@ -25,6 +26,7 @@ class AssignmentsController < ApplicationController
     if @assignment.save
       redirect_to @assignment, notice: 'Assignment was successfully created.'
     else
+      @assignment.cleanup!
       render action: "new"
     end
   end
@@ -33,6 +35,7 @@ class AssignmentsController < ApplicationController
     if @assignment.update_attributes(params[:assignment])
       redirect_to @assignment, notice: 'Assignment was successfully updated.'
     else
+      @assignment.cleanup!
       render action: "edit"
     end
   end

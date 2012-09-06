@@ -12,8 +12,18 @@ class Assignment < ActiveRecord::Base
 
   delegate :course, :to => :chapter
 
+  before_destroy :cleanup!
+
+  def cleanup!
+    unless file_name.nil?
+      path = Rails.root.join('public', 'assignments', file_name)
+      File.unlink(path) if File.exists?(path)
+    end
+  end
+
   def upload=(data)
     return unless data
+    cleanup!
 
     self.file_name = data.original_filename 
 

@@ -1,0 +1,28 @@
+<%= form_for [@assignment, @submission] do |f| %>
+  <% if @submission.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@submission.errors.count, "error") %> prohibited this submission from being saved:</h2>
+
+      <ul>
+      <% @submission.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table class="edit-form">
+    <tr>
+      <td><%= f.label :student_notes %></td>
+      <td><%= f.text_area :student_notes %></td>
+    </tr>
+    <tr>
+      <td><%= f.label :upload %></td>
+      <td><%= f.file_field :upload %></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><%= f.submit %></td>
+    </tr>
+  </table>
+<% end %>

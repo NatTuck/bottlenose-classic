@@ -3,7 +3,8 @@ class CreateSubmissions < ActiveRecord::Migration
     create_table :submissions do |t|
       t.integer :assignment_id, :null => false
       t.integer :user_id,       :null => false
-      t.string  :url
+      t.string  :secret_dir
+      t.string  :file_name
       t.text    :student_notes
       t.integer :raw_score
 

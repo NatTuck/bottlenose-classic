@@ -23,4 +23,8 @@
   <%= link_to @assignment.file_name, @assignment.file_path %>
 </p>
 
-
+<p>
+  <b>Submit Your Code:</b>
+  <%= link_to "Submission Form", 
+      new_assignment_submission_path(@assignment) %>
+</p>
