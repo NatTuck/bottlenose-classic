@@ -25,13 +25,14 @@ ActiveRecord::Schema.define(:version => 20120831182428) do
   add_index "answers", ["user_id"], :name => "index_answers_on_user_id"
 
   create_table "assignments", :force => true do |t|
-    t.integer  "chapter_id", :null => false
-    t.string   "name",       :null => false
-    t.date     "due_date",   :null => false
-    t.string   "file_name"
+    t.integer  "chapter_id",           :null => false
+    t.string   "name",                 :null => false
+    t.date     "due_date",             :null => false
+    t.string   "assignment_file_name"
+    t.string   "grading_file_name"
     t.text     "assignment"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
   end
 
   add_index "assignments", ["chapter_id"], :name => "index_assignments_on_chapter_id"
@@ -85,16 +86,20 @@ ActiveRecord::Schema.define(:version => 20120831182428) do
   add_index "registrations", ["user_id"], :name => "index_registrations_on_user_id"
 
   create_table "submissions", :force => true do |t|
-    t.integer  "assignment_id", :null => false
-    t.integer  "user_id",       :null => false
-    t.string   "url"
-    t.text     "student_notes"
+    t.integer  "assignment_id",  :null => false
+    t.integer  "user_id",        :null => false
+    t.string   "secret_dir"
+    t.string   "file_name"
     t.integer  "raw_score"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.text     "student_notes"
+    t.integer  "grading_uid"
+    t.text     "grading_output"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   add_index "submissions", ["assignment_id"], :name => "index_submissions_on_assignment_id"
+  add_index "submissions", ["grading_uid"], :name => "index_submissions_on_grading_uid", :unique => true
   add_index "submissions", ["user_id"], :name => "index_submissions_on_user_id"
 
   create_table "users", :force => true do |t|

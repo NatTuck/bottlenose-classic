@@ -23,7 +23,7 @@ class SubmissionsControllerTest < ActionController::TestCase
   test "should create submission" do
     assert_difference('Submission.count') do
       post :create, {assignment_id: @hello.id, 
-        submission: { student_notes: "blarg" }},
+        submission: { student_notes: "blarg", file_name: "dirty_lie.tar.gz" }},
         {user_id: @john.id}
     end
 

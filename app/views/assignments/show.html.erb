@@ -8,23 +8,23 @@
 <% end %>
 </p>
 
-<p>
-  <b>Name:</b>
-  <%= @assignment.name %>
-</p>
+<h1>Assignment Description</h1>
 
-<p>
-  <b>Assignment:</b><br>
+<div>
   <%= raw @assignment.assignment %>
-</p>
+</div>
 
 <p>
-  <b>Assignment File:</b>
-  <%= link_to @assignment.file_name, @assignment.file_path %>
+  <b>Assignment Download:</b>
+  <%= link_to @assignment.assignment_file_name, @assignment.file_path %>
 </p>
 
-<p>
-  <b>Submit Your Code:</b>
-  <%= link_to "Submission Form", 
-      new_assignment_submission_path(@assignment) %>
-</p>
+<h1>Your Submissions</h1>
+
+<ul>
+<% @submissions.each do |submission| %>
+  <li><%= link_to submission.updated_at, submission %> - Score: <%= submission.score %></li>
+<% end %>
+</ul>
+
+<p><%= link_to "New Submission", new_assignment_submission_path(@assignment) %></p>

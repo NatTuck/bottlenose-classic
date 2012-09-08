@@ -5,9 +5,11 @@ john_hello:
   user: john
   raw_score: 100
   student_notes: I did the stuff.
+  file_name: fake.tar.gz
 
 john_lambda:
   assignment: lambda_time
   user: john
   raw_score: 50
   student_notes: This one was harder.
+  file_name: fake.tar.gz

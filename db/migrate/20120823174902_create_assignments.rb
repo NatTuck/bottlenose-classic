@@ -4,7 +4,8 @@ class CreateAssignments < ActiveRecord::Migration
       t.integer :chapter_id, :null => false
       t.string  :name,       :null => false
       t.date    :due_date,   :null => false
-      t.string  :file_name
+      t.string  :assignment_file_name
+      t.string  :grading_file_name
       t.text    :assignment
 
       t.timestamps

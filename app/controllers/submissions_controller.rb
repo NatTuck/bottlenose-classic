@@ -30,6 +30,7 @@ class SubmissionsController < ApplicationController
     @submission.user_id = @logged_in_user.id
 
     if @submission.save
+      @submission.grade!
       redirect_to @submission, notice: 'Submission was successfully created.'
     else
       @submission.cleanup!

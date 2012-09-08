@@ -1,10 +1,20 @@
-<p id="notice"><%= notice %></p>
+<% @page_title = "View Submission" %>
+
+<p><%= link_to 'Back to Assignment', @assignment %></p>
+
+<h1>Student Notes</h1>
 
 <p>
-  <b>Student notes:</b>
   <%= @submission.student_notes %>
 </p>
 
+<h1>Submitted File</h1>
+<p>
+  <%= link_to @submission.file_name, @submission.file_path %>
+</p>
 
-<%= link_to 'Edit', edit_submission_path(@submission) %> |
-<%= link_to 'Back', submissions_path %>
+<h1>Grading Process</h1>
+
+<pre>
+  <%= @submission.grading_output %>
+</pre>

@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+APP_PATH = File.expand_path('../../config/application',  __FILE__)
+require File.expand_path('../../config/boot',  __FILE__)
+require APP_PATH
+Rails.application.require_environment!
+
+sub = Submission.find(ARGV[0])
+
+# Find a free UID to grade with.
+while sub.grading_uid.nil?
+  begin
+    sub.grading_uid = 7000 + rand(1000)
+    sub.save!
+  rescue ActiveRecord::RecordNotUnique
+    sub.grading_uid = nil
+  end
+end
+
+# Set up test directory.
+test_dir = "/tmp/grade-#{sub.id}-#{sub.grading_uid}"
+
+Dir.mkdir(test_dir)
+
+FileUtils.cp(sub.file_full_path, "#{test_dir}/sub.tar.gz")
+FileUtils.cp(sub.assignment.grading_full_path, "#{test_dir}/grading.tar.gz")
+
+# Run the grading process.
+system(Q{cd "#{test_dir}" && pwd && ls -l})
+
+# Process results
+#sub.parse_score!
+
+# Clean up afterwards.
+system(%Q{rm -rf "#{test_dir}"}) if test_dir.match(/^\/tmp/)
+             
+sub.grading_uid = nil
+sub.save!

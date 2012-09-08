@@ -18,7 +18,9 @@
 <% end %>
 </ul>
 
+<% if @logged_in_user.course_admin?(@course) %>
 <p><%= link_to "New Lesson", new_chapter_lesson_path(@chapter) %></p>
+<% end %>
 
 <h1>Assignments</h1>
 
@@ -36,4 +38,6 @@
 <% end %>
 </ul>
 
+<% if @logged_in_user.course_admin?(@course) %>
 <p><%= link_to "New Assignment", new_chapter_assignment_path(@chapter) %></p>
+<% end %>
