@@ -17,16 +17,24 @@ class Assignment < ActiveRecord::Base
 
   def cleanup_assignment_file!
     unless assignment_file_name.nil?
-      path = Rails.root.join('public', 'assignments', assignment_file_name)
+      path = assignment_full_path
       File.unlink(path) if File.exists?(path)
     end
   end
 
   def cleanup_grading_file!
     unless grading_file_name.nil?
-      path = Rails.root.join('public', 'assignments', 'grading', grading_file_name)
+      path = grading_full_path
       File.unlink(path) if File.exists?(path)
     end
+  end
+
+  def assignment_full_path
+    Rails.root.join('public', 'assignments', assignment_file_name)
+  end
+
+  def grading_full_path
+    Rails.root.join('public', 'assignments', 'grading', grading_file_name)
   end
 
   def cleanup!
@@ -39,7 +47,7 @@ class Assignment < ActiveRecord::Base
 
     self.assignment_file_name = data.original_filename 
 
-    path = Rails.root.join('public', 'assignments', assignment_file_name)
+    path = assignment_full_path
     File.open(path, 'wb') do |file|
       file.write(data.read)
     end
@@ -50,7 +58,7 @@ class Assignment < ActiveRecord::Base
 
     self.grading_file_name = data.original_filename
 
-    path = Rails.root.join('public', 'assignments', 'grading', grading_file_name)
+    path = grading_full_path
     File.open(path, 'wb') do |file|
       file.write(data.read)
     end

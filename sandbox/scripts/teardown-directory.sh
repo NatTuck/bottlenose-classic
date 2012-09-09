@@ -2,7 +2,7 @@
 
 DIR=$1
 
-if [[ ! $USER == 'root' ]]
+if [[ ! $(whoami) == 'root' ]]
 then
     echo "Must be run as root"
     exit

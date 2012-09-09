@@ -17,6 +17,10 @@ while sub.grading_uid.nil?
   end
 end
 
+# Make a test output key.
+require 'securerandom'
+output_key = SecureRandom.urlsafe_base64
+
 # Set up test directory.
 test_dir = "/tmp/grade-#{sub.id}-#{sub.grading_uid}"
 
@@ -26,13 +30,43 @@ FileUtils.cp(sub.file_full_path, "#{test_dir}/sub.tar.gz")
 FileUtils.cp(sub.assignment.grading_full_path, "#{test_dir}/grading.tar.gz")
 
 # Run the grading process.
-system(Q{cd "#{test_dir}" && pwd && ls -l})
+pipe = File.popen(["/usr/local/bottlenose/bin/sandbox",
+                   "#{test_dir}", "#{sub.grading_uid}", "#{output_key}"])
+
+output_lines = []
+
+while not pipe.eof?
+  line = pipe.readline()
+  if line
+    puts line
+    output_lines << line
+    sub.grading_output = output_lines.join
+    sub.save!
+  end
+end
 
 # Process results
-#sub.parse_score!
+if output_lines.any? {|xx| xx.match(output_key)}
+  require 'array_split'
+  results = output_lines.split_on(output_key)[1].join
+
+  require 'tap_parser'
+  parser = TapParser.new(results)
+  puts
+  puts "Summary:"
+  puts parser.summary
+
+  sub.raw_score = (parser.tests_ok * 100.0) / parser.test_count
+  sub.save!
+end
 
 # Clean up afterwards.
-system(%Q{rm -rf "#{test_dir}"}) if test_dir.match(/^\/tmp/)
+
+if File.exists?("#{test_dir}/sandbox/bin/bash")
+  puts "Cannot clean up. Loopback mounts still exist"
+else
+  system(%Q{rm --one-file-system -rf "#{test_dir}"}) if test_dir.match(/^\/tmp/)
+end
              
 sub.grading_uid = nil
 sub.save!

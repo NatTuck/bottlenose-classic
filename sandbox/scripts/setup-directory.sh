@@ -2,7 +2,7 @@
 
 DIR=$1
 
-if [[ ! $USER == 'root' ]]
+if [[ ! $(whoami) == 'root' ]]
 then
     echo "Must be run as root"
     exit
@@ -35,3 +35,15 @@ chmod 777 home/student
 
 mkdir tmp
 chmod 777 tmp
+
+if [[ -e "../sub.tar.gz" ]]
+then
+    cp ../sub.tar.gz home/student
+    (cd home/student && tar xzvf sub.tar.gz)
+fi
+
+if [[ -e "../grading.tar.gz" ]]
+then
+    cp ../grading.tar.gz home/student
+    (cd home/student && tar xzvf grading.tar.gz)
+fi

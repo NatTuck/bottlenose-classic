@@ -13,8 +13,24 @@
   <%= link_to @submission.file_name, @submission.file_path %>
 </p>
 
+<h1>Score</h1>
+<p>
+  <%= @submission.score %> / 100.0
+</p>
+
 <h1>Grading Process</h1>
 
 <pre>
-  <%= @submission.grading_output %>
+<% # Lack of indentation important here. %>
+<%= @submission.grading_output %>
 </pre>
+
+<script>
+  function reload_bottom() {
+    window.location.href = "<%= url_for(@submission) + '#bottom' %>";
+    window.location.reload(true);
+  }
+</script>
+
+
+<p id="bottom"><%= link_to_function "Refresh Output", "reload_bottom();" %></p>
