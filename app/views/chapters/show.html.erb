@@ -1,6 +1,10 @@
 <% @page_title = "Chapter: #{@chapter.name}" %>
 
-<p><%= link_to "Back to Course: #{@course.name}", @course %></p>
+<p><%= link_to "Back to Course: #{@course.name}", @course %>
+<% if @logged_in_user.course_admin?(@course) %>
+  | <%= link_to 'Edit Title', edit_course_path(@course) %>
+<% end %>
+</p>
 
 <h1>Lessons</h1>
 
