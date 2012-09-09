@@ -19,7 +19,6 @@ const time_t TIME_LIMIT = 300;
 const rlim_t MEM_LIMIT  = 768000000;   
 const rlim_t PROC_LIMIT = 64;
 
-
 void
 watchdog_process(pid_t pid)
 {
@@ -48,6 +47,7 @@ void
 run_in_sandbox(int uid, const char* cmd)
 {
   int pid;
+  char tmp[256];
 
   if ((pid = fork())) {
     chdir("sandbox");
@@ -62,12 +62,14 @@ run_in_sandbox(int uid, const char* cmd)
     np_lim.rlim_cur = PROC_LIMIT;
     np_lim.rlim_max = PROC_LIMIT;
     setrlimit(RLIMIT_NPROC, &np_lim);
-    
+
+    snprintf(tmp, 256, "chown -R %d:%d /home/student", uid, uid);
+    system(tmp);    
+
     setreuid(uid, uid);
     
     chdir("/home/student");
-    
-    char tmp[256];
+   
     snprintf(tmp, 256, "(%s) 2>&1", cmd);
     system(tmp);
 

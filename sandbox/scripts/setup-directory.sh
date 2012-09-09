@@ -17,7 +17,7 @@ fi
 mkdir $DIR
 cd $DIR
 
-for dd in usr bin lib var
+for dd in usr bin lib var etc
 do
     mkdir $dd
     mount -o bind /$dd $dd

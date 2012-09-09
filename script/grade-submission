@@ -7,6 +7,11 @@ Rails.application.require_environment!
 
 sub = Submission.find(ARGV[0])
 
+if sub.nil?
+  puts "Must provide valid submisison id."
+  exit(0)
+end
+
 # Find a free UID to grade with.
 while sub.grading_uid.nil?
   begin
@@ -35,14 +40,22 @@ pipe = File.popen(["/usr/local/bottlenose/bin/sandbox",
 
 output_lines = []
 
-while not pipe.eof?
-  line = pipe.readline()
-  if line
-    puts line
-    output_lines << line
-    sub.grading_output = output_lines.join
-    sub.save!
+begin
+  while not pipe.eof?
+    line = pipe.readline()
+    if line
+      puts line
+      output_lines << line
+      sub.grading_output = output_lines.join
+      sub.save!
+    end
   end
+rescue Exception => ee
+  output_lines << ee.to_s
+  sub.grading_output = output_lines.join
+  sub.save!
+
+  output_lines = []
 end
 
 # Process results
