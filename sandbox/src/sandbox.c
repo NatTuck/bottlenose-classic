@@ -11,36 +11,14 @@
 
 const char*  DIR_SETUP_CMD    = "/usr/local/bottlenose/scripts/setup-directory.sh sandbox";
 const char*  DIR_TEARDOWN_CMD = "/usr/local/bottlenose/scripts/teardown-directory.sh sandbox";
-const char*  GRADING_CMD      = "/usr/local/bottlenose/scripts/start-grading.sh";
+const char*  START_MAKE_CMD   = "/usr/local/bottlenose/scripts/build-assignment.sh";
+const char*  GRADING_PREP_CMD = "/usr/local/bottlenose/scripts/grading-prep.sh sandbox";
+const char*  START_TEST_CMD   = "/usr/local/bottlenose/scripts/test-assignment.sh";
 
 const time_t TIME_LIMIT = 300;
 const rlim_t MEM_LIMIT  = 768000000;   
 const rlim_t PROC_LIMIT = 64;
 
-void
-run_in_sandbox(int uid, const char* key)
-{
-  chdir("sandbox");
-  chroot(".");
-
-  struct rlimit as_lim;
-  as_lim.rlim_cur = MEM_LIMIT;
-  as_lim.rlim_max = MEM_LIMIT;
-  setrlimit(RLIMIT_AS, &as_lim);
-
-  struct rlimit np_lim;
-  np_lim.rlim_cur = PROC_LIMIT;
-  np_lim.rlim_max = PROC_LIMIT;
-  setrlimit(RLIMIT_NPROC, &np_lim);
-
-  setreuid(uid, uid);
-  
-  chdir("/home/student");
-
-  char tmp[256];
-  snprintf(tmp, 256, "(%s %s) 2>&1", GRADING_CMD, key);
-  system(tmp);
-}
 
 void
 watchdog_process(pid_t pid)
@@ -66,6 +44,40 @@ watchdog_process(pid_t pid)
   }
 }
 
+void
+run_in_sandbox(int uid, const char* cmd)
+{
+  int pid;
+
+  if ((pid = fork())) {
+    chdir("sandbox");
+    chroot(".");
+    
+    struct rlimit as_lim;
+    as_lim.rlim_cur = MEM_LIMIT;
+    as_lim.rlim_max = MEM_LIMIT;
+    setrlimit(RLIMIT_AS, &as_lim);
+    
+    struct rlimit np_lim;
+    np_lim.rlim_cur = PROC_LIMIT;
+    np_lim.rlim_max = PROC_LIMIT;
+    setrlimit(RLIMIT_NPROC, &np_lim);
+    
+    setreuid(uid, uid);
+    
+    chdir("/home/student");
+    
+    char tmp[256];
+    snprintf(tmp, 256, "(%s) 2>&1", cmd);
+    system(tmp);
+
+    exit(0);
+  }
+  else {
+    watchdog_process(pid);
+  }
+}
+
 int
 main(int argc, char* argv[])
 {
@@ -84,14 +96,14 @@ main(int argc, char* argv[])
   chdir(DIR);
   system(DIR_SETUP_CMD);
  
-  int pid;
-  if ((pid = fork())) {
-    watchdog_process(pid);
-  }
-  else {
-    run_in_sandbox(UID, KEY);
-    exit(0);
-  }
+  printf("\n== Building assignment. ==\n\n");
+  run_in_sandbox(UID, START_MAKE_CMD);
+
+  printf("\n== Testing assignment. ==\n\n");
+  system(GRADING_PREP_CMD);
+  printf("%s\n", KEY);
+  run_in_sandbox(UID, START_TEST_CMD);
+  printf("%s\n", KEY);
 
   system(DIR_TEARDOWN_CMD);
 

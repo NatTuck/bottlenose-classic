@@ -41,9 +41,3 @@ then
     cp ../sub.tar.gz home/student
     (cd home/student && tar xzvf sub.tar.gz)
 fi
-
-if [[ -e "../grading.tar.gz" ]]
-then
-    cp ../grading.tar.gz home/student
-    (cd home/student && tar xzvf grading.tar.gz)
-fi

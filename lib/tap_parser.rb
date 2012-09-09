@@ -11,6 +11,8 @@ class TapParser
         return mm[1].to_i
       end
     end
+
+    0
   end
 
   def tests_ok
