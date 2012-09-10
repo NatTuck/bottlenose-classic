@@ -23,7 +23,9 @@
 
 <ul>
 <% @submissions.each do |submission| %>
-  <li><%= link_to submission.updated_at, submission %> - Score: <%= submission.score %></li>
+  <li><%= link_to submission.updated_at, submission %> 
+	- <%= submission.user.name %>
+	- Score: <%= submission.score %></li>
 <% end %>
 </ul>
 
