@@ -15,6 +15,12 @@ class User < ActiveRecord::Base
 
   validates :email, :uniqueness => true
   validates :name,  :uniqueness => true
+
+  before_validation do
+    if self.auth_key.nil?
+      self.auth_key = SecureRandom.urlsafe_base64
+    end
+  end
   
   def send_auth_link_email!(base_url)
     if self.auth_key.nil?
