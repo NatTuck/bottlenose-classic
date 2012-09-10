@@ -23,8 +23,12 @@
       <td><%= f.text_area :assignment, :class => "rich-text" %></td>
     </tr>
     <tr>
-      <td><%= f.label :upload %></td>
-      <td><%= f.file_field :upload %></td>
+      <td><%= f.label :assignment_file %></td>
+      <td><%= f.file_field :assignment_file %></td>
+    </tr>
+    <tr>
+      <td><%= f.label :grading_file %></td>
+      <td><%= f.file_field :grading_file %></td>
     </tr>
     <tr>
       <td><%= f.label :due_date %></td>

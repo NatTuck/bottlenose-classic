@@ -2,7 +2,7 @@
 
 DIR=$1
 
-if [[ ! $USER == 'root' ]]
+if [[ ! $(whoami) == 'root' ]]
 then
     echo "Must be run as root"
     exit
@@ -16,7 +16,7 @@ fi
 
 cd $DIR
 
-for dd in usr bin lib var
+for dd in usr bin lib var etc
 do
     umount $dd
     rmdir $dd

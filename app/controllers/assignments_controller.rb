@@ -9,6 +9,7 @@ class AssignmentsController < ApplicationController
   end
 
   def show
+    @submissions = @assignment.submissions.where(user_id: @logged_in_user.id)
   end
 
   def new

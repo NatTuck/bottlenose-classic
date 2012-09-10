@@ -15,6 +15,10 @@
 
 <h2>Post Video Questions</h2>
 
+<% if @logged_in_user.course_admin?(@course) %>
+<p><%= link_to 'New Question', new_lesson_question_path(@lesson) %></p>
+<% end %>
+
 <% @questions.each_index do |ii| %>
   <% @question = @questions[ii] %>
   <% @answer   = @answers[@question.id] %>

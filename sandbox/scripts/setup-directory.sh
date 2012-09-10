@@ -2,7 +2,7 @@
 
 DIR=$1
 
-if [[ ! $USER == 'root' ]]
+if [[ ! $(whoami) == 'root' ]]
 then
     echo "Must be run as root"
     exit
@@ -17,7 +17,7 @@ fi
 mkdir $DIR
 cd $DIR
 
-for dd in usr bin lib var
+for dd in usr bin lib var etc
 do
     mkdir $dd
     mount -o bind /$dd $dd
@@ -35,3 +35,9 @@ chmod 777 home/student
 
 mkdir tmp
 chmod 777 tmp
+
+if [[ -e "../sub.tar.gz" ]]
+then
+    cp ../sub.tar.gz home/student
+    (cd home/student && tar xzvf sub.tar.gz)
+fi

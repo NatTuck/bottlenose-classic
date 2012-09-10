@@ -2,6 +2,10 @@ class QuestionsController < ApplicationController
   before_filter :require_teacher
   prepend_before_filter :find_question_and_lesson
 
+  def index
+    @questions = @lesson.questions
+  end
+
   def show
     @answer = Answer.new
     @answer.question_id = @question.id
@@ -19,6 +23,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(params[:question])
+    @question.lesson_id = @lesson.id
 
     if @question.save
       redirect_to [:edit, @question], notice: 'Question was successfully created.'

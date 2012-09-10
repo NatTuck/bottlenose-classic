@@ -1,6 +1,10 @@
 <% @page_title = "Chapter: #{@chapter.name}" %>
 
-<p><%= link_to "Back to Course: #{@course.name}", @course %></p>
+<p><%= link_to "Back to Course: #{@course.name}", @course %>
+<% if @logged_in_user.course_admin?(@course) %>
+  | <%= link_to 'Edit Title', edit_chapter_path(@chapter) %>
+<% end %>
+</p>
 
 <h1>Lessons</h1>
 
@@ -18,7 +22,9 @@
 <% end %>
 </ul>
 
+<% if @logged_in_user.course_admin?(@course) %>
 <p><%= link_to "New Lesson", new_chapter_lesson_path(@chapter) %></p>
+<% end %>
 
 <h1>Assignments</h1>
 
@@ -36,4 +42,6 @@
 <% end %>
 </ul>
 
+<% if @logged_in_user.course_admin?(@course) %>
 <p><%= link_to "New Assignment", new_chapter_assignment_path(@chapter) %></p>
+<% end %>
