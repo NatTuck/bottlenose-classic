@@ -7,10 +7,13 @@ gradable assignments.
 
 == Installation
 
-Installs as a standard Rails app with the following changes to support
-assignment submissions and automatic grading.
+Bottlenose can be installed as a standard Rails app with one
+additional step to support assignment submissions and automatic
+grading: just type "make && make install" in the sandbox/src directory
+to install the sandbox binary. This requires sudo access and will
+install a setuid binary.
 
-* TODO: Implement assignment submission and automatic grading.
+Bottlenose has been tested with WEBrick and Phusion Passenger.
 
 As a reminder, this is how you set up postgres:
 
