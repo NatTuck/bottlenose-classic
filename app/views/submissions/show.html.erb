@@ -1,6 +1,12 @@
 <% @page_title = "View Submission" %>
 
-<p><%= link_to 'Back to Assignment', @assignment %></p>
+<p> <%= link_to 'Back to Assignment', @assignment %>
+
+<% if @logged_in_user.course_admin?(@course) %>
+  | <%= link_to 'Edit Submission', [:edit, @submission] %>
+<% end %>
+
+</p>
 
 <h1>Student Notes</h1>
 

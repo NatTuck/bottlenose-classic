@@ -5,6 +5,7 @@ class Submission < ActiveRecord::Base
   attr_accessible :raw_score, :updated_at, :upload
   attr_accessible :secret_dir, :file_name
   attr_accessible :grading_output, :grading_uid
+  attr_accessible :teacher_grade, :teacher_notes
 
   belongs_to :assignment
   belongs_to :user

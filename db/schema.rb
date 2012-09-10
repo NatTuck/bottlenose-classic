@@ -92,6 +92,8 @@ ActiveRecord::Schema.define(:version => 20120831182428) do
     t.string   "file_name"
     t.integer  "raw_score"
     t.text     "student_notes"
+    t.integer  "teacher_score"
+    t.text     "teacher_notes"
     t.integer  "grading_uid"
     t.text     "grading_output"
     t.datetime "created_at",     :null => false
