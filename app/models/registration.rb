@@ -25,7 +25,7 @@ class Registration < ActiveRecord::Base
     score = 0.0
     as.each do |aa|
       aa.submissions.each do |ss|
-        score += ss.score / 100.0
+        score += ss.score / aa.points_available.to_f
       end
     end
     "#{score} / #{as.size}"

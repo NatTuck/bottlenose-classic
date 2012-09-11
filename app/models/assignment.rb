@@ -2,6 +2,7 @@ class Assignment < ActiveRecord::Base
   attr_accessible :name, :chapter_id, :assignment, :due_date
   attr_accessible :assignment_file_name, :grading_file_name
   attr_accessible :assignment_file, :grading_file
+  attr_accessible :points_available
 
   belongs_to :chapter
   has_many :submissions, :dependent => :destroy
@@ -10,6 +11,7 @@ class Assignment < ActiveRecord::Base
   validates :name, :presence => true
   validates :chapter_id, :presence => true
   validates :due_date,   :presence => true
+  validates :points_available, :numericality => true
 
   delegate :course, :to => :chapter
 

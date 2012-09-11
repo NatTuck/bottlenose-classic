@@ -18,15 +18,18 @@
 <table class="pretty-list">
 <tr>
   <td>Raw Score:</td>
-  <td><%= @submission.raw_score || -1 %> / 100.0</td>
+  <td><%= @submission.raw_score || -1 %> / 
+    <%= @assignment.points_available %></td>
 </tr>
 <tr>
   <td>Teacher Score:</td>
-  <td><%= @submission.teacher_score || -1 %> / 100.0</td>
+  <td><%= @submission.teacher_score || -1 %> / 
+    <%= @assignment.points_available %></td>
 </tr>
 <tr>
   <td>Current Score:</td>
-  <td><%= @submission.score %> / 100.0</td>
+  <td><%= @submission.score %> /
+    <%= @assignment.points_available %></td>
 </tr>
 </table>
 
@@ -55,7 +58,8 @@
   <p>Teacher Comments: <br>
      <%= f.text_area :teacher_notes, :class => "rich-text" %>
   </p>
-  <p>Score: <%= f.text_field :teacher_score, :size => 10 %> / 100.0</p>
+  <p>Score: <%= f.text_field :teacher_score, :size => 10 %> / 
+    <%= @assignment.points_available %></p>
   <p><%= f.submit "Set Teacher Score" %></p>
   <% end %>
   </div>

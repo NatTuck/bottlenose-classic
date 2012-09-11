@@ -16,6 +16,7 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.new
     @assignment.chapter_id = @chapter.id
     @assignment.due_date = Time.now + 1.month
+    @assignment.points_available = 100
   end
 
   def edit

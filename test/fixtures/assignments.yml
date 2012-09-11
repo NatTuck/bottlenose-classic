@@ -5,9 +5,11 @@ hello:
   name: Hello, World
   assignment: Write a Hello World program.
   due_date: '2037-11-09'
+  points_available: 100
 
 lambda_time:
   chapter: sub_model
   name: Lambda Time
   assignment: Demonstrate your understanding of lambdas in the substitution model.
   due_date: '2037-11-09'
+  points_available: 100
