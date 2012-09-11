@@ -37,9 +37,14 @@
     <th>Submission</th>
   </tr>
 
+<% score_sum = 0; score_total = 0 %>
+
 <% @course.chapters.each do |chapter| %>
+
   <% chapter.assignments.each do |assignment| %>
     <% sub = assignment.best_submission_for(@user) %>
+    <% score_sum += assignment.best_score_for(@user) %>
+    <% score_total += 100.0 %>
     <tr>
       <td><%= chapter.name %></td>
       <td><%= assignment.name %></td>
@@ -49,6 +54,13 @@
     </tr>
   <% end %>
 <% end %>
+
+<tr>
+  <td><strong>Total</strong></td>
+  <td>&nbsp;</td>
+  <td><%= score_sum %> / <%= score_total %></td>
+  <td>( <%= 100 * score_sum / score_total %>% )</td>
+</tr>
 
 </table>
 

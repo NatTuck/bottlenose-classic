@@ -68,7 +68,9 @@ class Submission < ActiveRecord::Base
   end
 
   def score_image
-    return "/assets/wait-mark.gif" if raw_score.nil?
+    if raw_score.nil? and teacher_score.nil?
+      return "/assets/wait-mark.gif"
+    end
 
     if score > 75
       "/assets/check-mark.png"
