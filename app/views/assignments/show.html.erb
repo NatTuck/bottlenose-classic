@@ -19,6 +19,33 @@
   <%= link_to @assignment.assignment_file_name, @assignment.file_path %>
 </p>
 
+<% if @logged_in_user.course_admin?(@course) %>
+<h1>All Submissions</h1>
+
+<table class="pretty-list">
+  <tr>
+    <th>Student</th>
+    <th>Date</th>
+    <th>Score</th>
+    <th>Status</th>
+    <th>Link</th>
+  </tr>
+
+<% @course.student_registrations.each do |sreg| %>
+  <% sub = @assignment.best_submission_for(sreg.user) %>
+  <tr>
+    <td><%= sreg.user.name %></td>
+    <td><%= sub.nil? ? 'none' : sub.created_at %></td>
+    <td><%= @assignment.best_score_for(sreg.user) %></td>
+    <td><%= image_tag @assignment.best_score_image_for(sreg.user),
+	              :height => 32 %></td>
+    <td><%= sub.nil? ? 'none' : link_to("Best", sub) %></td>
+  </tr>
+<% end %>
+</table>
+
+<% end %>
+
 <h1>Your Submissions</h1>
 
 <ul>

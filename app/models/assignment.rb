@@ -81,12 +81,6 @@ class Assignment < ActiveRecord::Base
     sub = best_submission_for(user)
 
     return "/assets/null-mark.png" if sub.nil? or sub.file_name.nil?
-    return "/assets/wait-mark.gif" if sub.raw_score.nil?
-
-    if sub.score > 75
-      "/assets/check-mark.png"
-    else
-      "/assets/cross-mark.png"
-    end
+    return sub.score_image
   end
 end

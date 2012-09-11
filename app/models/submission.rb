@@ -67,6 +67,16 @@ class Submission < ActiveRecord::Base
     end
   end
 
+  def score_image
+    return "/assets/wait-mark.gif" if raw_score.nil?
+
+    if score > 75
+      "/assets/check-mark.png"
+    else
+      "/assets/cross-mark.png"
+    end
+  end
+
   def grade!
     return if secret_dir.nil?
     root = Rails.root.to_s
