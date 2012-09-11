@@ -31,7 +31,13 @@ test_dir = "/tmp/grade-#{sub.id}-#{sub.grading_uid}"
 
 Dir.mkdir(test_dir)
 
-FileUtils.cp(sub.file_full_path, "#{test_dir}/sub.tar.gz")
+if sub.file_full_path.to_s.match(/\.gz$/)
+  FileUtils.cp(sub.file_full_path, "#{test_dir}/sub.tar.gz")
+else
+  FileUtils.cp(sub.file_full_path, "#{test_dir}/#{sub.file_name}")
+  system("(cd #{test_dir} && tar czf sub.tar.gz #{sub.file_name})")
+end
+
 FileUtils.cp(sub.assignment.grading_full_path, "#{test_dir}/grading.tar.gz")
 
 # Run the grading process.
