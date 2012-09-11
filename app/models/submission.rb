@@ -5,7 +5,7 @@ class Submission < ActiveRecord::Base
   attr_accessible :raw_score, :updated_at, :upload
   attr_accessible :secret_dir, :file_name
   attr_accessible :grading_output, :grading_uid
-  attr_accessible :teacher_grade, :teacher_notes
+  attr_accessible :teacher_score, :teacher_notes
 
   belongs_to :assignment
   belongs_to :user
@@ -59,8 +59,12 @@ class Submission < ActiveRecord::Base
   end
 
   def score
-    return 0 if raw_score.nil?
-    late? ? (raw_score / 2.0) : raw_score
+    if teacher_score
+      return teacher_score
+    else
+      return 0 if raw_score.nil?
+      late? ? (raw_score / 2.0) : raw_score
+    end
   end
 
   def grade!

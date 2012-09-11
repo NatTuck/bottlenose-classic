@@ -1,12 +1,6 @@
 <% @page_title = "View Submission" %>
 
-<p> <%= link_to 'Back to Assignment', @assignment %>
-
-<% if @logged_in_user.course_admin?(@course) %>
-  | <%= link_to 'Edit Submission', [:edit, @submission] %>
-<% end %>
-
-</p>
+<p><%= link_to 'Back to Assignment', @assignment %></p>
 
 <h1>Student Notes</h1>
 
@@ -20,9 +14,52 @@
 </p>
 
 <h1>Score</h1>
-<p>
-  <%= @submission.score %> / 100.0
-</p>
+
+<table class="pretty-list">
+<tr>
+  <td>Raw Score:</td>
+  <td><%= @submission.raw_score || -1 %> / 100.0</td>
+</tr>
+<tr>
+  <td>Teacher Score:</td>
+  <td><%= @submission.teacher_score || -1 %> / 100.0</td>
+</tr>
+<tr>
+  <td>Current Score:</td>
+  <td><%= @submission.score %> / 100.0</td>
+</tr>
+</table>
+
+<% if @submission.teacher_notes %>
+<script>
+  $(function() { $('#edit-teacher-score').hide(); })
+</script>
+
+<h1>Teacher Notes</h1>
+
+<% if @logged_in_user.course_admin?(@course) %>
+<p><%= link_to_function "Edit Teacher Grade", "$('#edit-teacher-score').toggle();" %></p>
+<% end %>
+
+<div>
+<%= raw @submission.teacher_notes %>
+</div>
+
+<% end %>
+
+<% if @logged_in_user.course_admin?(@course) %>
+  <div id="edit-teacher-score">
+  <h1>Set Teacher Score</h1>
+
+  <%= form_for @submission do |f| %>
+  <p>Teacher Comments: <br>
+     <%= f.text_area :teacher_notes, :class => "rich-text" %>
+  </p>
+  <p>Score: <%= f.text_field :teacher_score, :size => 10 %> / 100.0</p>
+  <p><%= f.submit "Set Teacher Score" %></p>
+  <% end %>
+  </div>
+<% end %>
 
 <h1>Grading Process</h1>
 

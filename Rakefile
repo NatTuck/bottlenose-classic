@@ -12,9 +12,13 @@ task :clean_uploads do
   system("mkdir public/assignments")
   system("touch public/assignments/empty")
 
+  system("mkdir public/assignments/grading")
+  system("touch public/assignments/grading/empty")
+
   system("rm -rf public/submissions")
   system("mkdir public/submissions")
   system("touch public/submissions/empty")
+
 end
 
 namespace :db do
