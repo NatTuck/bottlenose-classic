@@ -4,4 +4,18 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Bottlenose::Application.config.secret_token = 'be751a19ac76e84ec6dd6165f4be9627d8b048b29777d7511ce05f10c0f04472803fe1e61534ebf71cf7233a8244190afbbd994b79f9d870f4053fd1dfb56f5f'
+require 'securerandom'
+
+key_file = File.expand_path("~/.rails_key").to_s
+unless File.exists?(key_file)
+  kk = File.open(key_file, 'wb')
+  kk.write(SecureRandom.urlsafe_base64)
+  kk.write(SecureRandom.urlsafe_base64)
+  kk.write(SecureRandom.urlsafe_base64)
+  kk.write(SecureRandom.urlsafe_base64)
+  kk.write(SecureRandom.urlsafe_base64)
+  kk.write(SecureRandom.urlsafe_base64)
+  kk.close
+end
+
+Bottlenose::Application.config.secret_token = File.open(key_file).read

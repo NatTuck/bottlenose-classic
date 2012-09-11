@@ -76,7 +76,7 @@ class Assignment < ActiveRecord::Base
 
   def best_score_for(user)
     sub = best_submission_for(user)
-    sub.nil? ? nil : sub.score
+    sub.nil? ? 0 : sub.score
   end
   
   def best_score_image_for(user)

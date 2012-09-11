@@ -21,7 +21,9 @@
     <td>Teacher?</td>
     <td>
       <%= @registration.teacher? ? "Yes" : "No" %>
-      (<%= link_to "Edit", [:edit, @registration] %>)
+      <% if @logged_in_user.course_admin?(@course) %>
+        (<%= link_to "Edit", [:edit, @registration] %>)
+      <% end %>
     </td>
   </tr>
 </table>
