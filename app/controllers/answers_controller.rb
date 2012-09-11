@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
-  before_filter :require_logged_in_user, :only => [:create]
-  before_filter :require_teacher,        :only => [:destroy]
+  before_filter :require_student, :only => [:create]
+  before_filter :require_teacher, :only => [:destroy]
   prepend_before_filter :find_question
 
   def create

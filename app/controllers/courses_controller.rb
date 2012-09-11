@@ -1,11 +1,16 @@
 class CoursesController < ApplicationController
   before_filter :find_course, :except => [:index, :new, :create]
   before_filter :require_logged_in_user
+  before_filter :require_student,  :except => [:index, :new, :create, :destroy]
   before_filter :require_site_admin, :only => [:new, :create, :destroy]
   
   def index
-    @courses = Course.all
-    @course  = Course.new
+    if @logged_in_user.site_admin?
+      @courses = Course.all
+      @course  = Course.new
+    else
+      @courses = @logged_in_user.courses
+    end
   end
 
   def show

@@ -51,9 +51,39 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def require_student
+    find_user_session
+    find_course
+
+    if @logged_in_user.nil?
+      show_error "You need to log in."
+      redirect_to root_url
+      return
+    end
+
+    if @course.nil?
+      show_error "No such course."
+      redirect_to courses_url
+      return
+    end
+
+    if @logged_in_user.site_admin?
+      return
+    end
+
+    reg = @logged_in_user.registrations.where(course_id: @course.id)
+
+    if reg.nil? or reg.empty?
+      show_error "You're not registered for that course."
+      redirect_to courses_url
+      return
+    end
+  end
+
   def require_teacher
     find_user_session
     find_course
+
 
     if @logged_in_user.nil?
       show_error "You need to log in."

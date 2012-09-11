@@ -1,8 +1,8 @@
 class ChaptersController < ApplicationController
-  before_filter :require_logged_in_user, :only   => [:show]
-  before_filter :require_teacher,        :except => [:show]
-  prepend_before_filter :find_course,    :only   => [:index, :new, :create]
-  prepend_before_filter :find_chapter,   :except => [:index, :new, :create]
+  before_filter :require_student, :only   => [:show]
+  before_filter :require_teacher, :except => [:show]
+  prepend_before_filter :find_course,  :only   => [:index, :new, :create]
+  prepend_before_filter :find_chapter, :except => [:index, :new, :create]
 
 
   def index

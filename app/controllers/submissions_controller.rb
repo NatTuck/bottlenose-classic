@@ -1,6 +1,6 @@
 class SubmissionsController < ApplicationController
   before_filter :require_teacher, :except => [:new, :create, :show]
-  before_filter :require_logged_in_user
+  before_filter :require_student
   prepend_before_filter :find_submission_and_assignment
 
   def index
