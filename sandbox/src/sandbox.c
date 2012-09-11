@@ -49,6 +49,11 @@ run_in_sandbox(int uid, const char* cmd)
   int pid;
   char tmp[256];
 
+  /* Make sure sandbox can't be used to
+   * run code as a real user. */
+  if (uid < 5000)
+    uid = 5000 + (uid % 5000);
+
   if ((pid = fork())) {
     chdir("sandbox");
     chroot(".");
