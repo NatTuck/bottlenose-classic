@@ -39,6 +39,16 @@ class SubmissionsController < ApplicationController
   end
 
   def update
+    @up = Submission.new(params[:submission])
+
+    unless @up.teacher_score.nil?
+      @submission.teacher_score = @up.teacher_score
+      @submission.teacher_notes = @up.teacher_notes
+      @submission.save!
+      redirect_to @submission, notice: 'Teacher score set.'
+      return
+    end
+
     if @submission.update_attributes(params[:submission])
       redirect_to @submission, notice: 'Submission was successfully updated.'
     else

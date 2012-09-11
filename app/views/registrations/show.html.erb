@@ -34,7 +34,7 @@
     <th>Name</th>
     <th>Score</th>
     <th>Status</th>
-    <th>Best Sub</th>
+    <th>Submission</th>
   </tr>
 
 <% @course.chapters.each do |chapter| %>
@@ -45,7 +45,7 @@
       <td><%= assignment.name %></td>
       <td><%= assignment.best_score_for(@user) %></td>
       <td><%= image_tag assignment.best_score_image_for(@user), :height => 32 %>
-      <td><%= link_to "Edit", %></td>
+      <td><%= link_to "Best", sub %></td>
     </tr>
   <% end %>
 <% end %>
