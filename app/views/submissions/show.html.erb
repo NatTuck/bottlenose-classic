@@ -18,12 +18,12 @@
 <table class="pretty-list">
 <tr>
   <td>Raw Score:</td>
-  <td><%= @submission.raw_score || -1 %> / 
+  <td><%= @submission.raw_score || "no data" %> / 
     <%= @assignment.points_available %></td>
 </tr>
 <tr>
   <td>Teacher Score:</td>
-  <td><%= @submission.teacher_score || -1 %> / 
+  <td><%= @submission.teacher_score || "no data" %> / 
     <%= @assignment.points_available %></td>
 </tr>
 <tr>

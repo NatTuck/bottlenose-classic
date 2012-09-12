@@ -75,7 +75,7 @@ if output_lines.any? {|xx| xx.match(output_key)}
   puts "Summary:"
   puts parser.summary
 
-  sub.raw_score = (parser.tests_ok * 100.0) / parser.test_count
+  sub.raw_score = (parser.tests_ok * sub.assignment.points_available) / parser.test_count
   sub.save!
 end
 
