@@ -91,7 +91,7 @@ class Submission < ActiveRecord::Base
       return "/assets/wait-mark.gif"
     end
 
-    if score > 75
+    if score > 0
       "/assets/check-mark.png"
     else
       "/assets/cross-mark.png"

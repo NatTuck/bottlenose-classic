@@ -45,8 +45,8 @@
 
   <% chapter.assignments.each do |assignment| %>
     <% sub = assignment.best_submission_for(@user) %>
-    <% score_sum += assignment.best_score_for(@user) %>
-    <% score_total += 100.0 %>
+    <% score_sum   += assignment.best_score_for(@user) %>
+    <% score_total += assignment.points_available %>
     <tr>
       <td><%= chapter.name %></td>
       <td><%= assignment.name %></td>
