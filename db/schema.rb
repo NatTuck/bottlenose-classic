@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120912011826) do
+ActiveRecord::Schema.define(:version => 20120912200238) do
 
   create_table "answers", :force => true do |t|
     t.integer  "question_id", :null => false
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(:version => 20120912011826) do
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
     t.integer  "points_available",     :default => 100
+    t.string   "secret_dir"
   end
 
   add_index "assignments", ["chapter_id"], :name => "index_assignments_on_chapter_id"

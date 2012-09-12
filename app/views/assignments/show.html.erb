@@ -16,10 +16,15 @@
 
 <p>
   <b>Assignment Download:</b>
-  <%= link_to @assignment.assignment_file_name, @assignment.file_path %>
+  <%= link_to @assignment.assignment_file_name, @assignment.assignment_file_path %>
 </p>
 
 <% if @logged_in_user.course_admin?(@course) %>
+<p>
+  <b>Grading File Download:</b>
+  <%= link_to @assignment.grading_file_name, @assignment.grading_file_path %>
+</p>
+
 <h1>All Submissions</h1>
 
 <table class="pretty-list">
