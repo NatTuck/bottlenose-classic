@@ -9,7 +9,7 @@
   <li>
     <%= link_to course.name, course %>
     <% if @logged_in_user.course_admin?(course) %>
-      (<%= link_to 'Edit Name', edit_course_path(course) %>)
+      (<%= link_to 'Edit Settings', edit_course_path(course) %>)
     <% end %>
     <% if @logged_in_user.site_admin? %>
       (<%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %>)

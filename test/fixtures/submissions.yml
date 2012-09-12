@@ -6,6 +6,7 @@ john_hello:
   raw_score: 100
   student_notes: I did the stuff.
   file_name: fake.tar.gz
+  created_at: '2037-11-14'
 
 john_lambda:
   assignment: lambda_time

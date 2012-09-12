@@ -55,7 +55,26 @@ class Submission < ActiveRecord::Base
   end
 
   def late?
-    updated_at > assignment.due_date
+    created_at.to_date > assignment.due_date
+  end
+
+  def days_late
+    due_on = assignment.due_date.to_time
+    sub_on = created_at
+    late_days = (sub_on - due_on) / 1.day
+    late_days.floor
+  end
+
+  def late_penalty
+    # Returns multiplier for post-penalty score.
+    return 1.0 unless late?
+    
+    (pen, del, max) = course.late_opts
+
+    percent_off = (days_late / del) * pen
+    percent_off = max if percent_off > max
+    
+    1.0 - (percent_off / 100.0)
   end
 
   def score
@@ -63,7 +82,7 @@ class Submission < ActiveRecord::Base
       return teacher_score
     else
       return 0 if raw_score.nil?
-      late? ? (raw_score / 2.0) : raw_score
+      raw_score * late_penalty
     end
   end
 

@@ -32,6 +32,7 @@ class CoursesController < ApplicationController
 
   def create
     @course = Course.new(params[:course])
+    @course.late_options = [params[:late_penalty], params[:late_repeat], params[:late_maximum]].join(',') unless params[:late_penalty].nil?
 
     if @course.save
       redirect_to @course, notice: 'Course was successfully created.'
@@ -46,8 +47,11 @@ class CoursesController < ApplicationController
       redirect_to course_url(@course)
       return
     end
-    
-    if @course.update_attributes(params[:course])
+
+    @course.assign_attributes(params[:course])
+    @course.late_options = [params[:late_penalty], params[:late_repeat], params[:late_maximum]].join(',') unless params[:late_penalty].nil?
+
+    if @course.save
       redirect_to @course, notice: 'Course was successfully updated.'
     else
       render action: "edit"

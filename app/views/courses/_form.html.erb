@@ -11,10 +11,24 @@
     </div>
   <% end %>
 
+  <%= f.hidden_field :late_options %>
+
   <table class="edit-form">
     <tr>
       <td><%= f.label :name %></td>
       <td><%= f.text_field :name %></td>
+    </tr>
+    <tr>
+      <td>Late Penalty</td>
+      <td>
+	<p>Deduct
+	<%= text_field_tag :late_penalty, @course.late_opts[0], :size => 10 %>
+	percent every 
+	<%= text_field_tag :late_repeat,  @course.late_opts[1], :size => 10 %>
+	days late to a maximum of
+	<%= text_field_tag :late_maximum, @course.late_opts[2], :size => 10 %>
+	percent off.
+      </td>
     </tr>
     <tr>
       <td>&nbsp;</td>

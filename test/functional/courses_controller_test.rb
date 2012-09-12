@@ -29,7 +29,7 @@ class CoursesControllerTest < ActionController::TestCase
 
   test "should create course" do
     assert_difference('Course.count') do
-      post :create, {course: { name: "Worst Course Ever" }}, {:user_id => @admin.id}
+      post :create, {course: { name: "Worst Course Ever", late_options: "1,1,1" }}, {:user_id => @admin.id}
     end
 
     assert_redirected_to course_path(assigns(:course))
@@ -46,10 +46,20 @@ class CoursesControllerTest < ActionController::TestCase
   end
 
   test "should update course" do
-    put :update, {id: @course, course: { name: @course.name }}, {:user_id => @prof.id}
+    put :update, {id: @course, course: { name: @course.name, late_options: "1,1,1" }}, {:user_id => @prof.id}
     assert_redirected_to course_path(assigns(:course))
   end
   
+  test "updating late penalties should change scores" do
+    put :update, {id: @course, course: { name: @course.name, late_options: "5,1,12" }}, {:user_id => @prof.id}
+
+    sub = submissions(:john_hello)
+    asg = assignments(:hello)
+
+    assert_equal sub.assignment_id, asg.id
+    assert_equal sub.score, 88
+  end
+
   test "non-admin should not be able to update course" do
     put :update, {id: @course, course: { name: @course.name }}, {:user_id => @user.id}
     assert_response :redirect

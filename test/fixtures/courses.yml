@@ -2,6 +2,8 @@
 
 cs301:
   name: Organization of Programming Languages
+  late_options: "10,1,50"
 
 cs599:
   name: Directed Study in Deleting Courses
+  late_options: "10,1,50"

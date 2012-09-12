@@ -3,6 +3,9 @@
 <p>
   <%= link_to "Back to Your Courses", courses_path %> |
   <%= link_to "Status Report", @registration %>
+  <% if @logged_in_user.course_admin?(@course) %>
+    | <%= link_to "Edit Settings", [:edit, @course] %>
+  <% end %>
 </p>
 
 <h1>Chapters</h1>

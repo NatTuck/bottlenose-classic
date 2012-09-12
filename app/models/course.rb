@@ -1,5 +1,6 @@
 class Course < ActiveRecord::Base
   attr_accessible :name
+  attr_accessible :late_options
   
   has_many :registrations
   has_many :users, :through => :registrations, :dependent => :restrict
@@ -8,7 +9,13 @@ class Course < ActiveRecord::Base
 
   validates :name, :length     => { :minimum => 2 },
                    :uniqueness => true
-  
+  validates :late_options, :format => { :with => /^\d+,\d+,\d+$/ }
+
+  def late_opts
+    os = late_options.split(",")
+    os.map {|oo| oo.to_i}
+  end
+
   def taught_by?(user)
     reg = Registration.find_by_course_id_and_user_id(self.id, user.id)
     reg and reg.teacher?
