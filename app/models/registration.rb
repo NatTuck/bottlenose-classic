@@ -22,12 +22,14 @@ class Registration < ActiveRecord::Base
 
   def submissions_done
     as = course.assignments
-    score = 0.0
+    score = 0
+    total = 0
     as.each do |aa|
       aa.submissions.each do |ss|
-        score += ss.score / aa.points_available.to_f
+        score += ss.score
+        total += aa.points_available
       end
     end
-    "#{score} / #{as.size}"
+    "#{score} / #{total}"
   end
 end
