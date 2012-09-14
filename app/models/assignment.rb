@@ -75,8 +75,10 @@ class Assignment < ActiveRecord::Base
   end
 
   def cleanup!
-    cleanup_assignment_file!
-    cleanup_grading_file!
+    if secret_dir.size > 0
+      cleanup_assignment_file!
+      cleanup_grading_file!
+    end
   end
 
   def assignment_file=(data)
