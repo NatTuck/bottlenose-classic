@@ -42,7 +42,11 @@ class Assignment < ActiveRecord::Base
 
     dn = base.join(secret_dir)
     if Dir.exists?(dn)
-      Dir.unlink(dn)
+      begin
+        Dir.unlink(dn)
+      rescue
+        logger.debug("Error removing directory, skipping.")
+      end
     end
   end
 
@@ -75,18 +79,19 @@ class Assignment < ActiveRecord::Base
   end
 
   def cleanup!
-    if secret_dir.size > 0
-      cleanup_assignment_file!
-      cleanup_grading_file!
-    end
+    cleanup_assignment_file!
+    cleanup_grading_file!
   end
 
   def assignment_file=(data)
     return unless data
+    cleanup_assignment_file!
 
     self.assignment_file_name = data.original_filename 
     
-    Dir.mkdir(assignments_base.join(secret_dir))
+    unless Dir.exists?(assignments_base.join(secret_dir))
+      Dir.mkdir(assignments_base.join(secret_dir))
+    end
 
     path = assignment_full_path
     File.open(path, 'wb') do |file|
@@ -96,10 +101,13 @@ class Assignment < ActiveRecord::Base
 
   def grading_file=(data)
     return unless data
+    cleanup_grading_file!
 
     self.grading_file_name = data.original_filename
 
-    Dir.mkdir(grading_base.join(secret_dir))
+    unless Dir.exists?(grading_base.join(secret_dir))
+      Dir.mkdir(grading_base.join(secret_dir))
+    end
 
     path = grading_full_path
     File.open(path, 'wb') do |file|
