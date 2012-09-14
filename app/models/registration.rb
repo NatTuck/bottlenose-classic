@@ -25,10 +25,8 @@ class Registration < ActiveRecord::Base
     score = 0
     total = 0
     as.each do |aa|
-      aa.submissions.each do |ss|
-        score += ss.score
-        total += aa.points_available
-      end
+      total += aa.points_available
+      score += aa.best_score_for(user)
     end
     "#{score} / #{total}"
   end
