@@ -20,6 +20,10 @@ class User < ActiveRecord::Base
     if self.auth_key.nil?
       self.auth_key = SecureRandom.urlsafe_base64
     end
+
+    unless self.email.nil?
+      self.email = self.email.downcase
+    end
   end
   
   def send_auth_link_email!(base_url)
