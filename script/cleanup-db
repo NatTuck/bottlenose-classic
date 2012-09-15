@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+#
+# This script cleans up possible database weirdnesses.
+# It should be safe to run at any time.
+#
+
+APP_PATH = File.expand_path('../../config/application',  __FILE__)
+require File.expand_path('../../config/boot',  __FILE__)
+require APP_PATH
+Rails.application.require_environment!
+
+
+# Make sure all email addresses in the users table are lowercase.
+
+User.all.each do |user|
+  if user.email =~ /[A-Z]/
+    puts "Fixing user email: #{user.email}"
+    user.email = user.email.downcase
+    user.save!
+  end
+end
