@@ -62,6 +62,7 @@ GEM
       thor (~> 0.14)
     jquery-ui-themes (0.0.7)
       httparty
+    jquery_datepicker (0.4)
     json (1.7.5)
     libv8 (3.3.10.4)
     mail (2.4.4)
@@ -138,6 +139,7 @@ DEPENDENCIES
   execjs
   jquery-rails
   jquery-ui-themes
+  jquery_datepicker
   pg
   rails (= 3.2.8)
   sass-rails (~> 3.2.3)

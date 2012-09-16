@@ -25,6 +25,7 @@ end
 
 gem 'jquery-rails'
 gem 'jquery-ui-themes'
+gem 'jquery_datepicker'
 
 group :test do
   gem 'database_cleaner'

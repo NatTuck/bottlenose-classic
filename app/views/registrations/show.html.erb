@@ -42,16 +42,20 @@
 <% score_sum = 0; score_total = 0 %>
 
 <% @course.chapters.each do |chapter| %>
-
   <% chapter.assignments.each do |assignment| %>
     <% sub = assignment.best_submission_for(@user) %>
-    <% score_sum   += assignment.best_score_for(@user) %>
+    <% unless assignment.hide_grading? 
+         score_sum += assignment.best_score_for(@user) 
+       end %>
     <% score_total += assignment.points_available %>
     <tr>
       <td><%= chapter.name %></td>
       <td><%= assignment.name %></td>
-      <td><%= assignment.best_score_for(@user) %></td>
-      <td><%= image_tag assignment.best_score_image_for(@user), :height => 32 %>
+      <td><%= show_score(assignment.best_score_for(@user), assignment)
+	%>&nbsp;/&nbsp;<%= assignment.points_available %></td>
+      <td>
+	<%= image_tag assignment.best_score_image_for(@user), :height => 32 %></td>
+      </td>
       <td><%= link_to "Best", sub %></td>
     </tr>
   <% end %>

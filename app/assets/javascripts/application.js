@@ -17,3 +17,5 @@
 //= require nicEdit
 //= require combobox
 //= require theme-forms
+
+$.datepicker.setDefaults({ dateFormat: "yy-mm-dd" });

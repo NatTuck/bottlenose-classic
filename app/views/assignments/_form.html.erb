@@ -37,9 +37,15 @@
       </td>
     </tr>
     <tr>
+      <td><%= f.label :hide_grading %> <br>
+	(Assignment scores and teacher notes are hidden.)
+      </td>
+      <td><%= f.check_box :hide_grading %></td>
+    </tr>
+    <tr>
       <td><%= f.label :due_date %> <br>
         (Assignment should be submitted before this day.)</td>
-      <td><%= f.date_select :due_date %></td>
+      <td><%= f.datepicker :due_date %></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -47,3 +53,7 @@
     </tr>
   </table>
 <% end %>
+
+<script>
+  $(function(){  });
+</script>
