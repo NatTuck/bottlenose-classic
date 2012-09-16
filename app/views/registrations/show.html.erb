@@ -50,8 +50,11 @@
     <tr>
       <td><%= chapter.name %></td>
       <td><%= assignment.name %></td>
-      <td><%= assignment.best_score_for(@user) %></td>
-      <td><%= image_tag assignment.best_score_image_for(@user), :height => 32 %>
+      <td><%= assignment.best_score_for(@user)
+	%>&nbsp;/&nbsp;<%= assignment.points_available %></td>
+      <td>
+	<%= image_tag assignment.best_score_image_for(@user), :height => 32 %></td>
+      </td>
       <td><%= link_to "Best", sub %></td>
     </tr>
   <% end %>
