@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120912200238) do
+ActiveRecord::Schema.define(:version => 20120916024043) do
 
   create_table "answers", :force => true do |t|
     t.integer  "question_id", :null => false
@@ -25,16 +25,17 @@ ActiveRecord::Schema.define(:version => 20120912200238) do
   add_index "answers", ["user_id"], :name => "index_answers_on_user_id"
 
   create_table "assignments", :force => true do |t|
-    t.integer  "chapter_id",                            :null => false
-    t.string   "name",                                  :null => false
-    t.date     "due_date",                              :null => false
+    t.integer  "chapter_id",                              :null => false
+    t.string   "name",                                    :null => false
+    t.date     "due_date",                                :null => false
     t.string   "assignment_file_name"
     t.string   "grading_file_name"
     t.text     "assignment"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.integer  "points_available",     :default => 100
     t.string   "secret_dir"
+    t.boolean  "hide_grading",         :default => false
   end
 
   add_index "assignments", ["chapter_id"], :name => "index_assignments_on_chapter_id"

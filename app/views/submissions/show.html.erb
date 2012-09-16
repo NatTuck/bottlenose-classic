@@ -17,32 +17,36 @@
 
 <table class="pretty-list">
 <tr>
-  <td>Raw Score:</td>
+  <td>Automatic Score:</td>
   <td><%= @submission.raw_score || "no data" %> / 
     <%= @assignment.points_available %></td>
 </tr>
 <tr>
   <td>Teacher Score:</td>
-  <td><%= @submission.teacher_score || "no data" %> / 
+  <td><%= show_score(@submission.teacher_score) || "no data" %> / 
     <%= @assignment.points_available %></td>
 </tr>
 <tr>
   <td>Current Score:</td>
-  <td><%= @submission.score %> /
+  <td><%= show_score(@submission.score) %> /
     <%= @assignment.points_available %></td>
 </tr>
 </table>
 
-<% if @submission.teacher_notes %>
-<script>
-  $(function() { $('#edit-teacher-score').hide(); })
-</script>
-
 <h1>Teacher Notes</h1>
 
 <% if @logged_in_user.course_admin?(@course) %>
-<p><%= link_to_function "Edit Teacher Grade", "$('#edit-teacher-score').toggle();" %></p>
+<p><%= link_to_function "Show / Hide Teacher Grading Form", 
+       "$('#edit-teacher-score').toggle();" %></p>
 <% end %>
+
+<% if @assignment.hide_grading? %>
+
+<p>(Teacher notes have not yet been shared.)</p>
+
+<% end %>
+
+<% if (not @assignment.hide_grading?) or @logged_in_user.course_admin?(@course) %>
 
 <div>
 <%= raw @submission.teacher_notes %>
@@ -63,6 +67,10 @@
   <p><%= f.submit "Set Teacher Score" %></p>
   <% end %>
   </div>
+
+  <script>
+    $(function() {$('#edit-teacher-score').hide(); });
+  </script>
 <% end %>
 
 <h1>Grading Process</h1>

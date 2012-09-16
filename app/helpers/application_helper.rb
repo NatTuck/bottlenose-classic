@@ -14,4 +14,18 @@ module ApplicationHelper
     end
     hash
   end
+
+  def show_score(score, assignment = nil)
+    assignment ||= @assignment
+    return score if assignment.nil?
+    if assignment.hide_grading?
+      if @logged_in_user.course_admin?(@course)
+        "(hidden #{score})"
+      else
+        "not ready"
+      end
+    else
+      score
+    end
+  end
 end

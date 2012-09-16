@@ -4,7 +4,7 @@ class Assignment < ActiveRecord::Base
   attr_accessible :name, :chapter_id, :assignment, :due_date
   attr_accessible :assignment_file_name, :grading_file_name
   attr_accessible :assignment_file, :grading_file
-  attr_accessible :points_available
+  attr_accessible :points_available, :hide_grading
 
   belongs_to :chapter
   has_many :submissions, :dependent => :destroy

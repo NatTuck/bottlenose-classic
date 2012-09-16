@@ -41,7 +41,8 @@
   <tr>
     <td><%= sreg.user.name %></td>
     <td><%= sub.nil? ? 'none' : sub.created_at %></td>
-    <td><%= @assignment.best_score_for(sreg.user) %></td>
+    <td><%= show_score(@assignment.best_score_for(sreg.user))
+        %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
     <td><%= image_tag @assignment.best_score_image_for(sreg.user),
 	              :height => 32 %></td>
     <td><%= sub.nil? ? 'none' : link_to("Best", sub) %></td>
@@ -57,7 +58,8 @@
 <% @submissions.each do |submission| %>
   <li><%= link_to submission.updated_at, submission %> 
 	- <%= submission.user.name %>
-	- Score: <%= submission.score %></li>
+	- Score: <%= show_score(submission.score) 
+	  %>&nbsp;/&nbsp;<%= @assignment.points_available %></li>
 <% end %>
 </ul>
 
