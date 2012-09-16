@@ -1,5 +1,5 @@
 class AuthMailer < ActionMailer::Base
-  default from: "Automated Message <no-reply@example.com>"
+  default from: "UML CS Grader Server <webcat@cs.uml.edu>"
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
