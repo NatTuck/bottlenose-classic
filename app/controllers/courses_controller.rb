@@ -6,7 +6,7 @@ class CoursesController < ApplicationController
   
   def index
     if @logged_in_user.site_admin?
-      @courses = Course.all
+      @courses = Course.order(:name)
       @course  = Course.new
     else
       @courses = @logged_in_user.courses

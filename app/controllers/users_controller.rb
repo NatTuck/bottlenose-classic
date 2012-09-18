@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_filter :require_site_admin
   
   def index
-    @users = User.all
+    @users = User.order(:name)
     @user  = User.new
   end
 
