@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+# Primitive bulk-user-upload script. Requires course_id to be hard-coded, below.
+# Reads comma-separated values of time, name, email, section, but ignores all but name and email.
+
+APP_PATH = File.expand_path('../../config/application',  __FILE__)
+require File.expand_path('../../config/boot',  __FILE__)
+require APP_PATH
+Rails.application.require_environment!
+
+filename = ARGV[0]
+
+def post_user(name, email, section)
+	
+end
+
+File.open(filename, 'r') do |f1|
+	while line = f1.gets
+		(time, name, email, section) = line.split(",")
+		puts "Adding " + name + " with " + email
+		User.new(email: email.downcase, name: name).save!
+		newuser = User.find_by_email(email.downcase)
+		Registration.new(user_id: newuser.id, course_id: 4).save!
+		newuser.send_auth_link_email!("http://grader.cs.uml.edu/")
+	end
+end
