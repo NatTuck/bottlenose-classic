@@ -6,10 +6,12 @@ class ChaptersController < ApplicationController
 
 
   def index
-    @chapters = @course.chapters
+    @chapters = @course.chapters.order(:name)
   end
 
   def show
+    @assignments = @chapter.assignments.order(:name)
+    @lessons     = @chapter.lessons.order(:name)
   end
 
   def new

@@ -9,7 +9,7 @@
 <h1>Lessons</h1>
 
 <ul>
-<% @chapter.lessons.each do |lesson| %>
+<% @lessons.each do |lesson| %>
   <li>
     <%= link_to lesson.name, lesson %>
 
@@ -29,7 +29,7 @@
 <h1>Assignments</h1>
 
 <ul>
-<% @chapter.assignments.each do |assignment| %>
+<% @assignments.each do |assignment| %>
   <li>
     <%= link_to assignment.name, assignment %>
     

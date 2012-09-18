@@ -41,8 +41,8 @@
 
 <% score_sum = 0; score_total = 0 %>
 
-<% @course.chapters.each do |chapter| %>
-  <% chapter.assignments.each do |assignment| %>
+<% @course.chapters.order(:name).each do |chapter| %>
+  <% chapter.assignments.order(:name).each do |assignment| %>
     <% sub = assignment.best_submission_for(@user) %>
     <% unless assignment.hide_grading? 
          score_sum += assignment.best_score_for(@user) 
