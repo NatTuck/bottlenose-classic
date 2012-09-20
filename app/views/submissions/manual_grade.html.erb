@@ -1,0 +1,33 @@
+<% @page_title = "Manually Add Grade" %>
+
+<h1>Create grade for assignment: <%= @assignment.name %></h1>
+
+<%= form_for [@assignment, @submission] do |f| %>
+<%= f.hidden_field :assignment_id %>
+<%= f.hidden_field :file_name %>
+
+<table class="edit-form">
+  <tr>
+    <td>Student:</td>
+    <td>
+      <%= f.select :user_id, select_user_hash(@users), 
+	  {:include_blank => true} %>
+    </td>
+  </tr>
+  <tr>
+    <td>Teacher Notes:</td>
+    <td>
+      <%= f.text_area :teacher_notes, :class => "rich-text" %>
+    </td>
+  </tr>
+  <tr>
+    <td>Teacher Grade:</td>
+    <td><%= f.text_field :teacher_score, :size => 10 %> / 
+      <%= @assignment.points_available %></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><%= submit_tag %></td>
+  </tr>
+</table>
+<% end %>

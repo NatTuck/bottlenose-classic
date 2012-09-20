@@ -1,7 +1,8 @@
 module ApplicationHelper
-  def select_user_hash
+  def select_user_hash(users = nil)
+    users ||= User.all
     hash = {}
-    User.all.each do |user|
+    users.each do |user|
       hash[user.name] = user.id
     end
     hash

@@ -40,6 +40,11 @@ class SubmissionsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should get manual grade" do
+    get :manual_grade, {assignment_id: @hello.id}, {user_id: @fred.id}
+    assert_response :success
+  end
+
   test "should update submission" do
     put :update, {id: @john_hello}, {submission: { student_notes: "Bacon!", assignment_id: @john_hello.assignment_id, user_id: @john.id }}, {user_id: @fred.id}
     #assert_redirected_to submission_path(assigns(:submission))
