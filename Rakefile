@@ -23,6 +23,14 @@ end
 
 namespace :db do
   task :nuke do
+    puts
+    puts "This will destroy the database!"
+    puts
+    puts "Press CTRL+C now if you're running this on the"
+    puts "production server like Mark."
+    puts
+    puts "Otherwise, press enter to continue."
+    $stdin.readline
     system("rake db:drop")
     system("rake clean_uploads")
     system("rake db:create")
