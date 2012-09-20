@@ -27,6 +27,10 @@
 
 <h1>All Submissions</h1>
 
+<% if @logged_in_user.course_admin?(@course) %>
+<p><%= link_to "Manually Add Student Grade", assignment_path(@assignment) + '/manual_grade' %></p>
+<% end %>
+
 <table class="pretty-list">
   <tr>
     <th>Student</th>

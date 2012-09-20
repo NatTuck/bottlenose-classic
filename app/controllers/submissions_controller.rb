@@ -64,6 +64,14 @@ class SubmissionsController < ApplicationController
     redirect_to assignment_submissions_url(@assignment)
   end
 
+  def manual_grade
+    @submission = Submission.new
+    @submission.assignment_id = @assignment.id
+    @submission.file_name = "none"
+
+    @users = @course.users
+  end
+
   private
 
   def find_submission_and_assignment

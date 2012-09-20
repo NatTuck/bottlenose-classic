@@ -26,6 +26,9 @@ Bottlenose::Application.routes.draw do
     resources :submissions, :except => [:destroy]
   end
 
+  match 'assignments/:assignment_id/manual_grade' =>
+    'submissions#manual_grade'
+
   resources :submissions
 
   resources :lessons do
