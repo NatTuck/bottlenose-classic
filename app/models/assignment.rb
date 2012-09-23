@@ -115,6 +115,10 @@ class Assignment < ActiveRecord::Base
     end
   end
 
+  def submissions_for(user)
+    submissions.where(user_id: user.id)
+  end
+
   def best_submission_for(user)
     submissions.where(user_id: user.id).sort_by {|ss| ss.score}.last
   end

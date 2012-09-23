@@ -10,6 +10,8 @@
 
 <h1>Assignment Description</h1>
 
+<p>Due Date: <%= @assignment.due_date %></p>
+
 <div>
   <%= raw @assignment.assignment %>
 </div>
@@ -20,41 +22,45 @@
 </p>
 
 <% if @logged_in_user.course_admin?(@course) %>
-<p>
-  <b>Grading File Download:</b>
-  <%= link_to @assignment.grading_file_name, @assignment.grading_file_path %>
-</p>
+  <p>
+    <b>Grading File Download:</b>
+    <%= link_to @assignment.grading_file_name, @assignment.grading_file_path %>
+  </p>
 
-<h1>All Submissions</h1>
+  <h1>Student Submissions</h1>
 
-<% if @logged_in_user.course_admin?(@course) %>
-<p><%= link_to "Manually Add Student Grade", assignment_path(@assignment) + '/manual_grade' %></p>
+  <p><%= link_to "Manually Add Student Grade", assignment_path(@assignment) + '/manual_grade' %></p>
+
+  <table class="pretty-list">
+    <tr>
+      <th>Student</th>
+      <th>Attempts</th>
+      <th>Date</th>
+      <th>Score</th>
+      <th>Status</th>
+      <th>Link</th>
+    </tr>
+    
+    <% @course.student_registrations.each do |sreg| %>
+    <% sub = @assignment.best_submission_for(sreg.user) %>
+    <tr>
+      <td><%= sreg.user.name %></td>
+      <td><%= @assignment.submissions_for(sreg.user).count %>
+	(<%= link_to "List", registration_assignment_submissions_path(sreg, @assignment) %>)
+      </td>
+      <td><%= sub.nil? ? 'none' : sub.created_at %></td>
+      <td><%= show_score(@assignment.best_score_for(sreg.user))
+              %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
+      <td><%= image_tag @assignment.best_score_image_for(sreg.user),
+	      :height => 32 %></td>
+      <td><%= sub.nil? ? 'none' : link_to("Best", sub) %></td>
+    </tr>
+    <% end %>
+  </table>
+  
 <% end %>
 
-<table class="pretty-list">
-  <tr>
-    <th>Student</th>
-    <th>Date</th>
-    <th>Score</th>
-    <th>Status</th>
-    <th>Link</th>
-  </tr>
 
-<% @course.student_registrations.each do |sreg| %>
-  <% sub = @assignment.best_submission_for(sreg.user) %>
-  <tr>
-    <td><%= sreg.user.name %></td>
-    <td><%= sub.nil? ? 'none' : sub.created_at %></td>
-    <td><%= show_score(@assignment.best_score_for(sreg.user))
-        %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
-    <td><%= image_tag @assignment.best_score_image_for(sreg.user),
-	              :height => 32 %></td>
-    <td><%= sub.nil? ? 'none' : link_to("Best", sub) %></td>
-  </tr>
-<% end %>
-</table>
-
-<% end %>
 
 <h1>Your Submissions</h1>
 

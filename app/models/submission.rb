@@ -6,6 +6,7 @@ class Submission < ActiveRecord::Base
   attr_accessible :secret_dir, :file_name
   attr_accessible :grading_output, :grading_uid
   attr_accessible :teacher_score, :teacher_notes
+  attr_accessible :ignore_late_penalty
 
   belongs_to :assignment
   belongs_to :user
@@ -62,27 +63,32 @@ class Submission < ActiveRecord::Base
     due_on = assignment.due_date.to_time
     sub_on = created_at
     late_days = (sub_on - due_on) / 1.day
-    late_days.floor
+    late_days.ceil
   end
 
   def late_penalty
     # Returns multiplier for post-penalty score.
-    return 1.0 unless late?
+    return 0.0 unless late?
+    return 0.0 if ignore_late_penalty?
     
     (pen, del, max) = course.late_opts
 
     percent_off = (days_late / del) * pen
     percent_off = max if percent_off > max
     
-    1.0 - (percent_off / 100.0)
+    percent_off / 100.0
+  end
+
+  def late_mult
+    1.0 - late_penalty
   end
 
   def score
     if teacher_score
-      return teacher_score
+      teacher_score * late_mult
     else
       return 0 if raw_score.nil?
-      raw_score * late_penalty
+      raw_score * late_mult
     end
   end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120916024043) do
+ActiveRecord::Schema.define(:version => 20120923191936) do
 
   create_table "answers", :force => true do |t|
     t.integer  "question_id", :null => false
@@ -90,8 +90,8 @@ ActiveRecord::Schema.define(:version => 20120916024043) do
   add_index "registrations", ["user_id"], :name => "index_registrations_on_user_id"
 
   create_table "submissions", :force => true do |t|
-    t.integer  "assignment_id",  :null => false
-    t.integer  "user_id",        :null => false
+    t.integer  "assignment_id",                          :null => false
+    t.integer  "user_id",                                :null => false
     t.string   "secret_dir"
     t.string   "file_name"
     t.integer  "raw_score"
@@ -100,8 +100,9 @@ ActiveRecord::Schema.define(:version => 20120916024043) do
     t.text     "teacher_notes"
     t.integer  "grading_uid"
     t.text     "grading_output"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.boolean  "ignore_late_penalty", :default => false
   end
 
   add_index "submissions", ["assignment_id"], :name => "index_submissions_on_assignment_id"

@@ -1,0 +1,31 @@
+<% @page_title = "Submissions by #{@user.name} for #{@assignment.name}" %>
+
+<p>
+  <%= link_to "Back to Assignment", @assignment %> |
+  <%= link_to "Back to Student Report", @registration %>
+</p>
+
+<table class="pretty-list">
+  <tr>
+    <th>Date</th>
+    <th>Score</th>
+    <th>Status</th>
+    <th>Link</th>
+  </tr>
+
+<% @submissions.each do |sub| %>
+  <tr>
+    <td><%= sub.created_at %></td>
+    <td><%= show_score(sub.score) %></td>
+    <td><%= image_tag sub.score_image, :height => 32 %></td>
+    <td>
+      <%= link_to "View", sub %>
+
+      <% if @logged_in_user.course_admin?(@course) %>
+        | <%= link_to "Grade", [:edit, sub] %>
+      <% end %>
+    </td>
+  </tr>
+<% end %>
+
+</table>

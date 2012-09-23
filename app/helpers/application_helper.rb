@@ -18,6 +18,13 @@ module ApplicationHelper
 
   def show_score(score, assignment = nil)
     assignment ||= @assignment
+
+    if score.nil?
+      score = "no data"
+    else
+      score = score.round(1)
+    end
+
     return score if assignment.nil?
     if assignment.hide_grading?
       if @logged_in_user.course_admin?(@course)
@@ -28,5 +35,14 @@ module ApplicationHelper
     else
       score
     end
+  end
+
+  def registration_assignment_submissions_path(reg, assign)
+    "/registrations/#{reg.id}/submissions_for_assignment/#{assign.id}"
+  end
+
+  def user_assignment_submissions_path(user, assign)
+    reg = Registration.find_by_user_id_and_course_id(user.id, assign.course.id)
+    registration_assignment_submissions_path(reg, assign)
   end
 end

@@ -32,6 +32,7 @@ class SubmissionsController < ApplicationController
       @submission.user_id ||= @logged_in_user.id
     else
       @submission.user_id = @logged_in_user.id
+      @submission.ignore_late_penalty = false
     end
 
     if @submission.save
@@ -73,6 +74,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new
     @submission.assignment_id = @assignment.id
     @submission.file_name = "none"
+    @submission.ignore_late_penalty = true
 
     @users = @course.users
   end

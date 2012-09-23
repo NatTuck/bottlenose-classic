@@ -1,6 +1,10 @@
-<h1>Editing registration</h1>
+<% @page_title = "Edit Course Registration" %>
+
+<p>
+<%= link_to 'View Student Report', [@course, @registration] %> |
+<%= link_to 'Back to Manage Registrations', course_registrations_path(@course) %>
+</p>
+
+<p><strong>Course:</strong> <%= @course.name %></p>
 
 <%= render 'form' %>
-
-<%= link_to 'Show', [@course, @registration] %> |
-<%= link_to 'Back', course_registrations_path(@course) %>

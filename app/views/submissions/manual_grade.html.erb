@@ -6,6 +6,7 @@
 
 <%= form_for [@assignment, @submission] do |f| %>
 <%= f.hidden_field :assignment_id %>
+<%= f.hidden_field :ignore_late_penalty %>
 <%= f.hidden_field :file_name %>
 
 <table class="edit-form">

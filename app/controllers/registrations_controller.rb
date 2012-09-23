@@ -64,6 +64,11 @@ class RegistrationsController < ApplicationController
     redirect_to course_registrations_path(@course)
   end
 
+  def submissions_for_assignment
+    @assignment  = Assignment.find(params[:assignment_id])
+    @submissions = @assignment.submissions_for(@user)
+  end
+
   private
 
   def find_registration
