@@ -15,7 +15,7 @@ class Answer < ActiveRecord::Base
   delegate :course, :to => :question
 
   def late?
-    updated_at > question.due_date
+    created_at > question.due_date
   end
 
   def score
