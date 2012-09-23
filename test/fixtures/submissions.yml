@@ -14,3 +14,11 @@ john_lambda:
   raw_score: 50
   student_notes: This one was harder.
   file_name: fake.tar.gz
+
+alan_hello:
+  assignment: hello
+  user: alan
+  raw_score: 29.33377294
+  student_notes: Somehow I got a weird score.
+  file_name: fake.tar.gz
+  created_at: '2037-11-14'

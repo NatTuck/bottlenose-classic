@@ -25,3 +25,13 @@ john:
   name: John Fertitta
   email: john@example.com
   auth_key: "-hbGlzkD7_2GwnnZEv7hgw"
+
+mike:
+  name: Mike McGuinness
+  email: mike@example.com
+  auth_key: "yet_another_auth_key"
+
+jack:
+  name: Jack McGetsDeleted
+  email: jack@example.com
+  auth_key: "xhbElzkD7_2GwnnZEv7hgw"

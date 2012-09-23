@@ -27,7 +27,12 @@ class SubmissionsController < ApplicationController
   def create
     @submission = Submission.new(params[:submission])
     @submission.assignment_id = @assignment.id
-    @submission.user_id = @logged_in_user.id
+
+    if @logged_in_user.course_admin?(@course)
+      @submission.user_id ||= @logged_in_user.id
+    else
+      @submission.user_id = @logged_in_user.id
+    end
 
     if @submission.save
       @submission.grade!

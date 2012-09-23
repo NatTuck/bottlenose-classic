@@ -1,6 +1,8 @@
 <% @page_title = "View Submission" %>
 
-<p><%= link_to 'Back to Assignment', @assignment %></p>
+<p><%= link_to "Back to Assignment: #{@assignment.name}", @assignment %></p>
+
+<h1>Submission from <%= @submission.user.name %></h1>
 
 <h1>Student Notes</h1>
 

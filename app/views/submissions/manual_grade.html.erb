@@ -1,5 +1,7 @@
 <% @page_title = "Manually Add Grade" %>
 
+<p><%= link_to "Back to Assignment", @assignment %></p>
+
 <h1>Create grade for assignment: <%= @assignment.name %></h1>
 
 <%= form_for [@assignment, @submission] do |f| %>

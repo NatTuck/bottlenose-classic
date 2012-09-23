@@ -9,3 +9,8 @@ john_cs301:
   course: cs301
   user: john
   teacher: 
+
+alan_cs101:
+  course: cs301
+  user: alan
+  teacher:

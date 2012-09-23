@@ -5,9 +5,30 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
   setup do
     @john = users(:john)
     @fred = users(:fred)
+    @alan = users(:alan)
 
     @tars_dir = Rails.root.join('test', 'fixtures', 'files')
     @pub_dir  = Rails.root.join('public')
+  end
+
+  test "teacher manually submit a grade" do
+
+    @assignment = Assignment.find_by_name("Lambda Time")
+
+    visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"    
+    click_link 'Your Courses'
+    click_link '01. Organization of Programming Languages'
+    click_link 'The Substitution Model'
+    click_link 'Lambda Time'
+    click_link 'Manually Add Student Grade'
+
+    select 'Alan Rosenthal',  :from => 'submission[user_id]'
+    fill_in 'submission[teacher_notes]', :with => 'manually entered grade'
+    fill_in 'submission[teacher_score]', :with => '85'
+    click_button 'Save changes'
+
+    @submission = Submission.find_by_teacher_notes('manually entered grade')
+    assert_equal @alan.id, @submission.user_id
   end
 
   test "submit and grade a submission" do
@@ -15,7 +36,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
 
     click_link 'Your Courses'
-    click_link 'Organization of Programming Languages'
+    click_link '01. Organization of Programming Languages'
     click_link 'Intro to Scheme'
     click_link 'Hello, World'
     click_link 'Edit this Assignment'
