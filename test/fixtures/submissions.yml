@@ -8,9 +8,26 @@ john_hello:
   file_name: fake.tar.gz
   created_at: '2037-11-14'
 
+john_hello2:
+  assignment: hello
+  user: john
+  raw_score: 100
+  student_notes: I did the stuff.
+  file_name: fake.tar.gz
+  created_at: '2037-11-15'
+  ignore_late_penalty: true
+
 john_lambda:
   assignment: lambda_time
   user: john
   raw_score: 50
   student_notes: This one was harder.
   file_name: fake.tar.gz
+
+alan_hello:
+  assignment: hello
+  user: alan
+  raw_score: 29.33377294
+  student_notes: Somehow I got a weird score.
+  file_name: fake.tar.gz
+  created_at: '2037-11-14'

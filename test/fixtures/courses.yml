@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 cs301:
-  name: Organization of Programming Languages
+  name: "01. Organization of Programming Languages"
   late_options: "10,1,50"
 
 cs599:
-  name: Directed Study in Deleting Courses
+  name: "02. Directed Study in Deleting Courses"
   late_options: "10,1,50"

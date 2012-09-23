@@ -1,6 +1,49 @@
-<h1>Editing submission</h1>
+<% @page_title = "Grade a Submission" %>
 
-<%= render 'form' %>
+<p><%= link_to "Back to Submission", @submission %></p>
 
-<%= link_to 'Show', @submission %> |
-<%= link_to 'Back', submissions_path %>
+<table class="pretty-list">
+  <tr>
+    <td><strong>Assignment</strong></td>
+    <td><%= @submission.assignment.name %></td>
+  </tr>
+  <tr>
+    <td><strong>Student</strong></td>
+    <td><%= @submission.user.name %></td>
+  </tr>
+  <tr>
+    <td><strong>Submitted File</strong></td>
+    <td><%= link_to @submission.file_name, @submission.file_path %></td>
+  </tr>
+  <tr>
+    <td><strong>Student Notes</strong></td>
+    <td><%= @submission.student_notes %></td>
+  </tr>
+  <tr>
+    <td><strong>Late?</strong></td>
+    <td><%= @submission.late? ? "Yes" : "No" %></td>
+  </tr>
+  <% if @submission.late? %>
+  <tr>
+    <td><strong>Days Late</strong></td>
+    <td><%= @submission.days_late %></td>
+  </tr>
+  <tr>
+    <td><strong>Late Penalty</strong></td>
+    <td><%= 100.0 * @submission.late_penalty %>%</td>
+  </tr>
+  <% end %>
+</table>
+
+<h1>Grade this Submission</h1>
+
+<%= form_for @submission do |f| %>
+<p>Teacher Comments: <br>
+  <%= f.text_area :teacher_notes, :class => "rich-text" %>
+</p>
+<p>Score: <%= f.text_field :teacher_score, :size => 10 %> / 
+  <%= @assignment.points_available %></p>
+<p>Ignore Late Penalty: <%= f.check_box :ignore_late_penalty %></p>
+<p><%= f.submit "Set Teacher Score" %></p>
+<% end %>
+</div>

@@ -4,6 +4,7 @@ class UsersControllerTest < ActionController::TestCase
   setup do
     @admin = users(:ken)
     @user  = users(:alan)
+    @jack  = users(:jack)
   end
 
   test "should get index" do
@@ -50,7 +51,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should destroy user" do
     assert_difference('User.count', -1) do
-      delete :destroy, {id: @user}, {:user_id => @admin.id}
+      delete :destroy, {id: @jack}, {:user_id => @admin.id}
     end
 
     assert_redirected_to users_path

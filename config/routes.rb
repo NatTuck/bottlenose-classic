@@ -17,6 +17,9 @@ Bottlenose::Application.routes.draw do
 
   resources :registrations, :except => [:new]
 
+  match 'registrations/:id/submissions_for_assignment/:assignment_id' =>
+    'registrations#submissions_for_assignment'
+
   resources :chapters do
     resources :lessons
     resources :assignments

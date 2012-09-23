@@ -1,17 +1,33 @@
 <% @page_title = "View Submission" %>
 
-<p><%= link_to 'Back to Assignment', @assignment %></p>
-
-<h1>Student Notes</h1>
-
 <p>
-  <%= @submission.student_notes %>
+  <%= link_to "Back to Assignment: #{@assignment.name}", @assignment %>
+
+  <% if @logged_in_user.course_admin?(@course) %>
+    | <%= link_to "Grade this Submission", [:edit, @submission] %>
+  <% end %>
 </p>
 
-<h1>Submitted File</h1>
-<p>
-  <%= link_to @submission.file_name, @submission.file_path %>
-</p>
+<h1>Submission</h1>
+
+<table class="pretty-list">
+  <tr>
+    <td><strong>Assignment</strong></td>
+    <td><%= @submission.assignment.name %></td>
+  </tr>
+  <tr>
+    <td><strong>Student</strong></td>
+    <td><%= @submission.user.name %></td>
+  </tr>
+  <tr>
+    <td><strong>Submitted File</strong></td>
+    <td><%= link_to @submission.file_name, @submission.file_path %></td>
+  </tr>
+  <tr>
+    <td><strong>Student Notes</strong></td>
+    <td><%= @submission.student_notes %></td>
+  </tr>
+</table>
 
 <h1>Score</h1>
 
@@ -26,6 +42,16 @@
   <td><%= show_score(@submission.teacher_score) || "no data" %> / 
     <%= @assignment.points_available %></td>
 </tr>
+<% if @submission.late? %>
+<tr>
+  <td>Days Late:</td>
+  <td><%= @submission.days_late %></td>
+</tr>
+<tr>
+  <td>Late Penalty:</td>
+  <td><%= 100.0 * @submission.late_penalty %>%</td>
+</tr>
+<% end %>
 <tr>
   <td>Current Score:</td>
   <td><%= show_score(@submission.score) %> /
@@ -34,11 +60,6 @@
 </table>
 
 <h1>Teacher Notes</h1>
-
-<% if @logged_in_user.course_admin?(@course) %>
-<p><%= link_to_function "Show / Hide Teacher Grading Form", 
-       "$('#edit-teacher-score').toggle();" %></p>
-<% end %>
 
 <% if @assignment.hide_grading? %>
 
@@ -49,28 +70,9 @@
 <% if (not @assignment.hide_grading?) or @logged_in_user.course_admin?(@course) %>
 
 <div>
-<%= raw @submission.teacher_notes %>
+<%= raw @submission.teacher_notes || 'no data' %>
 </div>
 
-<% end %>
-
-<% if @logged_in_user.course_admin?(@course) %>
-  <div id="edit-teacher-score">
-  <h1>Set Teacher Score</h1>
-
-  <%= form_for @submission do |f| %>
-  <p>Teacher Comments: <br>
-     <%= f.text_area :teacher_notes, :class => "rich-text" %>
-  </p>
-  <p>Score: <%= f.text_field :teacher_score, :size => 10 %> / 
-    <%= @assignment.points_available %></p>
-  <p><%= f.submit "Set Teacher Score" %></p>
-  <% end %>
-  </div>
-
-  <script>
-    $(function() {$('#edit-teacher-score').hide(); });
-  </script>
 <% end %>
 
 <h1>Grading Process</h1>

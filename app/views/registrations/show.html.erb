@@ -34,6 +34,7 @@
   <tr>
     <th>Chapter</th>
     <th>Name</th>
+    <th>Attempts</th>
     <th>Score</th>
     <th>Status</th>
     <th>Submission</th>
@@ -51,6 +52,9 @@
     <tr>
       <td><%= chapter.name %></td>
       <td><%= assignment.name %></td>
+      <td><%= assignment.submissions_for(@user).count %>
+	(<%= link_to "List", user_assignment_submissions_path(@user, assignment) %>)
+      </td>
       <td><%= show_score(assignment.best_score_for(@user), assignment)
 	%>&nbsp;/&nbsp;<%= assignment.points_available %></td>
       <td>
@@ -64,8 +68,10 @@
 <tr>
   <td><strong>Total</strong></td>
   <td>&nbsp;</td>
+  <td>&nbsp;</td>
   <td><%= score_sum %> / <%= score_total %></td>
   <td>( <%=  100.0 * score_sum / score_total %>% )</td>
+  <td>&nbsp;</td>
 </tr>
 
 </table>
