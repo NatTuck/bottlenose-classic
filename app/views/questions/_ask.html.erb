@@ -19,7 +19,7 @@
   <tr>
     <td><%= image_tag "check-mark.png", :height => 100 %></td>
     <td><p>Your correct answer has been saved. 
-	<% unless @question.video.nil? %>
+	<% unless @question.video.nil? || @question.video.empty? %>
 	There is an <%= link_to "explaination video", @question %> for this question.
 	<% end %>
     </p></td>
@@ -36,7 +36,7 @@
     <td>
       <p>Your wrong answer has been saved.
 
-	<% unless @question.video.nil? %>
+	<% unless @question.video.nil? || @question.video.empty? %>
 	There is an <%= link_to "explaination video", @question %> for this question.
 	<% end %>
 
