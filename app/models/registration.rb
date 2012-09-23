@@ -28,6 +28,6 @@ class Registration < ActiveRecord::Base
       total += aa.points_available
       score += aa.best_score_for(user)
     end
-    "#{score} / #{total}"
+    "#{score.round(1)} / #{total.round(1)}"
   end
 end
