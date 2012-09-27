@@ -120,7 +120,18 @@ class Assignment < ActiveRecord::Base
   end
 
   def best_submission_for(user)
-    submissions.where(user_id: user.id).sort_by {|ss| ss.score}.last
+    subs = submissions_for(user)
+    if subs.empty?
+      Submission.new(user_id: user.id, assignment_id: self.id, file_name: "none")
+    else
+      subs.sort_by {|ss| ss.created_at}.last
+    end
+  end
+
+  def best_submissions
+    course.student_registrations.sort_by {|sr| sr.user.name}.map do |sreg|
+      best_submission_for(sreg.user)
+    end
   end
 
   def best_score_for(user)

@@ -20,6 +20,10 @@
     <td><%= @submission.user.name %></td>
   </tr>
   <tr>
+    <td><strong>Submission Time</strong></td>
+    <td><%= @submission.created_at %></td>
+  </tr>
+  <tr>
     <td><strong>Submitted File</strong></td>
     <td><%= link_to @submission.file_name, @submission.file_path %></td>
   </tr>

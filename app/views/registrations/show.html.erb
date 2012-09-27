@@ -57,9 +57,7 @@
       </td>
       <td><%= show_score(assignment.best_score_for(@user), assignment)
 	%>&nbsp;/&nbsp;<%= assignment.points_available %></td>
-      <td>
-	<%= image_tag assignment.best_score_image_for(@user), :height => 32 %></td>
-      </td>
+      <td><%= status_image(sub) %></td>
       <td><%= link_to "Best", sub %></td>
     </tr>
   <% end %>
@@ -69,7 +67,7 @@
   <td><strong>Total</strong></td>
   <td>&nbsp;</td>
   <td>&nbsp;</td>
-  <td><%= score_sum %> / <%= score_total %></td>
+  <td><%= score_sum %>&nbsp;/&nbsp;<%= score_total %></td>
   <td>( <%=  100.0 * score_sum / score_total %>% )</td>
   <td>&nbsp;</td>
 </tr>

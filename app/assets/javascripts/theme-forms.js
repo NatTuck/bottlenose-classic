@@ -1,5 +1,6 @@
 
-$(function() {
+function bottlenose_theme_forms()
+{
     $('select').combobox();
 
     $('input:text, input:password')
@@ -17,5 +18,7 @@ $(function() {
     $('.rich-text').each(function (ii) {
 	new nicEditor({iconsPath: '/assets/nicEditorIcons.gif'}).panelInstance(this.id);
     });
-});
+}
+
+$(bottlenose_theme_forms);
 
