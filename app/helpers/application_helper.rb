@@ -45,11 +45,13 @@ module ApplicationHelper
       return image_tag("/assets/wait-mark.gif", :height => 32)
     end
 
-    if sub.score > 0
-      image_tag("/assets/check-mark.png", :height => 32)
-    else
-      image_tag("/assets/cross-mark.png", :height => 32)
+    return image_tag("/assets/cross-mark.png", :height => 32) if sub.score == 0
+
+    if sub.score == sub.assignment.points_available 
+      return image_tag("/assets/check-mark.png", :height => 32) 
     end
+
+    return image_tag("/assets/cminus-mark.png", :height => 32)
   end
 
   def registration_assignment_submissions_path(reg, assign)

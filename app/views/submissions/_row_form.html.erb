@@ -25,5 +25,5 @@
   <% end %>
 </td>
 <td>
-  <%= sub.score %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
+  <%= sub.score.round(2) %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
 <td><%= sub.new_record? ? '-' : link_to("Full Submission", sub) %></td>
