@@ -1,5 +1,5 @@
 class RegistrationsController < ApplicationController
-  before_filter :require_teacher, :except => [:show]
+  before_filter :require_teacher, :except => [:show, :submissions_for_assignment]
   before_filter :require_logged_in_user
   prepend_before_filter :find_registration, :except => [:index, :new, :create]
 

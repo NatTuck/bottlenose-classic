@@ -8,16 +8,20 @@
 <table class="pretty-list">
   <tr>
     <th>Date</th>
-    <th>Score</th>
     <th>Status</th>
+    <th>Automatic</th>
+    <th>Teacher</th>
+    <th>Score</th>
     <th>Link</th>
   </tr>
 
 <% @submissions.each do |sub| %>
   <tr>
     <td><%= sub.created_at %></td>
-    <td><%= show_score(sub.score) %></td>
-    <td><%= image_tag sub.score_image, :height => 32 %></td>
+    <td><%= status_image(sub) %></td>
+    <td><%= sub.raw_score || '∅' %>&nbsp;/&nbsp;<%= sub.assignment.points_available %></td>
+    <td><%= show_score(sub.teacher_score) %>&nbsp;/&nbsp;<%= sub.assignment.points_available %></td>
+    <td><%= show_score(sub.score) %>&nbsp;/&nbsp;<%= sub.assignment.points_available %></td>
     <td>
       <%= link_to "View", sub %>
 

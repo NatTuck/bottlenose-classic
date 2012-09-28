@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module ApplicationHelper
   def select_user_hash(users = nil)
     users ||= User.all
@@ -20,7 +21,7 @@ module ApplicationHelper
     assignment ||= @assignment
 
     if score.nil?
-      score = "no data"
+      score = '∅'
     else
       score = score.round(1)
     end
@@ -34,6 +35,20 @@ module ApplicationHelper
       end
     else
       score
+    end
+  end
+
+  def status_image(sub)
+    return image_tag("/assets/null-mark.png", :height => 32) if (sub.nil? || sub.new_record?)
+
+    if sub.raw_score.nil? and sub.teacher_score.nil?
+      return image_tag("/assets/wait-mark.gif", :height => 32)
+    end
+
+    if sub.score > 0
+      image_tag("/assets/check-mark.png", :height => 32)
+    else
+      image_tag("/assets/cross-mark.png", :height => 32)
     end
   end
 
