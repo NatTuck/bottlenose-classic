@@ -1,6 +1,9 @@
 <% @page_title = "Grade a Submission" %>
 
-<p><%= link_to "Back to Submission", @submission %></p>
+<p>
+  <%= link_to "Back to Submission", @submission %> |
+  <%= link_to "Back to Assignment: #{@assignment.name}", @assignment %>
+</p>
 
 <table class="pretty-list">
   <tr>

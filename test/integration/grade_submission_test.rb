@@ -11,8 +11,24 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     @pub_dir  = Rails.root.join('public')
   end
 
-  test "teacher manually submit a grade" do
+  test "teacher sets ignore late penalty flag" do
+    @assignment = Assignment.find_by_name("Hello, World")
+    @submission = submissions(:alan_hello)
 
+    assert_equal @submission.late_penalty, 0.5
+    assert_equal @submission.ignore_late_penalty?, false
+
+    visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"    
+    visit 'http://test.host/' + edit_submission_path(@submission)
+
+    check 'submission[ignore_late_penalty]'
+    click_button 'Set Teacher Score'
+
+    @submission = Submission.find(@submission.id)
+    assert_equal @submission.ignore_late_penalty?, true
+  end
+
+  test "teacher manually submit a grade" do
     @assignment = Assignment.find_by_name("Lambda Time")
 
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"    
