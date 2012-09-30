@@ -1,0 +1,8 @@
+"Assignment","Student","Submitted?","Automatic Score","Teacher Score","Days Late","Late Penalty","Effective Score"
+<% @subs.each do |sub| %>
+<% if sub.new_record? %>
+"<%= sub.assignment.name %>","<%= sub.user.name %>","no",0,0,0,0,0
+<% else %>
+"<%= sub.assignment.name %>","<%= sub.user.name %>","yes",<%= sub.raw_score %>,<%= sub.teacher_score %>,<%= sub.days_late %>,<%= sub.late_penalty %>,<%= sub.score %>
+<% end %>
+<% end %>

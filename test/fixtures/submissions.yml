@@ -23,6 +23,7 @@ john_lambda:
   raw_score: 50
   student_notes: This one was harder.
   file_name: fake.tar.gz
+  created_at: '2037-11-15'
 
 alan_hello:
   assignment: hello
