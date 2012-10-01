@@ -2,8 +2,20 @@ class CoursesController < ApplicationController
   before_filter :find_course, :except => [:index, :new, :create]
   before_filter :require_logged_in_user
   before_filter :require_student,  :except => [:index, :new, :create, :destroy]
+  before_filter :require_teacher,    :only => [:export_grades]
   before_filter :require_site_admin, :only => [:new, :create, :destroy]
   
+  def export_grades
+    @subs = []
+    @course.assignments.each do |assignment|
+      assignment.best_submissions.each do |sub|
+        @subs << sub
+      end
+    end
+
+    render :formats => [:text]
+  end
+
   def index
     if @logged_in_user.site_admin?
       @courses = Course.order(:name)

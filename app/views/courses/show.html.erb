@@ -53,4 +53,8 @@
 
 <p><%= link_to "Manage Registrations", course_registrations_path(@course) %></p>
 
+<h1>Data Export</h1>
+
+<p><%= link_to "Get CSV for Assignment Grades", course_path(@course) + '/export_grades' %></p>
+
 <% end %>

@@ -60,6 +60,7 @@ class Submission < ActiveRecord::Base
   end
 
   def days_late
+    return 0 unless late?
     due_on = assignment.due_date.to_time
     sub_on = created_at
     late_days = (sub_on - due_on) / 1.day

@@ -82,4 +82,10 @@ class CoursesControllerTest < ActionController::TestCase
     assert_response :redirect
     assert_match "don't have permission", flash[:error]
   end
+
+  test "should export grades" do
+    get :export_grades, {:id => @course.id}, {:user_id => @prof.id}
+    assert_match "John Fertitta", @response.body
+    assert_response :ok
+  end
 end

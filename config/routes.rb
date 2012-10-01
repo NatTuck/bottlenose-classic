@@ -15,6 +15,8 @@ Bottlenose::Application.routes.draw do
     resources :chapters
   end
 
+  match 'courses/:id/export_grades' => 'courses#export_grades'
+
   resources :registrations, :except => [:new]
 
   match 'registrations/:id/submissions_for_assignment/:assignment_id' =>
