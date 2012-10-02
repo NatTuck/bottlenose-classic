@@ -40,26 +40,39 @@ class SubmissionsController < ApplicationController
       redirect_to @submission, notice: 'Submission was successfully created.'
     else
       @submission.cleanup!
-      render action: "new"
+      respond_to do |format|
+        format.html { render action: "new"  }
+        format.js   { render action: "show", sub: @submission }
+      end
     end
   end
 
   def update
-    @up = Submission.new(params[:submission])
-
-    unless @up.teacher_score.nil?
-      @submission.teacher_score = @up.teacher_score
-      @submission.teacher_notes = @up.teacher_notes
-      @submission.save!
-      redirect_to @submission, notice: 'Teacher score set.'
-      return
+    if false
+      @up = Submission.new(params[:submission])
+      
+      puts params[:submission][:teacher_score]
+      sleep 10
+      
+      unless @up.teacher_score.nil?
+        @submission.teacher_score = @up.teacher_score
+        @submission.teacher_notes = @up.teacher_notes
+        if @submission.save
+          redirect_to @submission, notice: 'Teacher score set.'
+        else 
+          redirect_to [:edit, @submission], error: 'Setting teacher score failed.'        
+        end
+        return
+      end
     end
 
     if @submission.update_attributes(params[:submission])
       redirect_to @submission, notice: 'Submission was successfully updated.'
     else
-      @submission.cleanup!
-      render action: "edit"
+      respond_to do |format|
+        format.html { render action: "edit" }
+        format.js   { render action: "show", sub: @submission }
+      end
     end
   end
 

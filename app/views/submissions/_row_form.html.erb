@@ -1,31 +1,47 @@
 <td><%= sub.user.name %></td>
-<td><%= sub.new_record? ? 0 : sub.assignment.submissions_for(sub.user).count %>
-  (<%= link_to "List", user_assignment_submissions_path(sub.user, @assignment) %>)
-</td>
-<td><%= sub.created_at ? sub.created_at.to_date : 'none' %></td>
-<td><%= status_image(sub) %></td>
-<td><%= sub.raw_score || '∅' %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
+
+<% if sub.errors.any? %>
+  <td colspan="4">
+    <div id="error_explanation">
+      <h2><%= pluralize(@submission.errors.count, "error") %> prohibited this 
+	submission from being saved:</h2>
+
+      <ul>
+      <% @submission.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  </td>
+<% else %>
+  <td><%= sub.new_record? ? 0 : sub.assignment.submissions_for(sub.user).count %>
+    (<%= link_to "List", user_assignment_submissions_path(sub.user, @assignment) %>)
+  </td>
+  <td><%= sub.created_at ? sub.created_at.to_date : 'none' %></td>
+  <td><%= status_image(sub) %></td>
+  <td><%= sub.raw_score || '∅' %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
+<% end %>
+
+<style> .field_with_errors {  display:inline-block; } </style>
+
 <td>
   <% if sub.new_record? %>
     <%= form_for [sub.assignment, sub], :remote => true do |f| %>
     <%= f.hidden_field :user_id %>
     <%= f.hidden_field :assignment_id %>
     <%= f.hidden_field :file_name %>
-    <%= f.text_field :teacher_score, :size => 8 %>
-    <%= f.submit %>
+    <%= f.text_field :teacher_score, :size => 8 %>&nbsp;<%= f.submit %>
     <% end %>
   <% else %>
     <%= form_for sub, :remote => true do |f| %>
     <%= f.hidden_field :user_id %>
     <%= f.hidden_field :assignment_id %>
     <%= f.hidden_field :file_name %>
-    <%= f.text_field :teacher_score, :size => 8 %>
-    <%= f.submit %>
+    <%= f.text_field :teacher_score, :size => 8 %>&nbsp;<%= f.submit %>
     <% end %>
   <% end %>
 </td>
-<td>
-  <%= sub.score.round(2) %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
+<td><%= sub.score.round(2) %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
 <td>
   <% if sub.new_record? %>
     - 

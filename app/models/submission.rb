@@ -15,6 +15,9 @@ class Submission < ActiveRecord::Base
   validates :user_id,       :presence => true
   validates :file_name,     :presence => true
 
+  validates :teacher_score, :numericality => true, :allow_nil => true
+  validates :raw_score,     :numericality => true, :allow_nil => true
+
   validate :user_is_registered_for_course
 
   delegate :course, :to => :assignment
@@ -56,6 +59,7 @@ class Submission < ActiveRecord::Base
   end
 
   def late?
+    return false if new_record?
     created_at.to_date > assignment.due_date
   end
 
