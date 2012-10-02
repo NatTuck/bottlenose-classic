@@ -60,10 +60,10 @@
       <td><%= show_score(assignment.best_score_for(@user), assignment)
 	%>&nbsp;/&nbsp;<%= assignment.points_available %></td>
       <td>
-	<% if sub.teacher_score? %>
-	  Human
-	<% else %>
+	<% if sub.teacher_score.nil? %>
 	  Computer
+	<% else %>
+	  Human
 	<% end %>
       </td>
       <td><%= link_to "Best", sub %></td>
