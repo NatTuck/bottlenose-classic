@@ -64,6 +64,9 @@ rescue Exception => ee
   output_lines = []
 end
 
+# Make sure everything's cleaned up.
+system("/usr/local/bottlenose/bin/sandbox", "-reap", "#{sub.grading_uid}")
+
 # Process results
 if output_lines.any? {|xx| xx.match(output_key)}
   require 'array_split'
@@ -82,7 +85,8 @@ end
 # Clean up afterwards.
 
 if File.exists?("#{test_dir}/sandbox/bin/bash")
-  puts "Cannot clean up. Loopback mounts still exist"
+  puts "Loopback mounts still exist. Calling in the reaper man."
+  system(%Q{cd #{Rails.root} && script/sandbox-reaper})
 else
   system(%Q{rm --one-file-system -rf "#{test_dir}"}) if test_dir.match(/^\/tmp/)
 end
