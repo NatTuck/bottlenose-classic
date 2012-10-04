@@ -8,6 +8,8 @@
 #include <sys/wait.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <alloca.h>
+#include <string.h>
 
 const char*  DIR_SETUP_CMD    = "/usr/local/bottlenose/scripts/setup-directory.sh sandbox";
 const char*  DIR_TEARDOWN_CMD = "/usr/local/bottlenose/scripts/teardown-directory.sh sandbox";
@@ -85,17 +87,58 @@ run_in_sandbox(int uid, const char* cmd)
   }
 }
 
+void
+reap_user(int uid)
+{
+  char* tmp = alloca(100);
+  snprintf(tmp, 100, "ps --no-headers -o pid -u %d | xargs -r -n 1 kill -9", uid);
+  system(tmp);
+}
+
+void
+show_usage()
+{
+  printf("Usage:\n");
+  printf("  sandbox dir uid key\n");
+  printf("  sandbox -reap uid\n");
+  printf("  sandbox -teardown dir\n");
+}
+
 int
 main(int argc, char* argv[])
 {
   if (argc < 3) {
-    printf("Requires three arguments.");
+    show_usage();
+    return 1;
+  }
+
+  if (argc < 4) {
+    if (strcmp(argv[1], "-reap") == 0) {
+      int REAP_UID = atoi(argv[2]);
+      setreuid(0, 0);
+      reap_user(REAP_UID);
+      return 0;
+    }
+
+    if (strcmp(argv[1], "-teardown") == 0) {
+      setreuid(0, 0);
+      chdir(argv[2]);
+      system(DIR_TEARDOWN_CMD);
+      return 0;
+    }
+
+    show_usage();
     return 1;
   }
 
   const char* DIR = argv[1];
   int         UID = atoi(argv[2]);
   const char* KEY = argv[3];
+
+  if (DIR[0] == '-') {
+    show_usage();
+    return 1;
+  }
 
   setlinebuf(stdout);
   setreuid(0, 0);
