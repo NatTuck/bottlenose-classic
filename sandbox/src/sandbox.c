@@ -155,6 +155,7 @@ main(int argc, char* argv[])
   run_in_sandbox(UID, START_TEST_CMD);
   printf("%s\n", KEY);
 
+  reap_user(UID);  
   system(DIR_TEARDOWN_CMD);
 
   return 0;
