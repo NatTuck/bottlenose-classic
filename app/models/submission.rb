@@ -89,11 +89,11 @@ class Submission < ActiveRecord::Base
   end
 
   def score
-    if teacher_score
-      teacher_score * late_mult
-    else
+    if teacher_score.nil?
       return 0 if raw_score.nil?
       raw_score * late_mult
+    else
+      teacher_score * late_mult
     end
   end
 
