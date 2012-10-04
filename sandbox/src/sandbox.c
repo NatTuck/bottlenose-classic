@@ -37,9 +37,19 @@ watchdog_process(pid_t pid)
       kill(pid, SIGKILL);
       sleep(1);
     }
-
-    if ((pid2 = waitpid(pid, 0, WNOHANG))) {
-      printf("Sandbox process (%d) terminated.\n", pid2);
+    
+    int status;
+    if ((pid2 = waitpid(pid, &status, WNOHANG))) {
+      if (pid2 == -1) {
+        perror("Watchdog got error in waitpid");
+      }
+      else {
+        printf("Sandbox process (%d) terminated.\n", pid2);
+	if (WIFEXITED(status))
+	  printf("Exited with code %d.\n", WEXITSTATUS(status));
+        if (WIFSIGNALED(status))
+          printf("Killed by signal %d.\n", WTERMSIG(status));
+      }
       break;
     }
   }
@@ -57,6 +67,9 @@ run_in_sandbox(int uid, const char* cmd)
     uid = 5000 + (uid % 5000);
 
   if ((pid = fork())) {
+    watchdog_process(pid);
+  }
+  else {
     chdir("sandbox");
     chroot(".");
     
@@ -76,14 +89,14 @@ run_in_sandbox(int uid, const char* cmd)
     setreuid(uid, uid);
     
     chdir("/home/student");
+    printf("sandbox: running command\n");
    
     snprintf(tmp, 256, "(%s) 2>&1", cmd);
-    system(tmp);
+    int rv = system(tmp);
+
+    printf("sandbox: command exited with status %d\n", WEXITSTATUS(rv));
 
     exit(0);
-  }
-  else {
-    watchdog_process(pid);
   }
 }
 
