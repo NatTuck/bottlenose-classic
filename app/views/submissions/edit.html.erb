@@ -46,7 +46,7 @@
 </p>
 <p>Score: <%= f.text_field :teacher_score, :size => 10 %> / 
   <%= @assignment.points_available %></p>
-<p>Ignore Late Penalty: <%= f.check_box :ignore_late_penalty %></p>
+<p><%= f.label :ignore_late_penalty, "Ignore Late Penalty:" %> 
+   <%= f.check_box :ignore_late_penalty %></p>
 <p><%= f.submit "Set Teacher Score" %></p>
 <% end %>
-</div>
