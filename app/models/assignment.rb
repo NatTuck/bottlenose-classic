@@ -7,7 +7,7 @@ class Assignment < ActiveRecord::Base
   attr_accessible :points_available, :hide_grading
 
   belongs_to :chapter
-  has_many :submissions, :dependent => :destroy
+  has_many :submissions, :dependent => :restrict
 
   validates :name, :uniqueness => { :scope => :chapter_id }
   validates :name, :presence => true

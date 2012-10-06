@@ -66,9 +66,10 @@ class SubmissionsController < ApplicationController
 
   def destroy
     @submission = Submission.find(params[:id])
-    @submission.destroy
+    redirect_to @submission, :error => "Submission#destroy disabled."
 
-    redirect_to assignment_submissions_url(@assignment)
+    # @submission.destroy
+    # redirect_to assignment_submissions_url(@assignment)
   end
 
   def manual_grade
