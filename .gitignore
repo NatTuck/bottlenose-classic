@@ -23,3 +23,6 @@
 # Ignore uploaded files.
 /public/assignments/
 /public/submissions/
+
+# Other stuff
+.rbx

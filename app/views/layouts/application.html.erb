@@ -4,6 +4,8 @@
   <% default_page_title = "#{params[:controller]} / #{params[:action]}" %>
   <title><%= @page_title || default_page_title %>
     - Bottlenose Course Manager</title>
+  <%= favicon_link_tag 'site-icon.png', :type => 'image/png' %>
+  <%= favicon_link_tag 'site-icon.png', :rel => 'apple-touch-icon', :type => 'image/png' %>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
