@@ -1,13 +1,16 @@
 <div id="answer-form-<%= @question.id %>">
-  
-  <%= form_for [@question, @answer], :remote => true do %>
-  
   <div class="lesson-question">
     <%= raw @question.question %>
   </div>
+
+  <%= form_for [@question, @answer], :remote => true do %>
+
+  <div class="lesson-question-form">
+    <%= raw @question.question_form %>
+  </div>
   
   <div id="submit-button-<%= @question.id %>">
-    <p><%= submit_tag "Submit Answer" %></p>
+    <p><%= submit_tag "Submit Answer", class: 'answer-submit-button' %></p>
   </div>
   
   <% end %>
@@ -18,11 +21,15 @@
   <table>
   <tr>
     <td><%= image_tag "check-mark.png", :height => 100 %></td>
-    <td><p>Your correct answer has been saved. 
-	<% unless @question.video.nil? || @question.video.empty? %>
-	There is an <%= link_to "explaination video", @question %> for this question.
+    <td>
+      <p>Your correct answer has been saved.
+
+	<% unless @question.explanation.nil? || @question.explanation.empty? %>
+	There is an <%= link_to_function "explanation", 
+	"$('#answer-explanation-#{@question.id}').show();" %> for this question.
 	<% end %>
-    </p></td>
+      </p>
+    </td>
   </tr>
   </table>
 
@@ -36,8 +43,9 @@
     <td>
       <p>Your wrong answer has been saved.
 
-	<% unless @question.video.nil? || @question.video.empty? %>
-	There is an <%= link_to "explaination video", @question %> for this question.
+	<% unless @question.explanation.nil? || @question.explanation.empty? %>
+	There is an <%= link_to_function "explanation", 
+	"$('#answer-explanation-#{@question.id}').show();" %> for this question.
 	<% end %>
 
 	You can <%= link_to_function "click here", 
@@ -50,12 +58,27 @@
 
 </div>
 
+<div id="answer-explanation-<%= @question.id %>">
+  <p><%= link_to_function "Hide Explanation", 
+	 "$('#answer-explanation-#{@question.id}').hide();" %>
+  </p>
+
+  <%= raw @question.explanation %>
+</div>
+
 <% if @correct %>
   <%= javascript_tag "$('#submit-button-#{@question.id}').hide();" %>
 <% else %>
-  <%= javascript_tag "$('#answer-right-#{@question.id}').hide();" %>
-  <%= javascript_tag "$('#bonus-video-#{@question.id}').hide();" %>
+  <%= javascript_tag <<-"END_JS"
+    $('#answer-right-#{@question.id}').hide();
+    $('#bonus-video-#{@question.id}').hide();
+  END_JS
+  %>
 <% end %>
 
-<%= javascript_tag "$('#answer-wrong-#{@question.id}').hide();" %>
+<%= javascript_tag <<-"END_JS"
+  $('#answer-wrong-#{@question.id}').hide();
+  $('#answer-explanation-#{@question.id}').hide();
+END_JS
+%>
 

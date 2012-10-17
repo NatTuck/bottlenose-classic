@@ -1,14 +1,13 @@
 class Question < ActiveRecord::Base
-  attr_accessible :correct_answer, :lesson_id, :question, :video
+  attr_accessible :correct_answer, :lesson_id, :question, :question_form
+  attr_accessible :explanation
 
   belongs_to :lesson
   has_many :answers, :dependent => :destroy
 
   validates :lesson_id, :presence => true
-  validates :question,  :format => { 
-    :with    => /name=\"answer\[answer\]\"/,  
-    :message => "must have a form with an 'answer[answer]' field."}
-  
+  validates :question,  :presence => true
+
   delegate :course,  :to => :lesson
   delegate :chapter, :to => :lesson
 
@@ -17,9 +16,9 @@ class Question < ActiveRecord::Base
   end
 
   before_validation do
-    unless video.nil?
-      video.sub! /width="\d+"/, 'width="1120"'
-      video.sub! /height="\d+"/, 'height="630"'
+    unless explanation.nil?
+      explanation.sub! /width="\d+"/, 'width="1120"'
+      explanation.sub! /height="\d+"/, 'height="630"'
     end
   end
 
