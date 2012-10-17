@@ -21,11 +21,28 @@
     </tr>
     <tr>
       <td><%= f.label :question_form %></td>
-      <td><%= f.text_area :question_form %></td>
+      <td>
+	<p>Sample Forms:
+	  <select id="sample-form-id">
+	    <option>free-text-sample</option>
+	    <option>multiple-choice-sample</option>
+	    <option>pick-many-sample</option>
+	  </select>
+	  <%= link_to_function "Insert", 
+	      "$('#question_question_form').val(get_sample($('#sample-form-id').val()));" %>
+	</p>
+	<p><%= f.text_area :question_form %></p>
+	<p><%= link_to_function "Show Form", 
+	       "$('#question-form-preview').html($('#question_question_form').val());" %></p>
+      </td>
     </tr>
     <tr>
       <td><%= f.label :correct_answer %></td>
-      <td><%= f.text_field :correct_answer %></td>
+      <td>
+	<div id="question-form-preview">&nbsp;</div>
+	<p><%= link_to_function "Use preview answer", 
+	       "$('#question_correct_answer').val(answer_from_preview())" %>
+	<p><%= f.text_field :correct_answer %></p></td>
     </tr>
     <tr>
       <td><%= f.label :explanation %></td>
@@ -37,3 +54,61 @@
     </tr>
   </table>
 <% end %>
+
+<script>
+SAMPLES = {}
+
+SAMPLES['free-text-sample'] = '<%= escape_javascript <<-"END_RAW"
+<input type="text" name="answer[answer]" value="">
+END_RAW
+%>'
+
+SAMPLES['multiple-choice-sample'] = '<%= escape_javascript <<-"END_RAW"
+<input type="radio" name="answer[answer]" value="A"> Answer A<br>
+<input type="radio" name="answer[answer]" value="B"> Answer B<br>
+<input type="radio" name="answer[answer]" value="C"> Answer C<br>
+<input type="radio" name="answer[answer]" value="D"> Answer D<br>
+END_RAW
+%>'
+
+SAMPLES['pick-many-sample'] = '<%= escape_javascript <<-"END_RAW"
+<input type="hidden" id="answer-answer-#{@question.id}" name="answer[answer]" value="">
+<input type="checkbox" class="pick-many-#{@question.id}" name="ans-A" value="A"> Answer A<br>
+<input type="checkbox" class="pick-many-#{@question.id}" name="ans-B" value="B"> Answer B<br>
+<input type="checkbox" class="pick-many-#{@question.id}" name="ans-C" value="C"> Answer C<br>
+<input type="checkbox" class="pick-many-#{@question.id}" name="ans-D" value="D"> Answer D<br>
+
+<script>
+  function update_answer_#{@question.id}() {
+    var as = [];
+
+    $('.pick-many-#{@question.id}').each(function (_, cc) {
+      if ($(cc).is(':checked')) {
+        as.push($(cc).val());
+      }
+    });
+
+    $('#answer-answer-#{@question.id}').val(as);
+  }
+
+  $('.pick-many-#{@question.id}').each(function (_, cc) {
+    $(cc).change(update_answer_#{@question.id});
+  });
+</script>
+END_RAW
+%>'
+
+function get_sample(name) {
+  return $('<div/>').html(SAMPLES[name]).text();
+}
+
+function answer_from_preview() {
+  var form0 = $($('#question-form-preview input')[0]);
+  if (form0.is('[type=radio]')) {
+    return $('#question-form-preview input').filter(':checked').val();
+  }
+  else {
+    return form0.val();
+  }
+}
+</script>
