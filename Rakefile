@@ -7,6 +7,10 @@ require File.expand_path('../config/application', __FILE__)
 
 Bottlenose::Application.load_tasks
 
+task :install do
+  system("cd sandbox/src && make install")
+end
+
 task :clean_uploads do
   system("rm -rf public/assignments")
   system("mkdir public/assignments")
@@ -18,7 +22,6 @@ task :clean_uploads do
   system("rm -rf public/submissions")
   system("mkdir public/submissions")
   system("touch public/submissions/empty")
-
 end
 
 namespace :db do

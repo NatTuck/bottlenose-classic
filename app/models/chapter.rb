@@ -1,5 +1,5 @@
 class Chapter < ActiveRecord::Base
-  attr_accessible :course_id, :name
+  attr_accessible :course_id, :name, :questions_due
 
   belongs_to :course
   has_many :lessons, :dependent => :restrict

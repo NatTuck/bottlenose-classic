@@ -1,5 +1,5 @@
 class Question < ActiveRecord::Base
-  attr_accessible :correct_answer, :lesson_id, :question, :video, :due_date
+  attr_accessible :correct_answer, :lesson_id, :question, :video
 
   belongs_to :lesson
   has_many :answers, :dependent => :destroy
@@ -8,9 +8,13 @@ class Question < ActiveRecord::Base
   validates :question,  :format => { 
     :with    => /name=\"answer\[answer\]\"/,  
     :message => "must have a form with an 'answer[answer]' field."}
-  validates :due_date,  :presence => true
   
-  delegate :course, :to => :lesson
+  delegate :course,  :to => :lesson
+  delegate :chapter, :to => :lesson
+
+  def due_date
+    chapter.questions_due
+  end
 
   before_validation do
     unless video.nil?

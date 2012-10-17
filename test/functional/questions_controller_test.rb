@@ -17,8 +17,9 @@ class QuestionsControllerTest < ActionController::TestCase
 
   test "should create question" do
     assert_difference('Question.count') do
-      post :create, {lesson_id: @q1.lesson_id, question: { lesson_id: @q1.lesson_id, 
-        question: @q1.question, correct_answer: "5", due_date: '2020-04-21' }}, 
+      post :create, {lesson_id: @q1.lesson_id, 
+        question: { lesson_id: @q1.lesson_id, 
+          question: @q1.question, correct_answer: "5"}}, 
         {user_id: @fred.id}
     end
 

@@ -5,13 +5,21 @@ DIR=$1
 if [[ ! $(whoami) == 'root' ]]
 then
     echo "Must be run as root"
-    exit
+    exit 1
 fi
 
 if [[ $DIR == "" ]]
 then
     echo "Usage: $0 directory"
-    exit
+    exit 2
+fi
+
+CWD=`pwd`
+if [[ $CWD != "/tmp"* ]]
+then
+    echo "Target isn't in /tmp:"
+    echo "  " $CWD
+    exit 3
 fi
 
 mkdir $DIR
