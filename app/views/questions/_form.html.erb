@@ -32,7 +32,7 @@
 	      "$('#question_question_form').val(get_sample($('#sample-form-id').val()));" %>
 	</p>
 	<p><%= f.text_area :question_form %></p>
-	<p><%= link_to_function "Show Form", 
+	<p><%= link_to_function "Show Form Preview", 
 	       "$('#question-form-preview').html($('#question_question_form').val());" %></p>
       </td>
     </tr>
@@ -40,7 +40,7 @@
       <td><%= f.label :correct_answer %></td>
       <td>
 	<div id="question-form-preview">&nbsp;</div>
-	<p><%= link_to_function "Use preview answer", 
+	<p><%= link_to_function "Use Answer From Preview", 
 	       "$('#question_correct_answer').val(answer_from_preview())" %>
 	<p><%= f.text_field :correct_answer %></p></td>
     </tr>

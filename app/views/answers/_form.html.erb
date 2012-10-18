@@ -1,21 +1,63 @@
-<%= form_for(@answer) do |f| %>
-  <% if @answer.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@answer.errors.count, "error") %> prohibited this answer from being saved:</h2>
+<div id="ask-question-<%= @question.id %>">
+  <div class="lesson-question">
+    <%= raw @question.question %>
+  </div>
 
-      <ul>
-      <% @answer.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+  <div id="answer-form-<%= @question.id %>">
+    <div class="answer-form">
+      <%= form_for [@question, @answer], :remote => true do %>
+  
+      <%= raw @question.question_form %>
+  
+      <p>Attempts: <%= @answer.attempts %></p>
+
+      <div id="submit-button-<%= @question.id %>">
+	<p><%= submit_tag %></p>
+      </div>
+      
       <% end %>
-      </ul>
     </div>
-  <% end %>
+  </div>
 
-  <div class="field">
-    <%= f.label :answer %><br />
-    <%= f.text_field :answer %>
+  <div id="answer-status-<%= @question.id %>">
+    <% if @answer.new_record? %>
+      &nbsp;
+    <% else %>
+      <%= javascript_tag "$('#submit-button-#{@question.id}').hide();" %>
+      <table>
+	<tr>
+	  <td><%= image_tag(@answer.correct? ? "check-mark.png" : "cross-mark.png", 
+		             :height => 100) %></td>
+	  <td>
+	    <p>Your answer was: <%= @answer.answer %></p>
+	    <p>Your <%= @answer.correct? ? "correct" : "wrong" %> answer has been saved.</p>
+	    
+	    <% unless @question.explanation.nil? || @question.explanation.empty? %>
+	      <p>There is an <%= link_to_function "explanation", 
+			      "$('#answer-explanation-#{@question.id}').show();" %> 
+	      for this question.</p>
+	    <% end %>
+
+	    <p>You can <%= link_to_function("click here",
+                     ("$('#answer-status-#{@question.id}').hide();"+
+	              "$('#submit-button-#{@question.id}').show();")) %>
+	      to try this question again.</p>
+	  </td>
+	</tr>
+      </table>
+    <% end %>
   </div>
-  <div class="actions">
-    <%= f.submit "Save Answer", class: 'answer-submit-button' %>
-  </div>
-<% end %>
+
+  <div id="answer-explanation-<%= @question.id %>">
+    <% unless @answer.new_record? %>
+    <p><%= link_to_function "Hide Explanation", 
+	 "$('#answer-explanation-#{@question.id}').hide();" %>
+    </p>
+    <%= raw @question.explanation %>
+    <% end %>
+  </div>    
+
+  <%= javascript_tag "$('#answer-explanation-#{@question.id}').hide();" %>
+</div>
+
+

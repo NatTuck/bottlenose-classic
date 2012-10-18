@@ -22,7 +22,6 @@
 <% @questions.each_index do |ii| %>
   <% @question = @questions[ii] %>
   <% @answer   = @answers[@question.id] %>
-  <% @correct  = @got_it[@question.id] %>
 
   <p>
     Question <%= "#{ii + 1} / #{@questions.size}" %>
@@ -31,6 +30,6 @@
     <% end %>
   </p>
 
-  <%= render "questions/ask" %>
+  <%= render "answers/form" %>
 
 <% end %>

@@ -1,14 +1,16 @@
 class Answer < ActiveRecord::Base
-  attr_accessible :answer, :question_id, :user_id, :updated_at
+  attr_accessible :answer, :question_id, :user_id, :attempts, :updated_at
 
   belongs_to :question
   belongs_to :user
 
-  delegate :correct_answer, :to => :question,     :allow_nil => false
-
+  delegate :correct_answer, :to => :question, :allow_nil => false
+ 
   validates :question_id, :presence => true
   validates :user_id,     :presence => true
   validates :answer,      :presence => true
+
+  validates_uniqueness_of :user_id, :scope => :question_id
 
   validate :user_is_registered_for_course
 
@@ -22,8 +24,12 @@ class Answer < ActiveRecord::Base
     end
   end
 
+  def correct?
+    answer == correct_answer
+  end
+
   def score
-    if answer == correct_answer
+    if correct?
       late? ? 50 : 100
     else
       0

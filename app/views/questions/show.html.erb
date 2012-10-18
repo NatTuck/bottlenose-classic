@@ -10,9 +10,13 @@
 
 <h1>The Question</h1>
 
-<%= render "ask" %>
+<%= render "answers/form" %>
 
-<h2>The Explanation</h2>
+<h1>The Correct Answer</h1>
+
+<p><%= @question.correct_answer %></p>
+
+<h1>The Explanation</h1>
 
 <p><%= raw @question.explanation %></p>
 

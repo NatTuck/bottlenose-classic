@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-  before_filter :require_student, :only => [:create]
+  before_filter :require_student
   before_filter :require_teacher, :only => [:destroy]
   prepend_before_filter :find_question
 
@@ -8,12 +8,32 @@ class AnswersController < ApplicationController
 
     @answer.user_id     = @logged_in_user.id
     @answer.question_id = @question.id
+    @answer.attempts    = 1
 
     if @answer.save
       @saved = true
+      render action: 'edit'
     else
       @errors = @answer.errors.messages.to_json
       @saved  = false
+      render action: 'edit'
+    end
+  end
+
+  def update
+    @answer = Answer.find(params[:id])
+
+    @answer.user_id     = @logged_in_user.id
+    @answer.question_id = @question.id
+    @answer.attempts    = (@answer.attempts||1) + 1
+
+    if @answer.update_attributes(params[:answer])
+      @saved = true
+      render action: 'edit'
+    else
+      @errors = @answer.errors.messages.to_json
+      @saved  = false
+      render action: 'edit'
     end
   end
 

@@ -41,7 +41,7 @@ Bottlenose::Application.routes.draw do
   end
 
   resources :questions, :only => [:edit, :update, :destroy] do
-    resources :answers, :only => [:create]
+    resources :answers, :only => [:create, :update]
   end
 
   resources :answers, :only => [:destroy]

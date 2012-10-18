@@ -3,6 +3,8 @@ require 'test_helper'
 class AnswersControllerTest < ActionController::TestCase
   setup do
     @question = questions(:parens_awesome)
+    @braces_q = questions(:curlies_dumb)
+
     @fred     = users(:fred)
     @john     = users(:john)
     @right    = answers(:right)
@@ -11,8 +13,8 @@ class AnswersControllerTest < ActionController::TestCase
 
   test "should create answer" do
     assert_difference('Answer.count') do
-      xhr :post, :create, {question_id: @question.id,
-        answer: {question_id: @question.id, answer: "seven" }}, 
+      xhr :post, :create, {question_id: @braces_q.id,
+        answer: {question_id: @braces_q.id, answer: "seven" }}, 
         {user_id: @john.id}
     end
 
