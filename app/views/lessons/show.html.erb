@@ -11,9 +11,19 @@
 
 <p>Watch the video then answer the post-video question.</p>
 
+<p><a href="#lesson-video">Center the Video</a></p>
+
 <div id="lesson-video">
 <%= raw @lesson.video %>
 </div>
+
+<% unless @lesson.notes.nil? %>
+<h2>Instructor Notes</h2>
+
+<div id="lesson-instructor-notes">
+<%= raw @lesson.notes %>
+</div>
+<% end %>
 
 <h2>Post Video Questions</h2>
 

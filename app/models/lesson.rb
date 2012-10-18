@@ -1,5 +1,5 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :chapter_id, :name, :question, :correct_answer, :video
+  attr_accessible :chapter_id, :name, :video, :notes
 
   belongs_to :chapter
   has_many :questions, :dependent => :destroy
