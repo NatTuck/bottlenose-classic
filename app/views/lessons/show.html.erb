@@ -11,7 +11,9 @@
 
 <p>Watch the video then answer the post-video question.</p>
 
-<p><%= raw @lesson.video %></p>
+<div id="lesson-video">
+<%= raw @lesson.video %>
+</div>
 
 <h2>Post Video Questions</h2>
 
@@ -33,3 +35,10 @@
   <%= render "answers/form" %>
 
 <% end %>
+
+<script>
+  // Work around display bug in Chrome.
+  if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+    $(function() { $('#lesson-video').html('<%= j raw @lesson.video %>'); });
+  }
+</script>
