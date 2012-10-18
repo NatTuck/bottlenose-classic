@@ -1,6 +1,9 @@
-<h1>Editing chapter</h1>
+<% @page_title = "Edit Chapter" %>
+
+<p>
+<%= link_to 'Back to Chapter', @chapter %> |
+<%= link_to 'Chapter List', course_chapters_path(@course) %>
+</p>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @chapter %> |
-<%= link_to 'Back', course_chapters_path(@course) %>

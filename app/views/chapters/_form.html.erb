@@ -20,6 +20,11 @@
       <td><%= f.text_field :name %></td>
     </tr>
     <tr>
+      <td><%= f.label :questions_due%> <br>
+        (Late after this day.)</td>
+      <td><%= f.datepicker :questions_due %></td>
+    </tr>
+    <tr>
       <td>&nbsp;</td>
       <td><%= f.submit %></td>
     </tr>

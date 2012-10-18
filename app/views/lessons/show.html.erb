@@ -26,6 +26,9 @@
 <% end %>
 
 <h2>Post Video Questions</h2>
+<% unless @chapter.questions_due.nil? || @chapter.questions_due.to_s.empty? %>
+<p>These questions are due by <%= @chapter.questions_due %>.</p>
+<% end %>
 
 <% if @logged_in_user.course_admin?(@course) %>
 <p><%= link_to 'New Question', new_lesson_question_path(@lesson) %></p>

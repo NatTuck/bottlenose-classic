@@ -2,7 +2,7 @@
 
 <p><%= link_to "Back to Course: #{@course.name}", @course %>
 <% if @logged_in_user.course_admin?(@course) %>
-  | <%= link_to 'Edit Title', edit_chapter_path(@chapter) %>
+  | <%= link_to 'Edit Chapter', edit_chapter_path(@chapter) %>
 <% end %>
 </p>
 
