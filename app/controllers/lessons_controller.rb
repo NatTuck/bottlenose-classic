@@ -5,7 +5,7 @@ class LessonsController < ApplicationController
   prepend_before_filter :find_lesson,  :except => [:index, :new, :create]
 
   def index
-    @lessons = @chapter.lessons
+    @lessons = @chapter.lessons.order(:name)
   end
 
   def show

@@ -28,4 +28,32 @@ class Lesson < ActiveRecord::Base
       # video.sub! /www.youtube.com/, 'www.youtube-nocookie.com'
     end
   end
+
+  def prev
+    xs = chapter.lessons.order(:name)
+
+    while xs.length > 1
+      if xs[1] == self
+        return xs[0]
+      end
+
+      xs = xs[1..-1]
+    end
+
+    return nil
+  end
+
+  def next
+    xs = chapter.lessons.order(:name)
+
+    while xs.length > 1
+      if xs[-2] == self
+        return xs[-1]
+      end
+
+      xs = xs[0..-2]
+    end
+
+    return nil
+  end
 end
