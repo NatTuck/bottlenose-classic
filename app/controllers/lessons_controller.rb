@@ -9,7 +9,7 @@ class LessonsController < ApplicationController
   end
 
   def show
-    @questions = @lesson.questions
+    @questions = @lesson.questions.order(:name)
     @answers   = {}
 
     @questions.each do |qq|

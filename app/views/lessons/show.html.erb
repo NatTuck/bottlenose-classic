@@ -25,8 +25,7 @@
   <% @question = @questions[ii] %>
   <% @answer   = @answers[@question.id] %>
 
-  <p>
-    Question <%= "#{ii + 1} / #{@questions.size}" %>
+  <p><strong><%= @question.name %></strong>
     <% if @logged_in_user.course_admin?(@course) %>
       (<%= link_to "Edit", [:edit, @question] %>)
     <% end %>

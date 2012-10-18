@@ -1,6 +1,6 @@
 class Question < ActiveRecord::Base
-  attr_accessible :correct_answer, :lesson_id, :question, :question_form
-  attr_accessible :explanation
+  attr_accessible :name, :correct_answer, :lesson_id
+  attr_accessible :question, :question_form, :explanation
 
   belongs_to :lesson
   has_many :answers, :dependent => :destroy
