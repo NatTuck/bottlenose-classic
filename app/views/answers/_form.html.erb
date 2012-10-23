@@ -31,17 +31,17 @@
 	  <td>
 	    <p>Your answer was: <%= @answer.answer %></p>
 	    <p>Your <%= @answer.correct? ? "correct" : "wrong" %> answer has been saved.</p>
+
+	    <p>You can <%= link_to_function("click here",
+                     ("$('#answer-status-#{@question.id}').hide();"+
+	              "$('#submit-button-#{@question.id}').show();")) %>
+	      to try this question again.</p>
 	    
 	    <% unless @question.explanation.nil? || @question.explanation.empty? %>
 	      <p>There is an <%= link_to_function "explanation", 
 			      "$('#answer-explanation-#{@question.id}').show();" %> 
 	      for this question.</p>
 	    <% end %>
-
-	    <p>You can <%= link_to_function("click here",
-                     ("$('#answer-status-#{@question.id}').hide();"+
-	              "$('#submit-button-#{@question.id}').show();")) %>
-	      to try this question again.</p>
 	  </td>
 	</tr>
       </table>
