@@ -43,9 +43,9 @@ module ApplicationHelper
 
     if sub.raw_score.nil? and sub.teacher_score.nil?
       if sub.created_at < (Time.now - 10.minutes)
-        return image_tag("/assets/wait-mark.gif", :height => 32)
-      else
         return image_tag("/assets/crash-mark.png", :height => 32)
+      else
+        return image_tag("/assets/wait-mark.gif", :height => 32)
       end
     end
 
