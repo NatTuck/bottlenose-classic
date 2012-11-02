@@ -42,7 +42,11 @@ module ApplicationHelper
     return image_tag("/assets/null-mark.png", :height => 32) if (sub.nil? || sub.new_record?)
 
     if sub.raw_score.nil? and sub.teacher_score.nil?
-      return image_tag("/assets/wait-mark.gif", :height => 32)
+      if sub.created_at < (Time.now - 10.minutes)
+        return image_tag("/assets/wait-mark.gif", :height => 32)
+      else
+        return image_tag("/assets/crash-mark.png", :height => 32)
+      end
     end
 
     return image_tag("/assets/cross-mark.png", :height => 32) if sub.score == 0
