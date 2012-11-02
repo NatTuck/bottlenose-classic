@@ -16,7 +16,7 @@ fi
 
 cd $DIR
 
-for dd in usr bin lib var etc
+for dd in usr bin lib var etc proc
 do
     umount $dd
     rmdir $dd

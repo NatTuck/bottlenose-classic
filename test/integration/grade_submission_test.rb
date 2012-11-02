@@ -29,7 +29,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     @assignment = Assignment.find_by_name("Hello, World")
     @submission = submissions(:alan_hello)
 
-    assert_equal @submission.late_penalty, 0.5
+    assert_equal @submission.late_penalty, 0.4
     assert_equal @submission.ignore_late_penalty?, false
 
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"    

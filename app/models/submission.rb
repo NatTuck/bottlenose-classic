@@ -68,7 +68,7 @@ class Submission < ActiveRecord::Base
     due_on = assignment.due_date.to_time
     sub_on = created_at
     late_days = (sub_on - due_on) / 1.day
-    late_days.ceil
+    late_days.floor
   end
 
   def late_penalty
