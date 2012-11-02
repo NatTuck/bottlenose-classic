@@ -116,7 +116,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def submissions_for(user)
-    submissions.where(user_id: user.id)
+    submissions.where(user_id: user.id).order(:created_at).reverse
   end
 
   def best_submission_for(user)
