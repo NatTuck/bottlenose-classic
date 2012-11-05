@@ -32,5 +32,6 @@ rm -rf home/student
 rmdir home
 
 cd ..
-rm -rf $DIR/tmp
+#rm -rf $DIR/tmp
+umount $DIR
 rmdir $DIR

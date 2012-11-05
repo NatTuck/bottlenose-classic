@@ -23,6 +23,8 @@ then
 fi
 
 mkdir $DIR
+mount -t tmpfs -o size=512m tmpfs $DIR
+
 cd $DIR
 
 for dd in usr bin lib var etc proc
