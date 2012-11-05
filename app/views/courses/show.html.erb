@@ -40,7 +40,7 @@
     <th>Status Report</th>
   </tr>
 
-<% @course.student_registrations.each do |sreg| %>
+<% @student_regs.each do |sreg| %>
   <tr>
     <td><%= sreg.user.name %></td>
     <td><%= sreg.answers_done %></td>

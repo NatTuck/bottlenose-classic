@@ -21,13 +21,17 @@ class CoursesController < ApplicationController
       @courses = Course.order(:name)
       @course  = Course.new
     else
-      @courses = @logged_in_user.courses
+      @courses = @logged_in_user.courses.order(:name)
     end
   end
 
   def show
     @registration = @logged_in_user.registrations.where(course_id: @course.id).first
     @registration ||= "javascript:alert('Not registered.');"
+
+    if @logged_in_user.course_admin?(@course)
+      @student_regs = @course.student_registrations.sort_by {|rr| rr.user.name }
+    end
   end
 
   def new

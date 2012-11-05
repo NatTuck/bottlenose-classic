@@ -20,3 +20,14 @@
 </tr>
 </table>
 
+<h2>Enrolled Courses</h2>
+
+<ul>
+<% @user.registrations.sort_by {|rr| rr.course.name }.each do |reg| %>
+<li><%= reg.course.name %> 
+  <% if reg.teacher? %>
+  (Teacher)
+  <% end %>
+(<%= link_to "View", reg.course %>)</li>
+<% end %>
+</ul>
