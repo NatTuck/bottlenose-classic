@@ -10,6 +10,7 @@
 #include <sys/resource.h>
 #include <alloca.h>
 #include <string.h>
+#include <assert.h>
 
 const char*  DIR_SETUP_CMD    = "/usr/local/bottlenose/scripts/setup-directory.sh sandbox";
 const char*  DIR_TEARDOWN_CMD = "/usr/local/bottlenose/scripts/teardown-directory.sh sandbox";
@@ -17,9 +18,10 @@ const char*  START_MAKE_CMD   = "/usr/local/bottlenose/scripts/build-assignment.
 const char*  GRADING_PREP_CMD = "/usr/local/bottlenose/scripts/grading-prep.sh sandbox";
 const char*  START_TEST_CMD   = "/usr/local/bottlenose/scripts/test-assignment.sh";
 
-const time_t TIME_LIMIT = 300;
-const rlim_t MEM_LIMIT  = 768000000;   
-const rlim_t PROC_LIMIT = 64;
+const time_t TIME_LIMIT  = 300;
+const rlim_t MEM_LIMIT   = 768000000;   
+const rlim_t PROC_LIMIT  = 64;
+const rlim_t FSIZE_LIMIT = 512000000;
 
 void
 watchdog_process(pid_t pid)
@@ -83,10 +85,17 @@ run_in_sandbox(int uid, const char* cmd)
     np_lim.rlim_max = PROC_LIMIT;
     setrlimit(RLIMIT_NPROC, &np_lim);
 
+    struct rlimit fs_lim;
+    fs_lim.rlim_cur = FSIZE_LIMIT;
+    fs_lim.rlim_max = FSIZE_LIMIT;
+    setrlimit(RLIMIT_FSIZE, &fs_lim);
+
     snprintf(tmp, 256, "chown -R %d:%d /home/student", uid, uid);
     system(tmp);    
 
     setreuid(uid, uid);
+    int ne = nice(5);
+    assert(ne != -1 && "Renice should succeed");
     
     chdir("/home/student");
     printf("sandbox: running command\n");

@@ -1,4 +1,6 @@
 #!/bin/bash
+# 2012-Nov-05: Updated sandbox binary. This comment
+#   should make the script installed test fail.
 
 COUNT=`find . -name Makefile | wc -l`
 
