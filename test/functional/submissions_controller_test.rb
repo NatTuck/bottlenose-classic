@@ -52,7 +52,7 @@ class SubmissionsControllerTest < ActionController::TestCase
   end
 
   test "should destroy submission" do
-    skip
+    skip "Code to delete submissions intentionally disabled."
 
     assert_difference('Submission.count', -1) do
       delete :destroy, {id: @john_hello}, {user_id: @fred.id}

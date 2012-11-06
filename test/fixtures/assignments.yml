@@ -13,3 +13,10 @@ lambda_time:
   assignment: Demonstrate your understanding of lambdas in the substitution model.
   due_date: '2037-11-09'
   points_available: 100
+
+delete_me:
+  chapter: intro
+  name: Delete This Assignment
+  assignment: Eat five batteries.
+  due_date: '2037-11-09'
+  points_available: 17

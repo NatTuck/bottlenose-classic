@@ -5,6 +5,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     @fred  = users(:fred)
     @john  = users(:john)
     @hello = assignments(:hello)
+    @bad   = assignments(:delete_me)
   end
 
   test "should get new" do
@@ -39,10 +40,8 @@ class AssignmentsControllerTest < ActionController::TestCase
   end
 
   test "should destroy assignment" do
-    skip
-
     assert_difference('Assignment.count', -1) do
-        delete :destroy, {id: @hello}, {user_id: @fred.id}
+        delete :destroy, {id: @bad}, {user_id: @fred.id}
     end
 
     assert_redirected_to @hello.chapter
