@@ -11,6 +11,9 @@
 
 <p><%= prev_and_next_lesson_links %></p>
 
+<% unless @lesson.video.nil? or @lesson.video.empty? %>
+<h2>Video</h2>
+
 <p>Watch the video then answer the post-video question.</p>
 
 <p><a href="#lesson-video">Center the Video</a></p>
@@ -18,16 +21,17 @@
 <div id="lesson-video">
 <%= raw @lesson.video %>
 </div>
+<% end %>
 
-<% unless @lesson.notes.nil? %>
-<h2>Instructor Notes</h2>
+<% unless @lesson.notes.nil? or @lesson.notes.empty? %>
+<h2>Notes</h2>
 
 <div id="lesson-instructor-notes">
 <%= raw @lesson.notes %>
 </div>
 <% end %>
 
-<h2>Post Video Questions</h2>
+<h2>Questions</h2>
 <% unless @chapter.questions_due.nil? || @chapter.questions_due.to_s.empty? %>
 <p>These questions are due by <%= @chapter.questions_due %>.</p>
 <% end %>
