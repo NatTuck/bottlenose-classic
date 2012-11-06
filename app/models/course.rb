@@ -1,6 +1,5 @@
 class Course < ActiveRecord::Base
-  attr_accessible :name
-  attr_accessible :late_options
+  attr_accessible :name, :footer, :late_options
   
   has_many :registrations
   has_many :users, :through => :registrations, :dependent => :restrict

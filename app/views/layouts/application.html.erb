@@ -47,6 +47,10 @@
 
 <%= yield %>
 
+<% if @course %>
+<%= raw @course.footer %>
+<% end %>
+
 <div class="footer">
 Bottlenose copyright &copy 2012 Nat Tuck. Licensed under the
 <%= link_to("GNU Affero GPL", "/agpl-3.0.txt") %> v3 or later. Source

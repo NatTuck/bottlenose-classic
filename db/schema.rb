@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121018021528) do
+ActiveRecord::Schema.define(:version => 20121106185344) do
 
   create_table "answers", :force => true do |t|
     t.integer  "question_id", :null => false
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(:version => 20121018021528) do
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
     t.string   "late_options", :default => "10,1,0"
+    t.text     "footer"
   end
 
   create_table "lessons", :force => true do |t|
