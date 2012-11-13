@@ -1,7 +1,8 @@
 class CoursesController < ApplicationController
-  before_filter :find_course, :except => [:index, :new, :create]
-  before_filter :require_logged_in_user
-  before_filter :require_student,  :except => [:index, :new, :create, :destroy]
+  before_filter :find_course, 
+                :except => [:index, :new, :create]
+  before_filter :require_course_permission, 
+                :except => [:index, :new, :create]
   before_filter :require_teacher,    :only => [:export_grades]
   before_filter :require_site_admin, :only => [:new, :create, :destroy]
   
@@ -26,11 +27,12 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @registration = @logged_in_user.registrations.where(course_id: @course.id).first
+    @registration = @logged_in_user.registration_for(@course)
     @registration ||= "javascript:alert('Not registered.');"
 
     if @logged_in_user.course_admin?(@course)
-      @student_regs = @course.student_registrations.sort_by {|rr| rr.user.name }
+      @student_regs = @course.student_registrations.
+        sort_by {|rr| rr.user.name }
     end
   end
 
@@ -39,7 +41,8 @@ class CoursesController < ApplicationController
   end
 
   def edit
-    unless @logged_in_user.site_admin? or @course.taught_by?(@logged_in_user)
+    unless @logged_in_user.site_admin? || 
+        @course.taught_by?(@logged_in_user)
       show_error "You don't have permission to do that."
       redirect_to course_url(@course)
       return

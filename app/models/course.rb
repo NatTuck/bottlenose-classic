@@ -1,5 +1,5 @@
 class Course < ActiveRecord::Base
-  attr_accessible :name, :footer, :late_options
+  attr_accessible :name, :footer, :late_options, :private
   
   has_many :registrations
   has_many :users, :through => :registrations, :dependent => :restrict
@@ -16,6 +16,7 @@ class Course < ActiveRecord::Base
   end
 
   def taught_by?(user)
+    return false if user.guest?
     reg = Registration.find_by_course_id_and_user_id(self.id, user.id)
     reg and reg.teacher?
   end

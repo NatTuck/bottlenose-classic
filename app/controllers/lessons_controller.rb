@@ -1,5 +1,5 @@
 class LessonsController < ApplicationController
-  before_filter :require_student, :only   => [:show]
+  before_filter :require_course_permission
   before_filter :require_teacher, :except => [:show]
   prepend_before_filter :find_chapter, :only   => [:index, :new, :create]
   prepend_before_filter :find_lesson,  :except => [:index, :new, :create]

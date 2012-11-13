@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  before_filter :find_user_session
+
   protected
 
   def show_notice(msg)
@@ -13,7 +15,7 @@ class ApplicationController < ActionController::Base
   
   def find_user_session
     if session['user_id'].nil?
-      @logged_in_user = nil
+      @logged_in_user = GuestUser.new
     else
       @logged_in_user = User.find_by_id(session['user_id'])
     end
@@ -51,6 +53,24 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def require_course_permission
+    find_user_session
+    find_course
+
+    if @logged_in_user.course_admin?(@course)
+      return
+    end
+
+    if @course.private?
+      reg = @logged_in_user.registration_for(@course)
+      if reg.nil?
+        show_error "You're not registered for that course."
+        redirect_to courses_url
+        return
+      end
+    end
+  end
+
   def require_student
     find_user_session
     find_course
@@ -83,7 +103,6 @@ class ApplicationController < ActionController::Base
   def require_teacher
     find_user_session
     find_course
-
 
     if @logged_in_user.nil?
       show_error "You need to log in."

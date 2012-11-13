@@ -6,8 +6,8 @@ class CoursesControllerTest < ActionController::TestCase
     @prof  = users(:fred)
     @user  = users(:john)
     
-    @course = courses(:cs301)
-    @bad_co = courses(:cs599)
+    @course1 = courses(:cs301)
+    @course2 = courses(:cs599)
   end
 
   test "should get index" do
@@ -16,10 +16,15 @@ class CoursesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:courses)
   end
 
-  test "should not get index unless logged in" do
-    get :index
+  test "guest should have access to public course" do
+    get :show, {id: @course1}
+    assert_response :success
+  end
+
+  test "guest should not have access to private course" do
+    get :show, {id: @course2}
     assert_response :redirect
-    assert_match "log in", flash[:error]
+    assert_match "not registered", flash[:error]
   end
   
   test "should get new" do
@@ -36,22 +41,22 @@ class CoursesControllerTest < ActionController::TestCase
   end
 
   test "should show course" do
-    get :show, {id: @course}, {:user_id => @user.id}
+    get :show, {id: @course1}, {:user_id => @user.id}
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, {id: @course}, {:user_id => @prof.id}
+    get :edit, {id: @course1}, {:user_id => @prof.id}
     assert_response :success
   end
 
   test "should update course" do
-    put :update, {id: @course, course: { name: @course.name, late_options: "1,1,1" }}, {:user_id => @prof.id}
+    put :update, {id: @course1, course: { name: @course1.name, late_options: "1,1,1" }}, {:user_id => @prof.id}
     assert_redirected_to course_path(assigns(:course))
   end
   
   test "updating late penalties should change scores" do
-    put :update, {id: @course, course: { name: @course.name, late_options: "5,1,12" }}, {:user_id => @prof.id}
+    put :update, {id: @course1, course: { name: @course1.name, late_options: "5,1,12" }}, {:user_id => @prof.id}
 
     sub = submissions(:john_hello)
     asg = assignments(:hello)
@@ -61,14 +66,14 @@ class CoursesControllerTest < ActionController::TestCase
   end
 
   test "non-admin should not be able to update course" do
-    put :update, {id: @course, course: { name: @course.name }}, {:user_id => @user.id}
+    put :update, {id: @course1, course: { name: @course1.name }}, {:user_id => @user.id}
     assert_response :redirect
     assert_match "don't have permission", flash[:error]
   end
 
   test "should destroy course" do
     assert_difference('Course.count', -1) do
-      delete :destroy, {id: @bad_co}, { user_id: @admin.id }
+      delete :destroy, {id: @course2}, { user_id: @admin.id }
     end
 
     assert_redirected_to courses_path
@@ -76,7 +81,7 @@ class CoursesControllerTest < ActionController::TestCase
 
   test "non-admin should not be able to destroy course" do
     assert_difference('Course.count', 0) do
-      delete :destroy, {id: @course}, { user_id: @prof.id }
+      delete :destroy, {id: @course1}, { user_id: @prof.id }
     end
 
     assert_response :redirect
@@ -84,7 +89,7 @@ class CoursesControllerTest < ActionController::TestCase
   end
 
   test "should export grades" do
-    get :export_grades, {:id => @course.id}, {:user_id => @prof.id}
+    get :export_grades, {:id => @course1.id}, {:user_id => @prof.id}
     assert_match "John Fertitta", @response.body
     assert_response :ok
   end

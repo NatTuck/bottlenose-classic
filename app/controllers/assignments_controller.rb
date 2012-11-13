@@ -1,6 +1,6 @@
 class AssignmentsController < ApplicationController
   before_filter :require_teacher, :except => [:show]
-  before_filter :require_student
+  before_filter :require_course_permission
   prepend_before_filter :find_assignment_and_chapter
 
   def index

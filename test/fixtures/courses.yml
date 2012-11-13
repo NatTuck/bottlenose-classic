@@ -3,7 +3,9 @@
 cs301:
   name: "01. Organization of Programming Languages"
   late_options: "10,1,50"
+  private: false
 
 cs599:
   name: "02. Directed Study in Deleting Courses"
   late_options: "10,1,50"
+  private: true

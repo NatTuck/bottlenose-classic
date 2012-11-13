@@ -25,7 +25,11 @@ class User < ActiveRecord::Base
       self.email = self.email.downcase
     end
   end
-  
+
+  def guest?
+    false
+  end
+
   def send_auth_link_email!(base_url)
     if self.auth_key.nil?
       self.auth_key = SecureRandom.urlsafe_base64
@@ -37,5 +41,9 @@ class User < ActiveRecord::Base
 
   def course_admin?(course)
     self.site_admin? or course.taught_by?(self)
+  end
+
+  def registration_for(course)
+    Registration.find_by_user_id_and_course_id(self.id, course.id)
   end
 end
