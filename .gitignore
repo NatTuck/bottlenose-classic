@@ -15,10 +15,11 @@
 /log/*
 /tmp
 
-# Ignore emacs backup files
+# Ignore editor backup files
 .#*
 \#*#
 *~
+.*.swp
 
 # Ignore uploaded files.
 /public/assignments/
