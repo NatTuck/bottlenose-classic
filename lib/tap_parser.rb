@@ -22,7 +22,7 @@ class TapParser
       mm = line.match(/^ok (\d+) -/)
       if mm
         nn = mm[1].to_i
-        tests[nn] = true if tests[nn].nil?
+        tests[nn] = 1 if tests[nn].nil?
       end
 
       # Failing test wins.
@@ -34,18 +34,46 @@ class TapParser
     end    
 
     # Count passing tests.
-    passes = 0
+    points = 0
     1.upto(test_count) do |ii|
-      passes += 1 if tests[ii]
+      points += 1 if tests[ii]
     end
 
-    passes
+    points
+  end
+
+  def points_available
+    total_points = test_count
+
+    @text.split("\n").each do |line|
+      mm = line.match(/# TOTAL POINTS: (\d+)/)
+      if mm
+        total_points = mm[1].to_i
+      end 
+    end
+
+    total_points
+  end
+
+  def points_earned
+    points = tests_ok
+
+    @text.split("\n").each do |line|
+      mm = line.match(/# POINTS: (\d+)/)
+      if mm
+        points = points + mm[1].to_i - 1
+      end
+    end
+
+    points
   end
 
   def summary
     <<-"SUMMARY"
-    Test count: #{test_count}
-    Tests OK:   #{tests_ok}
+    Test count:        #{test_count}
+    Tests OK:          #{tests_ok}
+    Points available:  #{points_available}
+    Points earned:     #{points_earned}
     SUMMARY
   end
 end

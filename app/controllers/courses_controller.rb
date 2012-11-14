@@ -1,8 +1,8 @@
 class CoursesController < ApplicationController
   before_filter :find_course, 
-                :except => [:index, :new, :create]
+    :except => [:index, :new, :create]
   before_filter :require_course_permission, 
-                :except => [:index, :new, :create]
+    :except => [:index, :new, :create]
   before_filter :require_teacher,    :only => [:export_grades]
   before_filter :require_site_admin, :only => [:new, :create, :destroy]
   

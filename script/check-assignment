@@ -12,6 +12,8 @@ unless (defined $GRADING && defined $STUDENT) {
     exit(1);
 }
 
+my $RAILS_ROOT = $ENV{PWD};
+
 $GRADING = File::Spec->rel2abs($GRADING);
 $STUDENT = File::Spec->rel2abs($STUDENT);
 
@@ -49,6 +51,11 @@ system("make");
 
 system(qq{tar xzvf "$GRADING"});
 
-system("make test");
+my $output = "/tmp/check-result-$$.txt";
+system(qq{make test | tee "$output"});
+
+chdir($RAILS_ROOT);
+system(qq{script/parse-test-output "$output"});
+unlink $output;
 
 system(qq{rm -rf "$TEST_DIR"});
