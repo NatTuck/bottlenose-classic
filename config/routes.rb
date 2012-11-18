@@ -1,5 +1,7 @@
 
 Bottlenose::Application.routes.draw do
+  resources :reg_requests
+
   resources :questions
 
   get "main/index"
@@ -13,6 +15,7 @@ Bottlenose::Application.routes.draw do
   resources :courses do
     resources :registrations, :except => [:new]
     resources :chapters
+    resources :reg_requests
   end
 
   match 'courses/:id/export_grades' => 'courses#export_grades'
@@ -21,6 +24,8 @@ Bottlenose::Application.routes.draw do
 
   match 'registrations/:id/submissions_for_assignment/:assignment_id' =>
     'registrations#submissions_for_assignment'
+
+  resources :reg_requests, :except => [:new]
 
   resources :chapters do
     resources :lessons

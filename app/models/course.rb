@@ -4,6 +4,8 @@ class Course < ActiveRecord::Base
   has_many :registrations
   has_many :users, :through => :registrations, :dependent => :restrict
 
+  has_many :reg_requests, :dependent => :destroy
+
   has_many :chapters, :dependent => :restrict
 
   validates :name, :length     => { :minimum => 2 },
@@ -22,11 +24,19 @@ class Course < ActiveRecord::Base
   end
   
   def teacher_registrations
-    registrations.find_all {|reg| reg.teacher? }
+    registrations.where(teacher: true)
   end
 
   def student_registrations
     registrations.find_all {|reg| !reg.teacher? }
+  end
+
+  def students
+    student_registrations.map {|reg| reg.user}
+  end
+
+  def teachers
+    teacher_registrations.map {|reg| reg.user}
   end
 
   def assignments

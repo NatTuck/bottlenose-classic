@@ -1,0 +1,12 @@
+
+guest_req:
+  name: Bill Nye
+  email: bnye@example.com
+  notes: I want to learn Scheme.
+  course: cs301
+
+ken_req:
+  name: Ken Kleiner
+  email: ken@example.com
+  notes: Bacon is delicious.
+  course: cs301

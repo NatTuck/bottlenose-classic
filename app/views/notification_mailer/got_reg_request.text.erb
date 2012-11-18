@@ -1,0 +1,25 @@
+Hi <%= @teacher.name %>,
+
+A registration request was recieved for your course
+
+  Course: <%= @course.name %>
+
+From a prospective student:
+
+  Student: <%= @req.name %>
+  Email:   <%= @req.email %>
+
+The following message was included:
+
+<% @req.notes %>
+
+The following actions are available:
+
+ * <%= link_to "View this request", 
+         @base_url + reg_request_path(@req) %>
+ * <%= link_to "Approve this request", 
+         @base_url + reg_request_path(@req) + '/approve' %>
+
+Thanks,
+
+The Bottlenose System

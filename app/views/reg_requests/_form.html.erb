@@ -1,0 +1,29 @@
+<%= form_for [@course, @reg_request] do |f| %>
+  <% if @reg_request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@reg_request.errors.count, "error") %> prohibited this reg_request from being saved:</h2>
+
+      <ul>
+      <% @reg_request.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :notes %><br />
+    <%= f.text_area :notes %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Request Registration", :id => 'submit-button' %>
+  </div>
+<% end %>

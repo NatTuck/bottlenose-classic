@@ -1,0 +1,38 @@
+<% @page_title = "Outstanding Registration Requests" %>
+
+<p><%= link_to "Back to Course", @course %></p>
+
+<h2>Registration Requests for "<%= @course.name %>"</h2>
+
+<table class="pretty-list">
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Notes</th>
+    <th>Registered?</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @reqs.each do |reg_request| %>
+  <tr id="reg-req-<%= reg_request.id %>">
+    <td><%= reg_request.name %></td>
+    <td><%= reg_request.email %></td>
+    <td><%= reg_request.notes %></td>
+    <td><%= reg_request.registered? ? "✓" : "✗" %></td> 
+    <td>
+      <%= form_for [@course, @registration] do |f| %>
+        <%= f.hidden_field :course_id, :value => @course.id %>
+        <%= hidden_field_tag :student_email, reg_request.email %>
+        <%= hidden_field_tag :student_name,  reg_request.name %>
+        <%= f.submit %>
+      <% end %>
+    </td>
+    <td><%= link_to 'Show', reg_request %></td>
+    <td><%= link_to 'Edit', edit_reg_request_path(reg_request) %></td>
+    <td><%= link_to 'Destroy', reg_request, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>

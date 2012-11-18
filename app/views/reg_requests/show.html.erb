@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @reg_request.name %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%= @reg_request.email %>
+</p>
+
+<p>
+  <b>Notes:</b>
+  <%= @reg_request.notes %>
+</p>
+
+
+<%= link_to 'Edit', edit_reg_request_path(@reg_request) %> |
+<%= link_to 'Back', reg_requests_path %>

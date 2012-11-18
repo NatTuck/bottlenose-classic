@@ -32,7 +32,8 @@ class RegistrationsController < ApplicationController
       student = User.find_by_email(params[:student_email])
       
       if student.nil?
-        student = User.new(name: params[:student_name], email: params[:student_email])
+        student = User.new(name:  params[:student_name],
+                           email: params[:student_email])
         student.save!
 
         student.send_auth_link_email!(root_url)

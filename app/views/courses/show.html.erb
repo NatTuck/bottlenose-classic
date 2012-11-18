@@ -2,7 +2,12 @@
 
 <p>
   <%= link_to "Back to Your Courses", courses_path %> |
-  <%= link_to "Status Report", @registration %>
+  <% if @logged_in_user.registration_for(@course) %>
+    <%= link_to "Status Report", @registration %>
+  <% else %>
+    <%= link_to "Request Registration", 
+	  new_course_reg_request_path(@course) %>
+  <% end %>
   <% if @logged_in_user.course_admin?(@course) %>
     | <%= link_to "Edit Settings", [:edit, @course] %>
   <% end %>
@@ -51,7 +56,11 @@
 
 </table>
 
-<p><%= link_to "Manage Registrations", course_registrations_path(@course) %></p>
+<p><%= link_to "Manage Registrations", 
+         course_registrations_path(@course) %> |
+   <%= link_to "View Registration Requests",
+         course_reg_requests_path(@course) %>
+</p>
 
 <h1>Data Export</h1>
 
