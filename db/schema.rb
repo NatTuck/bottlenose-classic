@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121116222844) do
+ActiveRecord::Schema.define(:version => 20121129012901) do
 
   create_table "answers", :force => true do |t|
     t.integer  "question_id", :null => false
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(:version => 20121116222844) do
 
   add_index "submissions", ["assignment_id"], :name => "index_submissions_on_assignment_id"
   add_index "submissions", ["grading_uid"], :name => "index_submissions_on_grading_uid", :unique => true
+  add_index "submissions", ["user_id", "assignment_id"], :name => "index_submissions_on_user_id_and_assignment_id"
   add_index "submissions", ["user_id"], :name => "index_submissions_on_user_id"
 
   create_table "users", :force => true do |t|

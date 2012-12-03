@@ -31,7 +31,7 @@ test_dir = "/tmp/grade-#{sub.id}-#{sub.grading_uid}"
 
 Dir.mkdir(test_dir)
 
-if sub.file_full_path.to_s.match(/\.gz$/)
+if sub.file_full_path.to_s.match(/gz$/)
   FileUtils.cp(sub.file_full_path, "#{test_dir}/sub.tar.gz")
 else
   FileUtils.cp(sub.file_full_path, "#{test_dir}/#{sub.file_name}")
