@@ -23,6 +23,7 @@ class Submission < ActiveRecord::Base
   delegate :course, :to => :assignment
 
   before_destroy :cleanup!
+  after_save     :update_cache!
 
   def cleanup!
     unless secret_dir.nil? or file_name.nil?
@@ -32,6 +33,11 @@ class Submission < ActiveRecord::Base
       dpath = Rails.root.join('public', 'submissions', secret_dir)
       Dir.rmdir(dpath) if File.exists?(dpath)
     end
+  end
+
+  def update_cache!
+   reg = self.user.registration_for(self.course)
+   reg.update_assign_score!
   end
 
   def upload=(data)

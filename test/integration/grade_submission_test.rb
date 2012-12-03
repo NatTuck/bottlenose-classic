@@ -45,6 +45,9 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
   test "teacher manually submit a grade" do
     @assignment = Assignment.find_by_name("Lambda Time")
 
+    areg0  = @alan.registration_for(@assignment.course)
+    score0 = areg0.assign_score
+
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"    
     click_link 'Your Courses'
     click_link '01. Organization of Programming Languages'
@@ -59,6 +62,11 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
 
     @submission = Submission.find_by_teacher_notes('manually entered grade')
     assert_equal @alan.id, @submission.user_id
+    assert_equal @submission.score, 85
+
+    # Make sure score summary updates properly.
+    areg1 = @alan.registration_for(@assignment.course)
+    assert_not_equal score0, areg1.assign_score
   end
 
   test "submit and grade a submission" do
