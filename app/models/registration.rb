@@ -20,7 +20,7 @@ class Registration < ActiveRecord::Base
     "#{done} / #{qs.size}"
   end
 
-  def submissions_done
+  def update_assign_score!
     as = course.assignments
     score = 0
     total = 0
@@ -28,6 +28,16 @@ class Registration < ActiveRecord::Base
       total += aa.points_available
       score += aa.best_score_for(user)
     end
-    "#{score.round(1)} / #{total.round(1)}"
+
+    write_attribute(:assign_score, "#{score.round(1)} / #{total.round(1)}")
+    self.save!
+  end
+
+  def assign_score
+    if self.read_attribute(:assign_score).nil?
+      update_assign_score!
+    end
+    
+    self.read_attribute(:assign_score)
   end
 end
