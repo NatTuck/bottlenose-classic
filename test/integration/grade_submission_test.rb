@@ -114,6 +114,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     assert File.exists?(@submission.file_full_path)
 
     # Clean up files.
+    @submission.cleanup!("Really in a test")
     @submission.destroy
 
     assert_equal false, File.exists?(@submission.file_full_path)
@@ -170,6 +171,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     assert File.exists?(@submission.file_full_path)
 
     # Clean up files.
+    @submission.cleanup!("really in a test")
     @submission.destroy
 
     assert_equal false, File.exists?(@submission.file_full_path)

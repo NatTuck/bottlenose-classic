@@ -20,18 +20,26 @@ class Submission < ActiveRecord::Base
 
   validate :user_is_registered_for_course
 
+  validate :secret_dir,     :uniqueness => true
+
   delegate :course, :to => :assignment
 
   before_destroy :cleanup!
   after_save     :update_cache!
 
-  def cleanup!
+  def cleanup!(*s)
+    return if s.empty?
+
     unless secret_dir.nil? or file_name.nil?
+
       path = Rails.root.join('public', 'submissions', secret_dir, file_name)
       File.unlink(path) if File.exists?(path)
 
       dpath = Rails.root.join('public', 'submissions', secret_dir)
       Dir.rmdir(dpath) if File.exists?(dpath)
+
+      secret_dir = nil
+      file_name  = nil
     end
   end
 
@@ -41,8 +49,12 @@ class Submission < ActiveRecord::Base
   end
 
   def upload=(data)
+    unless self.secret_dir.nil?
+      raise "Double submission upload."
+    end 
+
     return if data.nil?
-    cleanup!
+    #cleanup!
 
     self.secret_dir = SecureRandom.urlsafe_base64
     dpath = Rails.root.join('public', 'submissions', secret_dir)
