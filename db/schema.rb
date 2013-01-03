@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121203195011) do
+ActiveRecord::Schema.define(:version => 20130103172250) do
 
   create_table "answers", :force => true do |t|
     t.integer  "question_id", :null => false
@@ -37,6 +37,8 @@ ActiveRecord::Schema.define(:version => 20121203195011) do
     t.integer  "points_available",     :default => 100
     t.string   "secret_dir"
     t.boolean  "hide_grading",         :default => false
+    t.integer  "assignment_upload_id"
+    t.integer  "grading_upload_id"
   end
 
   add_index "assignments", ["chapter_id"], :name => "index_assignments_on_chapter_id"
@@ -119,12 +121,23 @@ ActiveRecord::Schema.define(:version => 20121203195011) do
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "ignore_late_penalty", :default => false
+    t.integer  "upload_id"
   end
 
   add_index "submissions", ["assignment_id"], :name => "index_submissions_on_assignment_id"
   add_index "submissions", ["grading_uid"], :name => "index_submissions_on_grading_uid", :unique => true
   add_index "submissions", ["user_id", "assignment_id"], :name => "index_submissions_on_user_id_and_assignment_id"
   add_index "submissions", ["user_id"], :name => "index_submissions_on_user_id"
+
+  create_table "uploads", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "file_name"
+    t.string   "secret_key"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "uploads", ["secret_key"], :name => "index_uploads_on_secret_key", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "name",       :null => false

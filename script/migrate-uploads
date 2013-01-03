@@ -1,0 +1,55 @@
+#!/usr/bin/env ruby
+
+# This script migrates file uploads for assignments and submissions
+# to use the new Upload model.
+
+APP_PATH = File.expand_path('../../config/application',  __FILE__)
+require File.expand_path('../../config/boot',  __FILE__)
+require APP_PATH
+Rails.application.require_environment!
+
+class MockUpload
+  def initialize(file, name)
+    @file = file
+    @name = name
+  end
+
+  def read
+    puts "Trying to open #{@file}"
+    File.open(@file).read
+  end
+
+  def original_filename
+    @name
+  end
+end
+
+Submission.all.take(10).each do |sub|
+  next if sub.upload_id
+  next if sub.file_name.nil?
+
+  unless File.exists?(sub.file_full_path)
+    puts "Failed in #{sub.id} - can't find #{sub.file_name}"
+  else
+    puts "For #{sub.id}, #{sub.file_name} is there."
+  end
+
+  #data = MockUpload.new(sub.file_full_path, sub.file_name)
+
+  next
+
+  up = Upload.new
+  up.user_id = sub.user.id
+  up.store_meta!({
+    type:       "Submission",
+    user:       "#{sub.user.name} (#{sub.user.id})",
+    course:     "#{sub.course.name} (#{sub.course.id})",
+    assignment: "#{sub.assignment.name} (#{sub.assignment.id})",
+    migrated:   "true"
+  })
+  up.store_upload!(data)
+  up.save!
+
+  sub.upload_id = up.id
+  sub.save!
+end

@@ -24,24 +24,7 @@ class Submission < ActiveRecord::Base
 
   delegate :course, :to => :assignment
 
-  before_destroy :cleanup!
   after_save     :update_cache!
-
-  def cleanup!(*s)
-    return if s.empty?
-
-    unless secret_dir.nil? or file_name.nil?
-
-      path = Rails.root.join('public', 'submissions', secret_dir, file_name)
-      File.unlink(path) if File.exists?(path)
-
-      dpath = Rails.root.join('public', 'submissions', secret_dir)
-      Dir.rmdir(dpath) if File.exists?(dpath)
-
-      secret_dir = nil
-      file_name  = nil
-    end
-  end
 
   def update_cache!
    reg = self.user.registration_for(self.course)
@@ -49,31 +32,26 @@ class Submission < ActiveRecord::Base
   end
 
   def upload=(data)
-    unless self.secret_dir.nil?
-      raise "Double submission upload."
-    end 
-
     return if data.nil?
-    #cleanup!
 
-    self.secret_dir = SecureRandom.urlsafe_base64
-    dpath = Rails.root.join('public', 'submissions', secret_dir)
-    Dir.mkdir(dpath)
-
-    self.file_name  = data.original_filename
-    path = Rails.root.join('public', 'submissions', secret_dir, file_name)
-    File.open(path, 'wb') do |file|
-      file.write(data.read)
-    end
-  end
-
-  def file_full_path
-    Rails.root.join('public', 'submissions', secret_dir, file_name)    
+    up = Upload.new
+    up.user_id = user_id
+    up.store_meta!({
+      type:       "Submission",
+      user:       "#{user.name} (#{user.id})",
+      course:     "#{course.name} (#{course.id})",
+      assignment: "#{assignment.name} (#{assignment.id})" 
+    })
+    up.store_upload!(data)
+    up.save!
   end
 
   def file_path
-    return "" if secret_dir.nil?
     file_name ? "/submissions/" + secret_dir + "/" + file_name : ""
+  end
+
+  def file_full_path
+    Rails.root.join("public", "submissions", secret_dir, file_name)
   end
 
   def late?
