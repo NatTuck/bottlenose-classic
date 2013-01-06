@@ -8,8 +8,11 @@ class Submission < ActiveRecord::Base
   attr_accessible :teacher_score, :teacher_notes
   attr_accessible :ignore_late_penalty
 
+  attr_protected :upload_id
+
   belongs_to :assignment
   belongs_to :user
+  belongs_to :upload
 
   validates :assignment_id, :presence => true
   validates :user_id,       :presence => true
@@ -28,7 +31,7 @@ class Submission < ActiveRecord::Base
 
   def update_cache!
    reg = self.user.registration_for(self.course)
-   reg.update_assign_score!
+   reg.update_assign_score! unless reg.nil?
   end
 
   def upload=(data)
@@ -40,7 +43,8 @@ class Submission < ActiveRecord::Base
       type:       "Submission",
       user:       "#{user.name} (#{user.id})",
       course:     "#{course.name} (#{course.id})",
-      assignment: "#{assignment.name} (#{assignment.id})" 
+      assignment: "#{assignment.name} (#{assignment.id})",
+      date:       Time.now.to_s
     })
     up.store_upload!(data)
     up.save!

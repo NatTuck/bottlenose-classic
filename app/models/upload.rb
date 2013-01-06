@@ -12,7 +12,7 @@ class Upload < ActiveRecord::Base
   after_initialize :generate_secret_key!
 
   def data_and_metadata_stored
-    unless File.exists?(upload_dirmoin(file_name))
+    unless File.exists?(upload_dir.join(file_name))
       Audit.log("Uploaded file missing for upload in #{upload_dir}, aborting save.")
       return false
     end
@@ -28,10 +28,13 @@ class Upload < ActiveRecord::Base
     Upload.base_upload_dir.join(pre, secret_key)
   end
 
-  def upload_path
-    full_path = upload_dir.join(self.file_name).to_s
-    base_path = Rails.root.join("public").to_s
-    full_path.sub("^#{base_path}", "")
+  def path
+    pre = secret_key.slice(0, 2)
+    "/uploads/#{Rails.env}/#{pre}/#{secret_key}/#{file_name}"
+  end
+
+  def full_path
+    upload_dir.join(file_name)
   end
 
   def store_upload!(upload)
@@ -46,7 +49,7 @@ class Upload < ActiveRecord::Base
     Audit.log("User #{user.name} (#{user_id}) creating upload #{secret_key}")
 
     self.file_name = upload.original_filename
-    File.open(upload_path, 'wb') do |file|
+    File.open(full_path, 'wb') do |file|
       file.write(upload.read)
     end
 
@@ -54,19 +57,19 @@ class Upload < ActiveRecord::Base
   end
 
   def store_meta!(meta)
-    meta = upload_dir.join("_metadata")
+    meta_path = upload_dir.join("_metadata")
     
     if Dir.exists?(upload_dir)
       raise Exception.new("Duplicate secret key (1). That's unpossible!")
     end
 
-    if File.exists?(meta)
+    if File.exists?(meta_path)
       raise Exception.new("Attempt to reset metadata on upload.")
     end
 
     upload_dir.mkpath unless Dir.exists?(upload_dir)
 
-    File.open(meta, "w") do |file|
+    File.open(meta_path, "w") do |file|
       file.write(meta.to_yaml)
     end
   end

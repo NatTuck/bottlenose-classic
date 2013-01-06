@@ -15,7 +15,6 @@ class MockUpload
   end
 
   def read
-    puts "Trying to open #{@file}"
     File.open(@file).read
   end
 
@@ -24,19 +23,32 @@ class MockUpload
   end
 end
 
-Submission.all.take(10).each do |sub|
-  next if sub.upload_id
-  next if sub.file_name.nil?
+puts "Migrating Submissions..."
 
-  unless File.exists?(sub.file_full_path)
-    puts "Failed in #{sub.id} - can't find #{sub.file_name}"
-  else
-    puts "For #{sub.id}, #{sub.file_name} is there."
+Submission.all.each do |sub|
+  if sub.upload_id
+    #puts "#{sub.id}: Already migrated"
+    next
   end
 
-  #data = MockUpload.new(sub.file_full_path, sub.file_name)
+  if sub.file_name.nil?
+    #puts "#{sub.id}: Nil filename"
+    next
+  end
+  
+  if sub.secret_dir.nil?
+    #puts "#{sub.id}: Nil secret_dir"
+    next
+  end
 
-  next
+  unless File.exists?(sub.file_full_path)
+    puts "#{sub.id}: Failed. Can't find #{sub.file_name}"
+    next
+  end
+
+  puts "#{sub.id}: Migrating #{sub.file_name}..."
+
+  data = MockUpload.new(sub.file_full_path, sub.file_name)
 
   up = Upload.new
   up.user_id = sub.user.id
@@ -45,6 +57,7 @@ Submission.all.take(10).each do |sub|
     user:       "#{sub.user.name} (#{sub.user.id})",
     course:     "#{sub.course.name} (#{sub.course.id})",
     assignment: "#{sub.assignment.name} (#{sub.assignment.id})",
+    date:       Time.now.to_s,
     migrated:   "true"
   })
   up.store_upload!(data)
@@ -52,4 +65,92 @@ Submission.all.take(10).each do |sub|
 
   sub.upload_id = up.id
   sub.save!
+end
+
+puts "Migrating Assignment files..."
+
+Assignment.all.each do |assn|
+  if assn.assignment_upload_id
+    puts "#{assn.id} (a): Already migrated"
+    next
+  end
+
+  if assn.assignment_file_name.nil?
+    #puts "#{assn.id}: Nil filename"
+    next
+  end
+  
+  if assn.secret_dir.nil?
+    puts "#{assn.id}: Nil secret_dir"
+    next
+  end
+
+  unless File.exists?(assn.assignment_full_path)
+    puts "#{assn.id}: Failed. Can't find #{assn.assignment_file}"
+    next
+  end
+
+  puts "#{assn.id}: Migrating #{assn.assignment_file}..."
+
+  data = MockUpload.new(assn.assignment_full_path, assn.assignment_file)
+
+  up = Upload.new
+  teacher = assn.course.first_teacher
+  up.user_id = teacher.id
+  up.store_meta!({
+    type:       "Assignment",
+    user:       "#{teacher.name} (#{teacher.id})",
+    course:     "#{assn.course.name} (#{assn.course.id})",
+    date:       Time.now.to_s,
+    migrated:   "true"
+  })
+  up.store_upload!(data)
+  up.save!
+
+  assn.assignment_upload_id = up.id
+  assn.save!
+end
+
+puts "Migrating Assignment Grading files..."
+
+Assignment.all.each do |assn|
+  if assn.grading_upload_id
+    puts "#{assn.id} (a): Already migrated"
+    next
+  end
+
+  if assn.grading_file.nil?
+    #puts "#{assn.id}: Nil filename"
+    next
+  end
+  
+  if assn.secret_dir.nil?
+    puts "#{assn.id}: Nil secret_dir"
+    next
+  end
+
+  unless File.exists?(assn.grading_full_path)
+    puts "#{assn.id}: Failed. Can't find #{assn.grading_file}"
+    next
+  end
+
+  puts "#{assn.id}: Migrating #{assn.grading_file}..."
+
+  data = MockUpload.new(assn.grading_full_path, assn.grading_file)
+
+  up = Upload.new
+  teacher = assn.course.first_teacher
+  up.user_id = teacher.id
+  up.store_meta!({
+    type:       "Assignment Grading File",
+    user:       "#{teacher.name} (#{teacher.id})",
+    course:     "#{assn.course.name} (#{assn.course.id})",
+    date:       Time.now.to_s,
+    migrated:   "true"
+  })
+  up.store_upload!(data)
+  up.save!
+
+  assn.grading_upload_id = up.id
+  assn.save!
 end

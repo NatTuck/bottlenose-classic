@@ -3,8 +3,9 @@ require 'securerandom'
 class Assignment < ActiveRecord::Base
   attr_accessible :name, :chapter_id, :assignment, :due_date
   attr_accessible :assignment_file_name, :grading_file_name
-  attr_accessible :assignment_file, :grading_file
   attr_accessible :points_available, :hide_grading
+
+  attr_protected :assignment_upload_id, :grading_upload_id
 
   belongs_to :chapter
   has_many :submissions, :dependent => :restrict
@@ -18,6 +19,22 @@ class Assignment < ActiveRecord::Base
   delegate :course, :to => :chapter
 
   before_destroy :cleanup!
+
+  def assignment_upload
+    Upload.find_by_id(assignment_upload_id)
+  end
+  
+  def grading_upload
+    Upload.find_by_id(grading_upload_id)
+  end
+
+  def assignment_file
+    assignment_file_name
+  end
+
+  def grading_file
+    grading_file_name
+  end
 
   def secret_dir
     if read_attribute(:secret_dir).nil?
