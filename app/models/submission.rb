@@ -3,7 +3,6 @@ require 'securerandom'
 class Submission < ActiveRecord::Base
   attr_accessible :assignment_id, :user_id, :student_notes
   attr_accessible :raw_score, :updated_at, :upload
-  attr_accessible :secret_dir, :file_name
   attr_accessible :grading_output, :grading_uid
   attr_accessible :teacher_score, :teacher_notes
   attr_accessible :ignore_late_penalty
@@ -16,26 +15,29 @@ class Submission < ActiveRecord::Base
 
   validates :assignment_id, :presence => true
   validates :user_id,       :presence => true
-  validates :file_name,     :presence => true
 
   validates :teacher_score, :numericality => true, :allow_nil => true
   validates :raw_score,     :numericality => true, :allow_nil => true
 
   validate :user_is_registered_for_course
+  validate :submitted_file_or_manual_grade
 
-  validate :secret_dir,     :uniqueness => true
+  delegate :course,    :to => :assignment
+  delegate :file_name, :to => :upload, :allow_nil => true
 
-  delegate :course, :to => :assignment
-
-  after_save     :update_cache!
+  after_save :update_cache!
 
   def update_cache!
    reg = self.user.registration_for(self.course)
    reg.update_assign_score! unless reg.nil?
   end
 
-  def upload=(data)
+  def upload_file=(data)
     return if data.nil?
+
+    unless upload_id.nil?
+      raise Exception.new("Attempt to replace submission upload.")
+    end
 
     up = Upload.new
     up.user_id = user_id
@@ -44,18 +46,32 @@ class Submission < ActiveRecord::Base
       user:       "#{user.name} (#{user.id})",
       course:     "#{course.name} (#{course.id})",
       assignment: "#{assignment.name} (#{assignment.id})",
-      date:       Time.now.to_s
+      date:       Time.now.strftime("%Y/%b/%d %H:%M:%S %Z")
     })
     up.store_upload!(data)
     up.save!
+
+    self.upload_id = up.id
+    self.save!
+      
+    Audit.log("Sub #{id}: New submission upload by #{user.name} " +
+              "(#{user.id}) with key #{up.secret_key}")
   end
 
   def file_path
-    file_name ? "/submissions/" + secret_dir + "/" + file_name : ""
+    if upload_id.nil?
+      ""
+    else
+      upload.path
+    end
   end
 
   def file_full_path
-    Rails.root.join("public", "submissions", secret_dir, file_name)
+    if upload_id.nil?
+      ""
+    else
+      upload.full_path
+    end
   end
 
   def late?
@@ -98,7 +114,7 @@ class Submission < ActiveRecord::Base
   end
 
   def grade!
-    return if secret_dir.nil?
+    return if upload_id.nil?
     root = Rails.root.to_s
     system(%Q{(cd "#{root}" && script/grade-submission #{self.id})&})
   end
@@ -107,5 +123,9 @@ class Submission < ActiveRecord::Base
 
   def user_is_registered_for_course
     user.courses.any? {|cc| cc.id == course.id }
+  end
+
+  def submitted_file_or_manual_grade
+    (not upload_id.nil?) || ignore_late_penalty
   end
 end

@@ -78,8 +78,16 @@ if output_lines.any? {|xx| xx.match(output_key)}
   puts "Summary:"
   puts parser.summary
 
-  sub.raw_score = (parser.points_earned * sub.assignment.points_available) / 
-    parser.points_available
+  score = 0
+
+  begin
+    score = (parser.points_earned * sub.assignment.points_available) / 
+      parser.points_available
+  rescue ZeroDivisionError
+    # Yay, no points available.
+  end
+
+  sub.raw_score = score
   sub.save!
 end
 

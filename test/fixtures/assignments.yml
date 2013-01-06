@@ -3,6 +3,7 @@
 hello:
   chapter: intro
   name: Hello, World
+  blame: fred
   assignment: Write a Hello World program.
   due_date: '2037-11-09'
   points_available: 100
@@ -10,6 +11,7 @@ hello:
 lambda_time:
   chapter: sub_model
   name: Lambda Time
+  blame: fred
   assignment: Demonstrate your understanding of lambdas in the substitution model.
   due_date: '2037-11-09'
   points_available: 100
@@ -17,6 +19,7 @@ lambda_time:
 delete_me:
   chapter: intro
   name: Delete This Assignment
+  blame: fred
   assignment: Eat five batteries.
   due_date: '2037-11-09'
   points_available: 17

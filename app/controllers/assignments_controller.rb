@@ -24,20 +24,21 @@ class AssignmentsController < ApplicationController
 
   def create
     @assignment = Assignment.new(params[:assignment])
+    @assignment.blame_id = @logged_in_user.id
 
     if @assignment.save
+      @assignment.save_uploads!
       redirect_to @assignment, notice: 'Assignment was successfully created.'
     else
-      @assignment.cleanup!
       render action: "new"
     end
   end
 
   def update
     if @assignment.update_attributes(params[:assignment])
+      @assignment.save_uploads!
       redirect_to @assignment, notice: 'Assignment was successfully updated.'
     else
-      @assignment.cleanup!
       render action: "edit"
     end
   end

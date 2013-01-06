@@ -2,10 +2,12 @@ require 'securerandom'
 
 class Assignment < ActiveRecord::Base
   attr_accessible :name, :chapter_id, :assignment, :due_date
-  attr_accessible :assignment_file_name, :grading_file_name
   attr_accessible :points_available, :hide_grading
+  attr_accessible :blame_id
 
   attr_protected :assignment_upload_id, :grading_upload_id
+
+  belongs_to :blame, :class_name => "User", :foreign_key => "blame_id"
 
   belongs_to :chapter
   has_many :submissions, :dependent => :restrict
@@ -18,8 +20,6 @@ class Assignment < ActiveRecord::Base
 
   delegate :course, :to => :chapter
 
-  before_destroy :cleanup!
-
   def assignment_upload
     Upload.find_by_id(assignment_upload_id)
   end
@@ -29,106 +29,110 @@ class Assignment < ActiveRecord::Base
   end
 
   def assignment_file
-    assignment_file_name
+    if assignment_upload_id.nil?
+      ""
+    else
+      assignment_upload.file_name
+    end
+  end
+
+  def assignment_file_name
+    assignment_file
   end
 
   def grading_file
-    grading_file_name
-  end
-
-  def secret_dir
-    if read_attribute(:secret_dir).nil?
-      write_attribute(:secret_dir, SecureRandom.urlsafe_base64)
-    end
-    read_attribute(:secret_dir)
-  end
-
-  def assignments_base
-    Rails.root.join('public', 'assignments')
-  end
-
-  def grading_base
-    assignments_base.join('grading')
-  end
-
-  def cleanup_file!(base, file)
-    fn = base.join(secret_dir, file)
-    if File.exists?(fn)
-      File.unlink(fn)
-    end
-
-    dn = base.join(secret_dir)
-    if Dir.exists?(dn)
-      begin
-        Dir.unlink(dn)
-      rescue
-        logger.debug("Error removing directory, skipping.")
-      end
+    if grading_upload_id.nil?
+      ""
+    else
+      grading_upload.file_name
     end
   end
 
-  def cleanup_assignment_file!
-    return if assignment_file_name.nil?
-    cleanup_file!(assignments_base, assignment_file_name)
-  end
-
-  def cleanup_grading_file!
-    return if grading_file_name.nil?
-    cleanup_file!(grading_base, grading_file_name)
+  def grading_file_name
+    grading_file
   end
 
   def assignment_full_path
-    assignments_base.join(secret_dir, assignment_file_name)
+    assignment_upload.full_path
   end
 
   def grading_full_path
-    assignments_base.join('grading', secret_dir, grading_file_name)
+    grading_upload.full_path
   end
 
   def assignment_file_path
-    return "" if assignment_file_name.nil?
-    '/assignments/' + secret_dir + '/' + assignment_file_name
+    if assignment_upload_id.nil?
+      ""
+    else
+      assignment_upload.path
+    end
   end
 
   def grading_file_path
-    return "" if grading_file_name.nil?
-    '/assignments/grading/' + secret_dir + '/' + grading_file_name
-  end
-
-  def cleanup!
-    cleanup_assignment_file!
-    cleanup_grading_file!
+    if grading_upload_id.nil?
+      ""
+    else
+      grading_upload.path
+    end
   end
 
   def assignment_file=(data)
-    return unless data
-    cleanup_assignment_file!
-
-    self.assignment_file_name = data.original_filename 
-    
-    unless Dir.exists?(assignments_base.join(secret_dir))
-      Dir.mkdir(assignments_base.join(secret_dir))
-    end
-
-    path = assignment_full_path
-    File.open(path, 'wb') do |file|
-      file.write(data.read)
-    end
+    @assignment_file_data = data
   end
 
   def grading_file=(data)
-    return unless data
-    cleanup_grading_file!
+    @grading_file_data = data
+  end
 
-    self.grading_file_name = data.original_filename
+  def save_uploads!
+    user = User.find(blame_id)
 
-    unless Dir.exists?(grading_base.join(secret_dir))
-      Dir.mkdir(grading_base.join(secret_dir))
+    unless @assignment_file_data.nil?
+      unless assignment_upload_id.nil?
+        Audit.log("Assn #{id}: Orphaning assignment upload " +
+                  "#{assignment_upload_id} (#{assignment_upload.secret_key})")
+      end
+
+      up = Upload.new
+      up.user_id = user.id
+      up.store_meta!({
+        type:       "Assignment File",
+        user:       "#{user.name} (#{user.id})",
+        course:     "#{course.name} (#{course.id})",
+        date:       Time.now.strftime("%Y/%b/%d %H:%M:%S %Z")
+      })
+      up.store_upload!(@assignment_file_data)
+      up.save!
+      
+      self.assignment_upload_id = up.id
+      self.save!
+
+      Audit.log("Assn #{id}: New assignment file upload by #{user.name} " +
+                "(#{user.id}) with key #{up.secret_key}")
     end
 
-    path = grading_full_path
-    File.open(path, 'wb') do |file|
-      file.write(data.read)
+    unless @grading_file_data.nil?
+      unless assignment_upload_id.nil?
+        Audit.log("Assn #{id}: Orphaning grading upload " +
+                  "#{assignment_upload_id} (#{assignment_upload.secret_key})")
+      end
+
+      up = Upload.new
+      up.user_id = user.id
+      up.store_meta!({
+        type:       "Assignment Grading File",
+        user:       "#{user.name} (#{user.id})",
+        course:     "#{course.name} (#{course.id})",
+        date:       Time.now.strftime("%Y/%b/%d %H:%M:%S %Z")
+      })
+      up.store_upload!(@grading_file_data)
+      up.save!
+
+      self.grading_upload_id = up.id
+      self.save!
+      
+      Audit.log("Assn #{id}: New grading file upload by #{user.name} " +
+                "(#{user.id}) with key #{up.secret_key}")
     end
   end
 

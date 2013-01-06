@@ -11,6 +11,10 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     @pub_dir  = Rails.root.join('public')
   end
 
+  teardown do
+    Upload.cleanup_test_uploads!
+  end
+
   test "correct sandbox scripts installed" do
     sandbox = Rails.root.join("sandbox/scripts")
     install = Pathname.new("/usr/local/bottlenose/scripts")
@@ -112,18 +116,6 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     assert_equal @submission.raw_score, 100
     
     assert File.exists?(@submission.file_full_path)
-
-    # Clean up files.
-    @submission.cleanup!("Really in a test")
-    @submission.destroy
-
-    assert_equal false, File.exists?(@submission.file_full_path)
-
-    # TODO: Figure out how assignment destruction should work.
-    # @assignment.destroy
-
-    # assert_equal false, File.exists?(@assignment.assignment_full_path)
-    # assert_equal false, File.exists?(@assignment.grading_full_path)
   end
 
   test "submit and grade a single file submission with specially valued tests" do
@@ -167,14 +159,6 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     end
 
     assert_equal @submission.raw_score, 75
-    
-    assert File.exists?(@submission.file_full_path)
-
-    # Clean up files.
-    @submission.cleanup!("really in a test")
-    @submission.destroy
-
-    assert_equal false, File.exists?(@submission.file_full_path)
   end
 
   private

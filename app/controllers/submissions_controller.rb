@@ -25,7 +25,7 @@ class SubmissionsController < ApplicationController
   end
 
   def create
-    @submission = Submission.new(params[:submission])
+    @submission = Submission.new
     @submission.assignment_id = @assignment.id
 
     if @logged_in_user.course_admin?(@course)
@@ -35,7 +35,7 @@ class SubmissionsController < ApplicationController
       @submission.ignore_late_penalty = false
     end
 
-    if @submission.save
+    if @submission.update_attributes(params[:submission])
       @submission.grade!
       respond_to do |format|
         format.html { redirect_to @submission, notice: 'Submission was successfully created.' }
@@ -75,7 +75,6 @@ class SubmissionsController < ApplicationController
   def manual_grade
     @submission = Submission.new
     @submission.assignment_id = @assignment.id
-    @submission.file_name = "none"
     @submission.ignore_late_penalty = true
 
     @users = @course.users

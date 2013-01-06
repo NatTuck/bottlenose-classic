@@ -1,0 +1,2 @@
+Housekeeping and refactorings TODO:
+ - Replace "raw_score" with "auto_score" in Submission.

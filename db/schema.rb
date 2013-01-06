@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130103172250) do
+ActiveRecord::Schema.define(:version => 20130106160839) do
 
   create_table "answers", :force => true do |t|
     t.integer  "question_id", :null => false
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20130103172250) do
     t.boolean  "hide_grading",         :default => false
     t.integer  "assignment_upload_id"
     t.integer  "grading_upload_id"
+    t.integer  "blame_id"
   end
 
   add_index "assignments", ["chapter_id"], :name => "index_assignments_on_chapter_id"

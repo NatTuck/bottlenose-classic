@@ -49,6 +49,11 @@ class Upload < ActiveRecord::Base
     Audit.log("User #{user.name} (#{user_id}) creating upload #{secret_key}")
 
     self.file_name = upload.original_filename
+
+    if file_name == "_metadata"
+      raise Exception.new("No uploads named '_metadata', sorry.")
+    end
+
     File.open(full_path, 'wb') do |file|
       file.write(upload.read)
     end
@@ -90,5 +95,12 @@ class Upload < ActiveRecord::Base
 
   def self.base_upload_dir
     Rails.root.join("public", "uploads", Rails.env)
+  end
+
+  def self.cleanup_test_uploads!
+    dir = Rails.root.join("public", "uploads", "test").to_s
+    if dir.length > 8 && dir =~ /test/
+      system(%Q{rm -rf "#{dir}"})
+    end
   end
 end
