@@ -3,12 +3,10 @@
 intro:
   name: Intro to Scheme
   course: cs301
-  questions_due: '2040-11-23'
 
 sub_model:
   name: The Substitution Model
   course: cs301
-  questions_due: '2040-11-23'
 
 long_pants:
   name: The disadvantages of short pants

@@ -12,7 +12,7 @@ class Question < ActiveRecord::Base
   delegate :chapter, :to => :lesson
 
   def due_date
-    chapter.questions_due
+    lesson.questions_due
   end
 
   before_validation do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130107123741) do
+ActiveRecord::Schema.define(:version => 20130107201618) do
 
   create_table "answers", :force => true do |t|
     t.integer  "question_id", :null => false
@@ -45,11 +45,10 @@ ActiveRecord::Schema.define(:version => 20130107123741) do
   add_index "assignments", ["chapter_id"], :name => "index_assignments_on_chapter_id"
 
   create_table "chapters", :force => true do |t|
-    t.string   "name",          :null => false
-    t.integer  "course_id",     :null => false
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-    t.date     "questions_due"
+    t.string   "name",       :null => false
+    t.integer  "course_id",  :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "chapters", ["course_id"], :name => "index_chapters_on_course_id"
@@ -65,12 +64,13 @@ ActiveRecord::Schema.define(:version => 20130107123741) do
   end
 
   create_table "lessons", :force => true do |t|
-    t.string   "name",       :null => false
-    t.integer  "chapter_id", :null => false
+    t.string   "name",          :null => false
+    t.integer  "chapter_id",    :null => false
     t.text     "video"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.text     "notes"
+    t.date     "questions_due"
   end
 
   add_index "lessons", ["chapter_id"], :name => "index_lessons_on_chapter_id"

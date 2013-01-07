@@ -32,8 +32,8 @@
 <% end %>
 
 <h2>Questions</h2>
-<% unless @chapter.questions_due.nil? || @chapter.questions_due.to_s.empty? %>
-<p>These questions are due by <%= @chapter.questions_due %>.</p>
+<% unless @lesson.questions_due.nil? || @lesson.questions_due.to_s.empty? %>
+<p>These questions are due by <%= @lesson.questions_due %>.</p>
 <% end %>
 
 <% if @logged_in_user.course_admin?(@course) %>

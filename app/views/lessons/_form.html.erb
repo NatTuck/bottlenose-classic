@@ -19,6 +19,11 @@
       <td><%= f.text_field :name %></td>
     </tr>
     <tr>
+      <td><%= f.label :questions_due%> <br>
+        (Late after this day.)</td>
+      <td><%= f.datepicker :questions_due %></td>
+    </tr>
+    <tr>
       <td><%= f.label :video, "Main Video" %></td>
       <td>
 	<p>(Please paste YouTube embed code here.)</p>
