@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130106160839) do
+ActiveRecord::Schema.define(:version => 20130107123741) do
 
   create_table "answers", :force => true do |t|
     t.integer  "question_id", :null => false
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(:version => 20130106160839) do
     t.string   "late_options", :default => "10,1,0"
     t.text     "footer"
     t.boolean  "private"
+    t.integer  "term_id"
   end
 
   create_table "lessons", :force => true do |t|
@@ -129,6 +130,13 @@ ActiveRecord::Schema.define(:version => 20130106160839) do
   add_index "submissions", ["grading_uid"], :name => "index_submissions_on_grading_uid", :unique => true
   add_index "submissions", ["user_id", "assignment_id"], :name => "index_submissions_on_user_id_and_assignment_id"
   add_index "submissions", ["user_id"], :name => "index_submissions_on_user_id"
+
+  create_table "terms", :force => true do |t|
+    t.string   "name"
+    t.boolean  "archived",   :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
 
   create_table "uploads", :force => true do |t|
     t.integer  "user_id"

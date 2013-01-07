@@ -51,13 +51,13 @@ class SubmissionsControllerTest < ActionController::TestCase
     assert_response :redirect
   end
 
-  test "should destroy submission" do
-    skip "Code to delete submissions intentionally disabled."
+  #test "should destroy submission" do
+  #  skip "Code to delete submissions intentionally disabled."
+  #
+  #  assert_difference('Submission.count', -1) do
+  #    delete :destroy, {id: @john_hello}, {user_id: @fred.id}
+  #  end
 
-    assert_difference('Submission.count', -1) do
-      delete :destroy, {id: @john_hello}, {user_id: @fred.id}
-    end
-
-    assert_response :redirect
-  end
+  #  assert_response :redirect
+  #end
 end

@@ -1,5 +1,7 @@
 
 Bottlenose::Application.routes.draw do
+  resources :terms
+
   resources :reg_requests
 
   resources :questions

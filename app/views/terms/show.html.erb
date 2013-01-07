@@ -1,0 +1,16 @@
+<% @page_title = "View Term" %>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @term.name %>
+</p>
+
+<p>
+  <b>Archived:</b>
+  <%= @term.archived? ? "yes" : "no" %>
+</p>
+
+<%= link_to 'Edit', edit_term_path(@term) %> |
+<%= link_to 'Back', terms_path %>

@@ -1,5 +1,7 @@
 class Course < ActiveRecord::Base
-  attr_accessible :name, :footer, :late_options, :private
+  attr_accessible :name, :footer, :late_options, :private, :term_id
+
+  belongs_to :term
   
   has_many :registrations
   has_many :users, :through => :registrations, :dependent => :restrict
@@ -8,8 +10,8 @@ class Course < ActiveRecord::Base
 
   has_many :chapters, :dependent => :restrict
 
-  validates :name, :length     => { :minimum => 2 },
-                   :uniqueness => true
+  validates :name,    :length      => { :minimum => 2 },
+                      :uniqueness  => true
   validates :late_options, :format => { :with => /^\d+,\d+,\d+$/ }
 
   def late_opts

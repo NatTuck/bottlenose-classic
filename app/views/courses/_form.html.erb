@@ -19,6 +19,12 @@
       <td><%= f.text_field :name %></td>
     </tr>
     <tr>
+      <td><%= f.label :term_id, "Term" %></td>
+      <td>
+        <%= select("course", "term_id", @terms.map {|tt| [tt.name, tt.id]}) %>
+      </td>
+    </tr>
+    <tr>
       <td>Late Penalty</td>
       <td>
 	<p>Deduct

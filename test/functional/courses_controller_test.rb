@@ -68,7 +68,7 @@ class CoursesControllerTest < ActionController::TestCase
   test "non-admin should not be able to update course" do
     put :update, {id: @course1, course: { name: @course1.name }}, {:user_id => @user.id}
     assert_response :redirect
-    assert_match "don't have permission", flash[:error]
+    assert_match "not allowed", flash[:error]
   end
 
   test "should destroy course" do

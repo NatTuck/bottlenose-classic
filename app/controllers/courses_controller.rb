@@ -3,7 +3,7 @@ class CoursesController < ApplicationController
     :except => [:index, :new, :create]
   before_filter :require_course_permission, 
     :except => [:index, :new, :create]
-  before_filter :require_teacher,    :only => [:export_grades]
+  before_filter :require_teacher,    :only => [:export_grades, :edit, :update]
   before_filter :require_site_admin, :only => [:new, :create, :destroy]
   
   def export_grades
@@ -24,6 +24,14 @@ class CoursesController < ApplicationController
     else
       @courses = @logged_in_user.courses.order(:name)
     end
+
+    @courses_by_term = {}
+    Term.all.each do |term|
+      @courses_by_term[term.id] = @courses.find_all {|cc| 
+        cc.term_id == term.id }
+    end
+
+    @courses_no_term = @courses.find_all {|cc| cc.term_id.nil? }
   end
 
   def show
@@ -38,15 +46,11 @@ class CoursesController < ApplicationController
 
   def new
     @course = Course.new
+    @terms = Term.all_sorted
   end
 
   def edit
-    unless @logged_in_user.site_admin? || 
-        @course.taught_by?(@logged_in_user)
-      show_error "You don't have permission to do that."
-      redirect_to course_url(@course)
-      return
-    end
+    @terms = Term.all_sorted
   end
 
   def create
@@ -61,12 +65,6 @@ class CoursesController < ApplicationController
   end
 
   def update
-    unless @logged_in_user.site_admin? or @course.taught_by?(@logged_in_user)
-      show_error "You don't have permission to do that."
-      redirect_to course_url(@course)
-      return
-    end
-
     @course.assign_attributes(params[:course])
     @course.late_options = [params[:late_penalty], params[:late_repeat], params[:late_maximum]].join(',') unless params[:late_penalty].nil?
 
