@@ -28,5 +28,8 @@
 /public/submissions/
 /public/uploads
 
+# Ignore auto-generated assets.
+/public/assets
+
 # Other stuff
 .rbx

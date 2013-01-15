@@ -7,6 +7,11 @@ require File.expand_path('../config/application', __FILE__)
 
 Bottlenose::Application.load_tasks
 
+task :restart do
+  system("bundle exec rake assets:precompile")
+  system("sudo /usr/local/bin/restart-apache.sh")
+end
+
 task :install do
   system("cd sandbox/src && make install")
 end

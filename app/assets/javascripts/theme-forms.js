@@ -16,7 +16,11 @@ function bottlenose_theme_forms()
     $('input:submit').button();
 
     $('.rich-text').each(function (ii) {
-	new nicEditor({iconsPath: '/assets/nicEditorIcons.gif'}).panelInstance(this.id);
+	    new nicEditor({
+            iconsPath: '/assets/nicEditorIcons.gif',
+            buttonList: ['bold', 'italic', 'ol', 'ul', 'removeformat', 'indent',
+                         'outdent', 'image', 'fontFamily', 'xhtml']
+        }).panelInstance(this.id);
     });
 }
 

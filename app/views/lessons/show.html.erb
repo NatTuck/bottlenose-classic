@@ -26,7 +26,7 @@
 <% unless @lesson.notes.nil? or @lesson.notes.empty? %>
 <h2>Notes</h2>
 
-<div id="lesson-instructor-notes">
+<div id="lesson-instructor-notes" class="prose">
 <%= raw @lesson.notes %>
 </div>
 <% end %>

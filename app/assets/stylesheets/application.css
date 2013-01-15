@@ -65,6 +65,10 @@
     margin-bottom: 1em;
 }
 
+.prose {
+    max-width: 50em;
+}
+
 .pretty-list td {
     padding: 1em;
     border-top: thin dashed grey;
