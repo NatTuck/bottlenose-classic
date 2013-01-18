@@ -6,3 +6,4 @@ Bottlenose::Application.initialize!
 
 # Load some libraries.
 load "audit.rb"
+load "score.rb"

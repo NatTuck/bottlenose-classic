@@ -27,7 +27,13 @@ class Question < ActiveRecord::Base
   end
 
   def best_score_for(user)
-    answers_for(user).map {|aa| aa.score}.max
+    best = answers_for(user).map {|aa| aa.score}.max || 0
+
+    if best > 75
+      Score.new(1, 1)
+    else
+      Score.new(0, 1)
+    end
   end
 
   def best_score_image_for(user)
@@ -35,7 +41,7 @@ class Question < ActiveRecord::Base
 
     return "/assets/null-mark.png" if best_score.nil?
     
-    if best_score > 75
+    if best_score.points > 0
       "/assets/check-mark.png"
     else
       "/assets/cross-mark.png"

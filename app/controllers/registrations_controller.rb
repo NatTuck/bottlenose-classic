@@ -14,6 +14,9 @@ class RegistrationsController < ApplicationController
       redirect_to @course
       return
     end
+
+    @a_score = @registration.assign_score
+    @q_score = @registration.questions_score 
   end
 
   def edit

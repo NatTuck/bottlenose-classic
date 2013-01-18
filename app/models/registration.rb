@@ -9,27 +9,25 @@ class Registration < ActiveRecord::Base
 
   validates :user_id, :uniqueness => { :scope => :course_id }
 
-  def answers_done
-    qs = course.questions
-    done = 0
-    qs.each do |qq|
-      qq.answers.where(user_id: user_id).each do |aa|
-        done += 1 if aa.answer == aa.correct_answer
-      end
+  def update_questions_score!
+    score = course.chapters.map {|cc| cc.questions_score(user) }.inject(:&)
+    write_attribute(:questions_score, "#{score || Score.new(0, 0)}")
+    self.save!
+  end
+
+  def questions_score
+    if self.read_attribute(:questions_score).nil?
+      update_questions_score!
     end
-    "#{done} / #{qs.size}"
+    
+    ss = self.read_attribute(:questions_score)
+    (aa, bb) = ss.split("/").map {|nn| nn.to_i}
+    Score.new(aa, bb)
   end
 
   def update_assign_score!
-    as = course.assignments
-    score = 0
-    total = 0
-    as.each do |aa|
-      total += aa.points_available
-      score += aa.best_score_for(user)
-    end
-
-    write_attribute(:assign_score, "#{score.round(1)} / #{total.round(1)}")
+    score = course.assignments.map {|aa| aa.best_score_for(user) }.inject(:&)
+    write_attribute(:assign_score, "#{score || Score.new(0, 0)}")
     self.save!
   end
 
@@ -38,6 +36,8 @@ class Registration < ActiveRecord::Base
       update_assign_score!
     end
     
-    self.read_attribute(:assign_score)
+    ss = self.read_attribute(:assign_score)
+    (aa, bb) = ss.split("/").map {|nn| nn.to_i}
+    Score.new(aa, bb)
   end
 end

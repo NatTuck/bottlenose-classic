@@ -29,6 +29,10 @@ class Lesson < ActiveRecord::Base
     end
   end
 
+  def questions_score(user)
+    questions.map {|qq| qq.best_score_for(user) }.inject(:&) || Score.new(0, 0)
+  end
+
   def prev
     xs = chapter.lessons.order(:name)
 

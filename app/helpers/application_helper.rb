@@ -21,12 +21,11 @@ module ApplicationHelper
     assignment ||= @assignment
 
     if score.nil?
-      score = '∅'
-    else
-      score = score.round(1)
+      score = "∅"
     end
 
     return score if assignment.nil?
+
     if assignment.hide_grading?
       if @logged_in_user.course_admin?(@course)
         "(hidden #{score})"
@@ -39,7 +38,9 @@ module ApplicationHelper
   end
 
   def status_image(sub)
-    return image_tag("/assets/null-mark.png", :height => 32) if (sub.nil? || sub.new_record?)
+    if (sub.nil? || sub.new_record?)
+      return image_tag("/assets/null-mark.png", :height => 32) 
+    end
 
     if sub.raw_score.nil? and sub.teacher_score.nil?
       if sub.created_at < (Time.now - 10.minutes)

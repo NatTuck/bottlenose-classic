@@ -9,6 +9,24 @@ class Chapter < ActiveRecord::Base
   validates :name, :length => { :minimum => 2 }, 
                    :uniqueness => { :scope => :course_id }
 
+  def questions
+    lessons.map {|ll| ll.questions }.flatten
+  end
+
+  def questions_score(user)
+     lessons.map {|qq| qq.questions_score(user) }.inject(:&) || Score.new(0, 0)
+  end
+
+  def assignments_score(user)
+    assignments.map {|aa| aa.best_score_for(user) }.inject(:&) || Score.new(0, 0)
+  end
+
+  def next_due_date_for(user)
+    as = assignments.map {|aa| aa.due_date }
+    qs = questions.map   {|qq| qq.due_date }
+    as.concat(qs).find_all {|dd| not dd.nil? }.sort.first || "none"
+  end
+
   def prev
     xs = course.chapters.order(:name)
 

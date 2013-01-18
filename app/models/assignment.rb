@@ -157,13 +157,8 @@ class Assignment < ActiveRecord::Base
 
   def best_score_for(user)
     sub = best_submission_for(user)
-    sub.nil? ? 0 : sub.score
-  end
-  
-  def best_score_image_for(user)
-    sub = best_submission_for(user)
+    points = sub.nil? ? 0 : sub.score
 
-    return "/assets/null-mark.png" if sub.nil? or sub.file_name.nil?
-    sub.score_image
+    Score.new(points, points_available)
   end
 end
