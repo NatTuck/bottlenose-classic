@@ -1,12 +1,11 @@
 #!/bin/bash
-# 2012-Nov-05: Updated sandbox binary. This comment
-#   should make the script installed test fail.
 
 COUNT=`find . -name Makefile | wc -l`
 
 if [[ $COUNT -ne 1 ]]
 then
-    echo "Too many Makefiles in the directory tree."
+    echo "Need exactly 1 Makefile in directory tree."
+    echo "Found $COUNT instead, giving up."
     exit 
 fi
 
