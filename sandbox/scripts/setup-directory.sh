@@ -27,7 +27,7 @@ mount -t tmpfs -o size=512m tmpfs $DIR
 
 cd $DIR
 
-for dd in usr bin lib var etc proc
+for dd in usr bin lib var etc proc dev
 do
     mkdir $dd
     mount -o bind /$dd $dd
