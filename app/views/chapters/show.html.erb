@@ -8,19 +8,29 @@
 
 <h1>Lessons</h1>
 
-<ul>
-<% @lessons.each do |lesson| %>
-  <li>
-    <%= link_to lesson.name, lesson %>
+<table class="pretty-list">
+  <tr>
+    <th>Lesson</th>
+    <th>Status</th>
+    <th>Questions Due</th>
+    <th>&nbsp;</th>
+  </tr>
 
-    <% if @logged_in_user.course_admin?(@course) %>
-      (<%= link_to 'Edit', edit_lesson_path(lesson) %>)
-      (<%= link_to 'Destroy', lesson, {method: :delete, 
-	    data: { confirm: 'Are you sure?' }} %>)
-    <% end %>
-  </li>
+  <% @lessons.each do |lesson| %>
+    <tr>
+      <td><%= link_to lesson.name, lesson %></td>
+      <td><%= lesson.questions_score(@logged_in_user) %></td>
+      <td><%= lesson.questions_due %></td>
+      <td>&nbsp;
+        <% if @logged_in_user.course_admin?(@course) %>
+          (<%= link_to 'Edit', edit_lesson_path(lesson) %>)
+          (<%= link_to 'Destroy', lesson, {method: :delete, 
+           data: { confirm: 'Are you sure?' }} %>)
+         <% end %>
+     </td>
+   </tr>
 <% end %>
-</ul>
+</table>
 
 <% if @logged_in_user.course_admin?(@course) %>
 <p><%= link_to "New Lesson", new_chapter_lesson_path(@chapter) %></p>
@@ -28,19 +38,33 @@
 
 <h1>Assignments</h1>
 
-<ul>
-<% @assignments.each do |assignment| %>
-  <li>
-    <%= link_to assignment.name, assignment %>
-    
-    <% if @logged_in_user.course_admin?(@course) %>
-      (<%= link_to 'Edit', edit_assignment_path(assignment) %>)
-      (<%= link_to 'Destroy', assignment, {method: :delete,
-	    data: { confirm: 'Are you sure?' }} %>)    
-    <% end %>
-  </li>
+<table class="pretty-list">
+  <tr>
+    <th>Assignment</th>
+    <th>Status</th>
+    <th>Due Date</th>
+    <th>&nbsp;</th>
+  </tr>
+
+
+
+  <% @assignments.each do |assignment| %>
+    <tr>
+      <td><%= link_to assignment.name, assignment %></td>
+      <td>
+        <%= status_image(assignment.best_submission_for(@logged_in_user)) %>
+      </td>
+      <td><%= assignment.due_date %></td>
+      <td>&nbsp;
+        <% if @logged_in_user.course_admin?(@course) %>
+          (<%= link_to 'Edit', edit_assignment_path(assignment) %>)
+          (<%= link_to 'Destroy', assignment, {method: :delete,
+           data: { confirm: 'Are you sure?' }} %>)    
+        <% end %>
+      </td>
+    </tr>      
 <% end %>
-</ul>
+</table>
 
 <% if @logged_in_user.course_admin?(@course) %>
 <p><%= link_to "New Assignment", new_chapter_assignment_path(@chapter) %></p>

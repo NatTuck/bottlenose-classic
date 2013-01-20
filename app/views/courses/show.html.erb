@@ -15,18 +15,32 @@
 
 <h1>Chapters</h1>
 
-<ul>
-<% @course.chapters.sort_by {|cc| cc.name}.each do |chapter| %>
-  <li>
-    <%= link_to chapter.name, chapter %>
-    <% if @logged_in_user.course_admin?(@course) %>
-      (<%= link_to "Edit Title", [:edit, chapter] %>)
-      (<%= link_to 'Destroy', chapter, 
+<table class="pretty-list">
+  <tr>
+    <th>Chapter</th>
+    <th>Questions</th>
+    <th>Assignments</th>
+    <th>Next Due Date</th>
+    <th>&nbsp;</th>
+  </tr>
+
+  <% @course.chapters.sort_by {|cc| cc.name}.each do |chapter| %>
+    <tr>
+      <td><%= link_to chapter.name, chapter %></td>
+      <td><%= chapter.questions_score(@logged_in_user) %></td>
+      <td><%= chapter.assignments_score(@logged_in_user) %></td>
+      <td><%= chapter.next_due_date_for(@logged_in_user) %></td>
+      <td>
+        <% if @logged_in_user.course_admin?(@course) %>
+          (<%= link_to "Edit Title", [:edit, chapter] %>)
+          (<%= link_to 'Destroy', chapter, 
            { method: :delete, data: { confirm: 'Are you sure?' }} %>)
-    <% end %>
-  </li>
+         <% end %>
+     </td>
+   </tr>
 <% end %>
-</ul>
+
+</table>
 
 <% if @logged_in_user.course_admin?(@course) %>
 <p><%= link_to 'New Chapter', new_course_chapter_path(@course) %></p>
@@ -48,7 +62,7 @@
 <% @student_regs.each do |sreg| %>
   <tr>
     <td><%= sreg.user.name %></td>
-    <td><%= sreg.answers_done %></td>
+    <td><%= sreg.questions_score %></td>
     <td><%= sreg.assign_score %></td>
     <td><%= link_to "View", sreg %></td>
   </tr>

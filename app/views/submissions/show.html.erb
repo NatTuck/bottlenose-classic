@@ -29,7 +29,9 @@
   </tr>
   <tr>
     <td><strong>Student Notes</strong></td>
-    <td><%= @submission.student_notes %></td>
+    <td>
+      <div class="prose"><%= @submission.student_notes %></div>
+    </td>
   </tr>
 </table>
 
@@ -73,7 +75,7 @@
 
 <% if (not @assignment.hide_grading?) or @logged_in_user.course_admin?(@course) %>
 
-<div>
+<div class="prose">
 <%= raw @submission.teacher_notes || 'no data' %>
 </div>
 

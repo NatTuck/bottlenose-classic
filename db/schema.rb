@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130107201618) do
+ActiveRecord::Schema.define(:version => 20130118160402) do
 
   create_table "answers", :force => true do |t|
     t.integer  "question_id", :null => false
@@ -98,12 +98,13 @@ ActiveRecord::Schema.define(:version => 20130107201618) do
   end
 
   create_table "registrations", :force => true do |t|
-    t.integer  "course_id",    :null => false
-    t.integer  "user_id",      :null => false
+    t.integer  "course_id",       :null => false
+    t.integer  "user_id",         :null => false
     t.boolean  "teacher"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.string   "assign_score"
+    t.string   "questions_score"
   end
 
   add_index "registrations", ["course_id"], :name => "index_registrations_on_course_id"
