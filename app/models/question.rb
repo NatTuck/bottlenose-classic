@@ -12,6 +12,7 @@ class Question < ActiveRecord::Base
   delegate :chapter, :to => :lesson
 
   def due
+    return nil if lesson.questions_due.nil?
     time = lesson.questions_due.to_time
     
     if course.questions_due_time.nil?
@@ -29,6 +30,14 @@ class Question < ActiveRecord::Base
 
     time
   end
+
+  def due_date
+    if due.nil?
+      nil
+    else
+      due.to_date
+    end
+  end 
 
   before_validation do
     unless explanation.nil?
