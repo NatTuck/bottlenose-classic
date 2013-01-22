@@ -19,7 +19,12 @@ class Question < ActiveRecord::Base
     else
       base_date = course.questions_due_time.to_date.to_time
       delta = course.questions_due_time - base_date
-      time += delta
+
+      if delta == 0
+        time += 1.day
+      else
+        time += delta
+      end
     end
 
     time
