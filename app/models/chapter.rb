@@ -23,7 +23,7 @@ class Chapter < ActiveRecord::Base
 
   def next_due_date_for(user)
     as = assignments.map {|aa| aa.due_date }
-    qs = questions.map   {|qq| qq.due_date }
+    qs = questions.map   {|qq| qq.due.to_date }
     as.concat(qs).find_all {|dd| not dd.nil? }.sort.first || "none"
   end
 

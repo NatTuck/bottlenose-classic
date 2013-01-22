@@ -1,5 +1,6 @@
 class Course < ActiveRecord::Base
   attr_accessible :name, :footer, :late_options, :private, :term_id
+  attr_accessible :questions_due_time
 
   belongs_to :term
   

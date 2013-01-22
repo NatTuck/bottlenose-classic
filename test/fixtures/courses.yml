@@ -5,7 +5,13 @@ cs301:
   late_options: "10,1,50"
   private: false
 
+cs302:
+  name: "02. Steam Valve Computing"
+  late_options: "10,1,50"
+  private: false
+  questions_due_time: "14:00" 
+
 cs599:
-  name: "02. Directed Study in Deleting Courses"
+  name: "03. Directed Study in Deleting Courses"
   late_options: "10,1,50"
   private: true

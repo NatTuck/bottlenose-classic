@@ -1,11 +1,13 @@
 require 'test_helper'
 
 class AnswerTest < ActiveSupport::TestCase
-  test "on time ansewr is not late" do
+  test "on time answers not late" do
     assert not(answers(:on_time).late?)
+    assert not(answers(:water_on_time).late?)
   end 
 
-  test "late answer is late" do
+  test "late answers late" do
     assert answers(:late).late?
+    assert answers(:water_late).late?
   end
 end

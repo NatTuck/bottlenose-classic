@@ -21,3 +21,8 @@ there_yet:
   correct_answer: "no"
   explanation: Obviously.
 
+what_liquid:
+  lesson: yay_fire
+  question: What is steam's liquid form?
+  question_form: <input type="text" name="answer[answer]">
+  correct_answer: "water"

@@ -11,8 +11,18 @@ class Question < ActiveRecord::Base
   delegate :course,  :to => :lesson
   delegate :chapter, :to => :lesson
 
-  def due_date
-    lesson.questions_due
+  def due
+    time = lesson.questions_due.to_time
+    
+    if course.questions_due_time.nil?
+      time += 1.day
+    else
+      base_date = course.questions_due_time.to_date.to_time
+      delta = course.questions_due_time - base_date
+      time += delta
+    end
+
+    time
   end
 
   before_validation do

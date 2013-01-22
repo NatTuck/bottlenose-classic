@@ -51,6 +51,7 @@ class CoursesController < ApplicationController
 
   def edit
     @terms = Term.all_sorted
+    @course.questions_due_time ||= Time.local(2000,1,1,0,0) 
   end
 
   def create

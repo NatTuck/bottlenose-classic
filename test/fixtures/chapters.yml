@@ -11,3 +11,7 @@ sub_model:
 long_pants:
   name: The disadvantages of short pants
   course: cs301
+
+steam_is_hot:
+  name: Steam is Hot
+  course: cs302

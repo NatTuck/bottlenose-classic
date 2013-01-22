@@ -17,10 +17,10 @@ class Answer < ActiveRecord::Base
   delegate :course, :to => :question
 
   def late?
-    if question.due_date.nil?
+    if question.due.nil?
       false
     else
-      created_at > question.due_date
+      created_at > question.due
     end
   end
 
