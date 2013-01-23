@@ -5,7 +5,7 @@ class Assignment < ActiveRecord::Base
   attr_accessible :points_available, :hide_grading
   attr_accessible :blame_id
 
-  attr_protected :assignment_upload_id, :grading_upload_id
+  attr_protected :assignment_upload_id, :grading_upload_id, :solution_upload_id
 
   belongs_to :blame, :class_name => "User", :foreign_key => "blame_id"
 
@@ -26,6 +26,10 @@ class Assignment < ActiveRecord::Base
   
   def grading_upload
     Upload.find_by_id(grading_upload_id)
+  end
+
+  def solution_upload
+    Upload.find_by_id(solution_upload_id)
   end
 
   def assignment_file
@@ -52,6 +56,18 @@ class Assignment < ActiveRecord::Base
     grading_file
   end
 
+  def solution_file
+    if solution_upload_id.nil?
+      ""
+    else
+      solution_upload.file_name
+    end
+  end
+
+  def solution_file_name
+    solution_file
+  end
+
   def assignment_full_path
     assignment_upload.full_path
   end
@@ -76,12 +92,25 @@ class Assignment < ActiveRecord::Base
     end
   end
 
+  def solution_file_path
+    if solution_upload_id.nil?
+      ""
+    else
+      solution_upload.path
+    end
+
+  end
+
   def assignment_file=(data)
     @assignment_file_data = data
   end
 
   def grading_file=(data)
     @grading_file_data = data
+  end
+
+  def solution_file=(data)
+    @solution_file_data = data
   end
 
   def save_uploads!
@@ -132,6 +161,30 @@ class Assignment < ActiveRecord::Base
       self.save!
       
       Audit.log("Assn #{id}: New grading file upload by #{user.name} " +
+                "(#{user.id}) with key #{up.secret_key}")
+    end
+
+    unless @solution_file_data.nil?
+      unless solution_upload_id.nil?
+        Audit.log("Assn #{id}: Orphaning solution upload " +
+                  "#{solution_upload_id} (#{solution_upload.secret_key})")
+      end
+
+      up = Upload.new
+      up.user_id = user.id
+      up.store_meta!({
+        type:       "Assignment Solution File",
+        user:       "#{user.name} (#{user.id})",
+        course:     "#{course.name} (#{course.id})",
+        date:       Time.now.strftime("%Y/%b/%d %H:%M:%S %Z")
+      })
+      up.store_upload!(@solution_file_data)
+      up.save!
+
+      self.solution_upload_id = up.id
+      self.save!
+      
+      Audit.log("Assn #{id}: New solution file upload by #{user.name} " +
                 "(#{user.id}) with key #{up.secret_key}")
     end
   end

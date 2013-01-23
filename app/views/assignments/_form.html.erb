@@ -31,6 +31,10 @@
       <td><%= f.file_field :grading_file %></td>
     </tr>
     <tr>
+      <td><%= f.label :solution_file %></td>
+      <td><%= f.file_field :solution_file %></td>
+    </tr>
+    <tr>
       <td><%= f.label :points_available %></td>
       <td>
 	<%= f.text_field :points_available, {:size => 10, :default => 100} %>
