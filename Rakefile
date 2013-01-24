@@ -12,6 +12,10 @@ task :restart do
   system("sudo /usr/local/bin/restart-apache.sh")
 end
 
+task :restart_apache do
+  system("sudo /usr/local/bin/restart-apache.sh")
+end
+
 task :install do
   system("cd sandbox/src && make install")
 end

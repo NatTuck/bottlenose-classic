@@ -16,6 +16,13 @@ class Answer < ActiveRecord::Base
 
   delegate :course, :to => :question
 
+  after_save :update_cache!
+
+  def update_cache!
+   reg = self.user.registration_for(self.course)
+   reg.update_assign_score! unless reg.nil?
+  end
+
   def late?
     if question.due.nil?
       false

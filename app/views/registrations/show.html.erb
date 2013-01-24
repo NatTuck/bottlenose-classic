@@ -68,6 +68,7 @@
   <td><strong>Total</strong></td>
   <td>&nbsp;</td>
   <td>&nbsp;</td>
+  <td>&nbsp;</td>
   <td><%= @a_score.points %>&nbsp;/&nbsp;<%= @a_score.total %></td>
   <td>( <%=  @a_score.percent %>% )</td>
   <td>&nbsp;</td>
@@ -86,8 +87,8 @@
     <th>Attempts</th>
   </tr>
 
-<% @course.chapters.each do |chapter| %>
-  <% chapter.lessons.each do |lesson| %>
+<% @course.chapters.order(:name).each do |chapter| %>
+  <% chapter.lessons.order(:name).each do |lesson| %>
     <% lesson.questions.each_index do |ii| %>
       <% question = lesson.questions[ii] %>
         <tr>
