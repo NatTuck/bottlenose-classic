@@ -9,8 +9,12 @@ class Registration < ActiveRecord::Base
 
   validates :user_id, :uniqueness => { :scope => :course_id }
 
+  def questions_score_no_cache
+    course.chapters.map {|cc| cc.questions_score(user) }.inject(:&)
+  end
+
   def update_questions_score!
-    score = course.chapters.map {|cc| cc.questions_score(user) }.inject(:&)
+    score = questions_score_no_cache
     write_attribute(:questions_score, "#{score || Score.new(0, 0)}")
     self.save!
   end
@@ -25,8 +29,12 @@ class Registration < ActiveRecord::Base
     Score.new(aa, bb)
   end
 
+  def assign_score_no_cache
+    course.assignments.map {|aa| aa.best_score_for(user) }.inject(:&)
+  end
+
   def update_assign_score!
-    score = course.assignments.map {|aa| aa.best_score_for(user) }.inject(:&)
+    score = assign_score_no_cache
     write_attribute(:assign_score, "#{score || Score.new(0, 0)}")
     self.save!
   end

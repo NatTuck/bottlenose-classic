@@ -14,7 +14,7 @@ class Chapter < ActiveRecord::Base
   end
 
   def questions_score(user)
-     lessons.map {|qq| qq.questions_score(user) }.inject(:&) || Score.new(0, 0)
+     lessons.map {|ll| ll.questions_score(user) }.inject(:&) || Score.new(0, 0)
   end
 
   def assignments_score(user)

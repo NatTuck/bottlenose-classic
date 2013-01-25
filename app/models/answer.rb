@@ -20,7 +20,7 @@ class Answer < ActiveRecord::Base
 
   def update_cache!
    reg = self.user.registration_for(self.course)
-   reg.update_assign_score! unless reg.nil?
+   reg.update_questions_score! unless reg.nil?
   end
 
   def late?
