@@ -38,7 +38,7 @@ File.open(filename, 'r') do |f1|
       puts "Skip registration"
     end
 
-    new_user.send_auth_link_email!("http://grader.cs.uml.edu/")
+    new_user.send_auth_link_email!("https://grader.cs.uml.edu/")
     puts "Sent email to #{new_user.email}"
   end
 end
