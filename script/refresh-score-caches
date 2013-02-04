@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+APP_PATH = File.expand_path('../../config/application',  __FILE__)
+require File.expand_path('../../config/boot',  __FILE__)
+require APP_PATH
+Rails.application.require_environment!
+
+Registration.all.each do |reg|
+  reg.update_questions_score!
+  reg.update_assign_score!  
+end

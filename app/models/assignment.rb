@@ -20,6 +20,11 @@ class Assignment < ActiveRecord::Base
 
   delegate :course, :to => :chapter
 
+  before_save do
+    root = Rails.root.to_s
+    system(%Q{(cd "#{root}" && script/refresh-score-caches)&})
+  end
+
   def assignment_upload
     Upload.find_by_id(assignment_upload_id)
   end

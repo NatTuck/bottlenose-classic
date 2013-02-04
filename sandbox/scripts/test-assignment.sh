@@ -9,4 +9,8 @@ then
     exit 
 fi
 
+unset RUBYOPT
+unset BUNDLE_GEMFILE
+unset BUNDLE_BIN_PATH
+
 find . -name "Makefile" -exec bash -c '(cd `dirname {}` && make test)' \;

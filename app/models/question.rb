@@ -11,6 +11,11 @@ class Question < ActiveRecord::Base
   delegate :course,  :to => :lesson
   delegate :chapter, :to => :lesson
 
+  before_save do
+    root = Rails.root.to_s
+    system(%Q{(cd "#{root}" && script/refresh-score-caches)&})
+  end
+
   def due
     return nil if lesson.questions_due.nil?
     time = lesson.questions_due.to_time
