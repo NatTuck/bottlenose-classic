@@ -5,6 +5,12 @@ require File.expand_path('../../config/boot',  __FILE__)
 require APP_PATH
 Rails.application.require_environment!
 
+count = `ps -ef | grep refresh-score-caches | grep -v grep | wc -l`.to_i
+if count > 1
+  puts "Too many refresh-score-caches processes running: #{count}"
+  exit(0)
+end
+
 Registration.all.each do |reg|
   reg.update_questions_score!
   reg.update_assign_score!  
