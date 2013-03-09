@@ -34,6 +34,10 @@ class Course < ActiveRecord::Base
     registrations.find_all {|reg| !reg.teacher? }
   end
 
+  def active_registrations
+    registrations.where(show_in_list: true)
+  end
+
   def students
     student_registrations.map {|reg| reg.user}
   end

@@ -32,6 +32,7 @@
 <tr>
   <th>Name</th>
   <th>Email</th>
+  <th>Show in Reports</th>
   <th>&nbsp;</th>
 </tr>
 
@@ -40,6 +41,9 @@
 <tr>
   <td><%= teacher.name %></td>
   <td><%= teacher.email %></td>
+  <td>
+    No <button>Toggle</button>
+  </td>
   <td><%= link_to 'Destroy', [@course, treg], 
             { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>
 </tr>
