@@ -1,0 +1,5 @@
+<% if @registration.errors.any? %>
+  alert("Error toggle.");
+<% else %>
+  $('.show-user-<%= @registration.id %>').html('<%= @show %>');
+<% end %>

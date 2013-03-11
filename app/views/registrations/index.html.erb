@@ -42,7 +42,8 @@
   <td><%= teacher.name %></td>
   <td><%= teacher.email %></td>
   <td>
-    No <button>Toggle</button>
+    <span class="show-user-<%= treg.id %>"><%= treg.show_in_lists? ? "Yes" : "No" %></span>
+    (<%= link_to "Toggle", registration_show_toggle_path(treg.id), :remote => true %>)
   </td>
   <td><%= link_to 'Destroy', [@course, treg], 
             { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>
@@ -82,6 +83,7 @@
 <tr>
   <th>Name</th>
   <th>Email</th>
+  <th>Show In Reports</th>
   <th>&nbsp;</th>
 </tr>
 
@@ -90,6 +92,10 @@
 <tr>
   <td><%= student.name %></td>
   <td><%= student.email %></td>
+  <td>
+    <span class="show-user-<%= sreg.id %>"><%= sreg.show_in_lists? ? "Yes" : "No" %></span>
+    (<%= link_to "Toggle", registration_show_toggle_path(sreg.id), :remote => true %>)
+  </td>
   <td><%= link_to 'Destroy', [@course, sreg], 
             { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>
 </tr>

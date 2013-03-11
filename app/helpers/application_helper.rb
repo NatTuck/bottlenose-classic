@@ -67,4 +67,8 @@ module ApplicationHelper
     reg = Registration.find_by_user_id_and_course_id(user.id, assign.course.id)
     registration_assignment_submissions_path(reg, assign)
   end
+
+  def registration_show_toggle_path(reg_id)
+    "/registrations/#{reg_id}/toggle_show"
+  end
 end

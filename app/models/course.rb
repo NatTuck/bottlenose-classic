@@ -35,7 +35,7 @@ class Course < ActiveRecord::Base
   end
 
   def active_registrations
-    registrations.where(show_in_list: true)
+    registrations.where(show_in_lists: true)
   end
 
   def students

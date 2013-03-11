@@ -73,6 +73,13 @@ class RegistrationsController < ApplicationController
     @submissions = @assignment.submissions_for(@user)
   end
 
+  def toggle_show
+    @registration.show_in_lists = ! @registration.show_in_lists?
+    @registration.save
+
+    @show = @registration.show_in_lists? ? "Yes" : "No"
+  end
+
   private
 
   def find_registration

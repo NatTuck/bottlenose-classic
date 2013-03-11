@@ -90,6 +90,7 @@ class CoursesControllerTest < ActionController::TestCase
 
   test "should export grades" do
     get :export_grades, {:id => @course1.id}, {:user_id => @prof.id}
+    puts @response.body
     assert_match "John Fertitta", @response.body
     assert_response :ok
   end

@@ -39,7 +39,7 @@ class CoursesController < ApplicationController
     @registration ||= "javascript:alert('Not registered.');"
 
     if @logged_in_user.course_admin?(@course)
-      @student_regs = @course.student_registrations.
+      @active_regs = @course.active_registrations.
         sort_by {|rr| rr.user.name }
     end
   end

@@ -27,6 +27,8 @@ Bottlenose::Application.routes.draw do
   match 'registrations/:id/submissions_for_assignment/:assignment_id' =>
     'registrations#submissions_for_assignment'
 
+  match 'registrations/:id/toggle_show' => 'registrations#toggle_show'
+
   resources :reg_requests, :except => [:new]
 
   resources :chapters do

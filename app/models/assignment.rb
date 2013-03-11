@@ -208,7 +208,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def best_submissions
-    course.student_registrations.sort_by {|sr| sr.user.name}.map do |sreg|
+    course.active_registrations.sort_by {|sr| sr.user.name}.map do |sreg|
       best_submission_for(sreg.user)
     end
   end

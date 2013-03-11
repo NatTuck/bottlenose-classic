@@ -59,12 +59,12 @@
     <th>Status Report</th>
   </tr>
 
-<% @student_regs.each do |sreg| %>
+<% @active_regs.each do |reg| %>
   <tr>
-    <td><%= sreg.user.name %></td>
-    <td><%= sreg.questions_score %></td>
-    <td><%= sreg.assign_score %></td>
-    <td><%= link_to "View", sreg %></td>
+    <td><%= reg.user.name %></td>
+    <td><%= reg.questions_score %></td>
+    <td><%= reg.assign_score %></td>
+    <td><%= link_to "View", reg %></td>
   </tr>
 <% end %>
 

@@ -7,6 +7,7 @@ fred_cs301:
 
 john_cs301:
   course: cs301
+  show_in_lists: true
   user: john
   teacher: 
 
