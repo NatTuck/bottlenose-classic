@@ -203,7 +203,7 @@ class Assignment < ActiveRecord::Base
     if subs.empty?
       Submission.new(user_id: user.id, assignment_id: self.id, file_name: "none")
     else
-      subs.sort_by {|ss| ss.created_at}.last
+      subs.sort_by {|ss| ss.score }.last
     end
   end
 
