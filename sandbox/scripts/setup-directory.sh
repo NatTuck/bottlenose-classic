@@ -55,5 +55,22 @@ fi
 if [[ -e "../sub.tar.gz" ]]
 then
     cp ../sub.tar.gz home/student
-    (cd home/student && tar xzvf sub.tar.gz)
+
+    CONFIG=`find home/student -type d -name ".bottlenose"`
+    COUNT=`echo $CONFIG | wc -w`
+
+    if [[ $COUNT -eq 1 ]]
+    then
+        echo "Instructor config found."
+    else
+        (cd home/student && tar xzvf sub.tar.gz)
+        HAX=`find home/student -type d -name ".bottlenose" | wc -l`
+        if [[ $HAX -gt 0 ]]
+        then
+            echo "Found a new .bottlenose directory in the student submission."
+            echo "HAX!"
+            exit 1
+        fi
+    fi
 fi
+

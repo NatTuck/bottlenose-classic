@@ -22,15 +22,10 @@ end
 
 task :clean_uploads do
   system("rm -rf public/assignments")
-  system("mkdir public/assignments")
-  system("touch public/assignments/empty")
-
-  system("mkdir public/assignments/grading")
-  system("touch public/assignments/grading/empty")
-
   system("rm -rf public/submissions")
-  system("mkdir public/submissions")
-  system("touch public/submissions/empty")
+  system("rm -rf public/uploads")
+  system("mkdir public/uploads")
+  system("touch public/uploads/empty")
 end
 
 namespace :db do
