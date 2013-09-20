@@ -1,8 +1,8 @@
 # -*- ruby -*-
 source 'https://rubygems.org'
 
-gem 'rails'
-gem 'rack', '1.4.1'
+gem 'rails', '~> 3.2'
+gem 'rack'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -17,8 +17,8 @@ gem 'yaml_db'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails'
+  gem 'coffee-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
@@ -27,6 +27,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'jquery-ui-themes'
 gem 'jquery_datepicker'
 

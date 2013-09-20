@@ -9,12 +9,9 @@ require 'securerandom'
 key_file = File.expand_path("~/.rails_key").to_s
 unless File.exists?(key_file)
   kk = File.open(key_file, 'wb')
-  kk.write(SecureRandom.urlsafe_base64)
-  kk.write(SecureRandom.urlsafe_base64)
-  kk.write(SecureRandom.urlsafe_base64)
-  kk.write(SecureRandom.urlsafe_base64)
-  kk.write(SecureRandom.urlsafe_base64)
-  kk.write(SecureRandom.urlsafe_base64)
+  6.times do
+    kk.write(SecureRandom.urlsafe_base64)
+  end
   kk.close
 end
 
