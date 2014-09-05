@@ -208,7 +208,8 @@ class Assignment < ActiveRecord::Base
   end
 
   def best_submissions
-    course.active_registrations.sort_by {|sr| sr.user.name}.map do |sreg|
+    regs = course.active_registrations.sort_by {|sr| sr.user.invert_name.downcase  }
+    regs.map do |sreg|
       best_submission_for(sreg.user)
     end
   end
