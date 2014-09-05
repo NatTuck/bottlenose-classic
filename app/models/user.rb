@@ -14,7 +14,10 @@ class User < ActiveRecord::Base
   validates :auth_key, :presence => true
 
   validates :email, :uniqueness => true
-  validates :name,  :uniqueness => true
+  
+  # Different people with the same name are fine.
+  # If someone uses two emails, they get two accounts. So sad.
+  #validates :name,  :uniqueness => true
 
   before_validation do
     if self.auth_key.nil?
