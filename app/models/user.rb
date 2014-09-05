@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   validates :auth_key, :presence => true
 
   validates :email, :uniqueness => true
-  validates :name,  :uniqueness => true
+  #validates :name
 
   before_validation do
     if self.auth_key.nil?
