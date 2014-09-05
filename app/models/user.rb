@@ -49,4 +49,8 @@ class User < ActiveRecord::Base
   def registration_for(course)
     Registration.find_by_user_id_and_course_id(self.id, course.id)
   end
+
+  def invert_name
+    name.split(/\s+/).rotate(-1).join(' ')
+  end
 end

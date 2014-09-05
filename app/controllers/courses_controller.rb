@@ -40,7 +40,7 @@ class CoursesController < ApplicationController
 
     if @logged_in_user.course_admin?(@course)
       @active_regs = @course.active_registrations.
-        sort_by {|rr| rr.user.name }
+        sort_by {|rr| rr.user.invert_name }
     end
   end
 
