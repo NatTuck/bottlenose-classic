@@ -61,7 +61,8 @@
 
 <% @active_regs.each do |reg| %>
   <tr>
-    <td><%= reg.user.name %></td>
+    <td><%= reg.user.name %><br>
+        <%= reg.user.email %></td>
     <td><%= reg.questions_score %></td>
     <td><%= reg.assign_score %></td>
     <td><%= link_to "View", reg %></td>
