@@ -14,7 +14,10 @@ class User < ActiveRecord::Base
   validates :auth_key, :presence => true
 
   validates :email, :uniqueness => true
-  #validates :name
+  
+  # Different people with the same name are fine.
+  # If someone uses two emails, they get two accounts. So sad.
+  #validates :name,  :uniqueness => true
 
   before_validation do
     if self.auth_key.nil?
@@ -45,5 +48,9 @@ class User < ActiveRecord::Base
 
   def registration_for(course)
     Registration.find_by_user_id_and_course_id(self.id, course.id)
+  end
+
+  def invert_name
+    name.split(/\s+/).rotate(-1).join(' ')
   end
 end
