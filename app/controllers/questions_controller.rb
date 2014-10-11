@@ -22,7 +22,7 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(params[:question])
+    @question = Question.new(question_params)
     @question.lesson_id = @lesson.id
 
     if @question.save
@@ -33,7 +33,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.update_attributes(params[:question])
+    if @question.update_attributes(question_params)
       redirect_to [:edit, @question], notice: 'Question was successfully updated.'
     else
       render action: "edit"
@@ -58,5 +58,10 @@ class QuestionsController < ApplicationController
 
     @chapter = @lesson.chapter
     @course  = @chapter.course
+  end
+
+  def question_params
+    params[:question].permit(:name, :correct_answer, :lesson_id, 
+                             :question, :question_form, :explanation)
   end
 end

@@ -21,7 +21,7 @@
     <tr>
       <td><%= f.label :questions_due%> <br>
         (Late after this day.)</td>
-      <td><%= f.datepicker :questions_due %></td>
+      <td><%= f.text_field :questions_due, 'data-provide' => 'datepicker' %></td>
     </tr>
     <tr>
       <td><%= f.label :video, "Main Video" %></td>

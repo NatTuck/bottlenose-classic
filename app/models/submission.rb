@@ -1,14 +1,6 @@
 require 'securerandom'
 
 class Submission < ActiveRecord::Base
-  attr_accessible :assignment_id, :user_id, :student_notes
-  attr_accessible :raw_score, :updated_at, :upload
-  attr_accessible :grading_output, :grading_uid
-  attr_accessible :teacher_score, :teacher_notes
-  attr_accessible :ignore_late_penalty
-
-  attr_protected :upload_id
-
   belongs_to :assignment
   belongs_to :user
   belongs_to :upload

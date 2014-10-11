@@ -1,13 +1,11 @@
 require 'securerandom'
 
 class User < ActiveRecord::Base
-  attr_accessible :email, :name, :site_admin, :auth_key
-
   has_many :registrations
-  has_many :courses, :through => :registrations, :dependent => :restrict
+  has_many :courses, :through => :registrations, :dependent => :restrict_with_error
   
-  has_many :answers,     :dependent => :restrict
-  has_many :submissions, :dependent => :restrict
+  has_many :answers,     :dependent => :restrict_with_error
+  has_many :submissions, :dependent => :restrict_with_error
 
   validates :email, :format => { :with => /\@.*\./ }
   validates :name,  :length => { :minimum => 2 }

@@ -49,7 +49,7 @@
     <tr>
       <td><%= f.label :due_date %> <br>
         (Assignment should not be submitted after this day.)</td>
-      <td><%= f.datepicker :due_date %></td>
+      <td><%= f.text_field :due_date, 'data-provide' => 'datepicker' %></td>
     </tr>
     <tr>
       <td>&nbsp;</td>

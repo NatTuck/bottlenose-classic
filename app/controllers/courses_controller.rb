@@ -55,7 +55,7 @@ class CoursesController < ApplicationController
   end
 
   def create
-    @course = Course.new(params[:course])
+    @course = Course.new(course_params)
     @course.late_options = [params[:late_penalty], params[:late_repeat], params[:late_maximum]].join(',') unless params[:late_penalty].nil?
 
     if @course.save
@@ -66,7 +66,7 @@ class CoursesController < ApplicationController
   end
 
   def update
-    @course.assign_attributes(params[:course])
+    @course.assign_attributes(course_params)
     @course.late_options = [params[:late_penalty], params[:late_repeat], params[:late_maximum]].join(',') unless params[:late_penalty].nil?
 
     if @course.save
@@ -90,5 +90,10 @@ class CoursesController < ApplicationController
 
   def find_course
     @course = Course.find(params[:id] || params[:course_id])
+  end
+
+  def course_params
+    params[:course].permit(:name, :footer, :late_options, :private, 
+                           :term_id, :questions_due_time)
   end
 end

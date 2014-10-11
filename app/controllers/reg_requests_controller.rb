@@ -25,7 +25,7 @@ class RegRequestsController < ApplicationController
   end
 
   def create
-    @reg_request = RegRequest.new(params[:reg_request])
+    @reg_request = RegRequest.new(reg_request_params)
     @reg_request.course_id = @course.id
 
     if @reg_request.save
@@ -58,5 +58,9 @@ class RegRequestsController < ApplicationController
       @reg_request = RegRequest.find(params[:id])
       @course      = @reg_request.course
     end
+  end
+
+  def reg_request_params
+    params[:reg_request].permit(:email, :name, :notes, :course_id)
   end
 end

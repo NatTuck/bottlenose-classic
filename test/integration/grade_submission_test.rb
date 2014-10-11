@@ -113,7 +113,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
       not @submission.raw_score.nil?
     end
 
-    assert_equal @submission.raw_score, 100
+    assert_equal 100, @submission.raw_score
     
     assert File.exists?(@submission.file_full_path)
   end
@@ -158,7 +158,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
       not @submission.raw_score.nil?
     end
 
-    assert_equal @submission.raw_score, 75
+    assert_equal 75, @submission.raw_score
   end
 
   test "submit and grade submission using new-style grading" do
@@ -201,11 +201,9 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
       not @submission.raw_score.nil?
     end
 
-    assert_equal @submission.raw_score, 100
+    assert_equal 100, @submission.raw_score
     
     assert File.exists?(@submission.file_full_path)
- 
-
   end
 
   private

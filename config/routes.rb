@@ -12,7 +12,7 @@ Bottlenose::Application.routes.draw do
   get "main/logout"
 
   resources :users
-  match 'users/:id/impersonate' => 'users#impersonate'
+  post 'users/:id/impersonate' => 'users#impersonate'
 
   resources :courses do
     resources :registrations, :except => [:new]
@@ -20,14 +20,14 @@ Bottlenose::Application.routes.draw do
     resources :reg_requests
   end
 
-  match 'courses/:id/export_grades' => 'courses#export_grades'
+  get 'courses/:id/export_grades' => 'courses#export_grades'
 
   resources :registrations, :except => [:new]
 
-  match 'registrations/:id/submissions_for_assignment/:assignment_id' =>
+  get 'registrations/:id/submissions_for_assignment/:assignment_id' =>
     'registrations#submissions_for_assignment'
 
-  match 'registrations/:id/toggle_show' => 'registrations#toggle_show'
+  post 'registrations/:id/toggle_show' => 'registrations#toggle_show'
 
   resources :reg_requests, :except => [:new]
 
@@ -40,7 +40,7 @@ Bottlenose::Application.routes.draw do
     resources :submissions, :except => [:destroy]
   end
 
-  match 'assignments/:assignment_id/manual_grade' =>
+  get 'assignments/:assignment_id/manual_grade' =>
     'submissions#manual_grade'
 
   resources :submissions

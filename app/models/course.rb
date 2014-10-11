@@ -1,19 +1,16 @@
 class Course < ActiveRecord::Base
-  attr_accessible :name, :footer, :late_options, :private, :term_id
-  attr_accessible :questions_due_time
-
   belongs_to :term
   
   has_many :registrations
-  has_many :users, :through => :registrations, :dependent => :restrict
+  has_many :users, :through => :registrations, :dependent => :restrict_with_error
 
   has_many :reg_requests, :dependent => :destroy
 
-  has_many :chapters, :dependent => :restrict
+  has_many :chapters, :dependent => :restrict_with_error
 
   validates :name,    :length      => { :minimum => 2 },
                       :uniqueness  => true
-  validates :late_options, :format => { :with => /^\d+,\d+,\d+$/ }
+  validates :late_options, :format => { :with => /\A\d+,\d+,\d+\z/ }
 
   def late_opts
     os = late_options.split(",")
