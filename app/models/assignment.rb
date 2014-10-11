@@ -1,5 +1,6 @@
 require 'securerandom'
 require 'audit'
+require 'score'
 
 class Assignment < ActiveRecord::Base
   belongs_to :blame, :class_name => "User", :foreign_key => "blame_id"

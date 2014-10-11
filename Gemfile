@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 4.1'
 gem 'rack'
+gem 'i18n'
 
 gem 'pg'
 

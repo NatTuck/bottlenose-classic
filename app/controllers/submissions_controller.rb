@@ -101,6 +101,6 @@ class SubmissionsController < ApplicationController
                                :raw_score, :updated_at, :upload,
                                :grading_output, :grading_uid,
                                :teacher_score, :teacher_notes,
-                               :ignore_late_penalty)
+                               :ignore_late_penalty, :upload_file)
   end
 end

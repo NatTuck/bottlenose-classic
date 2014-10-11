@@ -123,6 +123,7 @@ DEPENDENCIES
   coffee-rails-source-maps
   database_cleaner
   execjs
+  i18n
   jquery-rails
   pg
   rack

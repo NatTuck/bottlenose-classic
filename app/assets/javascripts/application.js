@@ -17,3 +17,6 @@
 //= require combobox
 //= require theme-forms
 //= require bootstrap-datepicker
+
+
+$.fn.datepicker.defaults.format = "yyyy-mm-dd";
