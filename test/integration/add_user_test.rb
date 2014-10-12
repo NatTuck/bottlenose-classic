@@ -21,7 +21,7 @@ class AddUserTest < ActionDispatch::IntegrationTest
     # Add a new student.
     fill_in 'Name',  :with => 'Steve McTest'
     fill_in 'Email', :with => 'steve@example.com'
-    click_button 'Register'
+    click_button 'Add Student'
 
     # Verify that student was added.
     @steve = User.find_by_email('steve@example.com')

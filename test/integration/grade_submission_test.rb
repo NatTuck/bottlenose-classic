@@ -62,7 +62,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     select 'Alan Rosenthal',  :from => 'submission[user_id]'
     fill_in 'submission[teacher_notes]', :with => 'manually entered grade'
     fill_in 'submission[teacher_score]', :with => '85'
-    click_button 'Save changes'
+    click_button 'Save Grade'
 
     @submission = Submission.find_by_teacher_notes('manually entered grade')
     assert_equal @alan.id, @submission.user_id
