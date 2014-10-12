@@ -1,0 +1,9 @@
+language:
+    - ruby
+rvm:
+    - 2.1
+before_script:
+    - bundle exec rake db:preprep
+    - RAILS_ENV=test bundle exec rake db:migrate --trace
+    - bundle exec rake db:test:prepare
+    - bundle exec rake install
