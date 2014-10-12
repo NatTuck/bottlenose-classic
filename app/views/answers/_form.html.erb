@@ -12,7 +12,7 @@
       <p>Attempts: <%= @answer.attempts %></p>
 
       <div id="submit-button-<%= @question.id %>">
-	<p><%= submit_tag %></p>
+        <p><%= submit_tag "Save", class: 'btn btn-primary' %></p>
       </div>
       
       <% end %>

@@ -20,6 +20,8 @@ gem 'jquery-rails'
 gem 'bootstrap-sass'
 gem 'bootstrap-datepicker-rails'
 
+gem 'momentjs-rails'
+
 group :test do
   gem 'database_cleaner'
   gem 'capybara'

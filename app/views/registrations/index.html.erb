@@ -7,28 +7,21 @@
 <p>(Must be an existing user.)</p>
 
 <%= form_for [@course, @teacher_reg] do |f| %>
-<%= f.hidden_field :course_id %>
-<%= f.hidden_field :teacher %>
+  <%= f.hidden_field :course_id %>
+  <%= f.hidden_field :teacher %>
 
-<table class="edit-form">
-  <tr>
-    <td><%= label :user_id, "Teacher" %></td>
-    <td>
-      <div class="ui-widget">
-	<%= f.select :user_id, select_user_hash, {:include_blank => true} %>
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td><%= submit_tag "Add" %></td>
-  </tr>
-</table>
+  <div class="form-group">
+    <%= label :user_id, "Teacher" %>
+    <%= f.select :user_id, select_user_hash, {:include_blank => true} %>
+  </div>
+  <div class="form-group">
+    <%= submit_tag "Add" %>
+  </div>
 <% end %>
 
 <h1>Current Teachers</h1>
 
-<table class="pretty-list">
+<table class="table table-striped">
 <tr>
   <th>Name</th>
   <th>Email</th>
@@ -59,27 +52,24 @@
 <%= f.hidden_field :course_id %>
 <%= f.hidden_field :teacher %>
 
-<table class="edit-form">
-  <tr>
-    <td><label for="student_name">Name</label></td>
-    <td><%= text_field_tag :student_name, "" %></td>
-  </tr>
-  <tr>
-    <td><label for="student_email">Email</label></td>
-    <td><%= text_field_tag :student_email, "" %></td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td><%= submit_tag "Register" %></td>
-  </tr>
-</table>
+  <div class="form-group">
+    <label for="student_name">Name</label>
+    <%= text_field_tag :student_name, "", class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <label for="student_email">Email</label>
+    <%= text_field_tag :student_email, "", class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= submit_tag "Add Student", class: 'btn btn-primary' %>
+  </div>
 <% end %>
 
 </table>
 
 <h1>Current Students</h1>
 
-<table class="pretty-list">
+<table class="table table-striped">
 <tr>
   <th>Name</th>
   <th>Email</th>

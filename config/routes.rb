@@ -10,6 +10,7 @@ Bottlenose::Application.routes.draw do
   get "main/auth"
   post "main/resend_auth"
   get "main/logout"
+  get "main/about"
 
   resources :users
   post 'users/:id/impersonate' => 'users#impersonate'

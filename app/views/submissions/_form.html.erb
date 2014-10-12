@@ -11,18 +11,15 @@
     </div>
   <% end %>
 
-  <table class="edit-form">
-    <tr>
-      <td><%= f.label :student_notes %></td>
-      <td><%= f.text_area :student_notes %></td>
-    </tr>
-    <tr>
-      <td><%= f.label :upload_file %></td>
-      <td><%= f.file_field :upload_file %></td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><%= f.submit %></td>
-    </tr>
-  </table>
+  <div class="form-group">
+    <%= f.label :student_notes %>
+    <%= f.text_area :student_notes, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :upload_file %>
+    <%= f.file_field :upload_file %>
+  </div>
+  <div class="form-group">
+    <%= f.submit nil, class: 'btn btn-primary' %>
+  </div>
 <% end %>

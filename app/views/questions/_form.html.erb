@@ -14,49 +14,43 @@
 
   <p>These fields all expect raw HTML code for formatting and/or forms.</p>
 
-  <table class="edit-form">
-    <tr>
-      <td><%= f.label :name %></td>
-      <td><%= f.text_field :name %></td>
-    </tr>
-    <tr>
-      <td><%= f.label :question %></td>
-      <td><%= f.text_area :question %></td>
-    </tr>
-    <tr>
-      <td><%= f.label :question_form %></td>
-      <td>
-	<p>Sample Forms:
-	  <select id="sample-form-id">
-	    <option>free-text-sample</option>
-	    <option>multiple-choice-sample</option>
-	    <option>pick-many-sample</option>
-	  </select>
-	  <%= link_to_function "Insert", 
-	      "$('#question_question_form').val(get_sample($('#sample-form-id').val()));" %>
-	</p>
-	<p><%= f.text_area :question_form %></p>
-	<p><%= link_to_function "Show Form Preview", 
-	       "$('#question-form-preview').html($('#question_question_form').val());" %></p>
-      </td>
-    </tr>
-    <tr>
-      <td><%= f.label :correct_answer %></td>
-      <td>
-	<div id="question-form-preview">&nbsp;</div>
-	<p><%= link_to_function "Use Answer From Preview", 
-	       "$('#question_correct_answer').val(answer_from_preview())" %>
-	<p><%= f.text_field :correct_answer %></p></td>
-    </tr>
-    <tr>
-      <td><%= f.label :explanation %></td>
-      <td><%= f.text_area :explanation %></td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><%= f.submit %></td>
-    </tr>
-  </table>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control' %>
+  </div>
+  <div>
+    <%= f.label :question %>
+    <%= f.text_area :question, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :question_form %>
+    <p>Sample Forms:
+    <select id="sample-form-id">
+      <option>free-text-sample</option>
+      <option>multiple-choice-sample</option>
+      <option>pick-many-sample</option>
+    </select>
+    <%= link_to_function "Insert", 
+	    "$('#question_question_form').val(get_sample($('#sample-form-id').val()));" %>
+    </p>
+    <p><%= f.text_area :question_form, class: 'form-control' %></p>
+    <p><%= link_to_function "Show Form Preview", 
+      "$('#question-form-preview').html($('#question_question_form').val());" %></p>
+  </div>
+  <div class="form-group">
+    <%= f.label :correct_answer %>
+    <div id="question-form-preview">&nbsp;</div>
+    <p><%= link_to_function "Use Answer From Preview", 
+      "$('#question_correct_answer').val(answer_from_preview())" %></p>
+      <p><%= f.text_field :correct_answer, class: 'form-control' %></p>
+  </div>
+  <div class="form-group">
+    <%= f.label :explanation %>
+    <%= f.text_area :explanation, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.submit nil, class: 'btn btn-primary' %>
+  </div>
 <% end %>
 
 <script>
