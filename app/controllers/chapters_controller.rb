@@ -6,7 +6,6 @@ class ChaptersController < ApplicationController
   prepend_before_filter :find_chapter, 
                         :except => [:index, :new, :create]
 
-
   def index
     @chapters = @course.chapters.order(:name)
   end
@@ -25,7 +24,7 @@ class ChaptersController < ApplicationController
   end
 
   def create
-    @chapter = Chapter.new(params[:chapter])
+    @chapter = Chapter.new(chapter_params)
 
     if @chapter.save
       redirect_to @chapter, notice: 'Chapter was successfully created.'
@@ -35,7 +34,7 @@ class ChaptersController < ApplicationController
   end
 
   def update
-    if @chapter.update_attributes(params[:chapter])
+    if @chapter.update_attributes(chapter_params)
       redirect_to @chapter, notice: 'Chapter was successfully updated.'
     else
       render action: "edit"
@@ -52,5 +51,9 @@ class ChaptersController < ApplicationController
   def find_chapter
     @chapter = Chapter.find(params[:id])
     @course  = @chapter.course or raise Exception.new("Invalid Chapter Object")
+  end
+
+  def chapter_params
+    params[:chapter].permit(:course_id, :name)
   end
 end

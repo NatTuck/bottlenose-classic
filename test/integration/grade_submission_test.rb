@@ -62,7 +62,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     select 'Alan Rosenthal',  :from => 'submission[user_id]'
     fill_in 'submission[teacher_notes]', :with => 'manually entered grade'
     fill_in 'submission[teacher_score]', :with => '85'
-    click_button 'Save changes'
+    click_button 'Save Grade'
 
     @submission = Submission.find_by_teacher_notes('manually entered grade')
     assert_equal @alan.id, @submission.user_id
@@ -113,7 +113,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
       not @submission.raw_score.nil?
     end
 
-    assert_equal @submission.raw_score, 100
+    assert_equal 100, @submission.raw_score
     
     assert File.exists?(@submission.file_full_path)
   end
@@ -158,7 +158,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
       not @submission.raw_score.nil?
     end
 
-    assert_equal @submission.raw_score, 75
+    assert_equal 75, @submission.raw_score
   end
 
   test "submit and grade submission using new-style grading" do
@@ -201,11 +201,9 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
       not @submission.raw_score.nil?
     end
 
-    assert_equal @submission.raw_score, 100
+    assert_equal 100, @submission.raw_score
     
     assert File.exists?(@submission.file_full_path)
- 
-
   end
 
   private

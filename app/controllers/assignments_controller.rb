@@ -23,7 +23,7 @@ class AssignmentsController < ApplicationController
   end
 
   def create
-    @assignment = Assignment.new(params[:assignment])
+    @assignment = Assignment.new(assignment_params)
     @assignment.blame_id = @logged_in_user.id
 
     if @assignment.save
@@ -35,7 +35,7 @@ class AssignmentsController < ApplicationController
   end
 
   def update
-    if @assignment.update_attributes(params[:assignment])
+    if @assignment.update_attributes(assignment_params)
       @assignment.save_uploads!
       redirect_to @assignment, notice: 'Assignment was successfully updated.'
     else
@@ -60,5 +60,11 @@ class AssignmentsController < ApplicationController
     end
 
     @course  = @chapter.course
+  end
+
+  def assignment_params
+    params[:assignment].permit(:name, :chapter_id, :assignment, :due_date,
+                               :points_available, :hide_grading, :blame_id,
+                               :assignment_file, :grading_file, :solution_file)
   end
 end

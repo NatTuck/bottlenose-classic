@@ -13,41 +13,39 @@
 
   <%= f.hidden_field :late_options %>
 
-  <table class="edit-form">
-    <tr>
-      <td><%= f.label :name %></td>
-      <td><%= f.text_field :name %></td>
-    </tr>
-    <tr>
-      <td><%= f.label :term_id, "Term" %></td>
-      <td>
-        <%= select("course", "term_id", @terms.map {|tt| [tt.name, tt.id]}) %>
-      </td>
-    </tr>
-    <tr>
-      <td>Late Penalty</td>
-      <td>
-	<p>Deduct
-	<%= text_field_tag :late_penalty, @course.late_opts[0], :size => 10 %>
-	percent every 
-	<%= text_field_tag :late_repeat,  @course.late_opts[1], :size => 10 %>
-	days late to a maximum of
-	<%= text_field_tag :late_maximum, @course.late_opts[2], :size => 10 %>
-	percent off.
-      </td>
-    </tr>
-    <tr>
-      <td>Course-Wide Footer</td>
-      <td><%= f.text_area :footer, size: '40x10' %></td>
-    </tr>
-    <tr>
-      <td>Questions Due At<br/>
-      (0:00 is midnight *after* the day)</td>
-      <td><%= f.time_select(:questions_due_time, {:minute_step => 15}) %></td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><%= f.submit %></td>
-    </tr>
-  </table>
+  <div>
+    <div class="form-group">
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :term_id, "Term" %><
+      <%= select("course", "term_id", (@terms.map {|tt| 
+        [tt.name, tt.id]}), class: 'form-control') %>
+    </div>
+    <div class="form-group">
+      <p><strong>Late Penalty</strong></p>
+      <p>Deduct
+      <%= text_field_tag :late_penalty, @course.late_opts[0], :size => 10 %>
+      percent every 
+      <%= text_field_tag :late_repeat,  @course.late_opts[1], :size => 10 %>
+      days late to a maximum of
+      <%= text_field_tag :late_maximum, @course.late_opts[2], :size => 10 %>
+      percent off.
+      </p>
+    </div>
+    <div>
+      <%= f.label :footer, "Course-Wide Footer" %>
+      <%= f.text_area :footer, size: '40x10', class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <br>
+      <p><strong>Questions Due At</strong>
+        (0:00 is midnight *after* the day)</p>
+      <p><%= f.time_select(:questions_due_time, {:minute_step => 15}) %></p>
+    </div>
+    <div class="form-group">
+      <%= f.submit nil, class: "btn btn-primary" %>
+    </div>
+  </div>
 <% end %>

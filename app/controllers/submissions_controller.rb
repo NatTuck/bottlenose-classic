@@ -35,7 +35,7 @@ class SubmissionsController < ApplicationController
       @submission.ignore_late_penalty = false
     end
 
-    if @submission.update_attributes(params[:submission])
+    if @submission.update_attributes(submission_params)
       @submission.grade!
       respond_to do |format|
         format.html { redirect_to @submission, notice: 'Submission was successfully created.' }
@@ -51,7 +51,7 @@ class SubmissionsController < ApplicationController
   end
 
   def update
-    if @submission.update_attributes(params[:submission])
+    if @submission.update_attributes(submission_params)
       respond_to do |format|
         format.html { redirect_to @submission, notice: 'Submission was successfully updated.' }
         format.js   { render action: "show", sub: @submission }
@@ -94,5 +94,13 @@ class SubmissionsController < ApplicationController
 
     @chapter = @assignment.chapter
     @course  = @chapter.course
+  end
+
+  def submission_params
+    params[:submission].permit(:assignment_id, :user_id, :student_notes,
+                               :raw_score, :updated_at, :upload,
+                               :grading_output, :grading_uid,
+                               :teacher_score, :teacher_notes,
+                               :ignore_late_penalty, :upload_file)
   end
 end

@@ -1,6 +1,6 @@
+require 'audit'
+
 class Upload < ActiveRecord::Base
-  attr_protected :file_name, :secret_key, :user_id
-  
   validates :file_name,  :presence => true
   validates :user_id,    :presence => true
   validates :secret_key, :presence => true, :uniqueness => true

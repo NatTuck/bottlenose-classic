@@ -23,7 +23,7 @@ class RegistrationsController < ApplicationController
   end
 
   def create
-    @registration = Registration.new(params[:registration])
+    @registration = Registration.new(registration_params)
 
     if @registration.course_id != @course.id
       show_error "Registration does not match course"
@@ -54,7 +54,7 @@ class RegistrationsController < ApplicationController
   end
 
   def update
-    if @registration.update_attributes(params[:registration])
+    if @registration.update_attributes(registration_params)
       redirect_to @registration,
         notice: 'Registration was successfully updated.'
     else
@@ -86,5 +86,9 @@ class RegistrationsController < ApplicationController
     @registration = Registration.find(params[:id])
     @course = @registration.course
     @user   = @registration.user
+  end
+
+  def registration_params
+    params[:registration].permit(:course_id, :teacher, :user_id)
   end
 end

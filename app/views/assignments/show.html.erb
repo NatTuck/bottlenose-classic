@@ -36,7 +36,7 @@
 
   <p><%= link_to "Manually Add Student Grade", assignment_path(@assignment) + '/manual_grade' %></p>
 
-  <table class="pretty-list">
+  <table class="table table-striped">
     <tr>
       <th>Student</th>
       <th>Attempts</th>
@@ -61,13 +61,17 @@
 
 <h1>Your Submissions</h1>
 
+<p><%= link_to "New Submission", new_assignment_submission_path(@assignment) %></p>
+
 <ul>
 <% @submissions.each do |submission| %>
-  <li><%= link_to submission.created_at, submission %> 
-	- <%= submission.user.name %>
-	- Score: <%= show_score(submission.score) 
-	  %>&nbsp;/&nbsp;<%= @assignment.points_available %></li>
+  <li>
+    <%= link_to "(view)", submission %>
+    <span class="local-time"><%= submission.created_at %></span>
+    - <%= submission.user.name %>
+	  - Score: <%= show_score(submission.score) 
+    %>&nbsp;/&nbsp;<%= @assignment.points_available %>
+  </li>
 <% end %>
 </ul>
 
-<p><%= link_to "New Submission", new_assignment_submission_path(@assignment) %></p>

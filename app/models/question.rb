@@ -1,7 +1,6 @@
-class Question < ActiveRecord::Base
-  attr_accessible :name, :correct_answer, :lesson_id
-  attr_accessible :question, :question_form, :explanation
+require 'score'
 
+class Question < ActiveRecord::Base
   belongs_to :lesson
   has_many :answers, :dependent => :destroy
 

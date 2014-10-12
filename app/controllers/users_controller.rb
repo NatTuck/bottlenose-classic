@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
 
     if @user.save
       @user.send_auth_link_email!(root_url)  
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
 
-    if @user.update_attributes(params[:user])
+    if @user.update_attributes(user_params)
       redirect_to @user, notice: 'User was successfully updated.'
     else
       render action: "edit"
@@ -51,5 +51,11 @@ class UsersController < ApplicationController
     session[:user_id] = @user.id
     show_notice "You are now #{@user.name}"
     redirect_to courses_url
+  end
+
+  private
+
+  def user_params
+    params[:user].permit(:email, :name, :site_admin, :auth_key)
   end
 end
