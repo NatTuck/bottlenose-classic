@@ -17,6 +17,7 @@ task :restart_apache do
 end
 
 task :install do
+  system("cd sandbox/src && make")
   system("cd sandbox/src && make install")
 end
 
