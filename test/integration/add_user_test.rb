@@ -10,9 +10,7 @@ class AddUserTest < ActionDispatch::IntegrationTest
     # Log in as a professor
     visit "http://test.host/main/auth?email=#{@prof.email}&key=#{@prof.auth_key}"
 
-    within("div.flash-notice") do
-      assert has_content?("Notice: Logged in");
-    end
+    assert has_content?("Logged in as #{@prof.email}");
 
     click_link 'Your Courses'
     click_link 'Organization of Programming Languages'

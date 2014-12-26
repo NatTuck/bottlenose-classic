@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
       self.save!
     end
     
-    AuthMailer.auth_link_email(self, base_url).deliver
+    AuthMailer.auth_link_email(self, base_url).deliver_later
   end
 
   def course_admin?(course)

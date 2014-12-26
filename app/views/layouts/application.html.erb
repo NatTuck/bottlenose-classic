@@ -44,26 +44,16 @@
 </div>
 
 <div class="container">
+
   <div class="row">
     <div class="col-sm-12">
+      <%= bootstrap_flash %>
       <h1><%= @page_title || default_page_title %></h1>
     </div>
   </div>
 </div>
 
 <div class="container">
-
-<% unless flash[:error].nil? %>
-<div class="flash-error">
-<p>Error: <%= flash[:error] %></p>
-</div>
-<% end %>
-
-<% unless flash[:notice].nil? %>
-<div class="flash-notice">
-<p>Notice: <%= flash[:notice] %></p>
-</div>
-<% end %>
 
 <%= yield %>
 

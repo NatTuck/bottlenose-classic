@@ -31,7 +31,7 @@ class RegRequestsController < ApplicationController
     if @reg_request.save
       @course.teachers.each do |teacher|
         NotificationMailer.got_reg_request(teacher, 
-          @reg_request, root_url).deliver
+          @reg_request, root_url).deliver_later
       end
 
       redirect_to @course, notice: 'Request sent'

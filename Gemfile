@@ -1,7 +1,7 @@
 # -*- ruby -*-
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.1'
+gem 'rails', '~> 4.2'
 gem 'rack'
 gem 'i18n'
 
@@ -18,6 +18,7 @@ gem 'uglifier'
 gem 'jquery-rails'
 
 gem 'bootstrap-sass'
+gem 'bootstrap-sass-extras'
 gem 'bootstrap-datepicker-rails'
 
 gem 'momentjs-rails'
