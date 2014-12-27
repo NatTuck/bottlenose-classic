@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :require_site_admin
+  before_filter :require_site_admin, except: [:new, :create]
   
   def index
     @users = User.order(:name)
@@ -21,9 +21,21 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
+    if User.count == 0
+      @user.site_admin = true
+    else 
+      @user.site_admin = false
+    end
+
     if @user.save
       @user.send_auth_link_email!(root_url)  
-      redirect_to @user, notice: 'User was successfully created.'
+
+      if @logged_in_user.nil?
+        redirect_to '/', 
+          notice: 'User created. Check your email for an authentication link.'
+      else
+        redirect_to @user, notice: 'User was successfully created.'
+      end
     else
       render action: "new"
     end
@@ -56,6 +68,10 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params[:user].permit(:email, :name, :site_admin, :auth_key)
+    if @logged_in_user && @logged_in_user.site_admin?
+      params[:user].permit(:email, :name, :site_admin, :auth_key)
+    else 
+      params[:user].permit(:email, :name)
+    end
   end
 end

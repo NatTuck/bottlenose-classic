@@ -18,7 +18,7 @@ class Course < ActiveRecord::Base
   end
 
   def taught_by?(user)
-    return false if user.guest?
+    return false if user.nil?
     reg = Registration.find_by_course_id_and_user_id(self.id, user.id)
     reg and reg.teacher?
   end

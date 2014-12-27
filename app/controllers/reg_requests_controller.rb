@@ -14,7 +14,7 @@ class RegRequestsController < ApplicationController
     @reg_request = RegRequest.new
     @reg_request.course_id = @course.id
 
-    unless @logged_in_user.guest?
+    unless @logged_in_user.nil?
       @reg_request.name  = @logged_in_user.name
       @reg_request.email = @logged_in_user.email
     end
