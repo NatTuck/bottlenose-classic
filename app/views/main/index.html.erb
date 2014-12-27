@@ -1,15 +1,48 @@
-<% @page_title = "Welcome" %>
+<% @page_title = "Welcome to Bottlenose" %>
 
-<p>If you are enrolled in a class on this site you will have received
-an authentication link by email. Please use that link to log in.</p>
-<p>If you can't find your authentication link, enter your email
-address below to have it resent.</p>
+<div class="row">
+  <div class="col-sm-12">
+    <p>Bottlenose is a web-based assignment submission and grade tracking tool
+    for Computer Science courses.</p>
+  </div>
+</div>
 
-<div class="form-box">
-<%= form_tag '/main/resend_auth' do %>
-<p><strong>Lost your authentication link?</strong></p>
-<p>Email Address:<br>
-  <%= email_field_tag :email %></p>
-<p><%= submit_tag "Resend Link" %></p>
-<% end %>
+<div class="row">
+  <div class="col-sm-6" id="resend-auth-form-div">
+    <h2>Lost your authentication link?</h2>
+
+    <div style="margin: 1em">
+      <%= form_tag '/main/resend_auth' do %>
+        <div class="form-group">
+          <%= label_tag 'email' %>
+          <%= email_field_tag :email, '', class: 'form-control' %>
+        </div>
+    
+        <div class="form-group">
+          <%= submit_tag "Resend Link", class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-sm-6" id="register-form-div">
+    <h2>Want to register a new account?</h2>
+
+    <div style="margin: 1em">
+      <%= form_for @user do |ff| %>
+        <div class="form-group">
+          <%= ff.label 'name', 'Full Name' %> 
+          <%= ff.text_field :name, class: 'form-control', 
+            placeholder: "Sandra Day O'Connor" %>
+        </div>
+        <div class="form-group">
+          <%= ff.label 'email' %>
+          <%= ff.email_field :email, class: 'form-control' %>
+        </div>
+        
+        <div class="form-group">
+          <%= submit_tag "Register", class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+  </div>
 </div>

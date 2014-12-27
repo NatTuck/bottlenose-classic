@@ -14,17 +14,15 @@ class ApplicationController < ActionController::Base
   end
   
   def find_user_session
-    if session['user_id'].nil?
-      @logged_in_user ||= GuestUser.new
-    else
+    unless session['user_id'].nil?
       @logged_in_user ||= User.find_by_id(session['user_id'])
     end
   end
-  
+
   def require_site_admin
     find_user_session
     
-    unless @logged_in_user.site_admin?
+    unless @logged_in_user && @logged_in_user.site_admin?
       show_error "You don't have permission to access that page."
       redirect_to '/courses'
       return
@@ -39,23 +37,33 @@ class ApplicationController < ActionController::Base
     find_user_session
     find_course
 
+    if @logged_in_user.nil?
+      show_error "You need to register first"
+      redirect_to '/'
+      return
+    end
+
     if @logged_in_user.course_admin?(@course)
       return
     end
 
-    if @course.private?
-      reg = @logged_in_user.registration_for(@course)
-      if reg.nil?
-        show_error "You're not registered for that course."
-        redirect_to courses_url
-        return
-      end
+    reg = @logged_in_user.registration_for(@course)
+    if reg.nil?
+      show_error "You're not registered for that course."
+      redirect_to courses_url
+      return
     end
   end
 
   def require_student
     find_user_session
     find_course
+
+    if @logged_in_user.nil?
+      show_error "You need to register first"
+      redirect_to '/'
+      return
+    end
 
     if @course.nil?
       show_error "No such course."
@@ -79,6 +87,12 @@ class ApplicationController < ActionController::Base
   def require_teacher
     find_user_session
     find_course
+    
+    if @logged_in_user.nil?
+      show_error "You need to register first"
+      redirect_to '/'
+      return
+    end
 
     if @course.nil?
       show_error "No such course."
