@@ -19,7 +19,7 @@
       <%= f.text_field :name, class: 'form-control' %>
     </div>
     <div class="form-group">
-      <%= f.label :term_id, "Term" %><
+      <%= f.label :term_id, "Term" %>
       <%= select("course", "term_id", (@terms.map {|tt| 
         [tt.name, tt.id]}), class: 'form-control') %>
     </div>

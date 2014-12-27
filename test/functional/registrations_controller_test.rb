@@ -21,7 +21,7 @@ class RegistrationsControllerTest < ActionController::TestCase
   test "should not get index unless logged in" do
     get :index, {:course_id => @cs301.id}
     assert_response :redirect
-    assert_match "not allowed", flash[:error]
+    assert_match "You need to register first", flash[:error]
   end
 
   test "non-teacher should not get index" do

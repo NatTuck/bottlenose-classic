@@ -10,7 +10,7 @@ class AddUserTest < ActionDispatch::IntegrationTest
     # Log in as a professor
     visit "http://test.host/main/auth?email=#{@prof.email}&key=#{@prof.auth_key}"
 
-    assert has_content?("Logged in as #{@prof.email}");
+    assert has_content?("Logged in as #{@prof.name}");
 
     click_link 'Your Courses'
     click_link 'Organization of Programming Languages'

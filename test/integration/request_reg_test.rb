@@ -8,15 +8,27 @@ class RequestRegTest < ActionDispatch::IntegrationTest
 
   test "request and create a registration" do
 
-    # As a guest user, fill out the request form
+    # Register a new account
     visit "http://test.host/"
+
+    within "#register-form-div" do 
+      fill_in "Full Name", with: "Napoleon Bonaparte"
+      fill_in "Email", with: "napolean@example.com"
+      click_button "Register"
+    end
+
+    assert has_content?("User created")
+
+    user = User.find_by_email("napolean@example.com")
+    visit "http://test.host/main/auth?email=#{user.email}&key=#{user.auth_key}"
+
     click_link "Your Courses"
     click_link "01. Organization of Programming Languages"
     click_link "Request Registration"
 
-    fill_in "Name",  :with => "Napoleon Bonaparte"
-    fill_in "Email", :with => "napolean@example.com"
-    fill_in "Notes", :with => "I demand class access!"
+    fill_in "Name",  with: "Napoleon Bonaparte"
+    fill_in "Email", with: "napolean@example.com"
+    fill_in "Notes", with: "I demand class access!"
     click_button "Request Registration"
 
     # Verify that the request exists

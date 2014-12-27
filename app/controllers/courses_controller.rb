@@ -2,7 +2,7 @@ class CoursesController < ApplicationController
   before_filter :find_course, 
     :except => [:index, :new, :create]
   before_filter :require_course_permission, 
-    :except => [:index, :new, :create]
+    :except => [:index, :new, :create, :show]
   before_filter :require_teacher,    :only => [:export_grades, :edit, :update]
   before_filter :require_site_admin, :only => [:new, :create, :destroy]
   
@@ -19,12 +19,10 @@ class CoursesController < ApplicationController
 
   def index
     if @logged_in_user.site_admin?
-      @courses = Course.order(:name)
       @course  = Course.new
-    else
-      @courses = @logged_in_user.courses.order(:name)
     end
-
+      
+    @courses = @logged_in_user.courses.order(:name)
     @courses_by_term = {}
     Term.all.each do |term|
       @courses_by_term[term.id] = @courses.find_all {|cc| 
@@ -32,6 +30,17 @@ class CoursesController < ApplicationController
     end
 
     @courses_no_term = @courses.find_all {|cc| cc.term_id.nil? }
+
+    @alls = Course.order(:name) - @courses
+    @all_by_term = {}
+
+    @alls_by_term = {}
+    Term.all.each do |term|
+      @alls_by_term[term.id] = @alls.find_all {|cc| 
+        cc.term_id == term.id }
+    end
+
+    @alls_no_term = @alls.find_all {|cc| cc.term_id.nil? }
   end
 
   def show

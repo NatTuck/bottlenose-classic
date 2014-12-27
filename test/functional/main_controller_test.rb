@@ -43,7 +43,7 @@ class MainControllerTest < ActionController::TestCase
     assert_match "Logged in", flash[:notice]
     assert_equal session[:user_id], users(:alan).id
     
-    assert_redirected_to courses_url
+    assert_response(:success)
   end
   
   test "John can't log in as Alan" do

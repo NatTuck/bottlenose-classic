@@ -8,7 +8,6 @@ class User < ActiveRecord::Base
   has_many :submissions, :dependent => :restrict_with_error
 
   validates :email, :format => { :with => /\@.*\./ }
-  validates :name,  :length => { :minimum => 2 }
   validates :auth_key, :presence => true
 
   validates :email, :uniqueness => true
@@ -25,10 +24,6 @@ class User < ActiveRecord::Base
     unless self.email.nil?
       self.email = self.email.downcase
     end
-  end
-
-  def guest?
-    false
   end
 
   def send_auth_link_email!(base_url)
