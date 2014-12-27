@@ -30,14 +30,14 @@ cd $DIR
 for dd in usr bin lib var etc proc dev
 do
     mkdir $dd
-    mount --bind -o ro /$dd $dd
+    mount --bind /$dd $dd
     mount -o remount,ro $dd
 done
 
 if [[ -d "/lib64" ]]
 then
     mkdir lib64
-    mount --bind -o ro /lib64 lib64
+    mount --bind /lib64 lib64
     mount -o remount,ro lib64
 fi
 
