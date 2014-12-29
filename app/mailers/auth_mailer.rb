@@ -1,5 +1,5 @@
 class AuthMailer < ActionMailer::Base
-  default from: "UML CS Grader Server <webcat@cs.uml.edu>"
+  default from: Rails.configuration.x.email_from
   
   def auth_link_email(user)
     email = CGI.escape(user.email)

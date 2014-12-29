@@ -29,7 +29,9 @@ class CoursesController < ApplicationController
 
         emails = text.split(/\s+/)
         emails.each do |ee|
-          User.create(email: ee, name: '')
+          next unless ee =~ /\@.*\./
+          prefix, _ = ee.split('@')
+          @course.add_registration(prefix.downcase, ee)
           num_added += 1
         end
       end
@@ -38,7 +40,7 @@ class CoursesController < ApplicationController
         csv = params[:csv]
         CSV.parse(csv.read) do |line|
           next unless line[1] =~ /\@.*\./
-          User.create(email: line[1], name: line[0])
+          @course.add_registration(line[0], line[1])
           num_added += 1
         end 
       end

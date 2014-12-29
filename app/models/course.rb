@@ -66,7 +66,8 @@ class Course < ActiveRecord::Base
 
     rr = registrations.where(user_id: uu.id).first
     if rr.nil?
-      rr = Registration.create(user_id: uu.id, course_id: self.id, teacher: teacher)
+      rr = Registration.create(user_id: uu.id, course_id: self.id, 
+                               teacher: teacher, show_in_lists: !teacher)
     end
 
     rr

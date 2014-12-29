@@ -10,7 +10,8 @@ class User < ActiveRecord::Base
   validates :email, :format => { :with => /\@.*\./ }
   validates :auth_key, :presence => true
 
-  validates :email, :uniqueness => true
+  validates :email, uniqueness: true
+  validates :name,  length: { in: 2..30 } 
   
   # Different people with the same name are fine.
   # If someone uses two emails, they get two accounts. So sad.
@@ -45,5 +46,9 @@ class User < ActiveRecord::Base
 
   def invert_name
     name.split(/\s+/).rotate(-1).join(' ')
+  end
+
+  def reasonable_name?
+    @name =~ /\s+/ and @name.downcase != @name
   end
 end

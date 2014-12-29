@@ -10,6 +10,15 @@ class MainController < ApplicationController
   end
   
   def auth
+    if params['email'].blank?
+      if @logged_in_user.nil?
+        redirect_to root_url
+      else
+        @user = @logged_in_user
+      end
+      return
+    end
+
     @email = params['email'].downcase
     @key   = params['key']
 
