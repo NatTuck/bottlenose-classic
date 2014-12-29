@@ -26,13 +26,13 @@ class User < ActiveRecord::Base
     end
   end
 
-  def send_auth_link_email!(base_url)
+  def send_auth_link_email!
     if self.auth_key.nil?
       self.auth_key = SecureRandom.urlsafe_base64
       self.save!
     end
     
-    AuthMailer.auth_link_email(self, base_url).deliver_later
+    AuthMailer.auth_link_email(self).deliver_later
   end
 
   def course_admin?(course)

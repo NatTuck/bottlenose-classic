@@ -54,4 +54,21 @@ class Course < ActiveRecord::Base
   def first_teacher
     teachers.first
   end
+
+  def add_registration(name, email, teacher = false)
+    email.downcase!
+
+    uu = User.find_by_email(email)
+    if uu.nil?
+      uu = User.create(name: name, email: email)
+      uu.send_auth_link_email!
+    end
+
+    rr = registrations.where(user_id: uu.id).first
+    if rr.nil?
+      rr = Registration.create(user_id: uu.id, course_id: self.id, teacher: teacher)
+    end
+
+    rr
+  end
 end

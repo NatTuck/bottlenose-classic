@@ -28,7 +28,7 @@ class UsersController < ApplicationController
     end
 
     if @user.save
-      @user.send_auth_link_email!(root_url)  
+      @user.send_auth_link_email!
 
       if @logged_in_user.nil?
         redirect_to '/', 

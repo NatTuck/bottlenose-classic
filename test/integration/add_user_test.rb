@@ -16,13 +16,16 @@ class AddUserTest < ActionDispatch::IntegrationTest
     click_link 'Organization of Programming Languages'
     click_link 'Manage Registrations'
 
+    assert has_content?("Add a Student or Teacher")
+
     # Add a new student.
-    fill_in 'Name',  :with => 'Steve McTest'
     fill_in 'Email', :with => 'steve@example.com'
-    click_button 'Add Student'
+    fill_in 'Name',  :with => 'Steve McTest'
+    click_button 'Create Registration'
 
     # Verify that student was added.
     @steve = User.find_by_email('steve@example.com')
+    assert_not_nil @steve
     assert_equal 'Steve McTest', @steve.name
     assert_equal 1, @steve.registrations.size
   end

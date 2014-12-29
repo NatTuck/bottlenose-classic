@@ -2,22 +2,13 @@
 
 <p><%= link_to "Back to Course: #{@course.name}", @course %></p>
 
-<h1>Add a teacher</h1>
+<h1>Add a Student or Teacher</h1>
 
-<p>(Must be an existing user.)</p>
+<p><%= link_to "Bulk-Add Students", course_path(@course) + "/bulk_add" %></p>
 
-<%= form_for [@course, @teacher_reg] do |f| %>
-  <%= f.hidden_field :course_id %>
-  <%= f.hidden_field :teacher %>
+<p>(A new user will be created and notified if needed.)</p>
 
-  <div class="form-group">
-    <%= label :user_id, "Teacher" %>
-    <%= f.select :user_id, select_user_hash, {:include_blank => true} %>
-  </div>
-  <div class="form-group">
-    <%= submit_tag "Add" %>
-  </div>
-<% end %>
+<%= render 'form' %>
 
 <h1>Current Teachers</h1>
 
@@ -43,27 +34,6 @@
 </tr>
 <% end %>
 </table>
-
-<h1>Add A Student</h1>
-
-<p>(A new user will be created and notified if needed.)</p>
-
-<%= form_for [@course, @student_reg] do |f| %>
-<%= f.hidden_field :course_id %>
-<%= f.hidden_field :teacher %>
-
-  <div class="form-group">
-    <label for="student_name">Name</label>
-    <%= text_field_tag :student_name, "", class: 'form-control' %>
-  </div>
-  <div class="form-group">
-    <label for="student_email">Email</label>
-    <%= text_field_tag :student_email, "", class: 'form-control' %>
-  </div>
-  <div class="form-group">
-    <%= submit_tag "Add Student", class: 'btn btn-primary' %>
-  </div>
-<% end %>
 
 <h1>Current Students</h1>
 
