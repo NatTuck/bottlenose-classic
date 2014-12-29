@@ -32,7 +32,7 @@ class RegistrationsControllerTest < ActionController::TestCase
 
   test "should create registration" do
     assert_difference('Registration.count') do
-      post :create, { course_id: @cs301.id, 
+      post :create, { course_id: @cs301.id, user_name: @mike.name, user_email: @mike.email,
         registration: { user_id: @mike.id, course_id: @cs301.id }},
         {user_id: @fred.id}
     end

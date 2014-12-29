@@ -2,8 +2,13 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :find_user_session
+  before_filter :set_mailer_host
 
   protected
+  
+  def set_mailer_host
+    ActionMailer::Base.default_url_options[:host] = request.host_with_port
+  end
 
   def show_notice(msg)
     flash[:notice] = msg

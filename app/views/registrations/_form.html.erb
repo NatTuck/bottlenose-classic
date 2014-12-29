@@ -14,11 +14,15 @@
   <%= f.hidden_field :course_id %>
 
   <div class="form-group">
-    <%= label :user_id, "User" %>
-    <%= f.select :user_id, select_user_hash, {:include_blank => true} %>
+    <%= label_tag :user_email, "Email" %>
+    <%= text_field_tag :user_email %>
   </div>
   <div class="form-group">
-    <%= label :teacher, "Teacher" %>
+    <%= label_tag :user_name, "Name" %>
+    <%= text_field_tag :user_name %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :teacher, "Teacher" %>
     <%= f.check_box :teacher %>
   </div>
   <div class="form-group">

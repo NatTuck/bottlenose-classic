@@ -16,12 +16,14 @@ Bottlenose::Application.routes.draw do
   post 'users/:id/impersonate' => 'users#impersonate'
 
   resources :courses do
-    resources :registrations, :except => [:new]
+    resources :registrations
     resources :chapters
     resources :reg_requests
   end
 
   get 'courses/:id/export_grades' => 'courses#export_grades'
+  get 'courses/:id/bulk_add'      => 'courses#bulk_add'
+  post 'courses/:id/bulk_add'     => 'courses#bulk_add'
 
   resources :registrations, :except => [:new]
 

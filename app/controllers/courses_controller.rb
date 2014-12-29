@@ -1,3 +1,5 @@
+require 'csv'
+
 class CoursesController < ApplicationController
   before_filter :find_course, 
     :except => [:index, :new, :create]
@@ -15,6 +17,36 @@ class CoursesController < ApplicationController
     end
 
     render :formats => [:text]
+  end
+
+  def bulk_add
+    if request.post?
+      num_added = 0
+
+      if params[:emails]
+        text = params[:emails]
+        text.gsub(/;,/, ' ')
+
+        emails = text.split(/\s+/)
+        emails.each do |ee|
+          next unless ee =~ /\@.*\./
+          prefix, _ = ee.split('@')
+          @course.add_registration(prefix.downcase, ee)
+          num_added += 1
+        end
+      end
+
+      if params[:csv]
+        csv = params[:csv]
+        CSV.parse(csv.read) do |line|
+          next unless line[1] =~ /\@.*\./
+          @course.add_registration(line[0], line[1])
+          num_added += 1
+        end 
+      end
+    end
+
+    flash[:notice] = "Added #{num_added} students."
   end
 
   def index

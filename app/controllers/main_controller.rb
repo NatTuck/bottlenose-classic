@@ -10,6 +10,15 @@ class MainController < ApplicationController
   end
   
   def auth
+    if params['email'].blank?
+      if @logged_in_user.nil?
+        redirect_to root_url
+      else
+        @user = @logged_in_user
+      end
+      return
+    end
+
     @email = params['email'].downcase
     @key   = params['key']
 
@@ -43,7 +52,7 @@ class MainController < ApplicationController
       @user = User.create(email: @email, name: '')
     end
     
-    @user.send_auth_link_email!(root_url)
+    @user.send_auth_link_email!
     
     show_notice "Check your email for your authentication link."
     redirect_to root_url

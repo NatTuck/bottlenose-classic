@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :require_site_admin, except: [:new, :create]
+  before_filter :require_site_admin, except: [:new, :create, :update]
   
   def index
     @users = User.order(:name)
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
     end
 
     if @user.save
-      @user.send_auth_link_email!(root_url)  
+      @user.send_auth_link_email!
 
       if @logged_in_user.nil?
         redirect_to '/', 
@@ -45,9 +45,18 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     if @user.update_attributes(user_params)
-      redirect_to @user, notice: 'User was successfully updated.'
+      if @logged_in_user.site_admin?
+        redirect_to @user, notice: 'User was successfully updated.'
+      else
+        redirect_to '/courses', notice: "Name successfully updated"
+      end
     else
-      render action: "edit"
+      if @logged_in_user.site_admin?
+        render action: "edit"
+      else
+        redirect_to '/main/auth', 
+          alert: "Error updating name: #{@user.errors.full_messages.join('; ')}"
+      end
     end
   end
 
