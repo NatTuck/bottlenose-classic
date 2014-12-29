@@ -49,6 +49,6 @@ class User < ActiveRecord::Base
   end
 
   def reasonable_name?
-    @name =~ /\s+/ and @name.downcase != @name
+    name =~ /\s/ and name.downcase != name
   end
 end
