@@ -23,16 +23,20 @@ class Course < ActiveRecord::Base
     reg and reg.teacher?
   end
   
+  def regs_sorted
+    registrations.to_a.sort_by {|reg| reg.user.invert_name.downcase }
+  end
+
   def teacher_registrations
-    registrations.where(teacher: true)
+    regs_sorted.find_all {|reg| reg.teacher? }
   end
 
   def student_registrations
-    registrations.find_all {|reg| !reg.teacher? }
+    regs_sorted.find_all {|reg| !reg.teacher? }
   end
 
   def active_registrations
-    registrations.where(show_in_lists: true)
+    regs_sorted.find_all {|reg| reg.show_in_lists? }
   end
 
   def students

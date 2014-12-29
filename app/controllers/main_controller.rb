@@ -42,8 +42,7 @@ class MainController < ApplicationController
     
     # Create site admin on first run.
     if User.count == 0
-      @user = User.create(email: @email, name: "Admin McAdminpants", 
-                          site_admin: true)
+      @user = User.create(email: @email, name: "admin", site_admin: true)
     else 
       @user = User.find_by_email(@email)
     end
