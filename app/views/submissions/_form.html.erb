@@ -1,4 +1,7 @@
 <%= form_for [@assignment, @submission] do |f| %>
+  <%= f.hidden_field :assignment_id %>
+  <%= f.hidden_field :user_id %>
+
   <% if @submission.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@submission.errors.count, "error") %> prohibited this submission from being saved:</h2>
@@ -10,6 +13,7 @@
       </ul>
     </div>
   <% end %>
+
 
   <div class="form-group">
     <%= f.label :student_notes %>

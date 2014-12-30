@@ -25,7 +25,7 @@ class SubmissionsController < ApplicationController
   end
 
   def create
-    @submission = Submission.new
+    @submission = Submission.new(submission_params)
     @submission.assignment_id = @assignment.id
 
     if @logged_in_user.course_admin?(@course)
@@ -35,7 +35,7 @@ class SubmissionsController < ApplicationController
       @submission.ignore_late_penalty = false
     end
 
-    if @submission.update_attributes(submission_params)
+    if @submission.save
       @submission.grade!
       respond_to do |format|
         format.html { redirect_to @submission, notice: 'Submission was successfully created.' }

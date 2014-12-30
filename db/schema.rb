@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141227221459) do
+ActiveRecord::Schema.define(version: 20141230025338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20141227221459) do
     t.text     "footer"
     t.integer  "term_id"
     t.time     "questions_due_time"
+    t.integer  "sub_max_size",                   default: 20,       null: false
   end
 
   create_table "lessons", force: :cascade do |t|
@@ -130,6 +131,7 @@ ActiveRecord::Schema.define(version: 20141227221459) do
     t.datetime "updated_at",                                      null: false
     t.boolean  "ignore_late_penalty",             default: false
     t.integer  "upload_id"
+    t.integer  "upload_size",                     default: 0,     null: false
   end
 
   add_index "submissions", ["assignment_id"], name: "index_submissions_on_assignment_id", using: :btree
