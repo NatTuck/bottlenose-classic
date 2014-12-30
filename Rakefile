@@ -22,11 +22,30 @@ task :install do
 end
 
 task :clean_uploads do
+  puts
+  puts "This will delete all student work."
+  puts 
+  puts "CTRL+C to cancel, or enter to continue"
+  puts
+  $stdin.readline
   system("rm -rf public/assignments")
   system("rm -rf public/submissions")
   system("rm -rf public/uploads")
   system("mkdir public/uploads")
   system("touch public/uploads/empty")
+end
+
+task :reap do
+  system("cd #{Rails.root} && script/sandbox-reaper")
+end
+
+task :backup do
+  puts "Would run backup process."
+end
+
+task :backup_and_reap do
+  Rake::Task["backup"].execute
+  Rake::Task["reap"].execute
 end
 
 namespace :db do
