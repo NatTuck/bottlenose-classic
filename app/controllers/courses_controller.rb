@@ -135,6 +135,6 @@ class CoursesController < ApplicationController
 
   def course_params
     params[:course].permit(:name, :footer, :late_options, :private, 
-                           :term_id, :questions_due_time)
+                           :term_id, :questions_due_time, :sub_max_size)
   end
 end

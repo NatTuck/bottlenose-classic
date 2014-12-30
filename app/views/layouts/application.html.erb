@@ -29,7 +29,6 @@
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li>
         <li><%= link_to "About", '/main/about' %></li>
         <% if @logged_in_user && @logged_in_user.site_admin? %>
           <li><%= link_to "Manage Users", users_url %></li>
@@ -39,6 +38,13 @@
           <li><%= link_to "Log Out", '/main/logout' %></li>
         <% end %>
       </ul>
+
+      <% unless @logged_in_user.nil? %>
+        <div class="header-user-info">
+          &nbsp; &nbsp; &nbsp;
+          (Logged in as <%= @logged_in_user.email %>)
+        </div>
+      <% end %>
     </div><!--/.nav-collapse -->
   </div>
 </div>
