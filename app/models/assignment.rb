@@ -114,6 +114,10 @@ class Assignment < ActiveRecord::Base
     @solution_file_data = data
   end
 
+  def has_grading?
+    !grading_upload_id.nil?
+  end
+
   def save_uploads!
     user = User.find(blame_id)
 
