@@ -99,7 +99,6 @@ class Assignment < ActiveRecord::Base
     else
       solution_upload.path
     end
-
   end
 
   def assignment_file=(data)

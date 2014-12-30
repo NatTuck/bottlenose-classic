@@ -12,6 +12,11 @@ if sub.nil?
   exit(0)
 end
 
+unless sub.assignment.has_grading?
+  puts "No grading file. Submission must be graded manually."
+  exit(0)
+end
+
 # Find a free UID to grade with.
 while sub.grading_uid.nil?
   begin
@@ -95,10 +100,18 @@ end
 
 if File.exists?("#{test_dir}/sandbox/bin/bash")
   puts "Loopback mounts still exist. Calling in the reaper man."
-  system(%Q{cd #{Rails.root} && script/sandbox-reaper})
+  system(%Q{cd #{Rails.root} && script/sandbox-reaper &})
 else
   system(%Q{rm --one-file-system -rf "#{test_dir}"}) if test_dir.match(/^\/tmp/)
 end
              
 sub.grading_uid = nil
 sub.save!
+
+# Run the sandbox reaper occasionally.
+
+last_reap = Rails.root.join('tmp', 'last-reap')
+if !File.exists?(last_reap) || File.mtime(last_reap) < (Time.now - 1.hour) 
+  File.write(last_reap, "#{Time.now}\n")
+  system(%Q{cd #{Rails.root} && script/sandbox-reaper &})
+end
