@@ -30,7 +30,8 @@ class Upload < ActiveRecord::Base
 
   def path
     pre = secret_key.slice(0, 2)
-    "/uploads/#{Rails.env}/#{pre}/#{secret_key}/#{file_name}"
+    encoded_name = Rack::Utils.escape_path(file_name)
+    "/uploads/#{Rails.env}/#{pre}/#{secret_key}/#{encoded_name}"
   end
 
   def full_path
