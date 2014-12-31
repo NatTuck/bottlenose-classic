@@ -1,19 +1,16 @@
 class Course < ActiveRecord::Base
-  attr_accessible :name, :footer, :late_options, :private, :term_id
-  attr_accessible :questions_due_time
-
   belongs_to :term
   
   has_many :registrations
-  has_many :users, :through => :registrations, :dependent => :restrict
+  has_many :users, :through => :registrations, :dependent => :restrict_with_error
 
   has_many :reg_requests, :dependent => :destroy
 
-  has_many :chapters, :dependent => :restrict
+  has_many :chapters, :dependent => :restrict_with_error
 
   validates :name,    :length      => { :minimum => 2 },
                       :uniqueness  => true
-  validates :late_options, :format => { :with => /^\d+,\d+,\d+$/ }
+  validates :late_options, :format => { :with => /\A\d+,\d+,\d+\z/ }
 
   def late_opts
     os = late_options.split(",")
@@ -21,21 +18,25 @@ class Course < ActiveRecord::Base
   end
 
   def taught_by?(user)
-    return false if user.guest?
+    return false if user.nil?
     reg = Registration.find_by_course_id_and_user_id(self.id, user.id)
     reg and reg.teacher?
   end
   
+  def regs_sorted
+    registrations.to_a.sort_by {|reg| reg.user.invert_name.downcase }
+  end
+
   def teacher_registrations
-    registrations.where(teacher: true)
+    regs_sorted.find_all {|reg| reg.teacher? }
   end
 
   def student_registrations
-    registrations.find_all {|reg| !reg.teacher? }
+    regs_sorted.find_all {|reg| !reg.teacher? }
   end
 
   def active_registrations
-    registrations.where(show_in_lists: true)
+    regs_sorted.find_all {|reg| reg.show_in_lists? }
   end
 
   def students
@@ -56,5 +57,23 @@ class Course < ActiveRecord::Base
 
   def first_teacher
     teachers.first
+  end
+
+  def add_registration(name, email, teacher = false)
+    email.downcase!
+
+    uu = User.find_by_email(email)
+    if uu.nil?
+      uu = User.create(name: name, email: email)
+      uu.send_auth_link_email!
+    end
+
+    rr = registrations.where(user_id: uu.id).first
+    if rr.nil?
+      rr = Registration.create(user_id: uu.id, course_id: self.id, 
+                               teacher: teacher, show_in_lists: !teacher)
+    end
+
+    rr
   end
 end

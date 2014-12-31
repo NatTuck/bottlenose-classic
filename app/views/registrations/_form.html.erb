@@ -13,21 +13,19 @@
 
   <%= f.hidden_field :course_id %>
 
-  <table class="edit-form">
-    <tr>
-      <td><%= label :user_id, "User" %></td>
-      <td>
-	<div class="ui-widget">
-	  <%= f.select :user_id, select_user_hash, {:include_blank => true} %>
-	</div>
-      </td>
-    </tr>
-    <tr>
-      <td><%= label :teacher, "Teacher" %></td>
-      <td><%= f.check_box :teacher %></td>
-    <tr>
-      <td>&nbsp;</td>
-      <td><%= f.submit %></td>
-    </tr>
-  </table>
+  <div class="form-group">
+    <%= label_tag :user_email, "Email" %>
+    <%= text_field_tag :user_email %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :user_name, "Name" %>
+    <%= text_field_tag :user_name %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :teacher, "Teacher" %>
+    <%= f.check_box :teacher %>
+  </div>
+  <div class="form-group">
+    <%= f.submit nil, class: 'btn btn-primary' %>
+  </div>
 <% end %>

@@ -11,12 +11,12 @@ puts "\n/|\\/|\\/|\\/|\\/|\\/|\\/|\\/|\\/|\\/|\\/|\\\n\n"
 
 # First, check for submissions that are still active in the DB.
 
-active_subs = Submission.find(:all, :conditions => "submissions.grading_uid is not null")
+active_subs = Submission.where("submissions.grading_uid is not null")
 
 active_subs.each do |sub|
   puts "Active submission #{sub.id} found."
 
-  if (sub.updated_at + 5.minutes) > Time.now
+  if (sub.updated_at + 6.minutes) > Time.now
     puts "Less than five minutes old. We'll let it live."
     next
   end
@@ -50,12 +50,23 @@ Dir.entries("/tmp").each do |ent|
 
     sub = Submission.find(sid)
 
-    if sub.grading_uid.nil?
+    if sub.nil? or sub.grading_uid.nil?
       puts "Cleaning up #{test_dir}..."
       system(%Q{/usr/local/bottlenose/bin/sandbox -teardown "#{test_dir}"})
       system(%Q{rm --one-file-system -rf "#{test_dir}"}) if test_dir.match(/^\/tmp/)
     else
       puts "Not cleaning up test directory #{test_dir} due to active sub #{sub.id}"
+    end
+  end
+end
+
+# Then, for the lolz, delete all "RackMultipart*" files that are more than
+# an hour old.
+Dir.entries("/tmp").each do |ent|
+  if ent =~ /^RackMultipart/
+    temp = "/tmp/#{ent}"
+    if File.mtime(temp) < (Time.now - 1.hour)
+      File.unlink(temp)
     end
   end
 end

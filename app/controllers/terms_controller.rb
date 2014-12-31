@@ -18,7 +18,7 @@ class TermsController < ApplicationController
   end
 
   def create
-    @term = Term.new(params[:term])
+    @term = Term.new(term_params)
 
     if @term.save
       redirect_to @term, notice: 'Term was successfully created.'
@@ -30,7 +30,7 @@ class TermsController < ApplicationController
   def update
     @term = Term.find(params[:id])
 
-    if @term.update_attributes(params[:term])
+    if @term.update_attributes(term_params)
       redirect_to @term, notice: 'Term was successfully updated.'
     else
       render action: "edit"
@@ -42,5 +42,11 @@ class TermsController < ApplicationController
     @term.destroy
 
     redirect_to terms_url
+  end
+
+  private
+
+  def term_params
+    params[:term].permit(:name, :archived)
   end
 end

@@ -1,19 +1,17 @@
 require 'securerandom'
 
 class User < ActiveRecord::Base
-  attr_accessible :email, :name, :site_admin, :auth_key
-
   has_many :registrations
-  has_many :courses, :through => :registrations, :dependent => :restrict
+  has_many :courses, :through => :registrations, :dependent => :restrict_with_error
   
-  has_many :answers,     :dependent => :restrict
-  has_many :submissions, :dependent => :restrict
+  has_many :answers,     :dependent => :restrict_with_error
+  has_many :submissions, :dependent => :restrict_with_error
 
   validates :email, :format => { :with => /\@.*\./ }
-  validates :name,  :length => { :minimum => 2 }
   validates :auth_key, :presence => true
 
-  validates :email, :uniqueness => true
+  validates :email, uniqueness: true
+  validates :name,  length: { in: 2..30 } 
   
   # Different people with the same name are fine.
   # If someone uses two emails, they get two accounts. So sad.
@@ -29,17 +27,13 @@ class User < ActiveRecord::Base
     end
   end
 
-  def guest?
-    false
-  end
-
-  def send_auth_link_email!(base_url)
+  def send_auth_link_email!
     if self.auth_key.nil?
       self.auth_key = SecureRandom.urlsafe_base64
       self.save!
     end
     
-    AuthMailer.auth_link_email(self, base_url).deliver
+    AuthMailer.auth_link_email(self).deliver_later
   end
 
   def course_admin?(course)
@@ -52,5 +46,9 @@ class User < ActiveRecord::Base
 
   def invert_name
     name.split(/\s+/).rotate(-1).join(' ')
+  end
+
+  def reasonable_name?
+    name =~ /\s/ and name.downcase != name
   end
 end

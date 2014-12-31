@@ -1,6 +1,6 @@
+require 'audit'
+
 class Upload < ActiveRecord::Base
-  attr_protected :file_name, :secret_key, :user_id
-  
   validates :file_name,  :presence => true
   validates :user_id,    :presence => true
   validates :secret_key, :presence => true, :uniqueness => true
@@ -10,6 +10,7 @@ class Upload < ActiveRecord::Base
   belongs_to :user
 
   after_initialize :generate_secret_key!
+  before_destroy :cleanup!
 
   def data_and_metadata_stored
     unless File.exists?(upload_dir.join(file_name))
@@ -30,7 +31,8 @@ class Upload < ActiveRecord::Base
 
   def path
     pre = secret_key.slice(0, 2)
-    "/uploads/#{Rails.env}/#{pre}/#{secret_key}/#{file_name}"
+    encoded_name = Rack::Utils.escape_path(file_name)
+    "/uploads/#{Rails.env}/#{pre}/#{secret_key}/#{encoded_name}"
   end
 
   def full_path
@@ -91,6 +93,10 @@ class Upload < ActiveRecord::Base
     if Dir.exists?(upload_dir)
       raise Exception.new("Duplicate secret key (2). That's unpossible!")
     end
+  end
+
+  def cleanup!
+    Audit.log("Skip cleanup: #{file_name} for #{user.name} (#{user_id}) at #{secret_key}")
   end
 
   def self.base_upload_dir

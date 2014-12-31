@@ -11,11 +11,17 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery.ui.all
+//= require bootstrap-sprockets
 //= require jquery_ujs
-//= require_tree .
 //= require nicEdit
-//= require combobox
-//= require theme-forms
+//= require bootstrap-datepicker
+//= require_tree .
 
-$.datepicker.setDefaults({ dateFormat: "yy-mm-dd" });
+$.fn.datepicker.defaults.format = "yyyy-mm-dd";
+
+$(function() {
+    $('.local-time').each(function(_) {
+        var dd = new Date($(this).text());
+        $(this).text(dd);
+    });
+})

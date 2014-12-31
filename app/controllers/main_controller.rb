@@ -1,13 +1,24 @@
 class MainController < ApplicationController
-  before_filter :find_user_session, :only => [:index]
+  before_filter :find_user_session
   
   def index
+    @user = User.new
+
     if session[:user_id]
       redirect_to courses_path
     end
   end
   
   def auth
+    if params['email'].blank?
+      if @logged_in_user.nil?
+        redirect_to root_url
+      else
+        @user = @logged_in_user
+      end
+      return
+    end
+
     @email = params['email'].downcase
     @key   = params['key']
 
@@ -21,14 +32,9 @@ class MainController < ApplicationController
     end
 
     session[:user_id] = @user.id
+    find_user_session
     
-    show_notice "Logged in as #{@email}."
-    
-    if @user.site_admin?
-      redirect_to users_url
-    else
-      redirect_to courses_url
-    end
+    show_notice "Logged in as #{@user.name} &lt;#{@user.email}&gt;."
   end
   
   def resend_auth
@@ -36,19 +42,16 @@ class MainController < ApplicationController
     
     # Create site admin on first run.
     if User.count == 0
-      @user = User.create(:email => @email, :name => "Admin McAdminpants", 
-                          :site_admin => true)
+      @user = User.create(email: @email, name: "admin", site_admin: true)
     else 
       @user = User.find_by_email(@email)
     end
     
     if @user.nil?
-      show_error "Email address [#{@email}] is not known."
-      redirect_to root_url
-      return
+      @user = User.create(email: @email, name: '')
     end
     
-    @user.send_auth_link_email!(root_url)
+    @user.send_auth_link_email!
     
     show_notice "Check your email for your authentication link."
     redirect_to root_url

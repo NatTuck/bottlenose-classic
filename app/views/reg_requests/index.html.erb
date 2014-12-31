@@ -4,7 +4,7 @@
 
 <h2>Registration Requests for "<%= @course.name %>"</h2>
 
-<table class="pretty-list">
+<table class="table table-striped">
   <tr>
     <th>Name</th>
     <th>Email</th>
@@ -25,8 +25,8 @@
     <td>
       <%= form_for [@course, @registration] do |f| %>
         <%= f.hidden_field :course_id, :value => @course.id %>
-        <%= hidden_field_tag :student_email, reg_request.email %>
-        <%= hidden_field_tag :student_name,  reg_request.name %>
+        <%= hidden_field_tag :user_email, reg_request.email %>
+        <%= hidden_field_tag :user_name,  reg_request.name %>
         <%= f.submit %>
       <% end %>
     </td>

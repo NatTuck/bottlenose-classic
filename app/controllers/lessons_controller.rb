@@ -31,7 +31,7 @@ class LessonsController < ApplicationController
   end
 
   def create
-    @lesson = Lesson.new(params[:lesson])
+    @lesson = Lesson.new(lesson_params)
 
     if @lesson.save
       redirect_to @lesson, notice: 'Lesson was successfully created.'
@@ -41,7 +41,7 @@ class LessonsController < ApplicationController
   end
 
   def update
-    if @lesson.update_attributes(params[:lesson])
+    if @lesson.update_attributes(lesson_params)
       redirect_to @lesson, notice: 'Lesson was successfully updated.'
     else
       render action: "edit"
@@ -69,5 +69,9 @@ class LessonsController < ApplicationController
     @lesson  = Lesson.find(params[:id])
     @chapter = @lesson.chapter
     @course  = @chapter.course
+  end
+
+  def lesson_params
+    params[:lesson].permit(:chapter_id, :name, :video, :notes, :questions_due)
   end
 end

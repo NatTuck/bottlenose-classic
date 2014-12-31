@@ -1,14 +1,6 @@
 require 'securerandom'
 
 class Submission < ActiveRecord::Base
-  attr_accessible :assignment_id, :user_id, :student_notes
-  attr_accessible :raw_score, :updated_at, :upload
-  attr_accessible :grading_output, :grading_uid
-  attr_accessible :teacher_score, :teacher_notes
-  attr_accessible :ignore_late_penalty
-
-  attr_protected :upload_id
-
   belongs_to :assignment
   belongs_to :user
   belongs_to :upload
@@ -21,11 +13,13 @@ class Submission < ActiveRecord::Base
 
   validate :user_is_registered_for_course
   validate :submitted_file_or_manual_grade
+  validate :file_below_max_size
 
   delegate :course,    :to => :assignment
   delegate :file_name, :to => :upload, :allow_nil => true
 
   after_save :update_cache!
+  before_destroy :cleanup!
 
   def update_cache!
    reg = self.user.registration_for(self.course)
@@ -37,6 +31,12 @@ class Submission < ActiveRecord::Base
 
     unless upload_id.nil?
       raise Exception.new("Attempt to replace submission upload.")
+    end
+
+    self.upload_size = data.size
+
+    if data.size > course.sub_max_size.megabytes
+      return
     end
 
     up = Upload.new
@@ -119,13 +119,28 @@ class Submission < ActiveRecord::Base
     system(%Q{(cd "#{root}" && script/grade-submission #{self.id})&})
   end
 
+  def cleanup!
+    upload.cleanup! unless upload.nil?
+  end
+
   private
 
   def user_is_registered_for_course
-    user.courses.any? {|cc| cc.id == course.id }
+    unless user.courses.any? {|cc| cc.id == course.id }
+      errors[:base] << "Not registered for this course."
+    end
   end
 
   def submitted_file_or_manual_grade
-    (not upload_id.nil?) || ignore_late_penalty
+    unless (not upload_id.nil?) || ignore_late_penalty
+      errors[:base] << "You need to submit a file."
+    end
+  end
+
+  def file_below_max_size
+      msz = course.sub_max_size
+      if upload_size > msz.megabytes
+        errors[:base] << "Upload exceeds max size (#{upload_size} > #{msz} MB)."
+      end
   end
 end

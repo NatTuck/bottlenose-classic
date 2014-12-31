@@ -1,8 +1,10 @@
+require 'csv'
+
 class CoursesController < ApplicationController
   before_filter :find_course, 
     :except => [:index, :new, :create]
   before_filter :require_course_permission, 
-    :except => [:index, :new, :create]
+    :except => [:index, :new, :create, :show]
   before_filter :require_teacher,    :only => [:export_grades, :edit, :update]
   before_filter :require_site_admin, :only => [:new, :create, :destroy]
   
@@ -17,14 +19,42 @@ class CoursesController < ApplicationController
     render :formats => [:text]
   end
 
-  def index
-    if @logged_in_user.site_admin?
-      @courses = Course.order(:name)
-      @course  = Course.new
-    else
-      @courses = @logged_in_user.courses.order(:name)
+  def bulk_add
+    if request.post?
+      num_added = 0
+
+      if params[:emails]
+        text = params[:emails]
+        text.gsub(/;,/, ' ')
+
+        emails = text.split(/\s+/)
+        emails.each do |ee|
+          next unless ee =~ /\@.*\./
+          prefix, _ = ee.split('@')
+          @course.add_registration(prefix.downcase, ee)
+          num_added += 1
+        end
+      end
+
+      if params[:csv]
+        csv = params[:csv]
+        CSV.parse(csv.read) do |line|
+          next unless line[1] =~ /\@.*\./
+          @course.add_registration(line[0], line[1])
+          num_added += 1
+        end 
+      end
     end
 
+    flash[:notice] = "Added #{num_added} students."
+  end
+
+  def index
+    if @logged_in_user.site_admin?
+      @course  = Course.new
+    end
+      
+    @courses = @logged_in_user.courses.order(:name)
     @courses_by_term = {}
     Term.all.each do |term|
       @courses_by_term[term.id] = @courses.find_all {|cc| 
@@ -32,6 +62,17 @@ class CoursesController < ApplicationController
     end
 
     @courses_no_term = @courses.find_all {|cc| cc.term_id.nil? }
+
+    @alls = Course.order(:name) - @courses
+    @all_by_term = {}
+
+    @alls_by_term = {}
+    Term.all.each do |term|
+      @alls_by_term[term.id] = @alls.find_all {|cc| 
+        cc.term_id == term.id }
+    end
+
+    @alls_no_term = @alls.find_all {|cc| cc.term_id.nil? }
   end
 
   def show
@@ -55,7 +96,7 @@ class CoursesController < ApplicationController
   end
 
   def create
-    @course = Course.new(params[:course])
+    @course = Course.new(course_params)
     @course.late_options = [params[:late_penalty], params[:late_repeat], params[:late_maximum]].join(',') unless params[:late_penalty].nil?
 
     if @course.save
@@ -66,7 +107,7 @@ class CoursesController < ApplicationController
   end
 
   def update
-    @course.assign_attributes(params[:course])
+    @course.assign_attributes(course_params)
     @course.late_options = [params[:late_penalty], params[:late_repeat], params[:late_maximum]].join(',') unless params[:late_penalty].nil?
 
     if @course.save
@@ -90,5 +131,10 @@ class CoursesController < ApplicationController
 
   def find_course
     @course = Course.find(params[:id] || params[:course_id])
+  end
+
+  def course_params
+    params[:course].permit(:name, :footer, :late_options, :private, 
+                           :term_id, :questions_due_time, :sub_max_size)
   end
 end

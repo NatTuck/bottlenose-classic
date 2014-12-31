@@ -1,7 +1,8 @@
 <%= form_for [@chapter, @assignment] do |f| %>
   <% if @assignment.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@assignment.errors.count, "error") %> prohibited this assignment from being saved:</h2>
+      <h2><%= pluralize(@assignment.errors.count, "error") %> prohibited this 
+        assignment from being saved:</h2>
 
       <ul>
       <% @assignment.errors.full_messages.each do |msg| %>
@@ -13,51 +14,45 @@
 
   <%= f.hidden_field :chapter_id %>
 
-  <table class="edit-form">
-    <tr>
-      <td><%= f.label :name %></td>
-      <td><%= f.text_field :name %></td>
-    </tr>
-    <tr>
-      <td><%= f.label :assignment %></td>
-      <td><%= f.text_area :assignment, :class => "rich-text" %></td>
-    </tr>
-    <tr>
-      <td><%= f.label :assignment_file %></td>
-      <td><%= f.file_field :assignment_file %></td>
-    </tr>
-    <tr>
-      <td><%= f.label :grading_file %></td>
-      <td><%= f.file_field :grading_file %></td>
-    </tr>
-    <tr>
-      <td><%= f.label :solution_file %></td>
-      <td><%= f.file_field :solution_file %></td>
-    </tr>
-    <tr>
-      <td><%= f.label :points_available %></td>
-      <td>
-	<%= f.text_field :points_available, {:size => 10, :default => 100} %>
-      </td>
-    </tr>
-    <tr>
-      <td><%= f.label :hide_grading %> <br>
-	(Assignment scores and teacher notes are hidden.)
-      </td>
-      <td><%= f.check_box :hide_grading %></td>
-    </tr>
-    <tr>
-      <td><%= f.label :due_date %> <br>
-        (Assignment should not be submitted after this day.)</td>
-      <td><%= f.datepicker :due_date %></td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><%= f.submit %></td>
-    </tr>
-  </table>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :assignment %>
+    <%= f.text_area :assignment, class: "form-control rich-text" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :assignment_file %>
+    <%= f.file_field :assignment_file %>
+  </div>
+  <div class="form-group">
+    <%= f.label :grading_file %>
+    <%= f.file_field :grading_file %>
+  </div>
+  <div class="form-group">
+    <%= f.label :solution_file %>
+    <%= f.file_field :solution_file %>
+  </div>
+  <div class="form-group">
+    <%= f.label :points_available %>
+    <%= f.text_field :points_available, {size: 10, default: 100, class: 'form-control' } %>
+  </div>
+  <div class="form-group">
+    <%= f.label :hide_grading %>
+    <%= f.check_box :hide_grading %>
+    <br>(Assignment scores and teacher notes are hidden.)
+  </div>
+  <div class="form-group">
+    <%= f.label :due_date %>
+    <%= f.text_field :due_date, 'data-provide' => 'datepicker', class: 'form-control' %>
+    <br>(Assignment should not be submitted after this day.)
+  </div>
+  <div class="form-group">
+    <%= f.submit nil, class: 'btn btn-primary' %>
+  </div>
 <% end %>
-
+  
 <script>
   $(function(){  });
 </script>

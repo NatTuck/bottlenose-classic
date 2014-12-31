@@ -14,14 +14,11 @@
 
   <%= f.hidden_field :course_id %>
 
-  <table class="edit-form">
-    <tr>
-      <td><%= f.label :name, "Name" %></td>
-      <td><%= f.text_field :name %></td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><%= f.submit %></td>
-    </tr>
-  </table>
+  <div class="form-group">
+    <%= f.label :name, "Name" %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.submit nil, class: 'btn btn-primary' %>
+  </div>
 <% end %>

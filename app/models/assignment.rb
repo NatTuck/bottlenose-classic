@@ -1,16 +1,12 @@
 require 'securerandom'
+require 'audit'
+require 'score'
 
 class Assignment < ActiveRecord::Base
-  attr_accessible :name, :chapter_id, :assignment, :due_date
-  attr_accessible :points_available, :hide_grading
-  attr_accessible :blame_id
-
-  attr_protected :assignment_upload_id, :grading_upload_id, :solution_upload_id
-
   belongs_to :blame, :class_name => "User", :foreign_key => "blame_id"
 
   belongs_to :chapter
-  has_many :submissions, :dependent => :restrict
+  has_many :submissions, :dependent => :restrict_with_error
 
   validates :name, :uniqueness => { :scope => :chapter_id }
   validates :name, :presence => true
@@ -103,7 +99,6 @@ class Assignment < ActiveRecord::Base
     else
       solution_upload.path
     end
-
   end
 
   def assignment_file=(data)
@@ -116,6 +111,10 @@ class Assignment < ActiveRecord::Base
 
   def solution_file=(data)
     @solution_file_data = data
+  end
+
+  def has_grading?
+    !grading_upload_id.nil?
   end
 
   def save_uploads!

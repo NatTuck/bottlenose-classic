@@ -1,6 +1,4 @@
 class RegRequest < ActiveRecord::Base
-  attr_accessible :email, :name, :notes, :course_id
-
   validates_presence_of :course_id
 
   belongs_to :course

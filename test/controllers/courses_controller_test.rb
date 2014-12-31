@@ -5,6 +5,7 @@ class CoursesControllerTest < ActionController::TestCase
     @admin = users(:ken)
     @prof  = users(:fred)
     @user  = users(:john)
+    @mike  = users(:mike)
     
     @course1 = courses(:cs301)
     @course2 = courses(:cs599)
@@ -16,19 +17,13 @@ class CoursesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:courses)
   end
 
-  test "guest should have access to public course" do
-    get :show, {id: @course1}
+  test "non-enrolled user should have access to course main page" do
+    get :show, {id: @course1}, {user_id: @mike.id}
     assert_response :success
   end
 
-  test "guest should not have access to private course" do
-    get :show, {id: @course2}
-    assert_response :redirect
-    assert_match "not registered", flash[:error]
-  end
-  
   test "should get new" do
-    get :new, {}, {:user_id => @admin.id}
+    get :new, {}, {user_id: @admin.id}
     assert_response :success
   end
 
@@ -41,12 +36,12 @@ class CoursesControllerTest < ActionController::TestCase
   end
 
   test "should show course" do
-    get :show, {id: @course1}, {:user_id => @user.id}
+    get :show, {id: @course1}, {user_id: @user.id}
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, {id: @course1}, {:user_id => @prof.id}
+    get :edit, {id: @course1}, {user_id: @prof.id}
     assert_response :success
   end
 

@@ -17,15 +17,69 @@ task :restart_apache do
 end
 
 task :install do
+  system("cd sandbox/src && make")
   system("cd sandbox/src && make install")
 end
 
 task :clean_uploads do
+  puts
+  puts "This will delete all student work."
+  puts 
+  puts "CTRL+C to cancel, or enter to continue"
+  puts
+  $stdin.readline
   system("rm -rf public/assignments")
   system("rm -rf public/submissions")
   system("rm -rf public/uploads")
   system("mkdir public/uploads")
   system("touch public/uploads/empty")
+end
+
+task :reap do
+  system("cd #{Rails.root} && script/sandbox-reaper")
+end
+
+task :backup do
+  system("cd #{Rails.root} && script/remote-backup")
+end
+
+task :dump_sql do
+  dbcfg = Rails.configuration.database_configuration
+  dbname = dbcfg[Rails.env]["database"]
+  dbuser = dbcfg[Rails.env]["username"]
+  
+  cmd = %Q{pg_dump -U "#{dbuser}" "#{dbname}" > db/dump.sql}
+  puts cmd
+  system(cmd)
+  system(%Q{gzip -f db/dump.sql})
+end
+
+task :restore_sql do
+  puts
+  puts "This will replace the database with the latest dump!"
+  puts
+  puts "Ctrl+C to cancel, enter to continue."
+  puts
+
+  unless File.exists?("db/dump.sql.gz")
+    puts "No db dump found, aborting."
+    exit(0)
+  end
+
+  dbcfg = Rails.configuration.database_configuration
+  dbname = dbcfg[Rails.env]["database"]
+  dbuser = dbcfg[Rails.env]["username"]
+
+  system("rake db:drop")
+  system("rake db:create")
+
+  cmd = %Q{zcat db/dump.sql.gz | psql -U "#{dbuser}" #{dbname}}
+  system(cmd)
+end
+
+task :backup_and_reap do
+  Rake::Task["backup"].execute
+  Rake::Task["reap"].execute
 end
 
 namespace :db do

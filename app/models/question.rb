@@ -1,7 +1,6 @@
-class Question < ActiveRecord::Base
-  attr_accessible :name, :correct_answer, :lesson_id
-  attr_accessible :question, :question_form, :explanation
+require 'score'
 
+class Question < ActiveRecord::Base
   belongs_to :lesson
   has_many :answers, :dependent => :destroy
 
@@ -68,12 +67,12 @@ class Question < ActiveRecord::Base
   def best_score_image_for(user)
     best_score = best_score_for(user)
 
-    return "/assets/null-mark.png" if best_score.nil?
+    return "null-mark.png" if best_score.nil?
     
     if best_score.points > 0
-      "/assets/check-mark.png"
+      "check-mark.png"
     else
-      "/assets/cross-mark.png"
+      "cross-mark.png"
     end
   end
 end

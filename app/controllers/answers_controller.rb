@@ -4,7 +4,7 @@ class AnswersController < ApplicationController
   prepend_before_filter :find_question
 
   def create
-    @answer = Answer.new(params[:answer])
+    @answer = Answer.new(answer_params)
 
     @answer.user_id     = @logged_in_user.id
     @answer.question_id = @question.id
@@ -57,5 +57,9 @@ class AnswersController < ApplicationController
     @lesson  = @question.lesson if @lesson.nil?
     @chapter = @lesson.chapter if @chapter.nil?
     @course  = @chapter.course if @course.nil?
+  end
+
+  def answer_params
+    params[:answer].permit(:answer, :question_id, :user_id, :attempts)
   end
 end

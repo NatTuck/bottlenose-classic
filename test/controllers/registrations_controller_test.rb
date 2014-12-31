@@ -21,7 +21,7 @@ class RegistrationsControllerTest < ActionController::TestCase
   test "should not get index unless logged in" do
     get :index, {:course_id => @cs301.id}
     assert_response :redirect
-    assert_match "not allowed", flash[:error]
+    assert_match "You need to register first", flash[:error]
   end
 
   test "non-teacher should not get index" do
@@ -32,7 +32,7 @@ class RegistrationsControllerTest < ActionController::TestCase
 
   test "should create registration" do
     assert_difference('Registration.count') do
-      post :create, { course_id: @cs301.id, 
+      post :create, { course_id: @cs301.id, user_name: @mike.name, user_email: @mike.email,
         registration: { user_id: @mike.id, course_id: @cs301.id }},
         {user_id: @fred.id}
     end

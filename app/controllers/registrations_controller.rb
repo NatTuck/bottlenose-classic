@@ -4,8 +4,7 @@ class RegistrationsController < ApplicationController
   prepend_before_filter :find_registration, :except => [:index, :new, :create]
 
   def index
-    @teacher_reg = Registration.new(course_id: @course.id, teacher: true)
-    @student_reg = Registration.new(course_id: @course.id)
+    @registration = Registration.new(course_id: @course.id)
   end
 
   def show
@@ -19,31 +18,24 @@ class RegistrationsController < ApplicationController
     @q_score = @registration.questions_score 
   end
 
+  def new
+    @registration = Registration.new
+  end
+
   def edit
   end
 
   def create
-    @registration = Registration.new(params[:registration])
+    @registration = Registration.new(registration_params)
 
-    if @registration.course_id != @course.id
-      show_error "Registration does not match course"
-      redirect_to @course
+    name, email = params[:user_name], params[:user_email]
+    if name.blank? or email.blank?
+      @registration.errors[:base] << "Must provide name and email"
+      render action: "new"
       return
     end
 
-    if params[:student_email] and params[:student_name]
-      student = User.find_by_email(params[:student_email])
-      
-      if student.nil?
-        student = User.new(name:  params[:student_name],
-                           email: params[:student_email])
-        student.save!
-
-        student.send_auth_link_email!(root_url)
-      end
-
-      @registration.user_id = student.id
-    end
+    @registration = @course.add_registration(name, email, @registration.teacher?)
 
     if @registration.save
       redirect_to course_registrations_path(@course),
@@ -54,7 +46,7 @@ class RegistrationsController < ApplicationController
   end
 
   def update
-    if @registration.update_attributes(params[:registration])
+    if @registration.update_attributes(registration_params)
       redirect_to @registration,
         notice: 'Registration was successfully updated.'
     else
@@ -86,5 +78,9 @@ class RegistrationsController < ApplicationController
     @registration = Registration.find(params[:id])
     @course = @registration.course
     @user   = @registration.user
+  end
+
+  def registration_params
+    params[:registration].permit(:course_id, :teacher, :user_id)
   end
 end

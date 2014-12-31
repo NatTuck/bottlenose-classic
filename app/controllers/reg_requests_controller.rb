@@ -14,7 +14,7 @@ class RegRequestsController < ApplicationController
     @reg_request = RegRequest.new
     @reg_request.course_id = @course.id
 
-    unless @logged_in_user.guest?
+    unless @logged_in_user.nil?
       @reg_request.name  = @logged_in_user.name
       @reg_request.email = @logged_in_user.email
     end
@@ -25,13 +25,13 @@ class RegRequestsController < ApplicationController
   end
 
   def create
-    @reg_request = RegRequest.new(params[:reg_request])
+    @reg_request = RegRequest.new(reg_request_params)
     @reg_request.course_id = @course.id
 
     if @reg_request.save
       @course.teachers.each do |teacher|
         NotificationMailer.got_reg_request(teacher, 
-          @reg_request, root_url).deliver
+          @reg_request, root_url).deliver_later
       end
 
       redirect_to @course, notice: 'Request sent'
@@ -58,5 +58,9 @@ class RegRequestsController < ApplicationController
       @reg_request = RegRequest.find(params[:id])
       @course      = @reg_request.course
     end
+  end
+
+  def reg_request_params
+    params[:reg_request].permit(:email, :name, :notes, :course_id)
   end
 end

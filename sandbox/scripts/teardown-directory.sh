@@ -28,7 +28,7 @@ then
     rmdir lib64
 fi
 
-rm -rf home/student
+rm -rf --one-file-system home/student
 rmdir home
 
 cd ..

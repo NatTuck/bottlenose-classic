@@ -39,24 +39,28 @@ module ApplicationHelper
 
   def status_image(sub)
     if (sub.nil? || sub.new_record?)
-      return image_tag("/assets/null-mark.png", :height => 32) 
+      return image_tag("null-mark.png", height: 32) 
     end
 
     if sub.raw_score.nil? and sub.teacher_score.nil?
+      unless sub.assignment.has_grading?
+        return image_tag("question-mark.png", height: 32)
+      end
+
       if sub.created_at < (Time.now - 10.minutes)
-        return image_tag("/assets/crash-mark.png", :height => 32)
+        return image_tag("crash-mark.png", height: 32)
       else
-        return image_tag("/assets/wait-mark.gif", :height => 32)
+        return image_tag("wait-mark.gif", height: 32)
       end
     end
 
-    return image_tag("/assets/cross-mark.png", :height => 32) if sub.score == 0
+    return image_tag("cross-mark.png", height: 32) if sub.score == 0
 
     if sub.score == sub.assignment.points_available 
-      return image_tag("/assets/check-mark.png", :height => 32) 
+      return image_tag("check-mark.png", height: 32) 
     end
 
-    return image_tag("/assets/cminus-mark.png", :height => 32)
+    return image_tag("cminus-mark.png", height: 32)
   end
 
   def registration_assignment_submissions_path(reg, assign)

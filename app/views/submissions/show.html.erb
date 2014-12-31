@@ -10,7 +10,7 @@
 
 <h1>Submission</h1>
 
-<table class="pretty-list">
+<table class="table">
   <tr>
     <td><strong>Assignment</strong></td>
     <td><%= @submission.assignment.name %></td>
@@ -21,7 +21,7 @@
   </tr>
   <tr>
     <td><strong>Submission Time</strong></td>
-    <td><%= @submission.created_at %></td>
+    <td><span class="local-time"><%= @submission.created_at %></span></td>
   </tr>
   <tr>
     <td><strong>Submitted File</strong></td>
@@ -37,7 +37,7 @@
 
 <h1>Score</h1>
 
-<table class="pretty-list">
+<table class="table table-striped">
 <tr>
   <td>Automatic Score:</td>
   <td><%= @submission.raw_score || "no data" %> / 
@@ -83,11 +83,6 @@
 
 <h1>Grading Process</h1>
 
-<pre>
-<% # Lack of indentation important here. %>
-<%= @submission.grading_output %>
-</pre>
-
 <script>
   function reload_bottom() {
     window.location.href = "<%= url_for(@submission) + '#bottom' %>";
@@ -95,5 +90,11 @@
   }
 </script>
 
+<p id="bottom2"><%= link_to_function "Refresh Output", "reload_bottom();" %></p>
+
+<pre>
+<% # Lack of indentation important here. %>
+<%= @submission.grading_output %>
+</pre>
 
 <p id="bottom"><%= link_to_function "Refresh Output", "reload_bottom();" %></p>

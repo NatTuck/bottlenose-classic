@@ -1,7 +1,5 @@
 class Term < ActiveRecord::Base
-  attr_accessible :name, :archived
-
-  has_many :courses, :dependent => :restrict
+  has_many :courses, :dependent => :restrict_with_error
 
   validates :name, :presence => true, :format => { :with => /\d\d/ }
 
