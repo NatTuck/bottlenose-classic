@@ -18,6 +18,10 @@ Dir.chdir(Rails.root)
 system(%Q{rake db:data:dump})
 system(%Q{gzip -f db/data.yml})
 
+puts "Dumping database to db/dump.sql.gz..."
+Dir.chdir(Rails.root)
+system(%Q{rake dump_sql})
+
 puts "Backing up ~/.config/bottlenose..."
 system(%Q{mkdir -p ~/.config/bottlenose})
 Dir.chdir(File.expand_path("~/.config"))

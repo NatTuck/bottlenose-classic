@@ -40,7 +40,41 @@ task :reap do
 end
 
 task :backup do
-  puts "Would run backup process."
+  system("cd #{Rails.root} && script/remote-backup")
+end
+
+task :dump_sql do
+  dbcfg = Rails.configuration.database_configuration
+  dbname = dbcfg[Rails.env]["database"]
+  dbuser = dbcfg[Rails.env]["username"]
+  
+  cmd = %Q{pg_dump -U "#{dbuser}" "#{dbname}" > db/dump.sql}
+  puts cmd
+  system(cmd)
+  system(%Q{gzip -f db/dump.sql})
+end
+
+task :restore_sql do
+  puts
+  puts "This will replace the database with the latest dump!"
+  puts
+  puts "Ctrl+C to cancel, enter to continue."
+  puts
+
+  unless File.exists?("db/dump.sql.gz")
+    puts "No db dump found, aborting."
+    exit(0)
+  end
+
+  dbcfg = Rails.configuration.database_configuration
+  dbname = dbcfg[Rails.env]["database"]
+  dbuser = dbcfg[Rails.env]["username"]
+
+  system("rake db:drop")
+  system("rake db:create")
+
+  cmd = %Q{zcat db/dump.sql.gz | psql -U "#{dbuser}" #{dbname}}
+  system(cmd)
 end
 
 task :backup_and_reap do
