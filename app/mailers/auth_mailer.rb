@@ -1,5 +1,5 @@
 class AuthMailer < ActionMailer::Base
-  default from: Rails.configuration.x.email_from
+  default from: Settings['site_email']
   
   def auth_link_email(user)
     email = CGI.escape(user.email)

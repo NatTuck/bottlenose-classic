@@ -1,5 +1,5 @@
 class NotificationMailer < ActionMailer::Base
-  default from: "Bottlenose <bottlenose@grader.cs.uml.edu>"
+  default from: Settings['site_email']
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:

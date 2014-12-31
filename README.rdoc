@@ -1,25 +1,10 @@
 
-== Bottlenose Overview
+== Bottlenose Introduction
 
-Bottlenose is a web app for running online or "flipped" courses. It
-supports video lectures, post-lecture questions, and automatically
-gradable assignments.
+Bottlenose is a web app for managing assignment submission and grading in
+computer science courses. It provides a flexible mechanism for automatic
+grading of programming assignments.
 
-== Installation
+For detailed documentation, see the wiki on Github: 
 
-Bottlenose can be installed as a standard Rails app with one
-additional step to support assignment submissions and automatic
-grading: just type "make && make install" in the sandbox/src directory
-to install the sandbox binary. This requires sudo access and will
-install a setuid binary.
-
-Bottlenose has been tested with WEBrick and Phusion Passenger.
-
-As a reminder, this is how you set up postgres:
-
-  # apt-get install postgresql-9.1
-  # su - postgres
-  $ createuser bottlenose
-  Shall the new role be a superuser? (y/n) n
-  Shall the new role be allowed to create databases? (y/n) y
-  Shall the new role be allowed to create more new roles? (y/n) n
+https://github.com/NatTuck/bottlenose/wiki

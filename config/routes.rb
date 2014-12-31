@@ -12,6 +12,9 @@ Bottlenose::Application.routes.draw do
   get "main/logout"
   get "main/about"
 
+  get  'settings' => 'settings#index'
+  post 'settings/save'
+
   resources :users
   post 'users/:id/impersonate' => 'users#impersonate'
 
