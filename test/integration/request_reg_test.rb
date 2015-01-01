@@ -26,13 +26,11 @@ class RequestRegTest < ActionDispatch::IntegrationTest
     click_link "01. Organization of Programming Languages"
     click_link "Request Registration"
 
-    fill_in "Name",  with: "Napoleon Bonaparte"
-    fill_in "Email", with: "napolean@example.com"
     fill_in "Notes", with: "I demand class access!"
     click_button "Request Registration"
 
     # Verify that the request exists
-    req = RegRequest.find_by_email("napolean@example.com")
+    req = RegRequest.find_by_user_id(user.id)
     assert_equal req.name, "Napoleon Bonaparte"
     assert_equal req.course_id, @cs301.id
 

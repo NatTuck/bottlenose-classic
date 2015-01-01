@@ -13,12 +13,8 @@ The following message was included:
 
 <% @req.notes %>
 
-The following actions are available:
-
- * <%= link_to "View this request", 
-         @base_url + reg_request_url(@req) %>
- * <%= link_to "Approve this request", 
-         @base_url + reg_request_url(@req) + '/approve' %>
+You can <%= link_to "view this request", 
+         @base_url + reg_request_url(@req) %>.
 
 Thanks,
 

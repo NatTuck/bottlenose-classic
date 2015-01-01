@@ -1,8 +1,8 @@
 <% @page_title = "Outstanding Registration Requests" %>
 
-<p><%= link_to "Back to Course", @course %></p>
+<p><%= link_to "Back to Course: #{@course.name}", @course %></p>
 
-<h2>Registration Requests for "<%= @course.name %>"</h2>
+<h2>Registration Requests: <%= @course.name %>, <%= @course.term.name %></h2>
 
 <table class="table table-striped">
   <tr>
@@ -27,7 +27,7 @@
         <%= f.hidden_field :course_id, :value => @course.id %>
         <%= hidden_field_tag :user_email, reg_request.email %>
         <%= hidden_field_tag :user_name,  reg_request.name %>
-        <%= f.submit %>
+        <%= f.submit nil, class: 'btn btn-default' %>
       <% end %>
     </td>
     <td><%= link_to 'Show', reg_request %></td>

@@ -42,7 +42,7 @@ class TermsControllerTest < ActionController::TestCase
 
   test "should destroy term" do
     assert_difference('Term.count', -1) do
-      delete :destroy, {id: @term}, {user_id: @ken.id}
+      delete :destroy, {id: terms(:fall14)}, {user_id: @ken.id}
     end
 
     assert_redirected_to terms_path
