@@ -11,18 +11,21 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= f.label :name %><br />
-    <%= f.text_field :name, class: 'form-control' %>
-  </div>
-  <div class="form-group">
-    <%= f.label :email %><br />
-    <%= f.text_field :email, class: 'form-control' %>
-  </div>
+  <p>You are requesting access to:
+  <br>Course: <strong><%= @course.name %></strong>
+  <br>Term: <%= @course.term.name %>
+  </p>
+
+  <p>You are:
+  <br>Name: <%= @logged_in_user.name %>
+  <br>Email: <%= @logged_in_user.email %>
+  </p>
+
   <div class="form-group">
     <%= f.label :notes %><br />
     <%= f.text_area :notes, class: 'form-control' %>
   </div>
+  
   <div class="form-group">
     <%= f.submit "Request Registration", id: 'submit-button', class: 'btn btn-primary' %>
   </div>

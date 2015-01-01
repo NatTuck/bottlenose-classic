@@ -9,6 +9,8 @@ class CoursesControllerTest < ActionController::TestCase
     
     @course1 = courses(:cs301)
     @course2 = courses(:cs599)
+
+    @term = terms(:fall14)
   end
 
   test "should get index" do
@@ -29,7 +31,9 @@ class CoursesControllerTest < ActionController::TestCase
 
   test "should create course" do
     assert_difference('Course.count') do
-      post :create, {course: { name: "Worst Course Ever", late_options: "1,1,1" }}, {:user_id => @admin.id}
+      post :create, {course: { 
+        name: "Worst Course Ever", term_id: @term.id, late_options: "1,1,1" }}, 
+        {:user_id => @admin.id}
     end
 
     assert_redirected_to course_path(assigns(:course))

@@ -20,8 +20,11 @@
     </div>
     <div class="form-group">
       <%= f.label :term_id, "Term" %>
-      <%= select("course", "term_id", (@terms.map {|tt| 
-        [tt.name, tt.id]}), class: 'form-control') %>
+      <%= select("course", "term_id", (
+        Term.where(archived: false).to_a.map do |tt| 
+          [tt.name, tt.id]
+        end
+      ), class: 'form-control') %>
     </div>
     <div class="form-group">
       <p><strong>Late Penalty</strong></p>
