@@ -38,7 +38,7 @@ class RequestRegTest < ActionDispatch::IntegrationTest
     visit "http://test.host/main/auth?email=#{@prof.email}&key=#{@prof.auth_key}"
     click_link "Your Courses"
     click_link "01. Organization of Programming Languages"
-    click_link "View Registration Requests"
+    first(:link, "View Registration Requests").click
   
     within "#reg-req-#{req.id}" do
       click_button "Create Registration"

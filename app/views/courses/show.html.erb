@@ -11,6 +11,13 @@
   <% if @logged_in_user.course_admin?(@course) %>
     | <%= link_to "Edit Settings", [:edit, @course] %>
   <% end %>
+
+<% if @logged_in_user.course_admin?(@course) %>
+  |  <%= link_to "Manage Registrations", 
+         course_registrations_path(@course) %>
+  |  <%= link_to "View Registration Requests",
+         course_reg_requests_path(@course) %>
+<% end %>
 </p>
 
 <h1>Chapters</h1>
@@ -49,6 +56,12 @@
 
 <h1>Students</h1>
 
+<p><%= link_to "Manage Registrations", 
+         course_registrations_path(@course) %> |
+   <%= link_to "View Registration Requests",
+         course_reg_requests_path(@course) %>
+</p>
+
 <table class="table table-striped">
   <tr>
     <th>Name</th>
@@ -66,12 +79,6 @@
 <% end %>
 
 </table>
-
-<p><%= link_to "Manage Registrations", 
-         course_registrations_path(@course) %> |
-   <%= link_to "View Registration Requests",
-         course_reg_requests_path(@course) %>
-</p>
 
 <h1>Data Export</h1>
 
