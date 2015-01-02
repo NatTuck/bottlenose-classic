@@ -11,22 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150101044050) do
+ActiveRecord::Schema.define(version: 20150102004209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "answers", force: :cascade do |t|
-    t.integer  "question_id",             null: false
-    t.integer  "user_id",                 null: false
-    t.string   "answer",      limit: 255, null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.integer  "attempts"
-  end
-
-  add_index "answers", ["question_id"], name: "index_answers_on_question_id", using: :btree
-  add_index "answers", ["user_id"], name: "index_answers_on_user_id", using: :btree
 
   create_table "assignments", force: :cascade do |t|
     t.integer  "chapter_id",                                       null: false
@@ -49,10 +37,11 @@ ActiveRecord::Schema.define(version: 20150101044050) do
   add_index "assignments", ["chapter_id"], name: "index_assignments_on_chapter_id", using: :btree
 
   create_table "chapters", force: :cascade do |t|
-    t.string   "name",       limit: 255, null: false
-    t.integer  "course_id",              null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "name",       limit: 255,              null: false
+    t.integer  "course_id",                           null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.text     "notes",                  default: "", null: false
   end
 
   add_index "chapters", ["course_id"], name: "index_chapters_on_course_id", using: :btree
@@ -67,31 +56,6 @@ ActiveRecord::Schema.define(version: 20150101044050) do
     t.time     "questions_due_time"
     t.integer  "sub_max_size",                   default: 20,       null: false
   end
-
-  create_table "lessons", force: :cascade do |t|
-    t.string   "name",          limit: 255, null: false
-    t.integer  "chapter_id",                null: false
-    t.text     "video"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.text     "notes"
-    t.date     "questions_due"
-  end
-
-  add_index "lessons", ["chapter_id"], name: "index_lessons_on_chapter_id", using: :btree
-
-  create_table "questions", force: :cascade do |t|
-    t.integer  "lesson_id",                  null: false
-    t.text     "question"
-    t.string   "correct_answer", limit: 255
-    t.text     "explanation"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.text     "question_form"
-    t.string   "name",           limit: 255
-  end
-
-  add_index "questions", ["lesson_id"], name: "index_questions_on_lesson_id", using: :btree
 
   create_table "reg_requests", force: :cascade do |t|
     t.integer  "course_id"

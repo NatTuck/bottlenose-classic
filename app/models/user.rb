@@ -4,7 +4,6 @@ class User < ActiveRecord::Base
   has_many :registrations
   has_many :courses, :through => :registrations, :dependent => :restrict_with_error
   
-  has_many :answers,     :dependent => :restrict_with_error
   has_many :submissions, :dependent => :restrict_with_error
 
   validates :email, :format => { :with => /\@.*\./ }

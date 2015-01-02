@@ -12,6 +12,5 @@ if count > 1
 end
 
 Registration.all.each do |reg|
-  reg.update_questions_score!
   reg.update_assign_score!  
 end

@@ -18,7 +18,6 @@
 <table class="table table-striped">
   <tr>
     <th>Chapter</th>
-    <th>Questions</th>
     <th>Assignments</th>
     <th>Next Due Date</th>
     <th>&nbsp;</th>
@@ -27,7 +26,6 @@
   <% @course.chapters.sort_by {|cc| cc.name}.each do |chapter| %>
     <tr>
       <td><%= link_to chapter.name, chapter %></td>
-      <td><%= chapter.questions_score(@logged_in_user) %></td>
       <td><%= chapter.assignments_score(@logged_in_user) %></td>
       <td><%= chapter.next_due_date_for(@logged_in_user) %></td>
       <td>
@@ -54,7 +52,6 @@
 <table class="table table-striped">
   <tr>
     <th>Name</th>
-    <th>Questions</th>
     <th>Assignments</th>
     <th>Status Report</th>
   </tr>
@@ -63,7 +60,6 @@
   <tr>
     <td><%= reg.user.name %><br>
         <%= reg.user.email %></td>
-    <td><%= reg.questions_score %></td>
     <td><%= reg.assign_score %></td>
     <td><%= link_to "View", reg %></td>
   </tr>
