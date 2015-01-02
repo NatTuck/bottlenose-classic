@@ -14,7 +14,7 @@ class AddUserTest < ActionDispatch::IntegrationTest
 
     click_link 'Your Courses'
     click_link 'Organization of Programming Languages'
-    click_link 'Manage Registrations'
+    first(:link, 'Manage Registrations').click
 
     assert has_content?("Add a Student or Teacher")
 
