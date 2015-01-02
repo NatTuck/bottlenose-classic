@@ -12,7 +12,6 @@ class ChaptersController < ApplicationController
 
   def show
     @assignments = @chapter.assignments.order(:name)
-    @lessons     = @chapter.lessons.order(:name)
   end
 
   def new

@@ -54,7 +54,13 @@ module ApplicationHelper
       end
     end
 
-    return image_tag("cross-mark.png", height: 32) if sub.score == 0
+    if sub.score == 0
+      if sub.raw_score == 0
+        return image_tag("cross-mark.png", height: 32)
+      else
+        return image_tag("question-mark.png", height: 32)
+      end
+    end
 
     if sub.score == sub.assignment.points_available 
       return image_tag("check-mark.png", height: 32) 
