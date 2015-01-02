@@ -1,15 +1,12 @@
 class RegRequest < ActiveRecord::Base
-  validates_presence_of :course_id
+  validates_presence_of :course_id, :user_id
 
   belongs_to :course
+  belongs_to :user
 
-  before_validation do
-    unless self.email.nil?
-      self.email = self.email.downcase
-    end
-  end
+  delegate :name, :email, to: :user
 
   def registered?
-    course.users.any? {|uu| uu.email == email }
+    course.users.any? {|uu| uu.id == user_id }
   end
 end

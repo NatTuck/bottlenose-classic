@@ -16,13 +16,14 @@ class RegRequestsControllerTest < ActionController::TestCase
   end
 
   test "should get new" do
-    get :new, {course_id: @cs301.id}
+    get :new, {course_id: @cs301.id}, {user_id: @guest_req.user.id}
     assert_response :success
   end
 
   test "should create reg_request" do
     assert_difference('RegRequest.count') do
-      post :create, {course_id: @cs301.id, reg_request: { email: @guest_req.email, name: @guest_req.name, notes: @guest_req.notes }}
+      post :create, {course_id: @cs301.id, reg_request: { notes: @guest_req.notes }}, 
+        {user_id: @guest_req.user.id}
     end
 
     assert_response :redirect

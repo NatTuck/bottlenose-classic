@@ -12,6 +12,8 @@ class Course < ActiveRecord::Base
                       :uniqueness  => true
   validates :late_options, :format => { :with => /\A\d+,\d+,\d+\z/ }
 
+  validates :term_id, presence: true
+
   def late_opts
     os = late_options.split(",")
     os.map {|oo| oo.to_i}

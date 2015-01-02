@@ -35,3 +35,8 @@ jack:
   name: Jack McGetsDeleted
   email: jack@example.com
   auth_key: "xhbElzkD7_2GwnnZEv7hgw"
+
+nye: 
+  name: Bill Nye
+  email: bnye@example.com
+  auth_key: "the_science_guy"

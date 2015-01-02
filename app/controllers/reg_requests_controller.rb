@@ -13,11 +13,6 @@ class RegRequestsController < ApplicationController
   def new
     @reg_request = RegRequest.new
     @reg_request.course_id = @course.id
-
-    unless @logged_in_user.nil?
-      @reg_request.name  = @logged_in_user.name
-      @reg_request.email = @logged_in_user.email
-    end
   end
 
   def edit
@@ -27,6 +22,7 @@ class RegRequestsController < ApplicationController
   def create
     @reg_request = RegRequest.new(reg_request_params)
     @reg_request.course_id = @course.id
+    @reg_request.user_id = @logged_in_user.id
 
     if @reg_request.save
       @course.teachers.each do |teacher|
@@ -61,6 +57,6 @@ class RegRequestsController < ApplicationController
   end
 
   def reg_request_params
-    params[:reg_request].permit(:email, :name, :notes, :course_id)
+    params[:reg_request].permit(:notes)
   end
 end
