@@ -23,6 +23,11 @@
     <td><%= @submission.student_notes %></td>
   </tr>
   <tr>
+    <td><strong>Automatic Score</strong></td>
+    <td><%= @submission.raw_score || "no data" %> / 
+      <%= @assignment.points_available %></td>
+  </tr>
+  <tr>
     <td><strong>Late?</strong></td>
     <td><%= @submission.late? ? "Yes" : "No" %></td>
   </tr>
