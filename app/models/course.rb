@@ -53,10 +53,6 @@ class Course < ActiveRecord::Base
     chapters.map {|cc| cc.assignments}.flatten
   end
 
-  def questions
-    chapters.map {|cc| cc.lessons}.flatten.map {|ll| ll.questions}.flatten
-  end
-
   def first_teacher
     teachers.first
   end

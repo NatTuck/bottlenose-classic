@@ -111,7 +111,7 @@ sub.save!
 # Run the sandbox reaper occasionally.
 
 last_reap = Rails.root.join('tmp', 'last-reap')
-if !File.exists?(last_reap) || File.mtime(last_reap) < (Time.now - 1.hour) 
+if !File.exists?(last_reap) || File.mtime(last_reap) < (Time.now - 6.hours) 
   File.write(last_reap, "#{Time.now}\n")
   system(%Q{cd #{Rails.root} && script/sandbox-reaper &})
 end

@@ -6,37 +6,18 @@
 <% end %>
 </p>
 
-<h1>Lessons</h1>
-
-<table class="table table-striped">
-  <tr>
-    <th>Lesson</th>
-    <th>Status</th>
-    <th>Questions Due</th>
-    <th>&nbsp;</th>
-  </tr>
-
-  <% @lessons.each do |lesson| %>
-    <tr>
-      <td><%= link_to lesson.name, lesson %></td>
-      <td><%= lesson.questions_score(@logged_in_user) %></td>
-      <td><%= lesson.questions_due %></td>
-      <td>&nbsp;
-        <% if @logged_in_user.course_admin?(@course) %>
-          (<%= link_to 'Edit', edit_lesson_path(lesson) %>)
-          (<%= link_to 'Destroy', lesson, {method: :delete, 
-           data: { confirm: 'Are you sure?' }} %>)
-         <% end %>
-     </td>
-   </tr>
-<% end %>
-</table>
-
-<% if @logged_in_user.course_admin?(@course) %>
-<p><%= link_to "New Lesson", new_chapter_lesson_path(@chapter) %></p>
+<% unless @chapter.notes.empty? %>
+  <h1>Instructor Notes</h1>
+  <div class="chapter-teacher-notes">
+    <%= raw @chapter.notes %>
+  </div>
 <% end %>
 
 <h1>Assignments</h1>
+
+<% if @logged_in_user.course_admin?(@course) %>
+<p><%= link_to "New Assignment", new_chapter_assignment_path(@chapter) %></p>
+<% end %>
 
 <table class="table table-striped">
   <tr>
@@ -45,8 +26,6 @@
     <th>Due Date</th>
     <th>&nbsp;</th>
   </tr>
-
-
 
   <% @assignments.each do |assignment| %>
     <tr>
@@ -66,6 +45,3 @@
 <% end %>
 </table>
 
-<% if @logged_in_user.course_admin?(@course) %>
-<p><%= link_to "New Assignment", new_chapter_assignment_path(@chapter) %></p>
-<% end %>
