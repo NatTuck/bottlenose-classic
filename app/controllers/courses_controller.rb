@@ -5,6 +5,7 @@ class CoursesController < ApplicationController
     :except => [:index, :new, :create]
   before_filter :require_course_permission, 
     :except => [:index, :new, :create, :show]
+  before_filter :require_logged_in_user
   before_filter :require_teacher,    :only => [:export_grades, :edit, :update]
   before_filter :require_site_admin, :only => [:new, :create, :destroy]
   

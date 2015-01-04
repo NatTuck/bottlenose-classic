@@ -111,4 +111,14 @@ class ApplicationController < ActionController::Base
       return
     end
   end
+
+  def require_logged_in_user
+    find_user_session
+
+    if @logged_in_user.nil?
+      show_error "You need to register first"
+      redirect_to '/'
+      return
+    end
+  end
 end
