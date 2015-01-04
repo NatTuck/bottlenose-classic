@@ -7,13 +7,16 @@ require File.expand_path('../config/application', __FILE__)
 
 Bottlenose::Application.load_tasks
 
+task :upgrade do
+  system("rake db:migrate")
+  system("whenever -i")
+  system("rake install")
+  system("rake restart")
+end  
+
 task :restart do
   system("bundle exec rake assets:precompile")
-  system("sudo /usr/local/bin/restart-apache.sh")
-end
-
-task :restart_apache do
-  system("sudo /usr/local/bin/restart-apache.sh")
+  system("sudo service apache2 restart")
 end
 
 task :install do
