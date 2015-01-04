@@ -48,7 +48,8 @@ class MainController < ApplicationController
     end
     
     if @user.nil?
-      @user = User.create(email: @email, name: '')
+      redirect_to root_url, alert: "No user with email #{@email}"
+      return
     end
     
     @user.send_auth_link_email!
