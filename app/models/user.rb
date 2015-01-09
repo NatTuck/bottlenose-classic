@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
 
     unless self.email.nil?
       self.email = self.email.downcase
+      self.email = self.email.strip
     end
   end
 
