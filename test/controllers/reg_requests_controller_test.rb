@@ -6,6 +6,7 @@ class RegRequestsControllerTest < ActionController::TestCase
     @ken_req   = reg_requests(:ken_req)
 
     @fred  = users(:fred)
+    @mike  = users(:mike)
     @cs301 = courses(:cs301)
   end
 
@@ -22,11 +23,20 @@ class RegRequestsControllerTest < ActionController::TestCase
 
   test "should create reg_request" do
     assert_difference('RegRequest.count') do
-      post :create, {course_id: @cs301.id, reg_request: { notes: @guest_req.notes }}, 
-        {user_id: @guest_req.user.id}
+      post :create, {course_id: @cs301.id, reg_request: { notes: "Let me in" }}, 
+        {user_id: @mike.id}
     end
 
     assert_response :redirect
+  end
+
+  test "should reject duplicate reg_request" do
+    assert_no_difference('RegRequest.count') do
+      post :create, {course_id: @cs301.id, reg_request: { notes: "Let me in" }}, 
+        {user_id: @guest_req.user.id}
+    end
+
+    assert_response :success
   end
 
   test "should show reg_request" do
