@@ -27,7 +27,8 @@
   <td><%= teacher.email %></td>
   <td>
     <span class="show-user-<%= treg.id %>"><%= treg.show_in_lists? ? "Yes" : "No" %></span>
-    (<%= link_to "Toggle", registration_show_toggle_path(treg.id), :remote => true %>)
+    (<%= link_to "Toggle", registration_show_toggle_path(treg.id), 
+                           remote: true, method: 'post' %>)
   </td>
   <td><%= link_to 'Remove', [@course, treg], 
             { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>
@@ -52,7 +53,8 @@
   <td><%= student.email %></td>
   <td>
     <span class="show-user-<%= sreg.id %>"><%= sreg.show_in_lists? ? "Yes" : "No" %></span>
-    (<%= link_to "Toggle", registration_show_toggle_path(sreg.id), :remote => true %>)
+    (<%= link_to "Toggle", registration_show_toggle_path(sreg.id), 
+                           remote: true, method: 'post' %>)
   </td>
   <td><%= link_to 'Remove', [@course, sreg], 
             { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>

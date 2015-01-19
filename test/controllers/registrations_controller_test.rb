@@ -58,6 +58,10 @@ class RegistrationsControllerTest < ActionController::TestCase
     assert_response :redirect
   end
 
+  test "should toggle show-in-reports" do
+    post :toggle_show, { format: 'js', course_id: @cs301.id, id: @john_reg.id }, { user_id: @fred.id }
+  end
+
   test "should destroy registration" do
     assert_difference('Registration.count', -1) do
       delete :destroy, {:course_id => @cs301.id, id: @john_reg.id}, 
