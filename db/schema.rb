@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150102004209) do
+ActiveRecord::Schema.define(version: 20150119223847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20150102004209) do
     t.integer  "term_id"
     t.time     "questions_due_time"
     t.integer  "sub_max_size",                   default: 20,       null: false
+    t.boolean  "public",                         default: false,    null: false
   end
 
   create_table "reg_requests", force: :cascade do |t|

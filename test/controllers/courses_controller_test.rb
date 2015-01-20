@@ -92,4 +92,14 @@ class CoursesControllerTest < ActionController::TestCase
     assert_match "John Fertitta", @response.body
     assert_response :ok
   end
+
+  test "should get public page if public" do
+    get :public, { id: @course1 }
+    assert_response :ok
+  end
+
+  test "should not get public page unless public" do
+    get :public, { id: @course2 }
+    assert_response :redirect
+  end
 end

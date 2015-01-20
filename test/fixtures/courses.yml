@@ -3,6 +3,7 @@
 cs301:
   name: "01. Organization of Programming Languages"
   late_options: "10,1,50"
+  public: true
   term: spring14
 
 cs302:

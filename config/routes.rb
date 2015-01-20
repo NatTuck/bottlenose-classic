@@ -27,6 +27,7 @@ Bottlenose::Application.routes.draw do
   get 'courses/:id/export_grades' => 'courses#export_grades'
   get 'courses/:id/bulk_add'      => 'courses#bulk_add'
   post 'courses/:id/bulk_add'     => 'courses#bulk_add'
+  get 'courses/:id/public'        => 'courses#public'
 
   resources :registrations, :except => [:new]
 

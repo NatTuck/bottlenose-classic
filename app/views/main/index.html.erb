@@ -46,3 +46,21 @@
       <% end %>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-sm-6">
+    <h2>Published Course Materials</h2>
+
+    <% Term.all_sorted.each do |tt| %>
+      <h3><%= tt.name %></h3>
+
+      <ul>
+      <% tt.courses.each do |cc| %>
+        <% if cc.public? %>
+          <li><%= link_to cc.name, course_path(cc) + "/public" %></li>
+        <% end %>
+      <% end %>
+    </ul>
+    <% end %>
+  </div>
+</div>
