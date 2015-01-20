@@ -52,6 +52,16 @@
       <%= f.text_field :sub_max_size, class: 'form-control' %>
     </div>
     <div class="form-group">
+      <%= f.label :public, "Public Access to Assignments?" %>
+      <%= f.check_box :public %>
+
+      <p>Checking the "public access" box will allow access to the course
+      assignments without logging in to Bottlenose. This can be useful as a
+      reference to other instructors teaching similar courses, for people
+      self-studying the material, and for general reference.</p>
+
+    </div>
+    <div class="form-group">
       <%= f.submit nil, class: "btn btn-primary" %>
     </div>
   </div>

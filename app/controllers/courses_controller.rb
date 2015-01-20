@@ -2,12 +2,12 @@ require 'csv'
 
 class CoursesController < ApplicationController
   before_filter :find_course, 
-    :except => [:index, :new, :create]
+    except: [:index, :new, :create]
   before_filter :require_course_permission, 
-    :except => [:index, :new, :create, :show]
-  before_filter :require_logged_in_user
-  before_filter :require_teacher,    :only => [:export_grades, :edit, :update]
-  before_filter :require_site_admin, :only => [:new, :create, :destroy]
+    except: [:index, :new, :create, :show, :public]
+  before_filter :require_logged_in_user, except: [:public]
+  before_filter :require_teacher,    only: [:export_grades, :edit, :update]
+  before_filter :require_site_admin, only: [:new, :create, :destroy]
   
   def export_grades
     @subs = []
@@ -128,6 +128,16 @@ class CoursesController < ApplicationController
     redirect_to @course
   end
 
+  def public
+    unless @logged_in_user.nil?
+      redirect_to @course
+    end
+
+    unless @course.public?
+      redirect_to root_path, notice: 'That course material is not public'
+    end
+  end
+
   private
 
   def find_course
@@ -135,7 +145,7 @@ class CoursesController < ApplicationController
   end
 
   def course_params
-    params[:course].permit(:name, :footer, :late_options, :private, 
+    params[:course].permit(:name, :footer, :late_options, :private, :public,
                            :term_id, :questions_due_time, :sub_max_size)
   end
 end
