@@ -5,7 +5,7 @@
 
   <% unless ch.notes.empty? %>
     <div>
-      <%= ch.notes %>
+      <%= raw ch.notes %>
     </div>
   <% end %>
 
@@ -14,7 +14,7 @@
 
     <% unless aa.assignment.empty? %>
       <div class="panel panel-default" style="padding: 1ex">
-        <%= aa.assignment %>
+        <%= raw aa.assignment %>
       </div>
     <% end %>
 
