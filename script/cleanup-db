@@ -15,6 +15,28 @@ Rails.application.require_environment!
 User.all.each do |user|
   if user.email =~ /[A-Z]/ || user.email =~ /\W$/
     puts "Fixing user email: #{user.email}"
-    user.save!
+    
+    unless user.save
+        user.email = "invalid-user-#{user.id}@example.com"
+        user.save!
+    end
   end
+end
+
+# Remove users with invalid emails who have no submissions.
+
+User.all.each do |user|
+    if user.email =~ /^invalid-user.*@example.com$/
+        sc = user.submissions.count
+        if sc == 0
+            user.registrations.each do |reg|
+                reg.destroy
+            end
+
+            unless user.destroy
+                puts "#{user.id} #{user.name}"
+                puts user.errors.full_messages
+            end
+        end 
+    end
 end
