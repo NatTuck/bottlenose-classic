@@ -13,9 +13,8 @@ Rails.application.require_environment!
 # Make sure all email addresses in the users table are lowercase.
 
 User.all.each do |user|
-  if user.email =~ /[A-Z]/
+  if user.email =~ /[A-Z]/ || user.email =~ /\W$/
     puts "Fixing user email: #{user.email}"
-    user.email = user.email.downcase
     user.save!
   end
 end
