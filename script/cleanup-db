@@ -40,3 +40,11 @@ User.all.each do |user|
         end 
     end
 end
+
+# Remove registration requests from invalid users.
+
+RegRequest.all.each do |rr|
+    if rr.user.nil?
+        rr.destroy
+    end
+end

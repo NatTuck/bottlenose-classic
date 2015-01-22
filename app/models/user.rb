@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :courses, :through => :registrations, :dependent => :restrict_with_error
   
   has_many :submissions, :dependent => :restrict_with_error
+  has_many :reg_requests, :dependent => :restrict_with_error
 
   validates :email, :format => { :with => /\@.*\./ }
   validates :auth_key, :presence => true
