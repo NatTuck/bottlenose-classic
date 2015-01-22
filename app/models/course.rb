@@ -62,8 +62,12 @@ class Course < ActiveRecord::Base
 
     uu = User.find_by_email(email)
     if uu.nil?
-      uu = User.create(name: name, email: email)
-      uu.send_auth_link_email!
+      uu = User.new(name: name, email: email)
+      if uu.save
+        uu.send_auth_link_email!
+      else
+        return
+      end
     end
 
     rr = registrations.where(user_id: uu.id).first

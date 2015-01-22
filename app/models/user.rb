@@ -31,8 +31,7 @@ class User < ActiveRecord::Base
 
   def send_auth_link_email!
     if self.auth_key.nil?
-      self.auth_key = SecureRandom.urlsafe_base64
-      self.save!
+        raise Exception.new("Must save User before sending auth link")
     end
     
     AuthMailer.auth_link_email(self).deliver_later

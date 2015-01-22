@@ -26,7 +26,7 @@ class CoursesController < ApplicationController
 
       if params[:emails]
         text = params[:emails]
-        text.gsub(/;,/, ' ')
+        text.gsub!(/;,/, ' ')
 
         emails = text.split(/\s+/)
         emails.each do |ee|
