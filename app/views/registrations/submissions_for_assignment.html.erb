@@ -17,7 +17,7 @@
 
 <% @submissions.each do |sub| %>
   <tr>
-    <td><%= sub.created_at %></td>
+    <td><span class="local-time"><%= sub.created_at %></span></td>
     <td><%= status_image(sub) %></td>
     <td><%= sub.raw_score || '∅' %>&nbsp;/&nbsp;<%= sub.assignment.points_available %></td>
     <td><%= show_score(sub.teacher_score) %>&nbsp;/&nbsp;<%= sub.assignment.points_available %></td>
