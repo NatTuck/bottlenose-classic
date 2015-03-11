@@ -15,7 +15,7 @@ class RegistrationsController < ApplicationController
     end
 
     @a_score = @registration.assign_score
-    @q_score = @registration.questions_score 
+    @q_score = @registration.questions_score
   end
 
   def new
@@ -35,13 +35,21 @@ class RegistrationsController < ApplicationController
       return
     end
 
-    @registration = @course.add_registration(name, email, @registration.teacher?)
+    @registration = @course.add_registration(name, email,
+                                             @registration.teacher?)
 
-    if @registration.save
-      redirect_to course_registrations_path(@course),
+    respond_to do |format|
+      unless @registration.save
+        render action: "new"
+        return
+      end
+
+      format.html do
+        redirect_to course_registrations_path(@course),
         notice: 'Registration was successfully created.'
-    else
-      render action: "new"
+      end
+
+      format.js {}
     end
   end
 

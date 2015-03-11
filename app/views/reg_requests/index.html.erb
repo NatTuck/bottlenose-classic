@@ -17,22 +17,7 @@
   </tr>
 
 <% @reqs.each do |reg_request| %>
-  <tr id="reg-req-<%= reg_request.id %>">
-    <td><%= reg_request.name %></td>
-    <td><%= reg_request.email %></td>
-    <td><%= reg_request.notes %></td>
-    <td><%= reg_request.registered? ? "✓" : "✗" %></td> 
-    <td>
-      <%= form_for [@course, @registration] do |f| %>
-        <%= f.hidden_field :course_id, :value => @course.id %>
-        <%= hidden_field_tag :user_email, reg_request.email %>
-        <%= hidden_field_tag :user_name,  reg_request.name %>
-        <%= f.submit nil, class: 'btn btn-default' %>
-      <% end %>
-    </td>
-    <td><%= link_to 'Show', reg_request %></td>
-    <td><%= link_to 'Edit', edit_reg_request_path(reg_request) %></td>
-    <td><%= link_to 'Destroy', reg_request, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+  <%= render partial: 'request_row',
+      locals: { reg_request: reg_request } %>
 <% end %>
 </table>

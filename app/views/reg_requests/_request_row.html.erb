@@ -1,0 +1,23 @@
+<tr id="reg-req-<%= reg_request.id %>">
+  <td><%= reg_request.name %></td>
+  <td><%= reg_request.email %></td>
+  <td><%= reg_request.notes %></td>
+  <td id='symbol'><%= reg_request.registered? ? "✓" : "✗" %></td>
+  <td>
+    <%= form_for([@course, @registration], remote: true,
+        html: {'data-type'=> 'script'}) do |f| %>
+      <%= f.hidden_field :course_id, :value => @course.id %>
+      <%= hidden_field_tag :req_id,  reg_request.id %>
+      <%= hidden_field_tag :user_email, reg_request.email %>
+      <%= hidden_field_tag :user_name,  reg_request.name %>
+      <%= f.submit nil, { id: "create-btn",
+          class: "btn btn-default#{' disabled' if reg_request.registered?}" } %>
+    <% end %>
+  </td>
+  <td><%= link_to 'Show', reg_request %></td>
+  <td><%= link_to 'Edit', edit_reg_request_path(reg_request) %></td>
+  <td>
+    <%= link_to 'Destroy', reg_request,
+        method: :delete, data: { confirm: 'Are you sure?' } %>
+  </td>
+</tr>
