@@ -1,0 +1,4 @@
+/* Response for reg_request/index.html.erb */
+row = $('#reg-req-<%= params[:req_id] %>');
+row.children('#symbol').text('✓');
+row.find('#create-btn').addClass('disabled');
