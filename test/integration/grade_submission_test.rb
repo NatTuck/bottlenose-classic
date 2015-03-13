@@ -44,8 +44,11 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     check 'submission[ignore_late_penalty]'
     click_button 'Set Teacher Score'
 
+    assert has_content?('View Submission')
+
     @submission = Submission.find(@submission.id)
-    assert_equal @submission.ignore_late_penalty?, true
+
+    assert @submission.ignore_late_penalty?, "Ignore late penalty is set."
   end
 
   test "teacher manually submit a grade" do
@@ -118,6 +121,27 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     assert_equal 100, @submission.raw_score
     
     assert File.exists?(@submission.file_full_path)
+  end
+
+  test "grade an assignment with no submission" do
+    # Add test assignment.
+    visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
+
+    click_link 'Your Courses'
+    click_link '01. Organization of Programming Languages'
+    click_link 'Intro to Scheme'
+    click_link 'New Assignment'
+
+    fill_in 'Name', :with => "An Assignment With No Submission"
+    click_button 'Create Assignment'
+
+    fill_in 'submission[teacher_score]', with: '81'
+    click_button 'Create Submission'
+
+    assert has_content?('81')
+
+    # TODO: Add javascript testing so we can actually test the remote: true
+    # submission.
   end
 
   test "submit and grade a single file submission with specially valued tests" do
