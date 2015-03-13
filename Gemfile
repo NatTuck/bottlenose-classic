@@ -28,4 +28,5 @@ gem 'whenever', :require => false
 group :test do
   gem 'database_cleaner'
   gem 'capybara'
+  gem 'launchy'
 end

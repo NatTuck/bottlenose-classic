@@ -132,7 +132,7 @@ class Submission < ActiveRecord::Base
   end
 
   def submitted_file_or_manual_grade
-    unless (not upload_id.nil?) || ignore_late_penalty
+    if upload_id.nil? && teacher_score.nil?
       errors[:base] << "You need to submit a file."
     end
   end
