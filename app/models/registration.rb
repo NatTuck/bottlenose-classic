@@ -8,7 +8,7 @@ class Registration < ActiveRecord::Base
   validates :user_id, :uniqueness => { :scope => :course_id }
 
   def assign_score_no_cache
-    course.assignments.map {|aa| aa.best_score_for(user) }.inject(:&)
+    course.assignments.map {|aa| aa.main_score_for(user) }.inject(:&)
   end
 
   def update_assign_score!

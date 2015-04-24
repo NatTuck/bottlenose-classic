@@ -12,7 +12,7 @@ class CoursesController < ApplicationController
   def export_grades
     @subs = []
     @course.assignments.each do |assignment|
-      assignment.best_submissions.each do |sub|
+      assignment.main_submissions.each do |sub|
         @subs << sub
       end
     end

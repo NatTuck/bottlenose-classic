@@ -7,7 +7,7 @@ class Chapter < ActiveRecord::Base
                    :uniqueness => { :scope => :course_id }
 
   def assignments_score(user)
-    assignments.map {|aa| aa.best_score_for(user) }.inject(:&) || Score.new(0, 0)
+    assignments.map {|aa| aa.main_score_for(user) }.inject(:&) || Score.new(0, 0)
   end
 
   def next_due_date_for(user)
