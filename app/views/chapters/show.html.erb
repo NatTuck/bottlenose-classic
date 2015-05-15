@@ -31,7 +31,7 @@
     <tr>
       <td><%= link_to assignment.name, assignment %></td>
       <td>
-        <%= status_image(assignment.best_submission_for(@logged_in_user)) %>
+        <%= status_image(assignment.main_submission_for(@logged_in_user)) %>
       </td>
       <td><%= assignment.due_date %></td>
       <td>&nbsp;

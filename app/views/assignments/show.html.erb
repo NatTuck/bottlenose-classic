@@ -50,7 +50,7 @@
       <th>Link</th>
     </tr>
     
-    <% @assignment.best_submissions.each do |sub| %>
+    <% @assignment.main_submissions.each do |sub| %>
     <tr id="sub-for-user-<%= sub.user.id %>">
       <%= render 'submissions/row_form', :sub => sub %>
     </tr>

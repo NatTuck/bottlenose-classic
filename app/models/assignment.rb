@@ -197,24 +197,30 @@ class Assignment < ActiveRecord::Base
     submissions.where(user_id: user.id).order(:created_at).reverse
   end
 
-  def best_submission_for(user)
+  def main_submission_for(user)
     subs = submissions_for(user)
     if subs.empty?
       Submission.new(user_id: user.id, assignment_id: self.id, file_name: "none")
     else
-      subs.sort_by {|ss| ss.score }.last
+      manual_scores = subs.find_all {|ss| not ss.teacher_score.nil? }
+
+      if manual_scores.empty?
+        subs.sort_by {|ss| ss.score }.last
+      else
+        manual_scores.sort_by {|ss| ss.score }.last
+      end
     end
   end
 
-  def best_submissions
+  def main_submissions
     regs = course.active_registrations.sort_by {|sr| sr.user.invert_name.downcase  }
     regs.map do |sreg|
-      best_submission_for(sreg.user)
+      main_submission_for(sreg.user)
     end
   end
 
-  def best_score_for(user)
-    sub = best_submission_for(user)
+  def main_score_for(user)
+    sub = main_submission_for(user)
     points = sub.nil? ? 0 : sub.score
 
     Score.new(points, points_available)
