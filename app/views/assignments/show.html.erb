@@ -36,7 +36,11 @@
 
   <h1>Student Submissions</h1>
 
-  <p><%= link_to "Manually Add Student Grade", assignment_path(@assignment) + '/manual_grade' %></p>
+  <p>
+    <%= link_to "Manually Add Student Grade", assignment_path(@assignment) +
+      '/manual_grade' %> | 
+    <%= link_to "Tarball of Submissions", assignment_path(@assignment) + '/tarball' %>
+  </p>
 
   <table class="table table-striped">
     <tr>

@@ -193,6 +193,22 @@ class Assignment < ActiveRecord::Base
     end
   end
 
+  def tarball_path
+    if tar_key.blank?
+      self.tar_key = SecureRandom.hex(16)
+      save!
+    end
+
+    dir = "downloads/#{tar_key}/"
+    FileUtils.mkdir_p(Rails.root.join('public', dir))
+    
+    return '/' + dir + "assignment_#{id}.tar.gz"
+  end
+
+  def tarball_full_path
+    Rails.root.join('public', tarball_path.sub(/^\//, ''))
+  end
+
   def submissions_for(user)
     submissions.where(user_id: user.id).order(:created_at).reverse
   end

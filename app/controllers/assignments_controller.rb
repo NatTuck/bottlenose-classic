@@ -49,6 +49,12 @@ class AssignmentsController < ApplicationController
     redirect_to @chapter
   end
 
+  def tarball
+    tb = SubTarball.new(@assignment.id)
+    tb.update!
+    redirect_to tb.path
+  end
+
   private
 
   def find_assignment_and_chapter
