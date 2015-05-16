@@ -49,7 +49,15 @@ class User < ActiveRecord::Base
     name.split(/\s+/).rotate(-1).join(' ')
   end
 
+  def surname
+    invert_name.split(/\s+/).first
+  end
+
+  def dir_name
+    invert_name.gsub(/\W/, '_')
+  end
+
   def reasonable_name?
-    name =~ /\s/ and name.downcase != name
+    name =~ /\s/ && name.downcase != name
   end
 end
