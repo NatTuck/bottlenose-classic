@@ -121,6 +121,17 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     assert_equal 100, @submission.raw_score
     
     assert File.exists?(@submission.file_full_path)
+    
+    # Download the submissions tarball.
+    visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
+
+    click_link 'Your Courses'
+    click_link '01. Organization of Programming Languages'
+    click_link 'Intro to Scheme'
+    click_link 'Hello, World'
+    click_link 'Tarball of Submissions'
+
+    assert_equal page.response_headers["Content-Type"], "application/x-gzip"
   end
 
   test "grade an assignment with no submission" do
