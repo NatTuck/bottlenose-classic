@@ -21,5 +21,7 @@ module Bottlenose
     # config.i18n.default_locale = :de
     
     config.autoload_paths << Rails.root.join('lib')
+
+    #config.active_job.queue_adapter = :delayed_job
   end
 end
