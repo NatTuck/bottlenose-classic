@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150119223847) do
+ActiveRecord::Schema.define(version: 20150516184627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20150119223847) do
     t.integer  "grading_upload_id"
     t.integer  "blame_id"
     t.integer  "solution_upload_id"
+    t.string   "tar_key"
   end
 
   add_index "assignments", ["chapter_id"], name: "index_assignments_on_chapter_id", using: :btree

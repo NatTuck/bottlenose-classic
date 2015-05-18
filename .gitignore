@@ -27,6 +27,7 @@
 /public/assignments/
 /public/submissions/
 /public/uploads
+/public/downloads
 
 # Ignore auto-generated assets.
 /public/assets
