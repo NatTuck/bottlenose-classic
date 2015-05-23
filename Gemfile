@@ -21,6 +21,8 @@ gem 'bootstrap-sass'
 gem 'bootstrap-sass-extras'
 gem 'bootstrap-datepicker-rails'
 
+gem 'delayed_job_active_record'
+
 gem 'momentjs-rails'
 
 gem 'whenever', :require => false
