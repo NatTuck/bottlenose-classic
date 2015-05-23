@@ -218,12 +218,12 @@ class Assignment < ActiveRecord::Base
     if subs.empty?
       Submission.new(user_id: user.id, assignment_id: self.id, file_name: "none")
     else
-      manual_scores = subs.find_all {|ss| not ss.teacher_score.nil? }
+      teacher_scores = subs.find_all {|ss| not ss.teacher_score.nil? }
 
-      if manual_scores.empty?
-        subs.sort_by {|ss| ss.score }.last
+      if teacher_scores.empty?
+        subs.sort_by {|ss| sprintf("%06d%014d", ss.score, ss.created_at.to_i) }.last
       else
-        manual_scores.sort_by {|ss| ss.score }.last
+        teacher_scores.sort_by {|ss| ss.score }.last
       end
     end
   end
