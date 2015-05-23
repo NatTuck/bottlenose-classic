@@ -62,8 +62,12 @@ module ApplicationHelper
       end
     end
 
-    if sub.score == sub.assignment.points_available 
+    if sub.score >= sub.assignment.points_available 
       return image_tag("check-mark.png", height: 32) 
+    end
+
+    if sub.score < (sub.assignment.points_available / 2)
+      return image_tag("sad-mark.png", height: 32)
     end
 
     return image_tag("cminus-mark.png", height: 32)
