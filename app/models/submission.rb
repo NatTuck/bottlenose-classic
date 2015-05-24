@@ -34,6 +34,15 @@ class Submission < ActiveRecord::Base
     end
 
     self.upload_size = data.size
+    @upload_data = data
+  end
+
+  def save_upload!
+    if @upload_data.nil?
+      return
+    end
+
+    data = @upload_data
 
     if data.size > course.sub_max_size.megabytes
       return
@@ -57,7 +66,7 @@ class Submission < ActiveRecord::Base
     Audit.log("Sub #{id}: New submission upload by #{user.name} " +
               "(#{user.id}) with key #{up.secret_key}")
   end
-
+ 
   def file_path
     if upload_id.nil?
       ""
@@ -115,6 +124,8 @@ class Submission < ActiveRecord::Base
 
   def grade!
     return if upload_id.nil?
+    return if student_notes == "@@@skip tests@@@"
+
     root = Rails.root.to_s
     system(%Q{(cd "#{root}" && script/grade-submission #{self.id})&})
   end
@@ -138,9 +149,9 @@ class Submission < ActiveRecord::Base
   end
 
   def file_below_max_size
-      msz = course.sub_max_size
-      if upload_size > msz.megabytes
-        errors[:base] << "Upload exceeds max size (#{upload_size} > #{msz} MB)."
-      end
+    msz = course.sub_max_size
+    if upload_size > msz.megabytes
+      errors[:base] << "Upload exceeds max size (#{upload_size} > #{msz} MB)."
+    end
   end
 end

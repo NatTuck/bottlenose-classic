@@ -2,10 +2,13 @@ require 'test_helper'
 
 class AssignmentsControllerTest < ActionController::TestCase
   setup do
-    @fred  = users(:fred)
-    @john  = users(:john)
-    @hello = assignments(:hello)
-    @bad   = assignments(:delete_me)
+    make_standard_course
+    @course = @cs101
+
+    @chap  = create(:chapter, course: @course)
+
+    @hello = create(:assignment, chapter: @chap)
+    @bad   = create(:assignment, chapter: @chap)
   end
 
   test "should get new" do

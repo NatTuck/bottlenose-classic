@@ -2,15 +2,10 @@ require 'test_helper'
 
 class RegistrationsControllerTest < ActionController::TestCase
   setup do
-    @fred = users(:fred)
-    @alan = users(:alan)
-    @john = users(:john)
-    @mike = users(:mike)
+    make_standard_course
+    @mike = create(:user)
 
-    @fred_reg = registrations(:fred_cs301)
-    @john_reg = registrations(:john_cs301)
-
-    @cs301 = courses(:cs301)
+    @cs301 = @cs101
   end
 
   test "should get index" do

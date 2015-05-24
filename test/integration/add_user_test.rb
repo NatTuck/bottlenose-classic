@@ -2,18 +2,17 @@ require 'test_helper'
 
 class AddUserTest < ActionDispatch::IntegrationTest
   setup do
-    @prof = users(:fred)
-    
+    make_standard_course
   end
 
   test "add a student" do
     # Log in as a professor
-    visit "http://test.host/main/auth?email=#{@prof.email}&key=#{@prof.auth_key}"
+    visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
 
-    assert has_content?("Logged in as #{@prof.name}");
+    assert has_content?("Logged in as #{@fred.name}");
 
     click_link 'Your Courses'
-    click_link 'Organization of Programming Languages'
+    click_link @cs101.name
     first(:link, 'Manage Registrations').click
 
     assert has_content?("Add a Student or Teacher")

@@ -2,11 +2,11 @@ require 'test_helper'
 
 class ChaptersControllerTest < ActionController::TestCase
   setup do
-    @course = courses(:cs301)
-    @intro  = chapters(:intro)
-    @fred   = users(:fred)
-    @john   = users(:john)
-    @bad_ch = chapters(:long_pants)
+    make_standard_course
+    @course = @cs101
+
+    @intro  = create(:chapter, course: @course, name: "Intro")
+    @bad_ch = create(:chapter, course: @course)
   end
 
   test "should get index" do

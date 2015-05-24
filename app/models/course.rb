@@ -15,6 +15,7 @@ class Course < ActiveRecord::Base
   validates :term_id, presence: true
 
   def late_opts
+    # pen, del, max
     os = late_options.split(",")
     os.map {|oo| oo.to_i}
   end

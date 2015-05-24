@@ -2,8 +2,10 @@ require 'test_helper'
 
 class TermsControllerTest < ActionController::TestCase
   setup do
-    @term = terms(:spring14)
-    @ken  = users(:ken)
+    @term = create(:term)
+    @ken  = create(:admin_user)
+
+    @bad  = create(:term)
   end
 
   test "should get index" do
@@ -42,7 +44,7 @@ class TermsControllerTest < ActionController::TestCase
 
   test "should destroy term" do
     assert_difference('Term.count', -1) do
-      delete :destroy, {id: terms(:fall14)}, {user_id: @ken.id}
+      delete :destroy, {id: @bad}, {user_id: @ken.id}
     end
 
     assert_redirected_to terms_path
