@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class GradeSubmissionTest < ActionDispatch::IntegrationTest
+class SanityTest < ActionDispatch::IntegrationTest
   test "correct sandbox scripts installed" do
     sandbox = Rails.root.join("sandbox/scripts")
     install = Pathname.new("/usr/local/bottlenose/scripts")
@@ -13,5 +13,10 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
       isum = `cat "#{install.join(script)}" | md5sum`
       assert_equal ssum, isum, "Installed version should match"
     end
+  end
+
+  test "factory girl lint" do
+    FactoryGirl.lint
+    assert(true)
   end
 end

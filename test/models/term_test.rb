@@ -1,6 +1,14 @@
 require 'test_helper'
 
 class TermTest < ActiveSupport::TestCase
+  setup do
+    create(:term, name: "14 Summer")
+    create(:term, name: "12 FALL")
+    create(:term, name: "Spring 2014")
+    create(:term, name: "14 Fall")
+  end
+
+
   test "term names are canonicalized as expected" do
     tt = Term.new(name: "Fall 2012")
     assert_equal "z 2012 4_Fall Fall 2012", tt.canonical_name

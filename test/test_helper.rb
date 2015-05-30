@@ -41,12 +41,22 @@ class ActiveSupport::TestCase
     aa
   end
 
-  def make_submission(aa, file)
-    sub = build(
+  def make_submission(uu, aa, file)
+    upl = build(:upload)
+    upl.store_meta!({
+      type:       "Submission",
+      user:       "Test (0)",
+      date:       Time.now.strftime("%Y/%b/%d %H:%M:%S %Z")
+    })
+    upl.store_upload!(assign_upload_obj(aa.name, file))
+    upl.save!
+
+    sub = create(
       :submission, 
       assignment: aa,
-      upload_id: nil,
-      upload_file: assign_upload_obj(aa.name, file))
+      user: uu,
+      upload_id: upl.id,
+    )
     sub.save_upload!
     sub.save!
 
@@ -77,3 +87,4 @@ class ActionDispatch::IntegrationTest
     Upload.cleanup_test_uploads!
   end
 end
+

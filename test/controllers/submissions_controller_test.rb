@@ -25,7 +25,8 @@ class SubmissionsControllerTest < ActionController::TestCase
   end
 
   test "should create submission" do
-    upload = fixture_file_upload('files/HelloWorld.tgz','application/octet-stream')
+    upload = fixture_file_upload(
+      'files/HelloWorld/HelloWorld.tgz','application/octet-stream')
 
     assert_difference('Submission.count') do
       post :create, { assignment_id: @hello.id, 

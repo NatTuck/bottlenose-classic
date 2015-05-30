@@ -47,7 +47,7 @@ FactoryGirl.define do
     user
 
     file_name "none"
-    secret_key "none"
+    secret_key { SecureRandom.hex }
   end
 
   factory :submission do
