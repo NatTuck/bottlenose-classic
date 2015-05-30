@@ -22,6 +22,7 @@ gem 'bootstrap-sass-extras'
 gem 'bootstrap-datepicker-rails'
 
 gem 'delayed_job_active_record'
+gem 'daemons'
 
 gem 'momentjs-rails'
 

@@ -13,6 +13,10 @@ every :hour do
   rake "backup_and_reap"
 end
 
+every 5.minutes do
+  rake "start_delayed_job"
+end
+
 # Example:
 #
 # set :output, "/path/to/my/cron_log.log"

@@ -8,15 +8,17 @@ require File.expand_path('../config/application', __FILE__)
 Bottlenose::Application.load_tasks
 
 task :upgrade do
+  system("bin/delayed_job stop")
   system("rake db:migrate")
+  system("bundle exec rake assets:precompile")
   system("whenever -i")
   system("rake install")
   system("rake restart")
+  system("bin/delayed_job start")
 end  
 
 task :restart do
-  system("bundle exec rake assets:precompile")
-  system("sudo service apache2 restart")
+  system("touch tmp/restart.txt")
 end
 
 task :install do
@@ -24,18 +26,8 @@ task :install do
   system("cd sandbox/src && make install")
 end
 
-task :clean_uploads do
-  puts
-  puts "This will delete all student work."
-  puts 
-  puts "CTRL+C to cancel, or enter to continue"
-  puts
-  $stdin.readline
-  system("rm -rf public/assignments")
-  system("rm -rf public/submissions")
-  system("rm -rf public/uploads")
-  system("mkdir public/uploads")
-  system("touch public/uploads/empty")
+task :start_delayed_job do
+  system("cd #{Rails.root} && bin/delayed_job start > /dev/null")
 end
 
 task :reap do
@@ -96,12 +88,26 @@ namespace :db do
     puts "Otherwise, press enter to continue."
     $stdin.readline
     system("rake db:drop")
-    system("rake clean_uploads")
+    system("rake nuke_uploads")
     system("rake db:create")
     system("rake db:migrate")
-    system("rake db:fixtures:load")
   end
 end
+
+task :nuke_uploads do
+  puts
+  puts "This will delete all student work."
+  puts 
+  puts "CTRL+C to cancel, or enter to continue"
+  puts
+  $stdin.readline
+  system("rm -rf public/assignments")
+  system("rm -rf public/submissions")
+  system("rm -rf public/uploads")
+  system("mkdir public/uploads")
+  system("touch public/uploads/empty")
+end
+
 
 namespace :test do
   task :short do
