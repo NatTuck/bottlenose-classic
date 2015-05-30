@@ -2,12 +2,12 @@ require 'test_helper'
 
 class RegRequestsControllerTest < ActionController::TestCase
   setup do
-    @guest_req = reg_requests(:guest_req)
-    @ken_req   = reg_requests(:ken_req)
+    make_standard_course
+    @mike = create(:user)
+    @cs301 = @cs101
 
-    @fred  = users(:fred)
-    @mike  = users(:mike)
-    @cs301 = courses(:cs301)
+    @guest_req = create(:reg_request, course: @cs301)
+    @ken_req   = create(:reg_request, user: @ken, course: @cs301)
   end
 
   test "should get index" do

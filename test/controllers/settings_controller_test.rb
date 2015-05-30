@@ -2,8 +2,8 @@ require 'test_helper'
 
 class SettingsControllerTest < ActionController::TestCase
   setup do
-    @admin = users(:ken)
-    @prof  = users(:fred)
+    @admin = create(:admin_user)
+    @prof  = create(:user)
   end
 
   test "non-admin should not get settings" do

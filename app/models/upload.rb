@@ -106,7 +106,7 @@ class Upload < ActiveRecord::Base
   def self.cleanup_test_uploads!
     dir = Rails.root.join("public", "uploads", "test").to_s
     if dir.length > 8 && dir =~ /test/
-      system(%Q{rm -rf "#{dir}"})
+      FileUtils.rm_rf(dir)
     end
   end
 end

@@ -13,6 +13,7 @@ class Assignment < ActiveRecord::Base
   validates :chapter_id, :presence => true
   validates :due_date,   :presence => true
   validates :points_available, :numericality => true
+  validates :blame_id,   :presence => true
 
   delegate :course, :to => :chapter
 

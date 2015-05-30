@@ -1,115 +1,74 @@
 require 'test_helper'
 
 class GradeSubmissionTest < ActionDispatch::IntegrationTest
-
   setup do
-    @john = users(:john)
-    @fred = users(:fred)
-    @alan = users(:alan)
+    make_standard_course
+    @ch1 = create(:chapter, course: @cs101)
 
     @tars_dir = Rails.root.join('test', 'fixtures', 'files')
-    @pub_dir  = Rails.root.join('public')
   end
 
   teardown do
     Upload.cleanup_test_uploads!
   end
 
-  test "correct sandbox scripts installed" do
-    sandbox = Rails.root.join("sandbox/scripts")
-    install = Pathname.new("/usr/local/bottlenose/scripts")
-
-    %W{build-assignment.sh teardown-directory.sh grading-prep.sh
-       setup-directory.sh test-assignment.sh
-    }.each do |script|
-      assert File.exists?(install.join(script)), "Script installed?"
-      ssum = `cat "#{sandbox.join(script)}" | md5sum`
-      isum = `cat "#{install.join(script)}" | md5sum`
-      assert_equal ssum, isum, "Installed version should match"
-    end
-  end
-
   test "teacher sets ignore late penalty flag" do
-    skip
-
-    @assignment = Assignment.find_by_name("Hello, World")
-    @submission = submissions(:alan_hello)
-
-    assert_equal @submission.late_penalty, 0.4
-    assert_equal @submission.ignore_late_penalty?, false
+    pset = make_assignment(@ch1, "HelloWorld")
+    sub  = make_submission(@john, pset, "john.tar.gz")
 
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"    
-    visit 'http://test.host/' + edit_submission_path(@submission)
+    visit 'http://test.host/' + edit_submission_path(sub)
 
     check 'submission[ignore_late_penalty]'
     click_button 'Set Teacher Score'
 
     assert has_content?('View Submission')
 
-    @submission = Submission.find(@submission.id)
-
-    assert @submission.ignore_late_penalty?, "Ignore late penalty is set."
+    assert sub.reload.ignore_late_penalty?, "Ignore late penalty is set."
   end
 
   test "teacher manually submit a grade" do
-    @assignment = Assignment.find_by_name("Lambda Time")
+    pset = create(:assignment, chapter: @ch1)
 
-    areg0  = @alan.registration_for(@assignment.course)
-    score0 = areg0.assign_score
+    score0 = @john_reg.assign_score
 
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"    
     click_link 'Your Courses'
-    click_link '01. Organization of Programming Languages'
-    click_link 'The Substitution Model'
-    click_link 'Lambda Time'
+    click_link @cs101.name
+    click_link @ch1.name
+    click_link pset.name
     click_link 'Manually Add Student Grade'
 
-    select 'Alan Rosenthal',  :from => 'submission[user_id]'
+    select @john.name,  :from => 'submission[user_id]'
     fill_in 'submission[teacher_notes]', :with => 'manually entered grade'
     fill_in 'submission[teacher_score]', :with => '85'
     click_button 'Save Grade'
 
-    @submission = Submission.find_by_teacher_notes('manually entered grade')
-    assert_equal @alan.id, @submission.user_id
-    assert_equal @submission.score, 85
+    sub = Submission.find_by_teacher_notes('manually entered grade')
+    assert_equal @john.id, sub.user_id
+    assert_equal sub.score, 85
 
     # Make sure score summary updates properly.
-    areg1 = @alan.registration_for(@assignment.course)
-    assert_not_equal score0, areg1.assign_score
+    assert_not_equal(@john_reg.reload.assign_score, score0, "Updated summary")
   end
 
   test "submit and grade a submission" do
-    # Add test assignment.
-    visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
+    pset = make_assignment(@ch1, 'HelloWorld')
 
-    click_link 'Your Courses'
-    click_link '01. Organization of Programming Languages'
-    click_link 'Intro to Scheme'
-    click_link 'Hello, World'
-    click_link 'Edit this Assignment'
-
-    assign_file = @tars_dir.join('HelloWorld.tar.gz')
-    attach_file 'Assignment file', assign_file
-    grading_file = @tars_dir.join('HelloWorld-grading.tar.gz')
-    attach_file 'Grading file', grading_file
-    click_button 'Update Assignment'
-
-    @assignment = Assignment.find_by_name("Hello, World")
-
-    assert File.exists?(@assignment.assignment_full_path)
-    assert File.exists?(@assignment.grading_full_path)
+    assert File.exists?(pset.assignment_full_path)
+    assert File.exists?(pset.grading_full_path)
 
     # Log in as a student.
     visit "http://test.host/main/auth?email=#{@john.email}&key=#{@john.auth_key}"
 
     click_link 'Your Courses'
-    click_link 'Organization of Programming Languages'
-    click_link 'Intro to Scheme'
-    click_link 'Hello, World'
+    click_link @cs101.name
+    click_link @ch1.name
+    click_link pset.name
     click_link 'New Submission'
 
     fill_in 'Student notes', :with => "grade_submission_test"
-    attach_file 'Upload', assign_file
+    attach_file 'Upload', assign_upload('HelloWorld', 'john.tar.gz')
     click_button 'Create Submission'
 
     repeat_until(60) do
@@ -126,9 +85,9 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
 
     click_link 'Your Courses'
-    click_link '01. Organization of Programming Languages'
-    click_link 'Intro to Scheme'
-    click_link 'Hello, World'
+    click_link @cs101.name
+    click_link @ch1.name
+    click_link pset.name
     click_link 'Tarball of Submissions'
 
     assert_equal page.response_headers["Content-Type"], "application/x-gzip"
@@ -139,15 +98,17 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
 
     click_link 'Your Courses'
-    click_link '01. Organization of Programming Languages'
-    click_link 'Intro to Scheme'
+    click_link @cs101.name
+    click_link @ch1.name
     click_link 'New Assignment'
 
     fill_in 'Name', :with => "An Assignment With No Submission"
     click_button 'Create Assignment'
 
-    fill_in 'submission[teacher_score]', with: '81'
-    click_button 'Create Submission'
+    within("#u#{@john.id}_new_submission") do
+      fill_in("submission[teacher_score]", with: '81')
+      click_button 'Create Submission'
+    end
 
     assert has_content?('81')
 
@@ -156,33 +117,35 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
   end
 
   test "submit and grade a single file submission with specially valued tests" do
+    pset = create(:assignment, chapter: @ch1, name: "HelloSingle")
+
     # Add test assignment.
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
 
     click_link 'Your Courses'
-    click_link '01. Organization of Programming Languages'
-    click_link 'Intro to Scheme'
-    click_link 'Hello, World'
+    click_link @cs101.name
+    click_link @ch1.name
+    click_link pset.name
     click_link 'Edit this Assignment'
 
-    assign_file = @tars_dir.join('hello.c')
+    assign_file = @tars_dir.join('HelloSingle', 'hello.c')
     attach_file 'Assignment file', assign_file
-    grading_file = @tars_dir.join('HelloWorld-single-grading.tar.gz')
+    grading_file = @tars_dir.join('HelloSingle', 'HelloSingle-grading.tar.gz')
     attach_file 'Grading file', grading_file
     click_button 'Update Assignment'
 
-    @assignment = Assignment.find_by_name("Hello, World")
+    pset.reload
 
-    assert File.exists?(@assignment.assignment_full_path)
-    assert File.exists?(@assignment.grading_full_path)
+    assert File.exists?(pset.assignment_full_path)
+    assert File.exists?(pset.grading_full_path)
 
     # Log in as a student.
     visit "http://test.host/main/auth?email=#{@john.email}&key=#{@john.auth_key}"
 
     click_link 'Your Courses'
-    click_link 'Organization of Programming Languages'
-    click_link 'Intro to Scheme'
-    click_link 'Hello, World'
+    click_link @cs101.name
+    click_link @ch1.name
+    click_link pset.name
     click_link 'New Submission'
 
     fill_in 'Student notes', :with => "grade_submission_test"
@@ -196,51 +159,6 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     end
 
     assert_equal 75, @submission.raw_score
-  end
-
-  test "submit and grade submission using new-style grading" do
-    # Add test assignment.
-    visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
-
-    click_link 'Your Courses'
-    click_link '01. Organization of Programming Languages'
-    click_link 'Intro to Scheme'
-    click_link 'Hello, World'
-    click_link 'Edit this Assignment'
-
-    assign_file = @tars_dir.join('HelloWorld1.tar.gz')
-    attach_file 'Assignment file', assign_file
-    grading_file = @tars_dir.join('HelloWorld1-grading.tar.gz')
-    attach_file 'Grading file', grading_file
-    click_button 'Update Assignment'
-
-    @assignment = Assignment.find_by_name("Hello, World")
-
-    assert File.exists?(@assignment.assignment_full_path)
-    assert File.exists?(@assignment.grading_full_path)
-
-    # Log in as a student.
-    visit "http://test.host/main/auth?email=#{@john.email}&key=#{@john.auth_key}"
-
-    click_link 'Your Courses'
-    click_link 'Organization of Programming Languages'
-    click_link 'Intro to Scheme'
-    click_link 'Hello, World'
-    click_link 'New Submission'
-
-    fill_in 'Student notes', :with => "grade_submission_test"
-    attach_file 'Upload', assign_file
-    click_button 'Create Submission'
-
-    repeat_until(60) do
-      sleep 2
-      @submission = Submission.find_by_student_notes("grade_submission_test")
-      not @submission.raw_score.nil?
-    end
-
-    assert_equal 100, @submission.raw_score
-    
-    assert File.exists?(@submission.file_full_path)
   end
 
   private

@@ -12,7 +12,7 @@
   <% ch.assignments.each do |aa| %>
     <h3><%= aa.name %></h3>  
 
-    <% unless aa.assignment.empty? %>
+    <% unless aa.assignment.blank? %>
       <div class="panel panel-default" style="padding: 1ex">
         <%= raw aa.assignment %>
       </div>

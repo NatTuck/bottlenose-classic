@@ -35,10 +35,14 @@ class SubmissionsController < ApplicationController
       @submission.ignore_late_penalty = false
     end
 
+    @submission.save_upload!
+
     if @submission.save
       @submission.grade!
       respond_to do |format|
-        format.html { redirect_to @submission, notice: 'Submission was successfully created.' }
+        format.html do
+          redirect_to @submission, notice: 'Submission was successfully created.'
+        end
         format.js   { render action: "show", sub: @submission }
       end
     else
