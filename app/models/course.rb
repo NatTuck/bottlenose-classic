@@ -1,12 +1,14 @@
 class Course < ActiveRecord::Base
   belongs_to :term
   
-  has_many :registrations
-  has_many :users, :through => :registrations, :dependent => :restrict_with_error
+  has_many :registrations, dependent: :destroy
+  has_many :users, through: :registrations
 
-  has_many :reg_requests, :dependent => :destroy
+  has_many :reg_requests, dependent: :destroy
 
-  has_many :chapters, :dependent => :restrict_with_error
+  has_many :chapters,    dependent: :destroy
+  has_many :grade_types, dependent: :destroy
+  has_many :assignments, dependent: :restrict_with_error
 
   validates :name,    :length      => { :minimum => 2 },
                       :uniqueness  => true
@@ -48,10 +50,6 @@ class Course < ActiveRecord::Base
 
   def teachers
     teacher_registrations.map {|reg| reg.user}
-  end
-
-  def assignments
-    chapters.map {|cc| cc.assignments}.flatten
   end
 
   def first_teacher

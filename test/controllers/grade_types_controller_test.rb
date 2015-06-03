@@ -2,7 +2,7 @@ require 'test_helper'
 
 class GradeTypesControllerTest < ActionController::TestCase
   setup do
-    @grade_type = grade_types(:one)
+    @grade_type = create(:grade_type, name: "Problem Sets", weight: 0.5)
   end
 
   test "should get index" do

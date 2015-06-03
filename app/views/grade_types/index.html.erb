@@ -15,6 +15,7 @@
       <td><%= gt.name %></td>
       <td><%= gt.weight ? sprintf("%.02f", gt.weight) : 0.0 %></td>
       <td>
+        <%= link_to 'Edit', edit_course_grade_type_path(@course, gt) %> |
         <%= link_to 'Remove', [@course, gt], 
            { method: :delete, data: { confirm: 'Are you sure?' }} %>
       </td>

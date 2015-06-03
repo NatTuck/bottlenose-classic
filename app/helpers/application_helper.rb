@@ -85,4 +85,8 @@ module ApplicationHelper
   def registration_show_toggle_path(reg_id)
     "/registrations/#{reg_id}/toggle_show"
   end
+
+  def new_chapter_assignment_path(ch)
+    new_course_assignment_path(ch.course) + "?chapter_id=#{ch.id}"
+  end
 end

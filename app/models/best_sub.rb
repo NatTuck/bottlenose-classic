@@ -5,4 +5,6 @@ class BestSub < ActiveRecord::Base
   
   validates :assignment_id, :uniqueness => { :scope => :user_id }
   validates :user_id, :uniqueness => { :scope => :assignment_id }
+
+  delegate :created_at, to: :submission
 end

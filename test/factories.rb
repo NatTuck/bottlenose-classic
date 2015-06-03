@@ -74,4 +74,10 @@ FactoryGirl.define do
 
     notes "Let me in!"
   end
+
+  factory :grade_type do
+    course
+    name "Default"
+    weight 0.375
+  end
 end

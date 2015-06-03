@@ -7,14 +7,20 @@ class Registration < ActiveRecord::Base
 
   validates :user_id, :uniqueness => { :scope => :course_id }
 
-  has_many :best_subs
-
   def submissions
     Submission.where(user_id: user.id, course_id: course.id)
   end
 
+  def best_subs
+    Assignment.where(course_id: course_id).map do |aa|
+      aa.main_submission_for(user)
+    end.find_all do |ss|
+      !ss.nil?
+    end
+  end
+
   def score
-    points = best_subs.map {|b| b.score}.sum
+    points = best_subs.map {|b| b.score }.sum
     avail  = course.assignments.map {|a| a.points_available }.sum
     if avail == 0
       0

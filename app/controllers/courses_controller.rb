@@ -123,11 +123,6 @@ class CoursesController < ApplicationController
     redirect_to courses_url
   end
 
-  def report
-    show_notice "All the students are terrible."
-    redirect_to @course
-  end
-
   def public
     unless @logged_in_user.nil?
       redirect_to @course

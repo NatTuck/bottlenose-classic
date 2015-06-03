@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150603004916) do
+ActiveRecord::Schema.define(version: 20150603153549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "assignments", force: :cascade do |t|
-    t.integer  "chapter_id",                           null: false
+    t.integer  "chapter_id"
     t.string   "name",                                 null: false
     t.date     "due_date",                             null: false
     t.string   "assignment_file_name"
@@ -34,15 +34,16 @@ ActiveRecord::Schema.define(version: 20150603004916) do
     t.integer  "solution_upload_id"
     t.string   "tar_key"
     t.integer  "grade_type_id"
+    t.integer  "course_id",                            null: false
   end
 
   add_index "assignments", ["chapter_id"], name: "index_assignments_on_chapter_id", using: :btree
 
   create_table "best_subs", force: :cascade do |t|
-    t.integer "registration_id", null: false
-    t.integer "assignment_id",   null: false
-    t.integer "submission_id",   null: false
-    t.float   "score",           null: false
+    t.integer "user_id",       null: false
+    t.integer "assignment_id", null: false
+    t.integer "submission_id", null: false
+    t.float   "score",         null: false
   end
 
   create_table "chapters", force: :cascade do |t|

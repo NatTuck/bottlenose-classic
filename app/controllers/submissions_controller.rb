@@ -97,7 +97,7 @@ class SubmissionsController < ApplicationController
     end
 
     @chapter = @assignment.chapter
-    @course  = @chapter.course
+    @course  = @assignment.course
   end
 
   def submission_params

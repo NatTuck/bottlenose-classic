@@ -6,16 +6,18 @@ class Assignment < ActiveRecord::Base
   belongs_to :blame, :class_name => "User", :foreign_key => "blame_id"
 
   belongs_to :chapter
+  belongs_to :grade_type
+  belongs_to :course
+
   has_many :submissions, :dependent => :restrict_with_error
 
-  validates :name, :uniqueness => { :scope => :chapter_id }
+  validates :name, :uniqueness => { :scope => :course_id }
   validates :name, :presence => true
-  validates :chapter_id, :presence => true
-  validates :due_date,   :presence => true
+  validates :course_id, :presence => true
+  validates :due_date,  :presence => true
   validates :points_available, :numericality => true
-  validates :blame_id,   :presence => true
-
-  delegate :course, :to => :chapter
+  validates :blame_id,      :presence => true
+  validates :grade_type_id, :presence => true
 
   def assignment_upload
     Upload.find_by_id(assignment_upload_id)
@@ -210,12 +212,16 @@ class Assignment < ActiveRecord::Base
   end
 
   def main_submission_for(user)
- end
+    best = BestSub.where(user_id: user.id, assignment_id: self.id).first
+    best.nil? ? nil : best.submission
+  end
 
   def main_submissions
     regs = course.active_registrations.sort_by {|sr| sr.user.invert_name.downcase  }
     regs.map do |sreg|
       main_submission_for(sreg.user)
+    end.find_all do |reg| 
+      !reg.nil?
     end
   end
 
@@ -234,7 +240,9 @@ class Assignment < ActiveRecord::Base
 
   def update_best_sub_for!(user)
     sub = calc_best_sub_for(user)
-    best = BestSub.find_or_create_by(user_id: user_id, assignment_id: self.id)
+    return if sub.nil?
+
+    best = BestSub.find_or_initialize_by(user_id: user.id, assignment_id: self.id)
     best.submission_id = sub.id
     best.score = sub.score
     best.save!
@@ -250,7 +258,9 @@ class Assignment < ActiveRecord::Base
       teacher_scores = subs.find_all {|ss| not ss.teacher_score.nil? }
       
       if teacher_scores.empty?
-        subs.sort_by {|ss| sprintf("%06d%014d", ss.score, ss.created_at.to_i) }.last
+        subs.sort_by do |ss| 
+          sprintf("%06d%014d", ss.score || 0, ss.created_at.to_i) 
+        end.last
       else
         teacher_scores.sort_by {|ss| ss.score }.last
       end

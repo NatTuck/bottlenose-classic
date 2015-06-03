@@ -1,4 +1,4 @@
-<%= form_for [@chapter, @assignment] do |f| %>
+<%= form_for [@course, @assignment] do |f| %>
   <% if @assignment.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@assignment.errors.count, "error") %> prohibited this 
@@ -21,6 +21,10 @@
   <div class="form-group">
     <%= f.label :assignment %>
     <%= f.text_area :assignment, class: "form-control rich-text" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :grade_type %>
+    <%= f.select :grade_type_id, @course.grade_types.map {|gt| [gt.name, gt.id]} %>
   </div>
   <div class="form-group">
     <%= f.label :assignment_file %>

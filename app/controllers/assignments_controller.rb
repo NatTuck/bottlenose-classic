@@ -14,7 +14,8 @@ class AssignmentsController < ApplicationController
 
   def new
     @assignment = Assignment.new
-    @assignment.chapter_id = @chapter.id
+    @assignment.chapter_id = @chapter.nil? ? nil : @chapter.id
+    @assignment.course_id  = @course.id
     @assignment.due_date = (Time.now + 1.month).to_date
     @assignment.points_available = 100
   end
@@ -24,6 +25,7 @@ class AssignmentsController < ApplicationController
 
   def create
     @assignment = Assignment.new(assignment_params)
+    @assignment.course_id = @course.id
     @assignment.blame_id = @logged_in_user.id
 
     if @assignment.save
@@ -62,15 +64,20 @@ class AssignmentsController < ApplicationController
       @assignment = Assignment.find(params[:id]) 
       @chapter    = @assignment.chapter
     else
-      @chapter    = Chapter.find(params[:chapter_id])
+      @chapter    = Chapter.find_by_id(params[:chapter_id])
     end
 
-    @course  = @chapter.course
+    if params[:course_id]
+      @course = Course.find(params[:course_id])
+    else
+      @course = @assignment.course
+    end
   end
 
   def assignment_params
     params[:assignment].permit(:name, :chapter_id, :assignment, :due_date,
                                :points_available, :hide_grading, :blame_id,
-                               :assignment_file, :grading_file, :solution_file)
+                               :assignment_file, :grading_file, :solution_file,
+                               :grade_type_id, :course_id)
   end
 end

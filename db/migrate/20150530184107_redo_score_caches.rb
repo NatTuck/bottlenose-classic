@@ -22,10 +22,10 @@ class RedoScoreCaches < ActiveRecord::Migration
     end
 
     create_table :best_subs do |t|
-      t.integer :registration_id, null: false
-      t.integer :assignment_id,   null: false
-      t.integer :submission_id,   null: false
-      t.float   :score,           null: false
+      t.integer :user_id,       null: false
+      t.integer :assignment_id, null: false
+      t.integer :submission_id, null: false
+      t.float   :score,         null: false
     end
 
     Assignment.all do |aa|

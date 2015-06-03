@@ -7,8 +7,8 @@ class AssignmentsControllerTest < ActionController::TestCase
 
     @chap  = create(:chapter, course: @course)
 
-    @hello = create(:assignment, chapter: @chap)
-    @bad   = create(:assignment, chapter: @chap)
+    @hello = create(:assignment, chapter: @chap, course: @cs101)
+    @bad   = create(:assignment, chapter: @chap, course: @cs101)
   end
 
   test "should get new" do
