@@ -22,6 +22,7 @@ Bottlenose::Application.routes.draw do
     resources :registrations
     resources :chapters
     resources :reg_requests
+    resources :grade_types
   end
 
   get 'courses/:id/export_grades' => 'courses#export_grades'

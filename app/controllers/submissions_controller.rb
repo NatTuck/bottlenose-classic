@@ -102,7 +102,7 @@ class SubmissionsController < ApplicationController
 
   def submission_params
     params[:submission].permit(:assignment_id, :user_id, :student_notes,
-                               :raw_score, :updated_at, :upload,
+                               :auto_score, :calc_score,:updated_at, :upload,
                                :grading_output, :grading_uid,
                                :teacher_score, :teacher_notes,
                                :ignore_late_penalty, :upload_file)

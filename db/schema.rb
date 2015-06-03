@@ -11,52 +11,61 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150517003824) do
+ActiveRecord::Schema.define(version: 20150603004916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "assignments", force: :cascade do |t|
-    t.integer  "chapter_id",                                       null: false
-    t.string   "name",                 limit: 255,                 null: false
-    t.date     "due_date",                                         null: false
-    t.string   "assignment_file_name", limit: 255
-    t.string   "grading_file_name",    limit: 255
+    t.integer  "chapter_id",                           null: false
+    t.string   "name",                                 null: false
+    t.date     "due_date",                             null: false
+    t.string   "assignment_file_name"
+    t.string   "grading_file_name"
     t.text     "assignment"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
-    t.integer  "points_available",                 default: 100
-    t.string   "secret_dir",           limit: 255
-    t.boolean  "hide_grading",                     default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "points_available",     default: 100
+    t.string   "secret_dir"
+    t.boolean  "hide_grading",         default: false
     t.integer  "assignment_upload_id"
     t.integer  "grading_upload_id"
     t.integer  "blame_id"
     t.integer  "solution_upload_id"
     t.string   "tar_key"
+    t.integer  "grade_type_id"
   end
 
   add_index "assignments", ["chapter_id"], name: "index_assignments_on_chapter_id", using: :btree
 
+  create_table "best_subs", force: :cascade do |t|
+    t.integer "registration_id", null: false
+    t.integer "assignment_id",   null: false
+    t.integer "submission_id",   null: false
+    t.float   "score",           null: false
+  end
+
   create_table "chapters", force: :cascade do |t|
-    t.string   "name",       limit: 255,              null: false
-    t.integer  "course_id",                           null: false
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.text     "notes",                  default: "", null: false
+    t.string   "name",                      null: false
+    t.integer  "course_id",                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "notes",        default: "", null: false
+    t.float    "score_weight"
   end
 
   add_index "chapters", ["course_id"], name: "index_chapters_on_course_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
-    t.string   "name",               limit: 255,                    null: false
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
-    t.string   "late_options",       limit: 255, default: "10,1,0"
+    t.string   "name",                                  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "late_options",       default: "10,1,0"
     t.text     "footer"
     t.integer  "term_id"
     t.time     "questions_due_time"
-    t.integer  "sub_max_size",                   default: 20,       null: false
-    t.boolean  "public",                         default: false,    null: false
+    t.integer  "sub_max_size",       default: 20,       null: false
+    t.boolean  "public",             default: false,    null: false
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -75,22 +84,28 @@ ActiveRecord::Schema.define(version: 20150517003824) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
+  create_table "grade_types", force: :cascade do |t|
+    t.integer  "course_id"
+    t.string   "name"
+    t.float    "weight"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "reg_requests", force: :cascade do |t|
     t.integer  "course_id"
     t.text     "notes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "user_id"
   end
 
   create_table "registrations", force: :cascade do |t|
-    t.integer  "course_id",                   null: false
-    t.integer  "user_id",                     null: false
+    t.integer  "course_id",     null: false
+    t.integer  "user_id",       null: false
     t.boolean  "teacher"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.string   "assign_score",    limit: 255
-    t.string   "questions_score", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "show_in_lists"
   end
 
@@ -98,21 +113,21 @@ ActiveRecord::Schema.define(version: 20150517003824) do
   add_index "registrations", ["user_id"], name: "index_registrations_on_user_id", using: :btree
 
   create_table "submissions", force: :cascade do |t|
-    t.integer  "assignment_id",                                   null: false
-    t.integer  "user_id",                                         null: false
-    t.string   "secret_dir",          limit: 255
-    t.string   "file_name",           limit: 255
-    t.integer  "raw_score"
+    t.integer  "assignment_id",                       null: false
+    t.integer  "user_id",                             null: false
+    t.string   "secret_dir"
+    t.string   "file_name"
+    t.float    "auto_score"
     t.text     "student_notes"
-    t.integer  "teacher_score"
+    t.float    "teacher_score"
     t.text     "teacher_notes"
     t.integer  "grading_uid"
     t.text     "grading_output"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
-    t.boolean  "ignore_late_penalty",             default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "ignore_late_penalty", default: false
     t.integer  "upload_id"
-    t.integer  "upload_size",                     default: 0,     null: false
+    t.integer  "upload_size",         default: 0,     null: false
   end
 
   add_index "submissions", ["assignment_id"], name: "index_submissions_on_assignment_id", using: :btree
@@ -121,29 +136,29 @@ ActiveRecord::Schema.define(version: 20150517003824) do
   add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
 
   create_table "terms", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.boolean  "archived",               default: false
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.string   "name"
+    t.boolean  "archived",   default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "uploads", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "file_name",  limit: 255
-    t.string   "secret_key", limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "file_name"
+    t.string   "secret_key"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "uploads", ["secret_key"], name: "index_uploads_on_secret_key", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "name",       limit: 255, null: false
-    t.string   "email",      limit: 255, null: false
-    t.string   "auth_key",   limit: 255, null: false
+    t.string   "name",       null: false
+    t.string   "email",      null: false
+    t.string   "auth_key",   null: false
     t.boolean  "site_admin"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

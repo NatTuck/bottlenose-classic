@@ -3,6 +3,6 @@
 <% if sub.new_record? %>
 "<%= sub.assignment.name %>","<%= sub.user.name %>","<%= sub.user.surname %>","no",<%= sub.assignment.points_available %>,0,0,0,0,0
 <% else %>
-"<%= sub.assignment.name %>","<%= sub.user.name %>","<%= sub.user.surname %>","yes",<%= sub.assignment.points_available %>,<%= sub.raw_score %>,<%= sub.teacher_score %>,<%= sub.days_late %>,<%= sub.late_penalty %>,<%= sub.score %>
+"<%= sub.assignment.name %>","<%= sub.user.name %>","<%= sub.user.surname %>","yes",<%= sub.assignment.points_available %>,<%= sub.auto_score %>,<%= sub.teacher_score %>,<%= sub.days_late %>,<%= sub.late_penalty %>,<%= sub.score %>
 <% end %>
 <% end %>

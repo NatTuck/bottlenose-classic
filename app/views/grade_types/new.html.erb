@@ -1,0 +1,6 @@
+<% @page_title = "New Grade Type" %>
+<p>Course: <%= @course.name %></p>
+
+<%= render 'form' %>
+
+<%= link_to 'Back', course_grade_types_path(@course) %>

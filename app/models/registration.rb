@@ -7,23 +7,19 @@ class Registration < ActiveRecord::Base
 
   validates :user_id, :uniqueness => { :scope => :course_id }
 
-  def assign_score_no_cache
-    course.assignments.map {|aa| aa.main_score_for(user) }.inject(:&)
+  has_many :best_subs
+
+  def submissions
+    Submission.where(user_id: user.id, course_id: course.id)
   end
 
-  def update_assign_score!
-    score = assign_score_no_cache
-    write_attribute(:assign_score, "#{score || Score.new(0, 0)}")
-    self.save!
-  end
-
-  def assign_score
-    if self.read_attribute(:assign_score).nil?
-      update_assign_score!
+  def score
+    points = best_subs.map {|b| b.score}.sum
+    avail  = course.assignments.map {|a| a.points_available }.sum
+    if avail == 0
+      0
+    else
+      points / avail
     end
-    
-    ss = self.read_attribute(:assign_score)
-    (aa, bb) = ss.split("/").map {|nn| nn.to_i}
-    Score.new(aa, bb)
   end
 end

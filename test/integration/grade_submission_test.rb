@@ -74,10 +74,10 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     repeat_until(60) do
       sleep 2
       @submission = Submission.find_by_student_notes("grade_submission_test")
-      not @submission.raw_score.nil?
+      not @submission.auto_score.nil?
     end
 
-    assert_equal 100, @submission.raw_score
+    assert_equal 100, @submission.auto_score
     
     assert File.exists?(@submission.file_full_path)
     
@@ -155,10 +155,10 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     repeat_until(60) do
       sleep 2
       @submission = Submission.find_by_student_notes("grade_submission_test")
-      not @submission.raw_score.nil?
+      not @submission.auto_score.nil?
     end
 
-    assert_equal 75, @submission.raw_score
+    assert_equal 75, @submission.auto_score
   end
 
   private

@@ -17,11 +17,6 @@ class Assignment < ActiveRecord::Base
 
   delegate :course, :to => :chapter
 
-  before_save do
-    root = Rails.root.to_s
-    system(%Q{(cd "#{root}" && script/refresh-score-caches)&})
-  end
-
   def assignment_upload
     Upload.find_by_id(assignment_upload_id)
   end
@@ -215,19 +210,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def main_submission_for(user)
-    subs = submissions_for(user)
-    if subs.empty?
-      Submission.new(user_id: user.id, assignment_id: self.id, file_name: "none")
-    else
-      teacher_scores = subs.find_all {|ss| not ss.teacher_score.nil? }
-
-      if teacher_scores.empty?
-        subs.sort_by {|ss| sprintf("%06d%014d", ss.score, ss.created_at.to_i) }.last
-      else
-        teacher_scores.sort_by {|ss| ss.score }.last
-      end
-    end
-  end
+ end
 
   def main_submissions
     regs = course.active_registrations.sort_by {|sr| sr.user.invert_name.downcase  }
@@ -242,4 +225,36 @@ class Assignment < ActiveRecord::Base
 
     Score.new(points, points_available)
   end
+
+  def update_best_subs!
+    course.registrations.each do |reg|
+      update_best_sub_for!(reg.user)
+    end
+  end
+
+  def update_best_sub_for!(user)
+    sub = calc_best_sub_for(user)
+    best = BestSub.find_or_create_by(user_id: user_id, assignment_id: self.id)
+    best.submission_id = sub.id
+    best.score = sub.score
+    best.save!
+  end
+
+  private
+
+  def calc_best_sub_for(user)
+    subs = submissions_for(user)
+    if subs.empty?
+      Submission.new(user_id: user.id, assignment_id: self.id, file_name: "none")
+    else
+      teacher_scores = subs.find_all {|ss| not ss.teacher_score.nil? }
+      
+      if teacher_scores.empty?
+        subs.sort_by {|ss| sprintf("%06d%014d", ss.score, ss.created_at.to_i) }.last
+      else
+        teacher_scores.sort_by {|ss| ss.score }.last
+      end
+    end
+  end
 end
+

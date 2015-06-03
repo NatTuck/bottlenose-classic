@@ -1,0 +1,30 @@
+<% @page_title = "#{@course.name}: Grade Types" %>
+
+<p><%= link_to "Back to Course", @course %></p>
+
+
+<table class="table table-striped">
+  <thead>
+    <th>Type</th>
+    <th>Weight</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+  <% @grade_types.each do |gt| %>
+    <tr>
+      <td><%= gt.name %></td>
+      <td><%= gt.weight ? sprintf("%.02f", gt.weight) : 0.0 %></td>
+      <td>
+        <%= link_to 'Remove', [@course, gt], 
+           { method: :delete, data: { confirm: 'Are you sure?' }} %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+
+
+<h2>Add Grade Type</h2>
+
+<%= render 'form' %>

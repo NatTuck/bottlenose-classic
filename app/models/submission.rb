@@ -9,7 +9,8 @@ class Submission < ActiveRecord::Base
   validates :user_id,       :presence => true
 
   validates :teacher_score, :numericality => true, :allow_nil => true
-  validates :raw_score,     :numericality => true, :allow_nil => true
+  validates :auto_score,    :numericality => true, :allow_nil => true
+  validates :calc_score,    :numericality => true, :allow_nil => true
 
   validate :user_is_registered_for_course
   validate :submitted_file_or_manual_grade
@@ -18,7 +19,7 @@ class Submission < ActiveRecord::Base
   delegate :course,    :to => :assignment
   delegate :file_name, :to => :upload, :allow_nil => true
 
-  after_save :update_cache!
+  before_save :calculate_score!
   before_destroy :cleanup!
 
   def update_cache!
@@ -114,12 +115,7 @@ class Submission < ActiveRecord::Base
   end
 
   def score
-    if teacher_score.nil?
-      return 0 if raw_score.nil?
-      raw_score * late_mult
-    else
-      teacher_score * late_mult
-    end
+    calc_score || 0.0
   end
 
   def grade!
@@ -135,6 +131,18 @@ class Submission < ActiveRecord::Base
   end
 
   private
+
+  def calculate_score!
+    calc_score = 0
+
+    if teacher_score.nil?
+      unless auto_score.nil?
+        calc_score = auto_score * late_mult
+      end
+    else
+      calc_score = teacher_score * late_mult
+    end
+  end
 
   def user_is_registered_for_course
     unless user.courses.any? {|cc| cc.id == course.id }

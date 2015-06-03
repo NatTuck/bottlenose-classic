@@ -19,7 +19,7 @@
   </td>
   <td><%= sub.created_at ? sub.created_at.to_date : 'none' %></td>
   <td><%= status_image(sub) %></td>
-  <td><%= sub.raw_score || '∅' %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
+  <td><%= sub.auto_score || '∅' %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
 <% end %>
 
 <style> .field_with_errors {  display:inline-block; } </style>
