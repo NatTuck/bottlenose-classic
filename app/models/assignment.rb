@@ -6,18 +6,18 @@ class Assignment < ActiveRecord::Base
   belongs_to :blame, :class_name => "User", :foreign_key => "blame_id"
 
   belongs_to :chapter
-  belongs_to :grade_type
+  belongs_to :bucket
   belongs_to :course
 
   has_many :submissions, :dependent => :restrict_with_error
 
-  validates :name, :uniqueness => { :scope => :course_id }
-  validates :name, :presence => true
+  validates :name,      :uniqueness => { :scope => :course_id }
+  validates :name,      :presence => true
   validates :course_id, :presence => true
   validates :due_date,  :presence => true
+  validates :blame_id,  :presence => true
+  validates :bucket_id, :presence => true
   validates :points_available, :numericality => true
-  validates :blame_id,      :presence => true
-  validates :grade_type_id, :presence => true
 
   def assignment_upload
     Upload.find_by_id(assignment_upload_id)

@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20150603153549) do
     t.integer  "blame_id"
     t.integer  "solution_upload_id"
     t.string   "tar_key"
-    t.integer  "grade_type_id"
+    t.integer  "bucket_id"
     t.integer  "course_id",                            null: false
   end
 
@@ -44,6 +44,14 @@ ActiveRecord::Schema.define(version: 20150603153549) do
     t.integer "assignment_id", null: false
     t.integer "submission_id", null: false
     t.float   "score",         null: false
+  end
+
+  create_table "buckets", force: :cascade do |t|
+    t.integer  "course_id"
+    t.string   "name"
+    t.float    "weight"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "chapters", force: :cascade do |t|
@@ -84,14 +92,6 @@ ActiveRecord::Schema.define(version: 20150603153549) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
-
-  create_table "grade_types", force: :cascade do |t|
-    t.integer  "course_id"
-    t.string   "name"
-    t.float    "weight"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "reg_requests", force: :cascade do |t|
     t.integer  "course_id"

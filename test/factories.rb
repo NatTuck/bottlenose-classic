@@ -36,11 +36,16 @@ FactoryGirl.define do
   end
 
   factory :assignment do
-    chapter
+    course
+    bucket
     association :blame, factory: :user
 
     sequence(:name) {|n| "Homework #{n}" }
     due_date (Time.now + 7.days)
+
+    after(:build) do |asg|
+      asg.bucket.course_id = asg.course_id
+    end
   end
 
   factory :upload do
@@ -57,6 +62,9 @@ FactoryGirl.define do
 
     after(:build) do |sub|
       sub.upload.user_id = sub.user_id
+      reg = create(:registration, 
+                   user_id: sub.user.id,
+                   course_id: sub.assignment.course.id)
     end
   end
 
@@ -75,7 +83,7 @@ FactoryGirl.define do
     notes "Let me in!"
   end
 
-  factory :grade_type do
+  factory :bucket do
     course
     name "Default"
     weight 0.375

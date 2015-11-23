@@ -1,6 +1,6 @@
-class CreateGradeTypes < ActiveRecord::Migration
+class CreateBuckets < ActiveRecord::Migration
   def change
-    create_table :grade_types do |t|
+    create_table :buckets do |t|
       t.integer :course_id
       t.string :name
       t.float :weight
@@ -8,11 +8,11 @@ class CreateGradeTypes < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    add_column :assignments, :grade_type_id, :integer
+    add_column :assignments, :bucket_id, :integer
     add_column :assignments, :course_id, :integer
 
     Course.all.each do |cc|
-      gt = GradeType.create(name: "Assignment", weight: 1.0, course_id: cc.id)
+      gt = Bucket.create(name: "Assignment", weight: 1.0, course_id: cc.id)
 
       cc.assignments.each do |aa|
         aa.course_id = cc.id

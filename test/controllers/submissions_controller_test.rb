@@ -15,6 +15,8 @@ class SubmissionsControllerTest < ActionController::TestCase
 
   test "should get index" do
     get :index, {assignment_id: @hello.id}, {user_id: @fred.id}
+    puts response.body
+    puts flash.inspect
     assert_response :success
     assert_not_nil assigns(:submissions)
   end

@@ -1,4 +1,4 @@
-class GradeType < ActiveRecord::Base
+class Bucket < ActiveRecord::Base
   belongs_to :course
   has_many   :assignments, dependent: :restrict_with_error
   
