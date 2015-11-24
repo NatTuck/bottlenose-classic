@@ -1,17 +1,17 @@
 <p>
   <strong>Course:</strong>
-  <%= @grade_type.course_id %>
+  <%= @bucket.course.name %>
 </p>
 
 <p>
   <strong>Name:</strong>
-  <%= @grade_type.name %>
+  <%= @bucket.name %>
 </p>
 
 <p>
   <strong>Weight:</strong>
-  <%= @grade_type.weight %>
+  <%= @bucket.weight %>
 </p>
 
-<%= link_to 'Edit', edit_course_grade_type_path(@grade_type) %> |
-<%= link_to 'Back', grade_types_path %>
+<%= link_to 'Edit', edit_course_bucket_path(@course, @bucket) %> |
+<%= link_to 'Back', course_buckets_path(@course) %>

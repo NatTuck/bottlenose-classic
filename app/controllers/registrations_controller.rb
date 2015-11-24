@@ -14,8 +14,7 @@ class RegistrationsController < ApplicationController
       return
     end
 
-    @a_score = @registration.assign_score
-    @q_score = @registration.questions_score
+    @score = @registration.score
   end
 
   def new

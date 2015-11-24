@@ -1,60 +1,60 @@
-class GradeTypesController < ApplicationController
-  before_action :set_grade_type, only: [:show, :edit, :update, :destroy]
+class BucketsController < ApplicationController
+  before_action :set_bucket, only: [:show, :edit, :update, :destroy]
   before_action :set_course
 
-  # GET /grade_types
+  # GET /course/3/buckets
   def index
-    @grade_type  = GradeType.new(course_id: @course.id)
-    @grade_types = GradeType.all
+    @bucket  = Bucket.new(course_id: @course.id)
+    @buckets = @course.buckets
   end
 
-  # GET /grade_types/1
+  # GET /course/3/buckets/1
   def show
   end
 
-  # GET /grade_types/new
+  # GET /course/3/buckets/new
   def new
-    @grade_type = GradeType.new(course_id: @course.id)
+    @bucket = Bucket.new(course_id: @course.id)
   end
 
-  # GET /grade_types/1/edit
+  # GET /course/3/buckets/2/edit
   def edit
   end
 
-  # POST /grade_types
+  # POST /course/3/buckets
   def create
-    @grade_type = GradeType.new(grade_type_params)
-    @grade_type.course_id = @course.id
+    @bucket = Bucket.new(bucket_params)
+    @bucket.course_id = @course.id
 
-    if @grade_type.save
-      redirect_to course_grade_types_path(@course), 
-        notice: 'Grade type was successfully created.'
+    if @bucket.save
+      redirect_to course_buckets_path(@course), 
+        notice: 'Bucket was successfully created.'
     else
       render :new
     end
   end
 
-  # PATCH/PUT /grade_types/1
+  # PATCH/PUT /course/3/buckets/1
   def update
-    if @grade_type.update(grade_type_params)
-      redirect_to course_grade_types_url(@course), 
-        notice: 'Grade type was successfully updated.'
+    if @bucket.update(bucket_params)
+      redirect_to course_buckets_url(@course), 
+        notice: "Bucket '#{@bucket.name}' was successfully updated."
     else
       render :edit
     end
   end
 
-  # DELETE /grade_types/1
+  # DELETE /course/3/buckets/1
   def destroy
-    @grade_type.destroy
-    redirect_to course_grade_types_url(@course), 
-      notice: "Grade type '#{@grade_type.name}' was successfully removed."
+    @bucket.destroy
+    redirect_to course_buckets_url(@course), 
+      notice: "Bucket '#{@bucket.name}' was successfully removed."
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_grade_type
-      @grade_type = GradeType.find(params[:id])
+    def set_bucket
+      @bucket = Bucket.find(params[:id])
     end
 
     def set_course
@@ -62,7 +62,7 @@ class GradeTypesController < ApplicationController
     end
 
     # Only allow a trusted parameter "white list" through.
-    def grade_type_params
-      params.require(:grade_type).permit(:course_id, :name, :weight)
+    def bucket_params
+      params.require(:bucket).permit(:course_id, :name, :weight)
     end
 end

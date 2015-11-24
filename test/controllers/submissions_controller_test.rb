@@ -4,8 +4,7 @@ class SubmissionsControllerTest < ActionController::TestCase
   setup do
     make_standard_course
 
-    @chapter = create(:chapter, course: @cs101)
-    @hello = create(:assignment, chapter: @chapter)
+    @hello = create(:assignment, course: @cs101, bucket: @bucket)
     @john_hello = create(:submission, user: @john, assignment: @hello)
   end
 
@@ -15,8 +14,6 @@ class SubmissionsControllerTest < ActionController::TestCase
 
   test "should get index" do
     get :index, {assignment_id: @hello.id}, {user_id: @fred.id}
-    puts response.body
-    puts flash.inspect
     assert_response :success
     assert_not_nil assigns(:submissions)
   end

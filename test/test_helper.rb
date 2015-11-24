@@ -18,6 +18,7 @@ class ActiveSupport::TestCase
     @fred     = create(:user)
     @john     = create(:user)
     @cs101    = create(:course, public: true)
+    @bucket   = create(:bucket, course: @cs101)
     @fred_reg = create(:registration, course: @cs101, user: @fred, teacher: true)
     @john_reg = create(:registration, course: @cs101, user: @john)
   end

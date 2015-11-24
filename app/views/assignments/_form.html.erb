@@ -23,8 +23,8 @@
     <%= f.text_area :assignment, class: "form-control rich-text" %>
   </div>
   <div class="form-group">
-    <%= f.label :grade_type %>
-    <%= f.select :grade_type_id, @course.grade_types.map {|gt| [gt.name, gt.id]} %>
+    <%= f.label :bucket %>
+    <%= f.select :bucket_id, @course.buckets.map {|bb| [bb.name, bb.id]} %>
   </div>
   <div class="form-group">
     <%= f.label :assignment_file %>

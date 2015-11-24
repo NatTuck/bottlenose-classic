@@ -62,9 +62,6 @@ FactoryGirl.define do
 
     after(:build) do |sub|
       sub.upload.user_id = sub.user_id
-      reg = create(:registration, 
-                   user_id: sub.user.id,
-                   course_id: sub.assignment.course.id)
     end
   end
 

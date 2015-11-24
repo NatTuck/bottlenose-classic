@@ -1,4 +1,4 @@
-<% @page_title = "#{@course.name}: Grade Types" %>
+<% @page_title = "#{@course.name}: Buckets" %>
 
 <p><%= link_to "Back to Course", @course %></p>
 
@@ -10,13 +10,13 @@
     <th>&nbsp;</th>
   </thead>
   <tbody>
-  <% @grade_types.each do |gt| %>
+  <% @buckets.each do |bb| %>
     <tr>
-      <td><%= gt.name %></td>
-      <td><%= gt.weight ? sprintf("%.02f", gt.weight) : 0.0 %></td>
+      <td><%= bb.name %></td>
+      <td><%= bb.weight ? sprintf("%.02f", bb.weight) : 0.0 %></td>
       <td>
-        <%= link_to 'Edit', edit_course_grade_type_path(@course, gt) %> |
-        <%= link_to 'Remove', [@course, gt], 
+        <%= link_to 'Edit', edit_course_bucket_path(@course, bb) %> |
+        <%= link_to 'Remove', [@course, bb], 
            { method: :delete, data: { confirm: 'Are you sure?' }} %>
       </td>
     </tr>

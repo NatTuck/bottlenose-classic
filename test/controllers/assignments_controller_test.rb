@@ -5,22 +5,24 @@ class AssignmentsControllerTest < ActionController::TestCase
     make_standard_course
     @course = @cs101
 
-    @chap  = create(:chapter, course: @course)
-
-    @hello = create(:assignment, chapter: @chap, course: @cs101)
-    @bad   = create(:assignment, chapter: @chap, course: @cs101)
+    @hello = create(:assignment, bucket: @bucket, course: @cs101)
+    @bad   = create(:assignment, bucket: @bucket, course: @cs101)
   end
 
   test "should get new" do
-    get :new, {chapter_id: @hello.chapter_id}, {user_id: @fred.id}
+    get :new, {course_id: @cs101.id}, {user_id: @fred.id}
     assert_response :success
   end
 
   test "should create assignment" do
     assert_difference('Assignment.count') do
-      post :create, {chapter_id: @hello.chapter_id, assignment: { assignment: "Dance a jig.",  points_available: 100,
-          name: "Useful Work", chapter_id: @hello.chapter_id,
-          due_date: '2019-05-22'}}, {user_id: @fred.id}
+      post :create, {course_id: @cs101.id,
+                     assignment: { assignment: "Dance a jig.",  
+                                   points_available: 100,
+                                   name: "Useful Work", 
+                                   bucket_id: @hello.bucket_id,
+                                   due_date: '2019-05-22'}}, 
+                    {user_id: @fred.id}
     end
 
     assert_redirected_to assignment_path(assigns(:assignment))
@@ -47,6 +49,6 @@ class AssignmentsControllerTest < ActionController::TestCase
         delete :destroy, {id: @bad}, {user_id: @fred.id}
     end
 
-    assert_redirected_to @hello.chapter
+    assert_redirected_to @hello.course
   end
 end

@@ -48,7 +48,7 @@ class AssignmentsController < ApplicationController
   def destroy
     @assignment.destroy
     show_notice "Assignment has been deleted."
-    redirect_to @chapter
+    redirect_to @course
   end
 
   def tarball
@@ -78,6 +78,6 @@ class AssignmentsController < ApplicationController
     params[:assignment].permit(:name, :chapter_id, :assignment, :due_date,
                                :points_available, :hide_grading, :blame_id,
                                :assignment_file, :grading_file, :solution_file,
-                               :grade_type_id, :course_id)
+                               :bucket_id, :course_id)
   end
 end
