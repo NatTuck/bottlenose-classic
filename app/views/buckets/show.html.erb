@@ -1,0 +1,17 @@
+<p>
+  <strong>Course:</strong>
+  <%= @bucket.course.name %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @bucket.name %>
+</p>
+
+<p>
+  <strong>Weight:</strong>
+  <%= @bucket.weight %>
+</p>
+
+<%= link_to 'Edit', edit_course_bucket_path(@course, @bucket) %> |
+<%= link_to 'Back', course_buckets_path(@course) %>

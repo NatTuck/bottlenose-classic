@@ -22,6 +22,8 @@ Bottlenose::Application.routes.draw do
     resources :registrations
     resources :chapters
     resources :reg_requests
+    resources :buckets
+    resources :assignments
   end
 
   get 'courses/:id/export_grades' => 'courses#export_grades'
@@ -38,10 +40,7 @@ Bottlenose::Application.routes.draw do
 
   resources :reg_requests, :except => [:new]
 
-  resources :chapters do
-    resources :lessons
-    resources :assignments
-  end
+  resources :chapters
 
   resources :assignments do
     resources :submissions, :except => [:destroy]

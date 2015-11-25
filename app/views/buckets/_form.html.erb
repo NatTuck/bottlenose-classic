@@ -1,0 +1,29 @@
+<%= form_for([@course, @bucket]) do |f| %>
+  <% if @bucket.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@bucket.errors.count, "error") %> prohibited this grade_type from being saved:</h2>
+
+      <ul>
+      <% @bucket.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :course_id %>
+
+  <div class="form-group">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+ 
+  <div class="form-group">
+    <%= f.label :weight %><br>
+    <%= f.text_field :weight %>
+  </div>
+ 
+  <div class="form-group">
+    <%= f.submit nil, class: "btn btn-primary" %>
+  </div>
+<% end %>

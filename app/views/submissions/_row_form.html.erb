@@ -19,7 +19,7 @@
   </td>
   <td><%= sub.created_at ? sub.created_at.to_date : 'none' %></td>
   <td><%= status_image(sub) %></td>
-  <td><%= sub.raw_score || '∅' %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
+  <td><%= sub.auto_score || '∅' %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
 <% end %>
 
 <style> .field_with_errors {  display:inline-block; } </style>
@@ -30,14 +30,16 @@
     <%= f.hidden_field :user_id %>
     <%= f.hidden_field :assignment_id %>
     <%= f.hidden_field :file_name %>
-    <%= f.text_field :teacher_score, :size => 8 %>&nbsp;<%= f.submit %>
+    <%= f.text_field :teacher_score, :size => 8 %>&nbsp;<%=
+      f.submit nil, class: 'btn btn-primary' %>
     <% end %>
   <% else %>
     <%= form_for sub, namespace: "u#{sub.user.id}", remote: true do |f| %>
     <%= f.hidden_field :user_id %>
     <%= f.hidden_field :assignment_id %>
     <%= f.hidden_field :file_name %>
-    <%= f.text_field :teacher_score, :size => 8 %>&nbsp;<%= f.submit %>
+    <%= f.text_field :teacher_score, :size => 8 %>&nbsp;<%=
+      f.submit nil, class: 'btn btn-primary' %>
     <% end %>
   <% end %>
 </td>

@@ -42,7 +42,7 @@ module ApplicationHelper
       return image_tag("null-mark.png", height: 32) 
     end
 
-    if sub.raw_score.nil? and sub.teacher_score.nil?
+    if sub.auto_score.nil? and sub.teacher_score.nil?
       unless sub.assignment.has_grading?
         return image_tag("question-mark.png", height: 32)
       end
@@ -55,7 +55,7 @@ module ApplicationHelper
     end
 
     if sub.score == 0
-      if sub.raw_score == 0
+      if sub.auto_score == 0
         return image_tag("cross-mark.png", height: 32)
       else
         return image_tag("question-mark.png", height: 32)
@@ -84,5 +84,9 @@ module ApplicationHelper
 
   def registration_show_toggle_path(reg_id)
     "/registrations/#{reg_id}/toggle_show"
+  end
+
+  def new_chapter_assignment_path(ch)
+    new_course_assignment_path(ch.course) + "?chapter_id=#{ch.id}"
   end
 end

@@ -92,7 +92,7 @@ if output_lines.any? {|xx| xx.match(output_key)}
     # Yay, no points available.
   end
 
-  sub.raw_score = score
+  sub.auto_score = score
   sub.save!
 end
 

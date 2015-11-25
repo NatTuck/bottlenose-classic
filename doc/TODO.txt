@@ -1,2 +1,8 @@
-Housekeeping and refactorings TODO:
- - Replace "raw_score" with "auto_score" in Submission.
+
+Courses:
+- Remove questions_due_time
+- Add default_score_policy
+- Change default sub_max_size to 5.0 megs.
+
+Registration, Course:
+ - Split status displays by bucket.

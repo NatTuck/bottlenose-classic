@@ -1,0 +1,31 @@
+<% @page_title = "#{@course.name}: Grade Buckets" %>
+
+<p><%= link_to "Back to Course", @course %></p>
+
+
+<table class="table table-striped">
+  <thead>
+    <th>Type</th>
+    <th>Weight</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+  <% @buckets.each do |bb| %>
+    <tr>
+      <td><%= bb.name %></td>
+      <td><%= bb.weight ? sprintf("%.02f", bb.weight) : 0.0 %></td>
+      <td>
+        <%= link_to 'Edit', edit_course_bucket_path(@course, bb) %> |
+        <%= link_to 'Remove', [@course, bb], 
+           { method: :delete, data: { confirm: 'Are you sure?' }} %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+
+
+<h2>Add Grade Bucket</h2>
+
+<%= render 'form' %>

@@ -22,6 +22,9 @@ class ApplicationController < ActionController::Base
   def find_user_session
     unless session['user_id'].nil?
       @logged_in_user ||= User.find_by_id(session['user_id'])
+      if @logged_in_user.nil?
+        session['user_id'] = nil
+      end
     end
   end
 

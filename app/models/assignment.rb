@@ -6,21 +6,18 @@ class Assignment < ActiveRecord::Base
   belongs_to :blame, :class_name => "User", :foreign_key => "blame_id"
 
   belongs_to :chapter
+  belongs_to :bucket
+  belongs_to :course
+
   has_many :submissions, :dependent => :restrict_with_error
 
-  validates :name, :uniqueness => { :scope => :chapter_id }
-  validates :name, :presence => true
-  validates :chapter_id, :presence => true
-  validates :due_date,   :presence => true
+  validates :name,      :uniqueness => { :scope => :course_id }
+  validates :name,      :presence => true
+  validates :course_id, :presence => true
+  validates :due_date,  :presence => true
+  validates :blame_id,  :presence => true
+  validates :bucket_id, :presence => true
   validates :points_available, :numericality => true
-  validates :blame_id,   :presence => true
-
-  delegate :course, :to => :chapter
-
-  before_save do
-    root = Rails.root.to_s
-    system(%Q{(cd "#{root}" && script/refresh-score-caches)&})
-  end
 
   def assignment_upload
     Upload.find_by_id(assignment_upload_id)
@@ -215,24 +212,15 @@ class Assignment < ActiveRecord::Base
   end
 
   def main_submission_for(user)
-    subs = submissions_for(user)
-    if subs.empty?
-      Submission.new(user_id: user.id, assignment_id: self.id, file_name: "none")
-    else
-      teacher_scores = subs.find_all {|ss| not ss.teacher_score.nil? }
-
-      if teacher_scores.empty?
-        subs.sort_by {|ss| sprintf("%06d%014d", ss.score, ss.created_at.to_i) }.last
-      else
-        teacher_scores.sort_by {|ss| ss.score }.last
-      end
-    end
+    best = BestSub.where(user_id: user.id, assignment_id: self.id).first
+    best.nil? ? nil : best.submission
   end
 
   def main_submissions
     regs = course.active_registrations.sort_by {|sr| sr.user.invert_name.downcase  }
-    regs.map do |sreg|
-      main_submission_for(sreg.user)
+    subs = regs.map do |sreg|
+      main_submission_for(sreg.user) || Submission.new(user_id: sreg.user_id,
+                                                       assignment_id: self.id)
     end
   end
 
@@ -242,4 +230,40 @@ class Assignment < ActiveRecord::Base
 
     Score.new(points, points_available)
   end
+
+  def update_best_subs!
+    course.registrations.each do |reg|
+      update_best_sub_for!(reg.user)
+    end
+  end
+
+  def update_best_sub_for!(user)
+    sub = calc_best_sub_for(user)
+    return if sub.nil?
+
+    best = BestSub.find_or_initialize_by(user_id: user.id, assignment_id: self.id)
+    best.submission_id = sub.id
+    best.score = sub.score
+    best.save!
+  end
+
+  private
+
+  def calc_best_sub_for(user)
+    subs = submissions_for(user)
+    if subs.empty?
+      Submission.new(user_id: user.id, assignment_id: self.id, file_name: "none")
+    else
+      teacher_scores = subs.find_all {|ss| not ss.teacher_score.nil? }
+      
+      if teacher_scores.empty?
+        subs.sort_by do |ss| 
+          sprintf("%06d%014d", ss.score || 0, ss.created_at.to_i) 
+        end.last
+      else
+        teacher_scores.sort_by {|ss| ss.score }.last
+      end
+    end
+  end
 end
+

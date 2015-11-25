@@ -1,18 +1,24 @@
 class Course < ActiveRecord::Base
   belongs_to :term
   
-  has_many :registrations
-  has_many :users, :through => :registrations, :dependent => :restrict_with_error
+  has_many :registrations, dependent: :destroy
+  has_many :users, through: :registrations
 
-  has_many :reg_requests, :dependent => :destroy
+  has_many :reg_requests, dependent: :destroy
 
-  has_many :chapters, :dependent => :restrict_with_error
+  has_many :chapters,    dependent: :destroy
+  has_many :buckets,     dependent: :destroy
+  has_many :assignments, dependent: :restrict_with_error
 
   validates :name,    :length      => { :minimum => 2 },
                       :uniqueness  => true
   validates :late_options, :format => { :with => /\A\d+,\d+,\d+\z/ }
 
   validates :term_id, presence: true
+
+  after_create do
+    Bucket.create!(name: "Assignments", weight: 1.0, course: self)
+  end
 
   def late_opts
     # pen, del, max
@@ -48,10 +54,6 @@ class Course < ActiveRecord::Base
 
   def teachers
     teacher_registrations.map {|reg| reg.user}
-  end
-
-  def assignments
-    chapters.map {|cc| cc.assignments}.flatten
   end
 
   def first_teacher

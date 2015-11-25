@@ -8,17 +8,24 @@
     <%= link_to "Request Registration", 
 	  new_course_reg_request_path(@course) %>
   <% end %>
-  <% if @logged_in_user.course_admin?(@course) %>
-    | <%= link_to "Edit Settings", [:edit, @course] %>
-  <% end %>
+</p>
 
 <% if @logged_in_user.course_admin?(@course) %>
-  |  <%= link_to "Manage Registrations", 
-         course_registrations_path(@course) %>
-  |  <%= link_to "View Registration Requests",
-         course_reg_requests_path(@course) %>
-<% end %>
+<p>
+  <%= link_to "Manage Registrations",  course_registrations_path(@course) %> |
+  <%= link_to "View Registration Requests", course_reg_requests_path(@course) %> |
+  <%= link_to "Edit Settings", [:edit, @course] %> | 
+  <%= link_to 'Grade Buckets', course_buckets_path(@course) %></p>
 </p>
+
+<p>
+  <%= link_to 'New Chapter', new_course_chapter_path(@course) %> |
+  <%= link_to 'New Assignment', new_course_assignment_path(@course) %>
+</p>
+
+<% end %>
+
+<% unless @course.chapters.empty? %>
 
 <h1>Chapters</h1>
 
@@ -38,7 +45,7 @@
       <td>
         <% if @logged_in_user.course_admin?(@course) %>
           (<%= link_to "Edit Title", [:edit, chapter] %>)
-          (<%= link_to 'Destroy', chapter, 
+          (<%= link_to 'Delete', chapter, 
            { method: :delete, data: { confirm: 'Are you sure?' }} %>)
          <% end %>
      </td>
@@ -47,10 +54,34 @@
 
 </table>
 
-<% if @logged_in_user.course_admin?(@course) %>
-<p><%= link_to 'New Chapter', new_course_chapter_path(@course) %></p>
 <% end %>
 
+<% unless @course.assignments.find_all {|aa| aa.chapter_id.nil? }.empty? %>
+
+<h1>Assignments</h1>
+
+<% @course.buckets.each do |bb| %>
+
+  <h2><%= bb.name %></h2>
+
+  <table class="table table-striped">
+    <thead>
+      <th>Name</th>
+      <th>Due Date</th>
+    </thead>
+    <tbody>
+    <% bb.assignments.each do |aa| %>
+      <tr>
+        <td><%= link_to aa.name, aa %></td>
+        <td><%= aa.due_date %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+<% end %>
+
+<% end %>
 
 <% if @logged_in_user.course_admin?(@course) %>
 
@@ -73,7 +104,7 @@
   <tr>
     <td><%= reg.user.name %><br>
         <%= reg.user.email %></td>
-    <td><%= reg.assign_score %></td>
+    <td><%= reg.score %></td>
     <td><%= link_to "View", reg %></td>
   </tr>
 <% end %>

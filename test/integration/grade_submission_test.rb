@@ -3,8 +3,6 @@ require 'test_helper'
 class GradeSubmissionTest < ActionDispatch::IntegrationTest
   setup do
     make_standard_course
-    @ch1 = create(:chapter, course: @cs101)
-
     @tars_dir = Rails.root.join('test', 'fixtures', 'files')
   end
 
@@ -13,7 +11,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
   end
 
   test "teacher sets ignore late penalty flag" do
-    pset = make_assignment(@ch1, "HelloWorld")
+    pset = make_assignment(@bucket, "HelloWorld")
     sub  = make_submission(@john, pset, "john.tar.gz")
 
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"    
@@ -28,14 +26,13 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
   end
 
   test "teacher manually submit a grade" do
-    pset = create(:assignment, chapter: @ch1)
+    pset = create(:assignment, bucket: @bucket, course: @cs101)
 
-    score0 = @john_reg.assign_score
+    score0 = @john_reg.score
 
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"    
     click_link 'Your Courses'
     click_link @cs101.name
-    click_link @ch1.name
     click_link pset.name
     click_link 'Manually Add Student Grade'
 
@@ -49,11 +46,11 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     assert_equal sub.score, 85
 
     # Make sure score summary updates properly.
-    assert_not_equal(@john_reg.reload.assign_score, score0, "Updated summary")
+    assert_not_equal(@john_reg.reload.score, score0, "Updated summary")
   end
 
   test "submit and grade a submission" do
-    pset = make_assignment(@ch1, 'HelloWorld')
+    pset = make_assignment(@bucket, 'HelloWorld')
 
     assert File.exists?(pset.assignment_full_path)
     assert File.exists?(pset.grading_full_path)
@@ -63,8 +60,9 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
 
     click_link 'Your Courses'
     click_link @cs101.name
-    click_link @ch1.name
+
     click_link pset.name
+
     click_link 'New Submission'
 
     fill_in 'Student notes', :with => "grade_submission_test"
@@ -74,10 +72,10 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     repeat_until(60) do
       sleep 2
       @submission = Submission.find_by_student_notes("grade_submission_test")
-      not @submission.raw_score.nil?
+      not @submission.auto_score.nil?
     end
 
-    assert_equal 100, @submission.raw_score
+    assert_equal 100, @submission.auto_score
     
     assert File.exists?(@submission.file_full_path)
     
@@ -86,7 +84,6 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
 
     click_link 'Your Courses'
     click_link @cs101.name
-    click_link @ch1.name
     click_link pset.name
     click_link 'Tarball of Submissions'
 
@@ -99,7 +96,6 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
 
     click_link 'Your Courses'
     click_link @cs101.name
-    click_link @ch1.name
     click_link 'New Assignment'
 
     fill_in 'Name', :with => "An Assignment With No Submission"
@@ -117,14 +113,14 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
   end
 
   test "submit and grade a single file submission with specially valued tests" do
-    pset = create(:assignment, chapter: @ch1, name: "HelloSingle")
+    pset = create(:assignment, bucket: @bucket, course: @bucket.course, name: "HelloSingle")
 
     # Add test assignment.
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
 
     click_link 'Your Courses'
     click_link @cs101.name
-    click_link @ch1.name
+
     click_link pset.name
     click_link 'Edit this Assignment'
 
@@ -144,7 +140,6 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
 
     click_link 'Your Courses'
     click_link @cs101.name
-    click_link @ch1.name
     click_link pset.name
     click_link 'New Submission'
 
@@ -155,10 +150,10 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     repeat_until(60) do
       sleep 2
       @submission = Submission.find_by_student_notes("grade_submission_test")
-      not @submission.raw_score.nil?
+      not @submission.auto_score.nil?
     end
 
-    assert_equal 75, @submission.raw_score
+    assert_equal 75, @submission.auto_score
   end
 
   private

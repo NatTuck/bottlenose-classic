@@ -1,7 +1,10 @@
 <% @page_title = "Assignment: #{@assignment.name}" %>
 
-<p>
-  <%= link_to "Back to Chapter: #{@chapter.name}", @chapter  %>
+<p><%= link_to "Back to Course: #{@course.name}", @course %>
+
+<% unless @chapter.nil? %>
+  | <%= link_to "Back to Chapter: #{@chapter.name}", @chapter %>
+<% end %>
 
 <% if @logged_in_user.course_admin?(@course) %>
   | <%= link_to 'Edit this Assignment', edit_assignment_path(@assignment) %>
@@ -10,6 +13,7 @@
 
 <h1>Assignment Description</h1>
 
+<p>Bucket: <%= @assignment.bucket.name %></p>
 <p>Due Date: <%= @assignment.due_date %></p>
 
 <div class="prose">

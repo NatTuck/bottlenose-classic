@@ -4,8 +4,7 @@ class SubmissionsControllerTest < ActionController::TestCase
   setup do
     make_standard_course
 
-    @chapter = create(:chapter, course: @cs101)
-    @hello = create(:assignment, chapter: @chapter)
+    @hello = create(:assignment, course: @cs101, bucket: @bucket)
     @john_hello = create(:submission, user: @john, assignment: @hello)
   end
 
