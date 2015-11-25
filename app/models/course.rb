@@ -16,6 +16,10 @@ class Course < ActiveRecord::Base
 
   validates :term_id, presence: true
 
+  after_create do
+    Bucket.create!(name: "Assignments", weight: 1.0, course: self)
+  end
+
   def late_opts
     # pen, del, max
     os = late_options.split(",")
