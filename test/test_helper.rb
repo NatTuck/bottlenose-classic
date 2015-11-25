@@ -15,8 +15,8 @@ class ActiveSupport::TestCase
   
   def make_standard_course
     @ken      = create(:admin_user)
-    @fred     = create(:user)
-    @john     = create(:user)
+    @fred     = create(:user, name: "Fred McTeacher")
+    @john     = create(:user, name: "John McStudent")
     @cs101    = create(:course, public: true)
     @bucket   = create(:bucket, course: @cs101)
     @fred_reg = create(:registration, course: @cs101, user: @fred, teacher: true)
@@ -32,8 +32,8 @@ class ActiveSupport::TestCase
     fixture_file_upload(assign_upload(assign, suffix), 'application/octet-stream')
   end
 
-  def make_assignment(ch, name)
-    aa = build(:assignment, chapter: ch, name: name)
+  def make_assignment(bb, name)
+    aa = build(:assignment, bucket: bb, course: bb.course, name: name)
     aa.assignment_file = assign_upload_obj(name, 'assign.tar.gz')
     aa.grading_file    = assign_upload_obj(name, 'grading.tar.gz')
     aa.save_uploads!
@@ -79,6 +79,10 @@ class ActionDispatch::IntegrationTest
 
   # Stop ActiveRecord from wrapping tests in transactions
   self.use_transactional_fixtures = false
+
+  setup do
+    DatabaseCleaner.clean
+  end
 
   teardown do
     DatabaseCleaner.clean       # Truncate the database

@@ -218,10 +218,9 @@ class Assignment < ActiveRecord::Base
 
   def main_submissions
     regs = course.active_registrations.sort_by {|sr| sr.user.invert_name.downcase  }
-    regs.map do |sreg|
-      main_submission_for(sreg.user)
-    end.find_all do |reg| 
-      !reg.nil?
+    subs = regs.map do |sreg|
+      main_submission_for(sreg.user) || Submission.new(user_id: sreg.user_id,
+                                                       assignment_id: self.id)
     end
   end
 

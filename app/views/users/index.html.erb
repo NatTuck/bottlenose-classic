@@ -25,7 +25,7 @@
     <td>
       <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %>
     </td>
-    <td><%= link_to 'Impersonate', user_path(user) + '/impersonate' %></td>
+    <td><%= link_to('Impersonate', user_path(user) + '/impersonate', method: 'post') %></td>
   </tr>
 <% end %>
 </table>

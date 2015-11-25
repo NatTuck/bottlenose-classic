@@ -60,9 +60,9 @@
 
 <h1>Assignments</h1>
 
-<% @course.grade_types.each do |gt| %>
+<% @course.buckets.each do |bb| %>
 
-  <h2><%= gt.name %></h2>
+  <h2><%= bb.name %></h2>
 
   <table class="table table-striped">
     <thead>
@@ -70,7 +70,7 @@
       <th>Due Date</th>
     </thead>
     <tbody>
-    <% gt.assignments.each do |aa| %>
+    <% bb.assignments.each do |aa| %>
       <tr>
         <td><%= link_to aa.name, aa %></td>
         <td><%= aa.due_date %></td>
