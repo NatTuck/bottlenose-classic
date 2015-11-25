@@ -14,7 +14,6 @@ class AssignmentsController < ApplicationController
 
   def new
     @assignment = Assignment.new
-    @assignment.chapter_id = @chapter.nil? ? nil : @chapter.id
     @assignment.course_id  = @course.id
     @assignment.due_date = (Time.now + 1.month).to_date
     @assignment.points_available = 100
