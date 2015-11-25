@@ -12,11 +12,11 @@ class CreateBuckets < ActiveRecord::Migration
     add_column :assignments, :course_id, :integer
 
     Course.all.each do |cc|
-      gt = Bucket.create(name: "Assignment", weight: 1.0, course_id: cc.id)
+      bb = Bucket.create(name: "Assignment", weight: 1.0, course_id: cc.id)
 
       cc.assignments.each do |aa|
         aa.course_id = cc.id
-        aa.grade_type_id = gt.id
+        aa.bucket_id = bb.id
         aa.save!
       end
     end

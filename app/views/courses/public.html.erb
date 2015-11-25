@@ -1,15 +1,9 @@
 <% @page_title = @course.name %>
 
-<% @course.chapters.each do |ch| %>
-  <h2>Chapter: <%= ch.name %></h2>
+<% @course.buckets.each do |bb| %>
+  <h2><%= bb.name %></h2>
 
-  <% unless ch.notes.empty? %>
-    <div>
-      <%= raw ch.notes %>
-    </div>
-  <% end %>
-
-  <% ch.assignments.each do |aa| %>
+  <% bb.assignments.each do |aa| %>
     <h3><%= aa.name %></h3>  
 
     <% unless aa.assignment.blank? %>

@@ -5,7 +5,6 @@ require 'score'
 class Assignment < ActiveRecord::Base
   belongs_to :blame, :class_name => "User", :foreign_key => "blame_id"
 
-  belongs_to :chapter
   belongs_to :bucket
   belongs_to :course
 

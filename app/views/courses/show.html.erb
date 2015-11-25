@@ -19,50 +19,14 @@
 </p>
 
 <p>
-  <%= link_to 'New Chapter', new_course_chapter_path(@course) %> |
   <%= link_to 'New Assignment', new_course_assignment_path(@course) %>
 </p>
 
 <% end %>
 
-<% unless @course.chapters.empty? %>
-
-<h1>Chapters</h1>
-
-<table class="table table-striped">
-  <tr>
-    <th>Chapter</th>
-    <th>Assignments</th>
-    <th>Next Due Date</th>
-    <th>&nbsp;</th>
-  </tr>
-
-  <% @course.chapters.sort_by {|cc| cc.name}.each do |chapter| %>
-    <tr>
-      <td><%= link_to chapter.name, chapter %></td>
-      <td><%= chapter.assignments_score(@logged_in_user) %></td>
-      <td><%= chapter.next_due_date_for(@logged_in_user) %></td>
-      <td>
-        <% if @logged_in_user.course_admin?(@course) %>
-          (<%= link_to "Edit Title", [:edit, chapter] %>)
-          (<%= link_to 'Delete', chapter, 
-           { method: :delete, data: { confirm: 'Are you sure?' }} %>)
-         <% end %>
-     </td>
-   </tr>
-<% end %>
-
-</table>
-
-<% end %>
-
-<% unless @course.assignments.find_all {|aa| aa.chapter_id.nil? }.empty? %>
-
-<h1>Assignments</h1>
-
 <% @course.buckets.each do |bb| %>
 
-  <h2><%= bb.name %></h2>
+  <h1><%= bb.name %></h1>
 
   <table class="table table-striped">
     <thead>
@@ -78,8 +42,6 @@
     <% end %>
     </tbody>
   </table>
-
-<% end %>
 
 <% end %>
 
@@ -113,7 +75,7 @@
 
 <h1>Data Export</h1>
 
-<p><%= link_to "Get CSV for Assignment Grades", course_path(@course) + '/export_grades' %></p>
+<p><%= link_to("Get CSV for Assignment Grades", course_path(@course) + '/export_grades', method: 'post') %></p>
 
 <% end %>
 

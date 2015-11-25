@@ -96,7 +96,6 @@ class SubmissionsController < ApplicationController
       @assignment = Assignment.find(params[:assignment_id])
     end
 
-    @chapter = @assignment.chapter
     @course  = @assignment.course
   end
 

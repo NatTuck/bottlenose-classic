@@ -1,7 +1,7 @@
 class AssignmentsController < ApplicationController
   before_filter :require_teacher, :except => [:show]
   before_filter :require_course_permission
-  prepend_before_filter :find_assignment_and_chapter
+  prepend_before_filter :find_assignment
 
   def index
     @assignments = @chapter.assignments
@@ -59,12 +59,9 @@ class AssignmentsController < ApplicationController
 
   private
 
-  def find_assignment_and_chapter
+  def find_assignment
     if params[:id]
       @assignment = Assignment.find(params[:id]) 
-      @chapter    = @assignment.chapter
-    else
-      @chapter    = Chapter.find_by_id(params[:chapter_id])
     end
 
     if params[:course_id]
@@ -75,7 +72,7 @@ class AssignmentsController < ApplicationController
   end
 
   def assignment_params
-    params[:assignment].permit(:name, :chapter_id, :assignment, :due_date,
+    params[:assignment].permit(:name, :assignment, :due_date,
                                :points_available, :hide_grading, :blame_id,
                                :assignment_file, :grading_file, :solution_file,
                                :bucket_id, :course_id)
