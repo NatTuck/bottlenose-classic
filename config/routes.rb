@@ -2,10 +2,6 @@
 Bottlenose::Application.routes.draw do
   resources :terms
 
-  resources :reg_requests
-
-  resources :questions
-
   get "main/index"
   get "main/auth"
   post "main/resend_auth"
@@ -20,16 +16,15 @@ Bottlenose::Application.routes.draw do
 
   resources :courses do
     resources :registrations
-    resources :chapters
     resources :reg_requests
     resources :buckets
     resources :assignments
   end
 
-  get 'courses/:id/export_grades' => 'courses#export_grades'
-  get 'courses/:id/bulk_add'      => 'courses#bulk_add'
+  post 'courses/:id/export_grades' => 'courses#export_grades'
+  get  'courses/:id/bulk_add'      => 'courses#bulk_add'
   post 'courses/:id/bulk_add'     => 'courses#bulk_add'
-  get 'courses/:id/public'        => 'courses#public'
+  get  'courses/:id/public'        => 'courses#public'
 
   resources :registrations, :except => [:new]
 
@@ -39,8 +34,6 @@ Bottlenose::Application.routes.draw do
   post 'registrations/:id/toggle_show' => 'registrations#toggle_show'
 
   resources :reg_requests, :except => [:new]
-
-  resources :chapters
 
   resources :assignments do
     resources :submissions, :except => [:destroy]
@@ -53,16 +46,6 @@ Bottlenose::Application.routes.draw do
     'assignments#tarball'
 
   resources :submissions
-
-  resources :lessons do
-    resources :questions
-  end
-
-  resources :questions, :only => [:edit, :update, :destroy] do
-    resources :answers, :only => [:create, :update]
-  end
-
-  resources :answers, :only => [:destroy]
   
   root :to => 'main#index'
 end

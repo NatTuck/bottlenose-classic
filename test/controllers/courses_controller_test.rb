@@ -54,8 +54,7 @@ class CoursesControllerTest < ActionController::TestCase
   end
   
   test "updating late penalties should change scores" do
-    c1  = create(:chapter, course: @course1)
-    a1  = create(:assignment, chapter: c1, course: @course1, due_date: (Time.now - 5.days))
+    a1  = create(:assignment, course: @course1, due_date: (Time.now - 5.days))
     sub = create(:submission, assignment: a1, user: @john, teacher_score: 100)
 
     put :update, {id: @course1, course: { name: @course1.name, late_options: "5,1,12" }}, 
@@ -92,8 +91,7 @@ class CoursesControllerTest < ActionController::TestCase
   end
 
   test "should export grades" do
-    c1 = create(:chapter, course: @course1)
-    a1 = create(:assignment, chapter: c1, course: @course1)
+    a1 = create(:assignment, course: @course1)
     sub1 = create(:submission, assignment: a1, user: @john, teacher_score: 20)
 
     get :export_grades, {:id => @course1.id}, {:user_id => @fred.id}

@@ -6,7 +6,6 @@ class Course < ActiveRecord::Base
 
   has_many :reg_requests, dependent: :destroy
 
-  has_many :chapters,    dependent: :destroy
   has_many :buckets,     dependent: :destroy
   has_many :assignments, dependent: :restrict_with_error
 
