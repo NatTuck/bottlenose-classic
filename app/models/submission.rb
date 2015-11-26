@@ -25,6 +25,10 @@ class Submission < ActiveRecord::Base
     assignment.update_best_sub_for!(user)
   end
 
+  def name
+    "#{user.name} @ #{created_at}"
+  end
+
   def upload_file=(data)
     return if data.nil?
 

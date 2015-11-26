@@ -1,11 +1,4 @@
 <% @page_title = "New Assignment" %>
 
-<p><%= link_to "Back to Course: #{@course.name}", @course %>
-
-<% unless @chapter.nil? %>
-  | <%= link_to "Back to Chapter: #{@chapter.name}", @chapter %>
-<% end %>
-</p>
-
 <%= render 'form' %>
 

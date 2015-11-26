@@ -1,10 +1,5 @@
 <% @page_title = "Grade a Submission" %>
 
-<p>
-  <%= link_to "Back to Submission", @submission %> |
-  <%= link_to "Back to Assignment: #{@assignment.name}", @assignment %>
-</p>
-
 <table class="table table-striped">
   <tr>
     <td><strong>Assignment</strong></td>
@@ -13,6 +8,14 @@
   <tr>
     <td><strong>Student</strong></td>
     <td><%= @submission.user.name %></td>
+  </tr>
+  <tr>
+    <td><strong>Due Date</strong></td>
+    <td><%= @submission.assignment.due_date %></td>
+  </tr>
+  <tr>
+    <td><strong>Submission Date</strong></td>
+    <td><%= @submission.created_at %></td>
   </tr>
   <tr>
     <td><strong>Submitted File</strong></td>

@@ -12,19 +12,17 @@
   <% end %>
 
   <%= f.hidden_field :course_id %>
+  <%= f.hidden_field :user_id %>
 
   <div class="form-group">
-    <%= label_tag :user_email, "Email" %>
-    <%= text_field_tag :user_email %>
-  </div>
-  <div class="form-group">
-    <%= label_tag :user_name, "Name" %>
-    <%= text_field_tag :user_name %>
-  </div>
-  <div class="form-group">
-    <%= label_tag :teacher, "Teacher" %>
+    <%= label_tag :teacher, "Teacher?" %>
     <%= f.check_box :teacher %>
   </div>
+  <div class="form-group">
+    <%= label_tag :show_in_lists, "Show In Lists?" %>
+    <%= f.check_box :show_in_lists %>
+  </div>
+
   <div class="form-group">
     <%= f.submit nil, class: 'btn btn-primary' %>
   </div>

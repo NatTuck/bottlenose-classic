@@ -35,6 +35,10 @@ class Course < ActiveRecord::Base
     registrations.to_a.sort_by {|reg| reg.user.invert_name.downcase }
   end
 
+  def buckets_sorted
+    buckets.order(:name)
+  end
+
   def teacher_registrations
     regs_sorted.find_all {|reg| reg.teacher? }
   end
@@ -57,6 +61,10 @@ class Course < ActiveRecord::Base
 
   def first_teacher
     teachers.first
+  end
+
+  def total_bucket_weight
+    buckets.reduce(0) {|sum, bb| sum + bb.weight }
   end
 
   def add_registration(name, email, teacher = false)

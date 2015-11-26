@@ -7,6 +7,10 @@ class Registration < ActiveRecord::Base
 
   validates :user_id, :uniqueness => { :scope => :course_id }
 
+  def self.get(c_id, u_id)
+    Registration.find_by_course_id_and_user_id(c_id, u_id)
+  end
+
   def submissions
     Submission.where(user_id: user.id, course_id: course.id)
   end
@@ -19,13 +23,14 @@ class Registration < ActiveRecord::Base
     end
   end
 
-  def score
-    points = best_subs.map {|b| b.score }.sum
-    avail  = course.assignments.map {|a| a.points_available }.sum
-    if avail == 0
-      0
-    else
-      points / avail
+  def total_score
+    total = 0.0
+
+    course.buckets.each do |bb|
+      ratio = bb.points_ratio(user)
+      total += ratio * bb.weight
     end
+
+    (total * 100.0).round
   end
 end

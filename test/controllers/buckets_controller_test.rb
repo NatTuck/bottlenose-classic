@@ -30,11 +30,6 @@ class BucketsControllerTest < ActionController::TestCase
     assert_redirected_to course_buckets_path(@cs101)
   end
 
-  test "should show bucket" do
-    get :show, course_id: @cs101, id: @bucket
-    assert_response :success
-  end
-
   test "should get edit" do
     get :edit, course_id: @cs101, id: @bucket
     assert_response :success

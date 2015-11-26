@@ -28,7 +28,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
   test "teacher manually submit a grade" do
     pset = create(:assignment, bucket: @bucket, course: @cs101)
 
-    score0 = @john_reg.score
+    score0 = @john_reg.total_score
 
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"    
     click_link 'Your Courses'
@@ -46,7 +46,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     assert_equal sub.score, 85
 
     # Make sure score summary updates properly.
-    assert_not_equal(@john_reg.reload.score, score0, "Updated summary")
+    assert_not_equal(@john_reg.reload.total_score, score0, "Updated summary")
   end
 
   test "submit and grade a submission" do
