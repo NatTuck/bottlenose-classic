@@ -1,14 +1,31 @@
 <% @page_title = "Manage Registrations" %>
 
-<p><%= link_to "Back to Course: #{@course.name}", @course %></p>
-
 <h1>Add a Student or Teacher</h1>
 
 <p><%= link_to "Bulk-Add Students", course_path(@course) + "/bulk_add" %></p>
 
 <p>(A new user will be created and notified if needed.)</p>
 
-<%= render 'form' %>
+<%= form_for [@course, @registration] do |f| %>
+  <%= f.hidden_field :course_id %>
+  
+  <div class="form-group">
+    <%= label_tag :user_email, "Email" %>
+    <%= text_field_tag :user_email %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :user_name, "Name" %>
+    <%= text_field_tag :user_name %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :teacher, "Teacher?" %>
+    <%= f.check_box :teacher %>
+  </div>
+  <div class="form-group">
+    <%= f.submit nil, class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
 
 <h1>Current Teachers</h1>
 
@@ -30,7 +47,8 @@
     (<%= link_to "Toggle", registration_show_toggle_path(treg.id), 
                            remote: true, method: 'post' %>)
   </td>
-  <td><%= link_to 'Remove', [@course, treg], 
+  <td><%= link_to 'Edit', [:edit, @course, treg] %> |
+      <%= link_to 'Remove', [@course, treg], 
             { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>
 </tr>
 <% end %>
@@ -56,7 +74,8 @@
     (<%= link_to "Toggle", registration_show_toggle_path(sreg.id), 
                            remote: true, method: 'post' %>)
   </td>
-  <td><%= link_to 'Remove', [@course, sreg], 
+  <td><%= link_to 'Edit', [:edit, @course, sreg] %> |
+      <%= link_to 'Remove', [@course, sreg], 
             { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>
 </tr>
 <% end %>

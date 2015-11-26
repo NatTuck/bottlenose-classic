@@ -55,7 +55,7 @@ module ApplicationHelper
     end
 
     if sub.score == 0
-      if sub.auto_score == 0
+      if sub.auto_score == 0 || sub.teacher_score == 0
         return image_tag("cross-mark.png", height: 32)
       else
         return image_tag("question-mark.png", height: 32)

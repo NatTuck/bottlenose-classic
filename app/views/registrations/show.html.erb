@@ -1,13 +1,5 @@
 <% @page_title = "Student Status Report" %>
 
-<p>
-<%= link_to "Back to Course: #{@course.name}", @course %>
-
-<% if @logged_in_user.course_admin?(@course) %>
-  | <%= link_to "Manage Registrations", course_registrations_path(@course) %>
-<% end %>
-</p>
-
 <table class="table table-striped">
   <tr>
     <td>Course</td>
@@ -22,17 +14,42 @@
     <td>
       <%= @registration.teacher? ? "Yes" : "No" %>
       <% if @logged_in_user.course_admin?(@course) %>
-        (<%= link_to "Edit", [:edit, @registration] %>)
+        (<%= link_to "Edit", course_registrations_path(@course) %>)
       <% end %>
     </td>
   </tr>
 </table>
 
-<h1>Assignments</h1>
+<h1>Overview</h1>
 
 <table class="table table-striped">
   <tr>
-    <th>Chapter</th>
+    <th>Grade Bucket</th>
+    <th>Weight</th>
+    <th>Score</th>
+  </tr>
+
+  <% @course.buckets.order(:name).each do |bucket| %>
+    <tr>
+      <td><%= bucket.name %></td>
+      <td><%= bucket.weight %></td>
+      <td><%= bucket.points_percent(@user) %>%</td>
+    </tr>
+  <% end %>
+
+  <tr>
+    <td><strong>Total</strong></td>
+    <td><strong><%= @course.total_bucket_weight %></strong></td>
+    <td><strong><%= @registration.total_score %>%</strong></td>
+  </tr>
+</table>
+
+<% @course.buckets.order(:name).each do |bucket| %>
+  
+<h1><%= bucket.name %></h1>
+
+<table class="table table-striped">
+  <tr>
     <th>Name</th>
     <th>Status</th>
     <th>Attempts</th>
@@ -41,38 +58,30 @@
     <th>Submission</th>
   </tr>
 
-<% @course.chapters.order(:name).each do |chapter| %>
-  <% chapter.assignments.order(:name).each do |assignment| %>
+  <% bucket.assignments.order(:name).each do |assignment| %>
     <% sub = assignment.main_submission_for(@user) %>
     <tr>
-      <td><%= link_to chapter.name, chapter %></td>
       <td><%= link_to assignment.name, assignment %></td>
       <td><%= status_image(sub) %></td>
       <td><%= assignment.submissions_for(@user).count %>
 	(<%= link_to "List", user_assignment_submissions_path(@user, assignment) %>)
       </td>
       <td><%= show_score(assignment.main_score_for(@user), assignment) %></td>
-      <td>
-	<% if sub.teacher_score.nil? %>
-	  Computer
-	<% else %>
-	  Human
-	<% end %>
-      </td>
+      <td><%= score_source(sub) %></td>
       <td><%= (sub.nil? || sub.new_record?) ? '-' : link_to("Best", sub) %></td>
     </tr>
   <% end %>
+
+  <tr>
+    <td><strong>Total</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><%= bucket.points_earned(@user) %>&nbsp;/&nbsp;<%= bucket.points_available(@user) %></td>
+    <td>= <%= bucket.points_percent(@user) %>%</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
 <% end %>
 
-<tr>
-  <td><strong>Total</strong></td>
-  <td>&nbsp;</td>
-  <td>&nbsp;</td>
-  <td>&nbsp;</td>
-  <td><%= @score.points %>&nbsp;/&nbsp;<%= @score.total %></td>
-  <td>( <%=  @score.percent %>% )</td>
-  <td>&nbsp;</td>
-</tr>
-
-</table>
 

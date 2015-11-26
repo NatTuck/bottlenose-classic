@@ -1,32 +1,33 @@
 <% @page_title = "Course: #{@course.name}" %>
 
 <p>
-  <%= link_to "Back to Your Courses", courses_path %> |
   <% if @logged_in_user.registration_for(@course) %>
     <%= link_to "Status Report", @registration %>
   <% else %>
-    <%= link_to "Request Registration", 
-	  new_course_reg_request_path(@course) %>
+    <%= link_to "Request Registration", new_course_reg_request_path(@course) %>
   <% end %>
 </p>
 
 <% if @logged_in_user.course_admin?(@course) %>
 <p>
+  Course Admin:
   <%= link_to "Manage Registrations",  course_registrations_path(@course) %> |
-  <%= link_to "View Registration Requests", course_reg_requests_path(@course) %> |
-  <%= link_to "Edit Settings", [:edit, @course] %> | 
+  <%= link_to "View Registration Requests (#{@req_count})", course_reg_requests_path(@course) %> |
+  <%= link_to "Course Settings", [:edit, @course] %> | 
   <%= link_to 'Grade Buckets', course_buckets_path(@course) %></p>
 </p>
-
-<p>
-  <%= link_to 'New Assignment', new_course_assignment_path(@course) %>
-</p>
-
 <% end %>
 
-<% @course.buckets.each do |bb| %>
+<% @course.buckets_sorted.each do |bb| %>
 
   <h1><%= bb.name %></h1>
+
+  <% if @logged_in_user.course_admin?(@course) %>
+    <p>
+      <%= link_to %Q{Edit Bucket "#{bb.name}"}, edit_course_bucket_path(@course, bb) %> |
+      <%= link_to "New #{bb.name.singularize}", new_course_assignment_path(@course, bucket: bb.id) %>
+    </p>
+  <% end %>
 
   <table class="table table-striped">
     <thead>
@@ -51,22 +52,28 @@
 
 <p><%= link_to "Manage Registrations", 
          course_registrations_path(@course) %> |
-   <%= link_to "View Registration Requests",
+   <%= link_to "View Registration Requests (#{@req_count})",
          course_reg_requests_path(@course) %>
 </p>
 
 <table class="table table-striped">
   <tr>
     <th>Name</th>
-    <th>Assignments</th>
+    <% @course.buckets_sorted.each do |bb| %>
+      <th><%= bb.name %></th>
+    <% end %>
+    <th>Total</th>
     <th>Status Report</th>
   </tr>
 
 <% @active_regs.each do |reg| %>
   <tr>
     <td><%= reg.user.name %><br>
-        <%= reg.user.email %></td>
-    <td><%= reg.score %></td>
+      <%= reg.user.email %></td>
+    <% @course.buckets_sorted.each do |bb| %>
+      <td><%= bb.points_percent(reg.user) %>%</td>
+    <% end %>
+    <td><%= reg.total_score %>%</td>
     <td><%= link_to "View", reg %></td>
   </tr>
 <% end %>

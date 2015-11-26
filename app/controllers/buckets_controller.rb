@@ -1,6 +1,7 @@
 class BucketsController < ApplicationController
   before_action :set_bucket, only: [:show, :edit, :update, :destroy]
   before_action :set_course
+  before_action :setup_breadcrumbs
 
   # GET /course/3/buckets
   def index
@@ -10,15 +11,19 @@ class BucketsController < ApplicationController
 
   # GET /course/3/buckets/1
   def show
+    raise Exception.new("Show is not used.")
   end
 
   # GET /course/3/buckets/new
   def new
+    add_breadcrumb "New Bucket"
+
     @bucket = Bucket.new(course_id: @course.id)
   end
 
   # GET /course/3/buckets/2/edit
   def edit
+    add_breadcrumb @bucket.name
   end
 
   # POST /course/3/buckets
@@ -59,6 +64,11 @@ class BucketsController < ApplicationController
 
     def set_course
       @course = Course.find(params[:course_id])
+    end
+
+    def setup_breadcrumbs
+      add_course_breadcrumbs(@course)
+      add_breadcrumb "Buckets", course_buckets_path(@course)
     end
 
     # Only allow a trusted parameter "white list" through.

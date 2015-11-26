@@ -1,24 +1,22 @@
 <% @page_title = "Assignment: #{@assignment.name}" %>
 
-<p><%= link_to "Back to Course: #{@course.name}", @course %>
-
-<% unless @chapter.nil? %>
-  | <%= link_to "Back to Chapter: #{@chapter.name}", @chapter %>
-<% end %>
-
 <% if @logged_in_user.course_admin?(@course) %>
-  | <%= link_to 'Edit this Assignment', edit_assignment_path(@assignment) %>
+  <p><%= link_to 'Edit this Assignment', edit_assignment_path(@assignment) %></p>
 <% end %>
-</p>
-
-<h1>Assignment Description</h1>
 
 <p>Bucket: <%= @assignment.bucket.name %></p>
 <p>Due Date: <%= @assignment.due_date %></p>
 
-<div class="prose">
-  <%= raw @assignment.assignment %>
-</div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <p><strong>Description:</strong></p>
+    </div>
+    <div class="panel-body">
+      <div class="prose">
+        <%= raw @assignment.assignment %>
+      </div>
+    </div>
+  </div>
 
 <br>
 
@@ -73,15 +71,32 @@
 
 <p><%= link_to "New Submission", new_assignment_submission_path(@assignment) %></p>
 
-<ul>
-<% @submissions.each do |submission| %>
-  <li>
-    <%= link_to "(view)", submission %>
-    <span class="local-time"><%= submission.created_at %></span>
-    - <%= submission.user.name %>
-	  - Score: <%= show_score(submission.score) 
-    %>&nbsp;/&nbsp;<%= @assignment.points_available %>
-  </li>
+<table class="table table-striped">
+  <tr>
+    <th>Date</th>
+    <th>Status</th>
+    <th>Automatic</th>
+    <th>Teacher</th>
+    <th>Score</th>
+    <th>Link</th>
+  </tr>
+
+<% @submissions.each do |sub| %>
+  <tr>
+    <td><span class="local-time"><%= sub.created_at %></span></td>
+    <td><%= status_image(sub) %></td>
+    <td><%= sub.auto_score || '∅' %>&nbsp;/&nbsp;<%= sub.assignment.points_available %></td>
+    <td><%= show_score(sub.teacher_score) %>&nbsp;/&nbsp;<%= sub.assignment.points_available %></td>
+    <td><%= show_score(sub.score) %>&nbsp;/&nbsp;<%= sub.assignment.points_available %></td>
+    <td>
+      <%= link_to "View", sub %>
+
+      <% if @logged_in_user.course_admin?(@course) %>
+        | <%= link_to "Grade", [:edit, sub] %>
+      <% end %>
+    </td>
+  </tr>
 <% end %>
-</ul>
+
+</table>
 

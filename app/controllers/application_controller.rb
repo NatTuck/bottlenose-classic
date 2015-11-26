@@ -4,6 +4,18 @@ class ApplicationController < ActionController::Base
   before_filter :find_user_session
   before_filter :set_mailer_host
 
+  def add_root_breadcrumb
+    clear_breadcrumbs
+    add_breadcrumb(fa_icon("home"), :root_path)
+  end
+
+  def add_course_breadcrumbs(course)
+    add_root_breadcrumb
+    add_breadcrumb("Courses", courses_path)
+    add_breadcrumb(course.term.name, courses_path)
+    add_breadcrumb(course.name, course)
+  end
+
   protected
   
   def set_mailer_host
