@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151125210025) do
+ActiveRecord::Schema.define(version: 20151127025609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 20151125210025) do
     t.string   "late_options", default: "10,1,0"
     t.text     "footer"
     t.integer  "term_id"
-    t.integer  "sub_max_size", default: 20,       null: false
+    t.integer  "sub_max_size", default: 5,        null: false
     t.boolean  "public",       default: false,    null: false
   end
 

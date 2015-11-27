@@ -108,6 +108,11 @@ task :nuke_uploads do
   system("touch public/uploads/empty")
 end
 
+task :clean do
+  Rake::Task["log:clear"].execute
+  Rake::Task["tmp:clear"].execute
+  Rake::Task["tmp:cache:clear"].execute
+end
 
 namespace :test do
   task :short do
