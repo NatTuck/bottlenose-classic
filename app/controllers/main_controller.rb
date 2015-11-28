@@ -65,6 +65,7 @@ class MainController < ApplicationController
   end
 
   def about
+    add_root_breadcrumb
     add_breadcrumb "About"
   end
 end

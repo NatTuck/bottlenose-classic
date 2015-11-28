@@ -9,6 +9,7 @@ class Assignment < ActiveRecord::Base
   belongs_to :course
 
   has_many :submissions, :dependent => :restrict_with_error
+  has_many :best_subs, :dependent => :destroy
 
   validates :name,      :uniqueness => { :scope => :course_id }
   validates :name,      :presence => true

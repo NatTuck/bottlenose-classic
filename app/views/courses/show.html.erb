@@ -59,7 +59,7 @@
 <table class="table table-striped">
   <tr>
     <th>Name</th>
-    <% @course.buckets_sorted.each do |bb| %>
+    <% @buckets.each do |bb| %>
       <th><%= bb.name %></th>
     <% end %>
     <th>Total</th>
@@ -70,10 +70,10 @@
   <tr>
     <td><%= reg.user.name %><br>
       <%= reg.user.email %></td>
-    <% @course.buckets_sorted.each do |bb| %>
-      <td><%= bb.points_percent(reg.user) %>%</td>
+    <% @buckets.each do |bb| %>
+      <td><%= @scores[reg.user_id][bb.id].round %>%</td>
     <% end %>
-    <td><%= reg.total_score %>%</td>
+    <td><%= @totals[reg.user_id].round  %>%</td>
     <td><%= link_to "View", reg %></td>
   </tr>
 <% end %>

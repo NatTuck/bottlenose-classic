@@ -32,7 +32,7 @@ class Course < ActiveRecord::Base
   end
   
   def regs_sorted
-    registrations.to_a.sort_by {|reg| reg.user.invert_name.downcase }
+    registrations.includes(:user).to_a.sort_by {|reg| reg.user.invert_name.downcase }
   end
 
   def buckets_sorted
@@ -87,5 +87,51 @@ class Course < ActiveRecord::Base
     end
 
     rr
+  end
+
+  def score_summary
+    as = self.assignments.includes(:best_subs)
+
+    # Partition scores by user.
+    avails = {}
+    scores = {}
+    as.each do |aa|
+      avails[aa.bucket_id] ||= 0
+      avails[aa.bucket_id] += aa.points_available
+
+      aa.best_subs.each do |bs| 
+        scores[bs.user_id] ||= {}
+        scores[bs.user_id][aa.bucket_id] ||= 0
+        scores[bs.user_id][aa.bucket_id] += bs.score
+      end
+    end
+
+    # Calculate percentages.
+    percents = {}
+    scores.each do |u_id, bs|
+      percents[u_id] ||= {}
+
+      bs.each do |b_id, score|
+        if avails[b_id].zero?
+          percents[u_id][b_id] = 0
+        else
+          percents[u_id][b_id] = (100 * score) / avails[b_id]
+        end
+      end
+    end
+
+    # Fill in for slackers, calc totals.
+    totals = {}
+    users.each do |uu|
+      percents[uu.id] ||= {}
+      totals[uu.id] = 0
+
+      buckets.each do |bb|
+        percents[uu.id][bb.id] ||= 0
+        totals[uu.id] += bb.weight * percents[uu.id][bb.id]
+      end
+    end
+
+    [percents, totals]
   end
 end
