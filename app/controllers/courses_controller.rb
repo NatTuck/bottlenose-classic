@@ -89,6 +89,9 @@ class CoursesController < ApplicationController
         sort_by {|rr| rr.user.invert_name.downcase }
 
       @req_count = @course.reg_requests.count
+
+      @buckets = @course.buckets_sorted.to_a
+      @scores, @totals = @course.score_summary
     end
   end
 
