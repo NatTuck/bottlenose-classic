@@ -17,7 +17,6 @@ ActiveRecord::Schema.define(version: 20151127025609) do
   enable_extension "plpgsql"
 
   create_table "assignments", force: :cascade do |t|
-    t.integer  "chapter_id"
     t.string   "name",                                 null: false
     t.date     "due_date",                             null: false
     t.string   "assignment_file_name"
@@ -37,8 +36,6 @@ ActiveRecord::Schema.define(version: 20151127025609) do
     t.integer  "course_id",                            null: false
   end
 
-  add_index "assignments", ["chapter_id"], name: "index_assignments_on_chapter_id", using: :btree
-
   create_table "best_subs", force: :cascade do |t|
     t.integer "user_id",       null: false
     t.integer "assignment_id", null: false
@@ -53,17 +50,6 @@ ActiveRecord::Schema.define(version: 20151127025609) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
-  create_table "chapters", force: :cascade do |t|
-    t.string   "name",                      null: false
-    t.integer  "course_id",                 null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "notes",        default: "", null: false
-    t.float    "score_weight"
-  end
-
-  add_index "chapters", ["course_id"], name: "index_chapters_on_course_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",                            null: false
