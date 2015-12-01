@@ -1,5 +1,6 @@
 class TermsController < ApplicationController
   before_filter :require_site_admin
+  before_filter :setup_breadcrumbs
   
   def index
     @terms = Term.all_sorted
@@ -45,6 +46,12 @@ class TermsController < ApplicationController
   end
 
   private
+
+  def setup_breadcrumbs
+    add_root_breadcrumb
+    add_breadcrumb "Courses", courses_path
+    add_breadcrumb "Terms"
+  end
 
   def term_params
     params[:term].permit(:name, :archived)
