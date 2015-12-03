@@ -1,4 +1,5 @@
 class TeamsController < ApplicationController
+  before_action :set_course
   before_action :set_team, only: [:show, :edit, :update, :destroy]
 
   # GET /teams
@@ -13,6 +14,7 @@ class TeamsController < ApplicationController
   # GET /teams/new
   def new
     @team = Team.new
+    @team.course_id = @course.id
   end
 
   # GET /teams/1/edit
@@ -46,13 +48,18 @@ class TeamsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_team
-      @team = Team.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_course
+    @course = Course.find(params[:course_id])
+  end  
+  
+  def set_team
+    @team = Team.find(params[:id])
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def team_params
-      params.require(:team).permit(:course_id, :start_date)
-    end
+  # Only allow a trusted parameter "white list" through.
+  def team_params
+    params.require(:team).permit(:course_id, :start_date)
+  end
 end
+

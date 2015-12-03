@@ -1,9 +1,5 @@
 
 Bottlenose::Application.routes.draw do
-  resources :teams
-
-  resources :terms
-
   get "main/index"
   get "main/auth"
   post "main/resend_auth"
@@ -16,11 +12,14 @@ Bottlenose::Application.routes.draw do
   resources :users
   post 'users/:id/impersonate' => 'users#impersonate'
 
+  resources :terms
+
   resources :courses do
     resources :registrations
     resources :reg_requests
     resources :buckets
     resources :assignments
+    resources :teams
   end
 
   post 'courses/:id/export_grades' => 'courses#export_grades'

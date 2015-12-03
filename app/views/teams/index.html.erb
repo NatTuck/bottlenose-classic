@@ -1,6 +1,6 @@
-<p id="notice"><%= notice %></p>
+<% @page_title = "Teams for #{@course.name}" %>
 
-<h1>Listing Teams</h1>
+<p id="notice"><%= notice %></p>
 
 <table>
   <thead>
@@ -17,7 +17,7 @@
         <td><%= team.course_id %></td>
         <td><%= team.start_date %></td>
         <td><%= link_to 'Show', team %></td>
-        <td><%= link_to 'Edit', edit_team_path(team) %></td>
+        <td><%= link_to 'Edit', edit_course_team_path(@course, team) %></td>
         <td><%= link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
@@ -26,4 +26,4 @@
 
 <br>
 
-<%= link_to 'New Team', new_team_path %>
+<%= link_to 'New Team', new_course_team_path(@course) %>

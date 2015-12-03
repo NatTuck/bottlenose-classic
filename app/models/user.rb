@@ -4,8 +4,9 @@ class User < ActiveRecord::Base
   has_many :registrations
   has_many :courses, :through => :registrations, :dependent => :restrict_with_error
   
-  has_many :submissions, :dependent => :restrict_with_error
-  has_many :reg_requests, :dependent => :restrict_with_error
+  has_many :submissions,  dependent: :restrict_with_error
+  has_many :reg_requests, dependent: :destroy
+  has_many :teams,        dependent: :destroy
 
   validates :email, :format => { :with => /\@.*\./ }
   validates :auth_key, :presence => true
