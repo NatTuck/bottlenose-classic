@@ -1,5 +1,7 @@
 
 Bottlenose::Application.routes.draw do
+  resources :teams
+
   resources :terms
 
   get "main/index"

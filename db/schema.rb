@@ -11,13 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151127025609) do
+ActiveRecord::Schema.define(version: 20151202000114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "assignments", force: :cascade do |t|
-    t.integer  "chapter_id"
     t.string   "name",                                 null: false
     t.date     "due_date",                             null: false
     t.string   "assignment_file_name"
@@ -35,9 +34,8 @@ ActiveRecord::Schema.define(version: 20151127025609) do
     t.string   "tar_key"
     t.integer  "bucket_id"
     t.integer  "course_id",                            null: false
+    t.boolean  "team_subs"
   end
-
-  add_index "assignments", ["chapter_id"], name: "index_assignments_on_chapter_id", using: :btree
 
   create_table "best_subs", force: :cascade do |t|
     t.integer "user_id",       null: false
@@ -52,18 +50,8 @@ ActiveRecord::Schema.define(version: 20151127025609) do
     t.float    "weight"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean  "team_subs"
   end
-
-  create_table "chapters", force: :cascade do |t|
-    t.string   "name",                      null: false
-    t.integer  "course_id",                 null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "notes",        default: "", null: false
-    t.float    "score_weight"
-  end
-
-  add_index "chapters", ["course_id"], name: "index_chapters_on_course_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",                            null: false
@@ -74,6 +62,8 @@ ActiveRecord::Schema.define(version: 20151127025609) do
     t.integer  "term_id"
     t.integer  "sub_max_size", default: 5,        null: false
     t.boolean  "public",       default: false,    null: false
+    t.integer  "team_min"
+    t.integer  "team_max"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -128,12 +118,27 @@ ActiveRecord::Schema.define(version: 20151127025609) do
     t.boolean  "ignore_late_penalty", default: false
     t.integer  "upload_id"
     t.integer  "upload_size",         default: 0,     null: false
+    t.integer  "team_id"
   end
 
   add_index "submissions", ["assignment_id"], name: "index_submissions_on_assignment_id", using: :btree
   add_index "submissions", ["grading_uid"], name: "index_submissions_on_grading_uid", unique: true, using: :btree
   add_index "submissions", ["user_id", "assignment_id"], name: "index_submissions_on_user_id_and_assignment_id", using: :btree
   add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
+
+  create_table "team_users", force: :cascade do |t|
+    t.integer  "team_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.integer  "course_id"
+    t.date     "start_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "terms", force: :cascade do |t|
     t.string   "name"
