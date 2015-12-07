@@ -1,14 +1,20 @@
-<p id="notice"><%= notice %></p>
+<% @page_title = "#{@course.name} - Team ##{@team.id}" %>
 
-<p>
-  <strong>Course:</strong>
-  <%= @team.course_id %>
-</p>
+<p id="notice"><%= notice %></p>
 
 <p>
   <strong>Start date:</strong>
   <%= @team.start_date %>
 </p>
 
-<%= link_to 'Edit', edit_team_path(@team) %> |
-<%= link_to 'Back', teams_path %>
+<p><strong>Members:</strong></p>
+
+<ul>
+  <% @team.users.each do |uu| %>
+    <li><%= link_to uu.name, uu.registration_for(@course) %></li> 
+  <% end %>
+</ul>
+
+
+<%= link_to 'Edit', edit_course_team_path(@course, @team) %> |
+<%= link_to 'Back', course_teams_path(@course) %>

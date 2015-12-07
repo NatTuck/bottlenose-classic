@@ -1,3 +1,9 @@
+<%= javascript_tag do %>
+  
+
+
+<% end %>
+
 <%= form_for([@course, @team]) do |f| %>
   <% if @team.errors.any? %>
     <div id="error_explanation">
@@ -10,7 +16,7 @@
       </ul>
     </div>
   <% end %>
-  
+
   <%= f.hidden_field :course_id %>
 
   <div class="form-group">
@@ -19,6 +25,36 @@
   </div>
 
   <div class="form-group">
-    <%= f.submit nil, class: 'btn btn-primary' %>
+    <div class="col-sm-3">
+      <%= f.label :users, "Team Users" %><br>
+      Filter: <%= text_field_tag("user_filter", "", class: 'form-control', autocomplete: 'off') %><br>
+      <%= select_tag(:users, names_for_select(@team.users), multiple: true, class: 'user-list') %>
+      <p style="text-align: right">
+        <button id="rem-btn" class="btn btn-default" type="button">
+          Remove User <%= fa_icon("arrow-circle-right") %>
+        </button>
+      </p>
+    </div>
+
+    <div class="col-sm-1">
+      &nbsp;
+    </div>
+
+    <div class="col-sm-3">
+      <%= label_tag "other_users[]", "Available Users" %><br>
+      Filter: <%= text_field_tag("other_filter", "", class: 'form-control', autocomplete: 'off') %><br>
+      <%= select_tag(:other_users, names_for_select(@others), multiple: true, class: 'user-list') %>
+      <p>
+        <button id="add-btn" class="btn btn-default" type="button">
+          <%= fa_icon("arrow-circle-left") %> Add User
+        </button>
+      </p>
+    </div>
+
+    <div class="clearfix"></div>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit nil, class: 'btn btn-primary', id: 'submit-btn' %>
   </div>
 <% end %>

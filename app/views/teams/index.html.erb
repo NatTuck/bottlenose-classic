@@ -2,11 +2,13 @@
 
 <p id="notice"><%= notice %></p>
 
-<table>
+<%= link_to 'New Team', new_course_team_path(@course) %>
+
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Course</th>
       <th>Start date</th>
+      <th>Members</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -14,11 +16,12 @@
   <tbody>
     <% @teams.each do |team| %>
       <tr>
-        <td><%= team.course_id %></td>
         <td><%= team.start_date %></td>
-        <td><%= link_to 'Show', team %></td>
+        <td><%= team.users.map {|uu| uu.name }.join(", ") %></td>
+        <td><%= link_to 'Show', course_team_path(@course, team) %></td>
         <td><%= link_to 'Edit', edit_course_team_path(@course, team) %></td>
-        <td><%= link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', course_team_path(@course, team), 
+          method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -26,4 +29,3 @@
 
 <br>
 
-<%= link_to 'New Team', new_course_team_path(@course) %>
