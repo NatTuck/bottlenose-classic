@@ -17,12 +17,13 @@
     <%= f.text_field :name, class: 'form-control' %>
   </div>
   <div class="form-group">
-    <%= f.label :assignment %>
+    <%= f.label :assignment, "Assignment Text" %>
+    <br>(Allows HTML markup)
     <%= f.text_area :assignment, class: "form-control rich-text" %>
   </div>
   <div class="form-group">
     <%= f.label :bucket %>
-    <%= f.select :bucket_id, @course.buckets.map {|bb| [bb.name, bb.id]} %>
+    <%= f.select :bucket_id, @course.buckets.map {|bb| [bb.name, bb.id]}, {}, class: 'form-control' %>
   </div>
   <div class="form-group">
     <%= f.label :assignment_file %>
@@ -38,12 +39,18 @@
   </div>
   <div class="form-group">
     <%= f.label :points_available %>
+    <br>(This is a weight relative to other assignments in the same bucket.)
     <%= f.text_field :points_available, {size: 10, default: 100, class: 'form-control' } %>
   </div>
   <div class="form-group">
-    <%= f.label :hide_grading %>
+    <%= f.label :hide_grading, "Hide Grading?" %>
     <%= f.check_box :hide_grading %>
     <br>(Assignment scores and teacher notes are hidden.)
+  </div>
+  <div class="form-group">
+    <%= f.label :team_subs, "Team Submissions?" %>
+    <%= f.check_box :team_subs %>
+    <br>(Can only submit as a member of a team.)
   </div>
   <div class="form-group">
     <%= f.label :due_date %>

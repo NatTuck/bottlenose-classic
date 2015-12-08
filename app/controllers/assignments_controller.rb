@@ -1,9 +1,9 @@
 class AssignmentsController < ApplicationController
+  before_filter :find_assignment
   before_filter :require_teacher, :except => [:show]
   before_filter :require_course_permission
 
   before_filter :setup_breadcrumbs
-  prepend_before_filter :find_assignment
 
   def index
     @assignments = @chapter.assignments
@@ -14,6 +14,8 @@ class AssignmentsController < ApplicationController
     add_breadcrumb @assignment.name
 
     @submissions = @assignment.submissions.where(user_id: @logged_in_user.id)
+    
+    @team = @logged_in_user.active_team(@course)
   end
 
   def new
@@ -77,6 +79,7 @@ class AssignmentsController < ApplicationController
     else
       @course = @assignment.course
     end
+    
   end
 
   def setup_breadcrumbs
@@ -93,6 +96,6 @@ class AssignmentsController < ApplicationController
     params[:assignment].permit(:name, :assignment, :due_date,
                                :points_available, :hide_grading, :blame_id,
                                :assignment_file, :grading_file, :solution_file,
-                               :bucket_id, :course_id)
+                               :bucket_id, :course_id, :team_subs)
   end
 end

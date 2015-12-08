@@ -25,16 +25,25 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new
     @submission.assignment_id = @assignment.id
     @submission.user_id = @logged_in_user.id
+    
+    @team = @logged_in_user.active_team(@course)
   end
 
   def edit
     add_breadcrumb @submission.name, @submission
     add_breadcrumb "Grading"
+    
+    @team = @logged_in_user.active_team(@course)
   end
 
   def create
     @submission = Submission.new(submission_params)
     @submission.assignment_id = @assignment.id
+
+    @team = @logged_in_user.active_team(@course)
+    unless @team.nil?
+      ...
+    end
 
     if @logged_in_user.course_admin?(@course)
       @submission.user_id ||= @logged_in_user.id
@@ -104,7 +113,7 @@ class SubmissionsController < ApplicationController
       @assignment = Assignment.find(params[:assignment_id])
     end
 
-    @course  = @assignment.course
+    @course = @assignment.course
   end
 
   def setup_breadcrumbs

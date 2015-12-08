@@ -6,6 +6,12 @@
 
 <p>Bucket: <%= @assignment.bucket.name %></p>
 <p>Due Date: <%= @assignment.due_date %></p>
+<p>Grading Hidden? <%= @assignment.hide_grading? ? "yes" : "no" %></p>
+<p>Teams? <%= @assignment.team_subs? ? "yes" : "no" %>
+<% if (@logged_in_user.course_admin?(@course) && @assignment.team_subs?) %>
+  (<%= link_to "Manage Teams", course_teams_path(@course) %>)
+<% end %>
+</p>
 
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -69,7 +75,12 @@
 
 <h1>Your Submissions</h1>
 
-<p><%= link_to "New Submission", new_assignment_submission_path(@assignment) %></p>
+<% if @assignment.team_subs? %>
+  <p>Team Members: <%= @team.member_names %></p>
+  <p><%= link_to "New Team Submission", new_assignment_submission_path(@assignment) %></p>
+<% else %>
+  <p><%= link_to "New Submission", new_assignment_submission_path(@assignment) %></p>
+<% end %>
 
 <table class="table table-striped">
   <tr>

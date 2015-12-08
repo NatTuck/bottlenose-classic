@@ -14,6 +14,10 @@
     </div>
   <% end %>
 
+  <% unless @team.nil? %>
+    <p>This will be a team submission.</p>
+    <p>Team members: <%= @team.member_names %>
+  <% end %>
 
   <div class="form-group">
     <%= f.label :student_notes %>
