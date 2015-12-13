@@ -2,11 +2,13 @@ require 'securerandom'
 
 class User < ActiveRecord::Base
   has_many :registrations
-  has_many :courses, :through => :registrations, :dependent => :restrict_with_error
+  has_many :courses, through: :registrations, :dependent => :restrict_with_error
   
   has_many :submissions,  dependent: :restrict_with_error
   has_many :reg_requests, dependent: :destroy
-  has_many :teams,        dependent: :destroy
+
+  has_many :team_users, dependent: :destroy
+  has_many :teams, through: :team_users, dependent: :destroy
 
   validates :email, :format => { :with => /\@.*\./ }
   validates :auth_key, :presence => true

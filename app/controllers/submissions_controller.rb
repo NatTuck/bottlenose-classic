@@ -1,9 +1,9 @@
 class SubmissionsController < ApplicationController
+  before_action :find_submission_and_assignment
+  before_action :setup_breadcrumbs
+  
   before_filter :require_teacher, :except => [:new, :create, :show]
   before_filter :require_student
-  
-  before_filter :setup_breadcrumbs
-  prepend_before_filter :find_submission_and_assignment
 
   def index
     @submissions = @assignment.submissions
@@ -27,7 +27,7 @@ class SubmissionsController < ApplicationController
     @submission.user_id = @logged_in_user.id
     
     @team = @logged_in_user.active_team(@course)
-    @submission.team_id = @team.id
+    @submission.team = @team
   end
 
   def edit
@@ -41,7 +41,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new(submission_params)
     @submission.assignment_id = @assignment.id
 
-    @row_user = User.find(params[:row_user_id])
+    @row_user = User.find_by_id(params[:row_user_id])
 
     if @logged_in_user.course_admin?(@course)
       @submission.user ||= @logged_in_user
@@ -73,7 +73,7 @@ class SubmissionsController < ApplicationController
   end
 
   def update
-    @row_user = User.find(params[:row_user_id])
+    @row_user = User.find_by_id(params[:row_user_id])
 
     if @submission.update_attributes(submission_params)
       respond_to do |format|

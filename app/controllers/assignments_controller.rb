@@ -1,9 +1,9 @@
 class AssignmentsController < ApplicationController
-  before_filter :require_teacher, :except => [:show]
-  before_filter :require_course_permission
-
   before_action :find_assignment
   before_action :setup_breadcrumbs
+  
+  before_filter :require_teacher, :except => [:show]
+  before_filter :require_course_permission
 
   def index
     @assignments = @chapter.assignments

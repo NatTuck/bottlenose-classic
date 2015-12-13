@@ -1,8 +1,8 @@
 require 'csv'
 
 class CoursesController < ApplicationController
-  before_filter :find_course, except: [:index, :new, :create]
-  before_filter :setup_breadcrumbs
+  before_action :find_course, except: [:index, :new, :create]
+  before_action :setup_breadcrumbs
 
   before_filter :require_course_permission, 
     except: [:index, :new, :create, :show, :public]

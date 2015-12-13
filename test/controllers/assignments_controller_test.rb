@@ -3,8 +3,7 @@ require 'test_helper'
 class AssignmentsControllerTest < ActionController::TestCase
   setup do
     make_standard_course
-    @course = @cs101
-
+    
     @hello = create(:assignment, bucket: @bucket, course: @cs101)
     @bad   = create(:assignment, bucket: @bucket, course: @cs101)
   end
@@ -49,6 +48,6 @@ class AssignmentsControllerTest < ActionController::TestCase
         delete :destroy, {id: @bad}, {user_id: @fred.id}
     end
 
-    assert_redirected_to @hello.course
+    assert_redirected_to @cs101
   end
 end
