@@ -1,15 +1,18 @@
 class TeamsController < ApplicationController
+  before_filter :require_teacher
+
   before_action :set_course
   before_action :set_team, only: [:show, :edit, :update, :destroy]
   before_action :setup_breadcrumbs
 
   # GET /teams
   def index
-    @teams = Team.all
+    @teams = @course.teams
   end
 
   # GET /teams/1
   def show
+    add_breadcrumb "Team ##{@team.id}"
   end
 
   # GET /teams/new

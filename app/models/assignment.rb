@@ -228,8 +228,7 @@ class Assignment < ActiveRecord::Base
   def main_submissions
     regs = course.active_registrations.sort_by {|sr| sr.user.invert_name.downcase  }
     subs = regs.map do |sreg|
-      main_submission_for(sreg.user) || Submission.new(user_id: sreg.user_id,
-                                                       assignment_id: self.id)
+      best_sub_for(sreg.user)
     end
   end
 

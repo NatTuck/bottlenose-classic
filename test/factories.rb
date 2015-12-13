@@ -85,4 +85,19 @@ FactoryGirl.define do
     name "Default"
     weight 0.375
   end
+
+  factory :team do
+    course
+
+    after(:build) do |team|
+      u1 = create(:user)
+      u2 = create(:user)
+
+      r1 = create(:registration, user: u1, course: team.course)
+      r2 = create(:registration, user: u2, course: team.course)
+
+      team.users = [u1, u2]
+      team.start_date = Time.now - 2.days
+    end
+  end
 end
