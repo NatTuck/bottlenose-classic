@@ -62,10 +62,11 @@
       <th>Link</th>
     </tr>
     
-    <% @assignment.main_submissions.each do |sub| %>
-    <tr id="sub-for-user-<%= sub.user.id %>">
-      <%= render 'submissions/row_form', :sub => sub %>
-    </tr>
+    <% @course.active_registrations.each do |reg| %>
+      <% sub = @assignment.best_sub_for(reg.user) %>
+      <tr id="sub-for-user-<%= sub.user.id %>">
+        <%= render 'submissions/row_form', user: reg.user, sub: sub %>
+      </tr>
     <% end %>
   </table>
   
@@ -75,7 +76,7 @@
 
 <h1>Your Submissions</h1>
 
-<% if @assignment.team_subs? %>
+<% if (@assignment.team_subs? && !@logged_in_user.course_admin?(@course)) %>
   <p>Team Members: <%= @team.member_names %></p>
   <p><%= link_to "New Team Submission", new_assignment_submission_path(@assignment) %></p>
 <% else %>

@@ -33,7 +33,9 @@ class Course < ActiveRecord::Base
   end
   
   def regs_sorted
-    registrations.includes(:user).to_a.sort_by {|reg| reg.user.invert_name.downcase }
+    registrations.includes(:user).to_a.sort_by do |reg| 
+      reg.user.invert_name.downcase
+    end
   end
 
   def buckets_sorted

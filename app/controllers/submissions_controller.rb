@@ -27,6 +27,7 @@ class SubmissionsController < ApplicationController
     @submission.user_id = @logged_in_user.id
     
     @team = @logged_in_user.active_team(@course)
+    @submission.team_id = @team.id
   end
 
   def edit
@@ -40,18 +41,18 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new(submission_params)
     @submission.assignment_id = @assignment.id
 
-    @team = @logged_in_user.active_team(@course)
-    unless @team.nil?
-      ...
-    end
+    @row_user = User.find(params[:row_user_id])
 
     if @logged_in_user.course_admin?(@course)
-      @submission.user_id ||= @logged_in_user.id
+      @submission.user ||= @logged_in_user
+      @submission.team ||= @submission.user.active_team(@course)
     else
-      @submission.user_id = @logged_in_user.id
+      @submission.user = @logged_in_user
+      @submission.team = @submission.user.active_team(@course)
       @submission.ignore_late_penalty = false
     end
-
+      
+    @team = @submission.team
     @submission.save_upload!
 
     if @submission.save
@@ -60,27 +61,29 @@ class SubmissionsController < ApplicationController
         format.html do
           redirect_to @submission, notice: 'Submission was successfully created.'
         end
-        format.js   { render action: "show", sub: @submission }
+        format.js   { render action: "show" }
       end
     else
       @submission.cleanup!
       respond_to do |format|
         format.html { render action: "new"  }
-        format.js   { render action: "show", sub: @submission }
+        format.js   { render action: "show" }
       end
     end
   end
 
   def update
+    @row_user = User.find(params[:row_user_id])
+
     if @submission.update_attributes(submission_params)
       respond_to do |format|
         format.html { redirect_to @submission, notice: 'Submission was successfully updated.' }
-        format.js   { render action: "show", sub: @submission }
+        format.js   { render action: "show" }
       end
     else
       respond_to do |format|
         format.html { render action: "edit" }
-        format.js   { render action: "show", sub: @submission }
+        format.js   { render action: "show" }
       end
     end
   end
@@ -130,7 +133,7 @@ class SubmissionsController < ApplicationController
   def submission_params
     params[:submission].permit(:assignment_id, :user_id, :student_notes,
                                :auto_score, :calc_score,:updated_at, :upload,
-                               :grading_output, :grading_uid,
+                               :grading_output, :grading_uid, :team_id,
                                :teacher_score, :teacher_notes,
                                :ignore_late_penalty, :upload_file)
   end

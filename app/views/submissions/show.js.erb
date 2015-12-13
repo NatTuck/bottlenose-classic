@@ -1,6 +1,6 @@
 
 $('#sub-for-user-<%= @submission.user.id %>').html("<%=
-  escape_javascript render( 'submissions/row_form', :sub => @submission )  
+  escape_javascript render( 'submissions/row_form', sub: @submission, user: @row_user )  
 %>");
 
 bottlenose_theme_forms();

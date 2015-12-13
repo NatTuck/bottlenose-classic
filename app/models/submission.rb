@@ -4,6 +4,7 @@ class Submission < ActiveRecord::Base
   belongs_to :assignment
   belongs_to :user
   belongs_to :upload
+  belongs_to :team
 
   validates :assignment_id, :presence => true
   validates :user_id,       :presence => true
@@ -14,6 +15,7 @@ class Submission < ActiveRecord::Base
   validate :user_is_registered_for_course
   validate :submitted_file_or_manual_grade
   validate :file_below_max_size
+  validate :has_team_if_required
 
   delegate :course,    :to => :assignment
   delegate :file_name, :to => :upload, :allow_nil => true
@@ -22,7 +24,13 @@ class Submission < ActiveRecord::Base
   after_save :update_cache!
 
   def update_cache!
-    assignment.update_best_sub_for!(user)
+    if team.nil?
+      assignment.update_best_sub_for!(user)
+    else
+      team.users.each do |uu|
+        assignment.update_best_sub_for!(user)
+      end
+    end
   end
 
   def name
@@ -158,6 +166,12 @@ class Submission < ActiveRecord::Base
     msz = course.sub_max_size
     if upload_size > msz.megabytes
       errors[:base] << "Upload exceeds max size (#{upload_size} > #{msz} MB)."
+    end
+  end
+
+  def has_team_if_required
+    if assignment.team_subs? && team.nil?
+      errors[:base] << "Assignment requires team subs. No team set."
     end
   end
 end
