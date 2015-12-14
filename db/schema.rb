@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151202000114) do
+ActiveRecord::Schema.define(version: 20151214030907) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(version: 20151202000114) do
     t.integer  "upload_id"
     t.integer  "upload_size",         default: 0,     null: false
     t.integer  "team_id"
+    t.integer  "comments_upload_id"
   end
 
   add_index "submissions", ["assignment_id"], name: "index_submissions_on_assignment_id", using: :btree

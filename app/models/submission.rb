@@ -5,6 +5,7 @@ class Submission < ActiveRecord::Base
   belongs_to :user
   belongs_to :team
   belongs_to :upload
+  belongs_to :comments_upload, class_name: "Upload"
   has_many :best_subs, dependent: :destroy
 
   validates :assignment_id, :presence => true
@@ -85,6 +86,29 @@ class Submission < ActiveRecord::Base
     Audit.log("Sub #{id}: New submission upload by #{user.name} " +
               "(#{user.id}) with key #{up.secret_key}")
   end
+
+  def comments_upload_file=(data)
+    return if data.nil?
+
+    unless comments_upload_id.nil?
+      comments_upload.destroy
+    end
+
+    up = Upload.new
+    up.user_id = user.id
+    up.store_meta!({
+      type:       "Submission Comments",
+      user:       "Some teacher for #{user.name} (#{user.id})",
+      course:     "#{course.name} (#{course.id})",
+      assignment: "#{assignment.name} (#{assignment.id})",
+      date:       Time.now.strftime("%Y/%b/%d %H:%M:%S %Z")
+    })
+    up.store_upload!(data)
+    up.save!
+
+    self.comments_upload_id = up.id
+    self.save!
+  end
  
   def file_path
     if upload_id.nil?
@@ -155,6 +179,13 @@ class Submission < ActiveRecord::Base
 
   def cleanup!
     upload.cleanup! unless upload.nil?
+  end
+
+  def visible_to?(user)
+    user.course_admin?(course) || 
+      user.id == self.user_id ||
+      (assignment.team_subs? &&
+       team.users.map {|u| u.id}.include?(user.id))
   end
 
   private

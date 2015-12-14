@@ -12,8 +12,7 @@ class SubmissionsController < ApplicationController
   def show
     add_breadcrumb @submission.name
 
-    unless @logged_in_user.course_admin?(@course) or 
-        @logged_in_user.id == @submission.user_id
+    unless @submission.visible_to?(@logged_in_user)
       show_error "That's not your submission."
       redirect_to @assignment
     end
@@ -130,10 +129,16 @@ class SubmissionsController < ApplicationController
   end
 
   def submission_params
-    params[:submission].permit(:assignment_id, :user_id, :student_notes,
-                               :auto_score, :calc_score,:updated_at, :upload,
-                               :grading_output, :grading_uid, :team_id,
-                               :teacher_score, :teacher_notes,
-                               :ignore_late_penalty, :upload_file)
+    if @logged_in_user.course_admin?(@course)
+      params[:submission].permit(:assignment_id, :user_id, :student_notes,
+                                 :auto_score, :calc_score, :updated_at, :upload,
+                                 :grading_output, :grading_uid, :team_id,
+                                 :teacher_score, :teacher_notes,
+                                 :ignore_late_penalty, :upload_file,
+                                 :comments_upload_file)
+    else
+      params[:submission].permit(:assignment_id, :user_id, :student_notes,
+                                 :upload, :upload_file)
+    end
   end
 end

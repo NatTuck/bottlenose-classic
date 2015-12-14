@@ -32,7 +32,11 @@ page to to access the site without clicking the link in your email.</p>
   </div>
 <% end %>
 
+<p><strong>Your Courses:</strong></p>
 
 <ul>
-  <li><%= link_to "Go To Courses", courses_path %></li>
+  <% @logged_in_user.courses.order(:created_at).each do |cc| %>
+    <li><%= link_to cc.name, cc %></li>
+  <% end %>
 </ul>
+
