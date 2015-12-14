@@ -1,7 +1,7 @@
 class AllowNullChapter < ActiveRecord::Migration
   def change
     Assignment.all.each do |aa|
-      aa.course_id = aa.course.id
+      aa.course_id = aa.chapter.course_id
       aa.save!
     end
 
