@@ -51,6 +51,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-webkit (1.7.1)
+      capybara (>= 2.3.0, < 2.6.0)
+      json
     chronic (0.10.2)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
@@ -168,6 +171,7 @@ DEPENDENCIES
   bootstrap-sass
   bootstrap-sass-extras
   capybara
+  capybara-webkit
   coffee-rails
   coffee-rails-source-maps
   daemons
@@ -187,3 +191,6 @@ DEPENDENCIES
   uglifier
   whenever
   yaml_db
+
+BUNDLED WITH
+   1.10.6

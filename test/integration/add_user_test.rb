@@ -7,9 +7,9 @@ class AddUserTest < ActionDispatch::IntegrationTest
 
   test "add a student" do
     # Log in as a professor
-    visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
+    visit "/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
 
-    assert has_content?("Logged in as #{@fred.name}");
+    assert has_content?("Logged in as #{@fred.name}")
 
     click_link 'Your Courses'
     click_link @cs101.name
@@ -21,6 +21,7 @@ class AddUserTest < ActionDispatch::IntegrationTest
     fill_in 'Email', :with => 'steve@example.com'
     fill_in 'Name',  :with => 'Steve McTest'
     click_button 'Create Registration'
+    assert has_content?("Registration was successfully created.")
 
     # Verify that student was added.
     @steve = User.find_by_email('steve@example.com')

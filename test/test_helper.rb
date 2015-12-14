@@ -71,7 +71,8 @@ class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
   end
 end
 
-DatabaseCleaner.strategy = :truncation
+DatabaseCleaner.strategy = :deletion
+Capybara.default_driver  = :rack_test
 
 class ActionDispatch::IntegrationTest
   # Make the Capybara DSL available in all integration tests
@@ -81,15 +82,20 @@ class ActionDispatch::IntegrationTest
   self.use_transactional_fixtures = false
 
   setup do
+    DatabaseCleaner.start
     DatabaseCleaner.clean
   end
 
   teardown do
-    DatabaseCleaner.clean       # Truncate the database
     Capybara.reset_sessions!    # Forget the (simulated) browser state
     Capybara.use_default_driver # Revert Capybara.current_driver to Capybara.default_driver
     
+    DatabaseCleaner.clean 
     Upload.cleanup_test_uploads!
   end
 end
 
+Capybara::Webkit.configure do |config|
+  config.allow_url("test.host")
+end
+ 

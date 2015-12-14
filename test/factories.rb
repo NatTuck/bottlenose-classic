@@ -29,12 +29,6 @@ FactoryGirl.define do
     footer "Link to Piazza: *Link*"
   end
 
-  factory :chapter do
-    course
-
-    sequence(:name) {|n| "Chapter #{n}" }
-  end
-
   factory :assignment do
     course
     bucket
@@ -61,6 +55,10 @@ FactoryGirl.define do
     upload
 
     after(:build) do |sub|
+      unless sub.user.registration_for(sub.course)
+        create(:registration, user: sub.user, course: sub.course)
+      end
+
       sub.upload.user_id = sub.user_id
     end
   end

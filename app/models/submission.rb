@@ -3,8 +3,9 @@ require 'securerandom'
 class Submission < ActiveRecord::Base
   belongs_to :assignment
   belongs_to :user
-  belongs_to :upload
   belongs_to :team
+  belongs_to :upload
+  has_many :best_subs, dependent: :destroy
 
   validates :assignment_id, :presence => true
   validates :user_id,       :presence => true
@@ -21,14 +22,21 @@ class Submission < ActiveRecord::Base
   delegate :file_name, :to => :upload, :allow_nil => true
 
   before_destroy :cleanup!
+  before_validation :set_team
   after_save :update_cache!
+
+  def set_team
+    if assignment.team_subs?
+      self.team = user.active_team(course)
+    end
+  end
 
   def update_cache!
     if team.nil?
       assignment.update_best_sub_for!(user)
     else
       team.users.each do |uu|
-        assignment.update_best_sub_for!(user)
+        assignment.update_best_sub_for!(uu)
       end
     end
   end
@@ -138,6 +146,7 @@ class Submission < ActiveRecord::Base
 
   def grade!
     return if upload_id.nil?
+    return if assignment.grading_upload_id.nil?
     return if student_notes == "@@@skip tests@@@"
 
     root = Rails.root.to_s

@@ -45,17 +45,16 @@ class SubmissionsController < ApplicationController
 
     if @logged_in_user.course_admin?(@course)
       @submission.user ||= @logged_in_user
-      @submission.team ||= @submission.user.active_team(@course)
     else
       @submission.user = @logged_in_user
-      @submission.team = @submission.user.active_team(@course)
       @submission.ignore_late_penalty = false
     end
-      
-    @team = @submission.team
+
     @submission.save_upload!
 
     if @submission.save
+      @team = @submission.team
+
       @submission.grade!
       respond_to do |format|
         format.html do

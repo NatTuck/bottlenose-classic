@@ -64,7 +64,7 @@
     
     <% @course.active_registrations.each do |reg| %>
       <% sub = @assignment.best_sub_for(reg.user) %>
-      <tr id="sub-for-user-<%= sub.user.id %>">
+      <tr id="sub-for-user-<%= reg.user.id %>">
         <%= render 'submissions/row_form', user: reg.user, sub: sub %>
       </tr>
     <% end %>

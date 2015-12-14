@@ -27,7 +27,7 @@
 <td>
   <%= form_for [sub.assignment, sub], namespace: "u#{user.id}", 
     remote: true, html: { class: "sub-form" } do |f| %>
-  <%= hidden_field_tag :row_user_id, user.id %>
+  <%= hidden_field_tag :row_user_id, user.id, id: "u#{user.id}-user-id" %>
   <%= f.hidden_field :user_id %>
   <%= f.hidden_field :assignment_id %>
   <%= f.hidden_field :file_name %>
