@@ -11,14 +11,17 @@ class CreateBuckets < ActiveRecord::Migration
     add_column :assignments, :bucket_id, :integer
     add_column :assignments, :course_id, :integer
 
+    buckets = {}
     Course.all.each do |cc|
-      bb = Bucket.create(name: "Assignment", weight: 1.0, course_id: cc.id)
+      buckets[cc.id] = Bucket.create(name: "Assignment", weight: 1.0, course_id: cc.id)
+    end
 
-      cc.assignments.each do |aa|
-        aa.course_id = cc.id
-        aa.bucket_id = bb.id
-        aa.save!
-      end
+    Assignment.all.each do |aa|
+      query = "select * from chapters where id = #{aa.chapter_id} limit 1"
+      chap = ActiveRecord::Base.connection.execute(query)[0]
+      aa.course = Course.find(chap["course_id"])
+      aa.bucket = buckets[aa.course.id]
+      aa.save!
     end
   end
 end
