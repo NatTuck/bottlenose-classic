@@ -2,6 +2,7 @@ require 'test_helper'
 
 class AddUserTest < ActionDispatch::IntegrationTest
   setup do
+    DatabaseCleaner.clean
     Capybara.current_driver = :webkit
 
     make_standard_course
