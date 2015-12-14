@@ -49,12 +49,24 @@
 <h1>Grade this Submission</h1>
 
 <%= form_for @submission do |f| %>
-<p>Teacher Comments: <br>
-  <%= f.text_area :teacher_notes, :class => "rich-text" %>
-</p>
-<p>Score: <%= f.text_field :teacher_score, :size => 10 %> / 
-  <%= @assignment.points_available %></p>
-<p><%= f.label :ignore_late_penalty, "Ignore Late Penalty:" %> 
-   <%= f.check_box :ignore_late_penalty %></p>
-<p><%= f.submit "Set Teacher Score" %></p>
+  <div class="form-group">
+    <%= f.label :teacher_notes, "Teacher Comments" %> <br>
+    <%= f.text_area :teacher_notes, :class => "rich-text" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :comments_upload_file, "Upload Comments File" %>
+    <%= f.file_field :comments_upload_file %>
+  </div>
+  <div class="form-group">
+    <%= f.label :teacher_score, "Score" %><br>
+    <%= f.text_field :teacher_score, :size => 10 %> / 
+    <%= @assignment.points_available %></p>
+  </div>
+  <div class="form-group">
+    <%= f.label :ignore_late_penalty, "Ignore Late Penalty:" %> 
+    <%= f.check_box :ignore_late_penalty %>
+  </div>
+  <div class="form-group">
+    <%= f.submit "Set Teacher Score" %>
+  </div>
 <% end %>
