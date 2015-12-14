@@ -1,6 +1,14 @@
 
-$('#sub-for-user-<%= @submission.user.id %>').html("<%=
-  escape_javascript render( 'submissions/row_form', :sub => @submission )  
-%>");
+<% if @submission.assignment.team_subs? %>
+  <%  @submission.team.users.each do |uu| %>
+    $('#sub-for-user-<%= uu.id %>').html("<%=
+      escape_javascript render('submissions/row_form', sub: @submission, user: uu )  
+    %>");
+  <% end %>
+<% else %>
+  $('#sub-for-user-<%= @submission.user.id %>').html("<%=
+    escape_javascript render('submissions/row_form', sub: @submission, user: @row_user )  
+  %>");
+<% end %>
 
 bottlenose_theme_forms();

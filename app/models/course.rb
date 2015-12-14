@@ -8,6 +8,7 @@ class Course < ActiveRecord::Base
 
   has_many :buckets,     dependent: :destroy
   has_many :assignments, dependent: :restrict_with_error
+  has_many :teams,       dependent: :destroy
 
   validates :name,    :length      => { :minimum => 2 },
                       :uniqueness  => true
@@ -32,7 +33,9 @@ class Course < ActiveRecord::Base
   end
   
   def regs_sorted
-    registrations.includes(:user).to_a.sort_by {|reg| reg.user.invert_name.downcase }
+    registrations.includes(:user).to_a.sort_by do |reg| 
+      reg.user.invert_name.downcase
+    end
   end
 
   def buckets_sorted

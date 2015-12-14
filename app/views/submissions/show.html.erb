@@ -15,10 +15,17 @@
     <td><strong>Assignment</strong></td>
     <td><%= @submission.assignment.name %></td>
   </tr>
-  <tr>
-    <td><strong>Student</strong></td>
-    <td><%= @submission.user.name %></td>
-  </tr>
+  <% if @submission.team.nil? %>
+    <tr>
+      <td><strong>Student</strong></td>
+      <td><%= @submission.user.name %></td>
+    </tr>
+  <% else %>
+    <tr>
+      <td><strong>Team Members</strong></td>
+      <td><%= @submission.team.member_names %></td>
+    </tr>
+  <% end %>
   <tr>
     <td><strong>Submission Time</strong></td>
     <td><span class="local-time"><%= @submission.created_at %></span></td>

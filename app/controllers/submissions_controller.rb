@@ -1,9 +1,9 @@
 class SubmissionsController < ApplicationController
+  before_action :find_submission_and_assignment
+  before_action :setup_breadcrumbs
+  
   before_filter :require_teacher, :except => [:new, :create, :show]
   before_filter :require_student
-  
-  before_filter :setup_breadcrumbs
-  prepend_before_filter :find_submission_and_assignment
 
   def index
     @submissions = @assignment.submissions
@@ -25,53 +25,64 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new
     @submission.assignment_id = @assignment.id
     @submission.user_id = @logged_in_user.id
+    
+    @team = @logged_in_user.active_team(@course)
+    @submission.team = @team
   end
 
   def edit
     add_breadcrumb @submission.name, @submission
     add_breadcrumb "Grading"
+    
+    @team = @logged_in_user.active_team(@course)
   end
 
   def create
     @submission = Submission.new(submission_params)
     @submission.assignment_id = @assignment.id
 
+    @row_user = User.find_by_id(params[:row_user_id])
+
     if @logged_in_user.course_admin?(@course)
-      @submission.user_id ||= @logged_in_user.id
+      @submission.user ||= @logged_in_user
     else
-      @submission.user_id = @logged_in_user.id
+      @submission.user = @logged_in_user
       @submission.ignore_late_penalty = false
     end
 
     @submission.save_upload!
 
     if @submission.save
+      @team = @submission.team
+
       @submission.grade!
       respond_to do |format|
         format.html do
           redirect_to @submission, notice: 'Submission was successfully created.'
         end
-        format.js   { render action: "show", sub: @submission }
+        format.js   { render action: "show" }
       end
     else
       @submission.cleanup!
       respond_to do |format|
         format.html { render action: "new"  }
-        format.js   { render action: "show", sub: @submission }
+        format.js   { render action: "show" }
       end
     end
   end
 
   def update
+    @row_user = User.find_by_id(params[:row_user_id])
+
     if @submission.update_attributes(submission_params)
       respond_to do |format|
         format.html { redirect_to @submission, notice: 'Submission was successfully updated.' }
-        format.js   { render action: "show", sub: @submission }
+        format.js   { render action: "show" }
       end
     else
       respond_to do |format|
         format.html { render action: "edit" }
-        format.js   { render action: "show", sub: @submission }
+        format.js   { render action: "show" }
       end
     end
   end
@@ -104,7 +115,7 @@ class SubmissionsController < ApplicationController
       @assignment = Assignment.find(params[:assignment_id])
     end
 
-    @course  = @assignment.course
+    @course = @assignment.course
   end
 
   def setup_breadcrumbs
@@ -121,7 +132,7 @@ class SubmissionsController < ApplicationController
   def submission_params
     params[:submission].permit(:assignment_id, :user_id, :student_notes,
                                :auto_score, :calc_score,:updated_at, :upload,
-                               :grading_output, :grading_uid,
+                               :grading_output, :grading_uid, :team_id,
                                :teacher_score, :teacher_notes,
                                :ignore_late_penalty, :upload_file)
   end

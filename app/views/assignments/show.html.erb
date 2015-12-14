@@ -6,6 +6,12 @@
 
 <p>Bucket: <%= @assignment.bucket.name %></p>
 <p>Due Date: <%= @assignment.due_date %></p>
+<p>Grading Hidden? <%= @assignment.hide_grading? ? "yes" : "no" %></p>
+<p>Teams? <%= @assignment.team_subs? ? "yes" : "no" %>
+<% if (@logged_in_user.course_admin?(@course) && @assignment.team_subs?) %>
+  (<%= link_to "Manage Teams", course_teams_path(@course) %>)
+<% end %>
+</p>
 
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -56,10 +62,11 @@
       <th>Link</th>
     </tr>
     
-    <% @assignment.main_submissions.each do |sub| %>
-    <tr id="sub-for-user-<%= sub.user.id %>">
-      <%= render 'submissions/row_form', :sub => sub %>
-    </tr>
+    <% @course.active_registrations.each do |reg| %>
+      <% sub = @assignment.best_sub_for(reg.user) %>
+      <tr id="sub-for-user-<%= reg.user.id %>">
+        <%= render 'submissions/row_form', user: reg.user, sub: sub %>
+      </tr>
     <% end %>
   </table>
   
@@ -69,7 +76,12 @@
 
 <h1>Your Submissions</h1>
 
-<p><%= link_to "New Submission", new_assignment_submission_path(@assignment) %></p>
+<% if (@assignment.team_subs? && !@logged_in_user.course_admin?(@course)) %>
+  <p>Team Members: <%= @team.member_names %></p>
+  <p><%= link_to "New Team Submission", new_assignment_submission_path(@assignment) %></p>
+<% else %>
+  <p><%= link_to "New Submission", new_assignment_submission_path(@assignment) %></p>
+<% end %>
 
 <table class="table table-striped">
   <tr>

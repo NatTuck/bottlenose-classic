@@ -29,12 +29,6 @@ FactoryGirl.define do
     footer "Link to Piazza: *Link*"
   end
 
-  factory :chapter do
-    course
-
-    sequence(:name) {|n| "Chapter #{n}" }
-  end
-
   factory :assignment do
     course
     bucket
@@ -61,6 +55,10 @@ FactoryGirl.define do
     upload
 
     after(:build) do |sub|
+      unless sub.user.registration_for(sub.course)
+        create(:registration, user: sub.user, course: sub.course)
+      end
+
       sub.upload.user_id = sub.user_id
     end
   end
@@ -84,5 +82,20 @@ FactoryGirl.define do
     course
     name "Default"
     weight 0.375
+  end
+
+  factory :team do
+    course
+
+    after(:build) do |team|
+      u1 = create(:user)
+      u2 = create(:user)
+
+      r1 = create(:registration, user: u1, course: team.course)
+      r2 = create(:registration, user: u2, course: team.course)
+
+      team.users = [u1, u2]
+      team.start_date = Time.now - 2.days
+    end
   end
 end

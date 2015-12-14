@@ -1,0 +1,31 @@
+<% @page_title = "Teams for #{@course.name}" %>
+
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'New Team', new_course_team_path(@course) %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Start date</th>
+      <th>Members</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @teams.each do |team| %>
+      <tr>
+        <td><%= team.start_date %></td>
+        <td><%= team.users.map {|uu| uu.name }.join(", ") %></td>
+        <td><%= link_to 'Show', course_team_path(@course, team) %></td>
+        <td><%= link_to 'Edit', edit_course_team_path(@course, team) %></td>
+        <td><%= link_to 'Destroy', course_team_path(@course, team), 
+          method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

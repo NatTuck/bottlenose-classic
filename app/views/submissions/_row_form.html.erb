@@ -1,4 +1,4 @@
-<td><%= sub.user.name %></td>
+<td><%= user.name %></td>
 
 <% if sub.errors.any? %>
   <td colspan="4">
@@ -25,22 +25,14 @@
 <style> .field_with_errors {  display:inline-block; } </style>
 
 <td>
-  <% if sub.new_record? %>
-    <%= form_for [sub.assignment, sub], namespace: "u#{sub.user.id}", remote: true do |f| %>
-    <%= f.hidden_field :user_id %>
-    <%= f.hidden_field :assignment_id %>
-    <%= f.hidden_field :file_name %>
-    <%= f.text_field :teacher_score, :size => 8 %>&nbsp;<%=
+  <%= form_for [sub.assignment, sub], namespace: "u#{user.id}", 
+    remote: true, html: { class: "sub-form" } do |f| %>
+  <%= hidden_field_tag :row_user_id, user.id, id: "u#{user.id}-user-id" %>
+  <%= f.hidden_field :user_id %>
+  <%= f.hidden_field :assignment_id %>
+  <%= f.hidden_field :file_name %>
+  <%= f.text_field :teacher_score, :size => 8 %>&nbsp;<%=
       f.submit nil, class: 'btn btn-primary' %>
-    <% end %>
-  <% else %>
-    <%= form_for sub, namespace: "u#{sub.user.id}", remote: true do |f| %>
-    <%= f.hidden_field :user_id %>
-    <%= f.hidden_field :assignment_id %>
-    <%= f.hidden_field :file_name %>
-    <%= f.text_field :teacher_score, :size => 8 %>&nbsp;<%=
-      f.submit nil, class: 'btn btn-primary' %>
-    <% end %>
   <% end %>
 </td>
 <td><%= sub.score.round(2) %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
@@ -52,3 +44,4 @@
     <%= link_to("Grade", [:edit, sub]) %>
   <% end %>
 </td>
+

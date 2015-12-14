@@ -59,14 +59,14 @@
   </tr>
 
   <% bucket.assignments.order(:name).each do |assignment| %>
-    <% sub = assignment.main_submission_for(@user) %>
+    <% sub = assignment.best_sub_for(@user) %>
     <tr>
       <td><%= link_to assignment.name, assignment %></td>
       <td><%= status_image(sub) %></td>
       <td><%= assignment.submissions_for(@user).count %>
 	(<%= link_to "List", user_assignment_submissions_path(@user, assignment) %>)
       </td>
-      <td><%= show_score(assignment.main_score_for(@user), assignment) %></td>
+      <td><%= show_score(assignment.best_sub_for(@user).score, assignment) %></td>
       <td><%= score_source(sub) %></td>
       <td><%= (sub.nil? || sub.new_record?) ? '-' : link_to("Best", sub) %></td>
     </tr>

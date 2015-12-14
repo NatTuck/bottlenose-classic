@@ -1,6 +1,5 @@
 require 'securerandom'
 require 'audit'
-require 'score'
 
 class Assignment < ActiveRecord::Base
   belongs_to :blame, :class_name => "User", :foreign_key => "blame_id"
@@ -208,27 +207,29 @@ class Assignment < ActiveRecord::Base
   end
 
   def submissions_for(user)
-    submissions.where(user_id: user.id).order(:created_at).reverse
+    if team_subs?
+      Submission.
+        joins("JOIN teams ON submissions.team_id = teams.id JOIN team_users ON team_users.team_id = teams.id").
+        where("team_users.user_id = ?", user.id).order(:created_at).reverse
+    else
+      submissions.where(user_id: user.id).order(:created_at).reverse
+    end
   end
 
-  def main_submission_for(user)
-    best = BestSub.where(user_id: user.id, assignment_id: self.id).first
-    best.nil? ? nil : best.submission
+  def best_sub_for(user)
+    bs = BestSub.where(user_id: user.id, assignment_id: self.id).first
+    if bs.nil? 
+      Submission.new(user_id: user.id, assignment_id: self.id)
+    else
+      bs.submission
+    end
   end
 
   def main_submissions
     regs = course.active_registrations.sort_by {|sr| sr.user.invert_name.downcase  }
     subs = regs.map do |sreg|
-      main_submission_for(sreg.user) || Submission.new(user_id: sreg.user_id,
-                                                       assignment_id: self.id)
+      best_sub_for(sreg.user)
     end
-  end
-
-  def main_score_for(user)
-    sub = main_submission_for(user)
-    points = sub.nil? ? 0 : sub.score
-
-    Score.new(points, points_available)
   end
 
   def update_best_subs!
@@ -239,7 +240,6 @@ class Assignment < ActiveRecord::Base
 
   def update_best_sub_for!(user)
     sub = calc_best_sub_for(user)
-    return if sub.nil?
 
     best = BestSub.find_or_initialize_by(user_id: user.id, assignment_id: self.id)
     best.submission_id = sub.id
@@ -247,22 +247,21 @@ class Assignment < ActiveRecord::Base
     best.save!
   end
 
-  private
-
   def calc_best_sub_for(user)
     subs = submissions_for(user)
     if subs.empty?
-      Submission.new(user_id: user.id, assignment_id: self.id, file_name: "none")
-    else
-      teacher_scores = subs.find_all {|ss| not ss.teacher_score.nil? }
+      logger.info("Trying to calculate best subs for {user = #{user.id}, assign = #{self.id}}")
+      raise Exception.new("Couldn't find any submissions")
+    end
+
+    teacher_scores = subs.find_all {|ss| not ss.teacher_score.nil? }
       
-      if teacher_scores.empty?
-        subs.sort_by do |ss| 
-          sprintf("%06d%014d", ss.score || 0, ss.created_at.to_i) 
-        end.last
-      else
-        teacher_scores.sort_by {|ss| ss.score }.last
-      end
+    if teacher_scores.empty?
+      subs.sort_by do |ss| 
+        sprintf("%06d%014d", ss.score || 0, ss.created_at.to_i) 
+      end.last
+    else
+      teacher_scores.sort_by {|ss| ss.score }.last
     end
   end
 end
