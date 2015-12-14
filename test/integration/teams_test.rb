@@ -2,7 +2,6 @@ require 'test_helper'
 
 class AddUserTest < ActionDispatch::IntegrationTest
   setup do
-    DatabaseCleaner.clean
     Capybara.current_driver = :webkit
 
     make_standard_course
@@ -63,11 +62,10 @@ class AddUserTest < ActionDispatch::IntegrationTest
     row.fill_in("submission[teacher_score]", with: 80)
     row.click_button "Update Submission"
 
-    sleep 2
+    assert find("td", text: @mary.name).find(:xpath, "..").has_content?("80")
     
     mreg = @mary.registration_for(@cs101)
     greg = @greg.registration_for(@cs101)
     assert_equal mreg.total_score, greg.total_score
-
   end
 end
