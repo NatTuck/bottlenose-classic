@@ -11,6 +11,7 @@
  *= require_self
  *= require_tree .
  *= require bootstrap-datepicker3
+ *= require font-awesome
  */
 
 $navbar-inverse-link-color: #bbb;
@@ -18,7 +19,7 @@ $navbar-inverse-link-active-color: #fff;
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
-@import "font-awesome.css";
+// @import "font-awesome.css";
 
 .footer {
   margin-top: 4em;
