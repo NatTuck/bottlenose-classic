@@ -36,7 +36,7 @@
       <th>Due Date</th>
     </thead>
     <tbody>
-    <% bb.assignments.each do |aa| %>
+    <% bb.assignments.order(:name).each do |aa| %>
       <tr>
         <td><%= link_to aa.name, aa %></td>
         <td><%= aa.due_date %></td>
