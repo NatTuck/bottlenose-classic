@@ -15,6 +15,7 @@
 //= require jquery_ujs
 //= require nicEdit
 //= require bootstrap-datepicker
+//= require jquery.keyDecoder
 //= require_tree .
 
 $.fn.datepicker.defaults.format = "yyyy-mm-dd";

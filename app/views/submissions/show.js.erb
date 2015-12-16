@@ -1,5 +1,5 @@
 
-<% if @submission.assignment.team_subs? %>
+<% if @submission.assignment.team_subs? && @submission.team %>
   <%  @submission.team.users.each do |uu| %>
     $('#sub-for-user-<%= uu.id %>').html("<%=
       escape_javascript render('submissions/row_form', sub: @submission, user: uu )  
