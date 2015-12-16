@@ -48,19 +48,36 @@ class TeamsController < ApplicationController
   # PATCH/PUT /teams/1
   def update
     users = params["users"] || []
-    @team.users = users.map {|u_id| User.find(u_id.to_i) }
+
+    new_ids = users.map {|u_id| u_id.to_i }.sort
+    old_ids = @team.users.map {|uu| uu.id }.sort
+
+    if new_ids != old_ids
+      if @team.submissions.empty?
+        @team.users = new_ids.map {|u_id| User.find(u_id) }
+      else
+        show_error "Can't change team members. Team has submissions."
+        redirect_to edit_course_team_path(@course, @team)
+        return
+      end
+    end
 
     if @team.update(team_params)
       redirect_to course_team_path(@course, @team), notice: 'Team was successfully updated.'
     else
-      render :edit
+      redirect_to edit_course_team_path(@course, @team)
     end
   end
 
   # DELETE /teams/1
   def destroy
-    @team.destroy
-    redirect_to course_teams_path(@course), notice: 'Team was successfully destroyed.'
+    if @team.submissions.empty?
+      @team.destroy
+      redirect_to course_teams_path(@course), notice: 'Team was successfully destroyed.'
+    else
+      show_error "Can't delete. Team has submissions."
+      redirect_to course_teams_path(@course)
+    end
   end
 
   private
