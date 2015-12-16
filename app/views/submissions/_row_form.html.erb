@@ -31,8 +31,9 @@
   <%= f.hidden_field :user_id %>
   <%= f.hidden_field :assignment_id %>
   <%= f.hidden_field :file_name %>
-  <%= f.text_field :teacher_score, :size => 8 %>&nbsp;<%=
-      f.submit nil, class: 'btn btn-primary' %>
+  <%= f.text_field :teacher_score, :size => 8, class: "grade-entry-box", 
+    autocomplete: "off", data: { user_id: user.id } %>&nbsp;<%=
+    f.submit nil, class: 'btn btn-primary' %>
   <% end %>
 </td>
 <td><%= sub.score.round(2) %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>

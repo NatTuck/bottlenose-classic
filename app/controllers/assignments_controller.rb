@@ -13,6 +13,7 @@ class AssignmentsController < ApplicationController
   def show
     add_breadcrumb @assignment.name
 
+    @students    = @course.active_registrations
     @submissions = @assignment.submissions.where(user_id: @logged_in_user.id)
     
     @team = @logged_in_user.active_team(@course)
