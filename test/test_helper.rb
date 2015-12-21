@@ -93,6 +93,11 @@ class ActionDispatch::IntegrationTest
     DatabaseCleaner.clean 
     Upload.cleanup_test_uploads!
   end
+
+  def login_as(user)
+    visit "/main/auth?email=#{user.email}&key=#{user.auth_key}"
+    assert has_content?("Logged in as #{user.name}")
+  end
 end
 
 Capybara::Webkit.configure do |config|

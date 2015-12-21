@@ -49,6 +49,7 @@ run_on_page "assignments/show", () ->
     $(".sub-form").on "ajax:send", handle_form_send
  
   $(document).ajaxComplete () ->
+    $('#ajax-status').text("ajax-status: done")
     setup_handlers()
   
   setup_handlers()

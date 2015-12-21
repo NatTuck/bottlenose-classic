@@ -210,7 +210,8 @@ class Assignment < ActiveRecord::Base
     if team_subs?
       Submission.
         joins("JOIN teams ON submissions.team_id = teams.id JOIN team_users ON team_users.team_id = teams.id").
-        where("team_users.user_id = ?", user.id).order(:created_at).reverse
+        where("team_users.user_id = ? and submissions.assignment_id = ?", user.id, self.id).
+        order(:created_at).reverse
     else
       submissions.where(user_id: user.id).order(:created_at).reverse
     end

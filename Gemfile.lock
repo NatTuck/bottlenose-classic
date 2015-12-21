@@ -55,6 +55,7 @@ GEM
       capybara (>= 2.3.0, < 2.6.0)
       json
     chronic (0.10.2)
+    coderay (1.1.0)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -96,6 +97,7 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
+    method_source (0.8.2)
     mime-types (2.4.3)
     mini_portile (0.6.1)
     minitest (5.5.0)
@@ -105,6 +107,10 @@ GEM
     nokogiri (1.6.5)
       mini_portile (~> 0.6.0)
     pg (0.17.1)
+    pry (0.10.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     rack (1.6.0)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -135,6 +141,7 @@ GEM
     rake (10.4.2)
     ref (1.0.5)
     sass (3.4.9)
+    slop (3.6.0)
     sprockets (2.12.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -185,6 +192,7 @@ DEPENDENCIES
   launchy
   momentjs-rails
   pg
+  pry
   rack
   rails (~> 4.2)
   therubyracer

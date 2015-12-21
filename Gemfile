@@ -35,4 +35,5 @@ group :test do
   gem 'capybara-webkit' # Needs qt5-default qt5-qmake libqt5webkit5-dev
   gem 'launchy'
   gem 'factory_girl_rails'
+  gem 'pry'
 end
