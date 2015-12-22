@@ -72,6 +72,9 @@ class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
 end
 
 DatabaseCleaner.strategy = :deletion
+DatabaseCleaner.start
+DatabaseCleaner.clean_with :truncation
+
 Capybara.default_driver  = :rack_test
 
 class ActionDispatch::IntegrationTest
@@ -82,7 +85,6 @@ class ActionDispatch::IntegrationTest
   self.use_transactional_fixtures = false
 
   setup do
-    DatabaseCleaner.start
     DatabaseCleaner.clean
   end
 

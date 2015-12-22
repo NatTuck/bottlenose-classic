@@ -85,6 +85,7 @@
 <h1>Data Export</h1>
 
 <p><%= link_to("Get CSV for Assignment Grades", course_path(@course) + '/export_grades', method: 'post') %></p>
+<p><%= link_to("Get Summary CSV", course_path(@course) + '/export_summary', method: 'post') %></p>
 
 <% end %>
 

@@ -1,0 +1,7 @@
+"Name","Inverted","Email","<%= @buckets.map {|bb| bb.name}.join('","') %>","Total"
+<%- row = 2 %>
+<%- @regs.each do |reg| %>"<%= reg.user.name %>","<%= reg.user.invert_name %>","<%= reg.user.email %>",<% 
+    @buckets.each do |bb| %><%= bb.points_earned(reg.user) / bb.points_available(reg.user) %>,<% end 
+    %>=<%= @buckets.map.with_index {|bb, ii| "#{num_to_col(ii+3)}#{row}*#{bb.weight}" }.join("+") %>
+    <%- row += 1 %>
+<% end %>

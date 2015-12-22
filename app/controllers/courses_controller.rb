@@ -21,6 +21,13 @@ class CoursesController < ApplicationController
     render :formats => [:text]
   end
 
+  def export_summary
+    @buckets = @course.buckets
+    @regs    = @course.active_registrations
+  
+    render :formats => [:text]
+  end
+
   def bulk_add
     add_breadcrumb "Registrations", course_registrations_path(@course)
     add_breadcrumb "Bulk Add Students"
