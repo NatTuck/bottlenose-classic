@@ -72,6 +72,9 @@ class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
 end
 
 DatabaseCleaner.strategy = :deletion
+DatabaseCleaner.start
+DatabaseCleaner.clean_with :truncation
+
 Capybara.default_driver  = :rack_test
 
 class ActionDispatch::IntegrationTest
@@ -82,7 +85,6 @@ class ActionDispatch::IntegrationTest
   self.use_transactional_fixtures = false
 
   setup do
-    DatabaseCleaner.start
     DatabaseCleaner.clean
   end
 
@@ -92,6 +94,11 @@ class ActionDispatch::IntegrationTest
     
     DatabaseCleaner.clean 
     Upload.cleanup_test_uploads!
+  end
+
+  def login_as(user)
+    visit "/main/auth?email=#{user.email}&key=#{user.auth_key}"
+    assert has_content?("Logged in as #{user.name}")
   end
 end
 

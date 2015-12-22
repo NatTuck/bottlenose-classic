@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AddUserTest < ActionDispatch::IntegrationTest
+class TeamsTest < ActionDispatch::IntegrationTest
   setup do
     DatabaseCleaner.clean
     Capybara.current_driver = :webkit

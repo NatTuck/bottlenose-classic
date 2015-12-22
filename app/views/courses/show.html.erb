@@ -58,7 +58,7 @@
    <%= link_to "Teams", course_teams_path(@course) %>
 </p>
 
-<table class="table table-striped">
+<table class="table table-striped" id="students-summary">
   <tr>
     <th>Name</th>
     <% @buckets.each do |bb| %>
@@ -75,7 +75,7 @@
     <% @buckets.each do |bb| %>
       <td><%= @scores[reg.user_id][bb.id].round %>%</td>
     <% end %>
-    <td><%= @totals[reg.user_id].round  %>%</td>
+    <td class="score-total"><%= @totals[reg.user_id].round  %>%</td>
     <td><%= link_to "View", reg %></td>
   </tr>
 <% end %>
@@ -85,6 +85,7 @@
 <h1>Data Export</h1>
 
 <p><%= link_to("Get CSV for Assignment Grades", course_path(@course) + '/export_grades', method: 'post') %></p>
+<p><%= link_to("Get Summary CSV", course_path(@course) + '/export_summary', method: 'post') %></p>
 
 <% end %>
 
