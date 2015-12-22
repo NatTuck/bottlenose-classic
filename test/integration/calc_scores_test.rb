@@ -5,10 +5,14 @@ require 'pry'
 # Specifically, I want to make sure that BestSubs go to
 # the correct assignments, and buckets add up correctly.
 
-class AddUserTest < ActionDispatch::IntegrationTest
+class CalcScoresTest < ActionDispatch::IntegrationTest
   setup do
     DatabaseCleaner.clean
     Capybara.current_driver = :webkit
+  end
+
+  def test_create_teams_submit_and_grade_many
+    DatabaseCleaner.clean_with :truncation
 
     # Staff
     @ken     = create(:admin_user)
@@ -19,9 +23,9 @@ class AddUserTest < ActionDispatch::IntegrationTest
     @mary    = create(:user, name: "Mary McStudent")
     @john    = create(:user, name: "John McStudent")
     @mark    = create(:user, name: "Mark McStudent")
-
+ 
     # Course 1
-    @cs101   = create(:course, public: true)
+    @cs101   = create(:course, name: "CS 101", public: true)
     @hw101   = create(:bucket, name: "Homework", course: @cs101, weight: 0.5)
     @qz101   = create(:bucket, name: "Quizzes", course: @cs101, weight: 0.5)
     @fred101 = create(:registration, course: @cs101, user: @fred, teacher: true)
@@ -36,7 +40,7 @@ class AddUserTest < ActionDispatch::IntegrationTest
     @cs101qz2 = create(:assignment, name: "cs1qz2", course: @cs101, bucket: @qz101)
 
     # Course 2
-    @cs102   = create(:course, public: false)
+    @cs102   = create(:course, name: "CS 102", public: false)
     @hw102   = create(:bucket, name: "Homework", course: @cs102, weight: 0.5)
     @qz102   = create(:bucket, name: "Quizzes", course: @cs102, weight: 0.5)
     @fred102 = create(:registration, course: @cs102, user: @fred, teacher: true)
@@ -53,9 +57,8 @@ class AddUserTest < ActionDispatch::IntegrationTest
     
     @tars_dir = Rails.root.join('test', 'fixtures', 'files')
     @upload_file = @tars_dir.join('HelloSingle', 'hello.c')
-  end
 
-  def test_create_teams_submit_and_grade_many
+    # Begin Entering Data
     enter_grade(@cs102qz1, @jane, 45)
     enter_grade(@cs102qz1, @mary, 61)
     enter_grade(@cs102qz1, @john, 82)
@@ -194,7 +197,7 @@ class AddUserTest < ActionDispatch::IntegrationTest
   
   def enter_grade(assign, user, grade)
     course = assign.course
-    reg = user.registration_for(course)
+    reg = user.registration_for(course) or raise Exception.new("User: #{user.name}, Course: #{course.name}")
     old_score = reg.total_score
 
     login_as(@fred)
