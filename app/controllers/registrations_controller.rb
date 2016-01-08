@@ -107,6 +107,6 @@ class RegistrationsController < ApplicationController
   end
 
   def registration_params
-    params[:registration].permit(:course_id, :teacher, :user_id, :show_in_lists)
+    params[:registration].permit(:course_id, :teacher, :user_id, :show_in_lists, :tags)
   end
 end

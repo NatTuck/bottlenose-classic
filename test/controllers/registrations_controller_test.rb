@@ -53,6 +53,16 @@ class RegistrationsControllerTest < ActionController::TestCase
     assert_response :redirect
   end
 
+  test "should set tags" do
+    put :update, {course_id: @cs301.id, id: @john_reg.id, 
+      registration: { user_id: @john.id, course_id: @cs301.id, teacher: false, tags: "goat; honors" }}, 
+      {user_id: @fred.id}
+
+    assert_response :redirect
+    reg = @john.registration_for(@cs301)
+    assert reg.tags.split(/\s*;\s*/).include?("honors")
+  end
+
   test "should toggle show-in-reports" do
     post :toggle_show, { format: 'js', course_id: @cs301.id, id: @john_reg.id }, { user_id: @fred.id }
   end
