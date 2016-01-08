@@ -58,6 +58,12 @@
    <%= link_to "Teams", course_teams_path(@course) %>
 </p>
 
+<p>
+  Filter Tags: 
+  <select id="tag-filter"></select>
+  <button class="btn btn-default" id="apply-filter">Apply</button>
+</p>
+
 <table class="table table-striped" id="students-summary">
   <tr>
     <th>Name</th>
@@ -69,7 +75,7 @@
   </tr>
 
 <% @active_regs.each do |reg| %>
-  <tr>
+  <tr data-tags="<%= reg.tags %>">
     <td><%= reg.user.name %><br>
       <%= reg.user.email %></td>
     <% @buckets.each do |bb| %>

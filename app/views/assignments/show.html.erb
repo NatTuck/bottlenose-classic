@@ -49,6 +49,12 @@
       '/manual_grade' %> | 
     <%= link_to "Tarball of Submissions", assignment_path(@assignment) + '/tarball' %>
   </p>
+  
+  <p>
+    Filter Tags: 
+    <select id="tag-filter"></select>
+    <button class="btn btn-default" id="apply-filter">Apply</button>
+  </p>
 
   <table class="table table-striped">
     <tr>
@@ -64,7 +70,7 @@
 
     <% @students.each do |reg| %>
       <% sub = @assignment.best_sub_for(reg.user) %>
-      <tr id="sub-for-user-<%= reg.user.id %>">
+      <tr id="sub-for-user-<%= reg.user.id %>" data-tags="<%= reg.tags %>">
         <%= render 'submissions/row_form', user: reg.user, sub: sub %>
       </tr>
     <% end %>
