@@ -20,7 +20,7 @@
         <td><%= team.users.map {|uu| uu.name }.join(", ") %></td>
         <td><%= link_to 'Show', course_team_path(@course, team) %></td>
         <td><%= link_to 'Edit', edit_course_team_path(@course, team) %></td>
-        <td><%= link_to 'Destroy', course_team_path(@course, team), 
+        <td><%= link_to 'Destroy', course_team_path(@course, team),
           method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

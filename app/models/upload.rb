@@ -65,7 +65,7 @@ class Upload < ActiveRecord::Base
 
   def store_meta!(meta)
     meta_path = upload_dir.join("_metadata")
-    
+
     if Dir.exists?(upload_dir)
       raise Exception.new("Duplicate secret key (1). That's unpossible!")
     end
@@ -80,7 +80,7 @@ class Upload < ActiveRecord::Base
       file.write(meta.to_yaml)
     end
   end
-  
+
   def generate_secret_key!
     return unless new_record?
 

@@ -14,7 +14,7 @@
   <%= link_to "Manage Registrations",  course_registrations_path(@course) %> |
   <%= link_to "View Registration Requests (#{@req_count})", course_reg_requests_path(@course) %> |
   <%= link_to "Teams", course_teams_path(@course) %> |
-  <%= link_to "Course Settings", [:edit, @course] %> | 
+  <%= link_to "Course Settings", [:edit, @course] %> |
   <%= link_to 'Grade Buckets', course_buckets_path(@course) %></p>
 </p>
 <% end %>
@@ -51,7 +51,7 @@
 
 <h1>Students</h1>
 
-<p><%= link_to "Manage Registrations", 
+<p><%= link_to "Manage Registrations",
          course_registrations_path(@course) %> |
    <%= link_to "View Registration Requests (#{@req_count})",
          course_reg_requests_path(@course) %> |
@@ -59,7 +59,7 @@
 </p>
 
 <p>
-  Filter Tags: 
+  Filter Tags:
   <select id="tag-filter"></select>
   <button class="btn btn-default" id="apply-filter">Apply</button>
 </p>

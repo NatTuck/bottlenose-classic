@@ -23,7 +23,7 @@ $.fn.datepicker.defaults.format = "yyyy-mm-dd";
 $(function() {
     $('.local-time').each(function(_) {
         var dd = new Date($(this).text());
-        
+
         if (!isNaN(dd.getTime())) {
           $(this).text(dd);
         }

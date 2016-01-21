@@ -1,7 +1,7 @@
 class AssignmentsController < ApplicationController
   before_action :find_assignment
   before_action :setup_breadcrumbs
-  
+
   before_filter :require_teacher, :except => [:show]
   before_filter :require_course_permission
 
@@ -15,7 +15,7 @@ class AssignmentsController < ApplicationController
 
     @students    = @course.active_registrations
     @submissions = @assignment.submissions.where(user_id: @logged_in_user.id)
-    
+
     @team = @logged_in_user.active_team(@course)
   end
 
@@ -72,7 +72,7 @@ class AssignmentsController < ApplicationController
 
   def find_assignment
     if params[:id]
-      @assignment = Assignment.find(params[:id]) 
+      @assignment = Assignment.find(params[:id])
     end
 
     if params[:course_id]
@@ -80,7 +80,7 @@ class AssignmentsController < ApplicationController
     else
       @course = @assignment.course
     end
-    
+
   end
 
   def setup_breadcrumbs

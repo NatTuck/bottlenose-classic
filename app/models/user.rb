@@ -3,7 +3,7 @@ require 'securerandom'
 class User < ActiveRecord::Base
   has_many :registrations
   has_many :courses, through: :registrations, :dependent => :restrict_with_error
-  
+
   has_many :submissions,  dependent: :restrict_with_error
   has_many :reg_requests, dependent: :destroy
 
@@ -14,8 +14,8 @@ class User < ActiveRecord::Base
   validates :auth_key, :presence => true
 
   validates :email, uniqueness: true
-  validates :name,  length: { in: 2..30 } 
-  
+  validates :name,  length: { in: 2..30 }
+
   # Different people with the same name are fine.
   # If someone uses two emails, they get two accounts. So sad.
   #validates :name,  :uniqueness => true
@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
     if self.auth_key.nil?
         raise Exception.new("Must save User before sending auth link")
     end
-    
+
     AuthMailer.auth_link_email(self).deliver_later
   end
 

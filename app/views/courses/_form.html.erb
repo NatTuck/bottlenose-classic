@@ -21,7 +21,7 @@
     <div class="form-group">
       <%= f.label :term_id, "Term" %>
       <%= select("course", "term_id", (
-        Term.where(archived: false).to_a.map do |tt| 
+        Term.where(archived: false).to_a.map do |tt|
           [tt.name, tt.id]
         end
       ), class: 'form-control') %>
@@ -30,7 +30,7 @@
       <p><strong>Late Penalty</strong></p>
       <p>Deduct
       <%= text_field_tag :late_penalty, @course.late_opts[0], :size => 10 %>
-      percent every 
+      percent every
       <%= text_field_tag :late_repeat,  @course.late_opts[1], :size => 10 %>
       days late to a maximum of
       <%= text_field_tag :late_maximum, @course.late_opts[2], :size => 10 %>

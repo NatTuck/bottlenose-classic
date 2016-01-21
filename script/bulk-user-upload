@@ -8,7 +8,7 @@ require File.expand_path('../../config/boot',  __FILE__)
 require APP_PATH
 Rails.application.require_environment!
 
-COURSE_ID = 13 
+COURSE_ID = 13
 
 filename  = ARGV[0]
 
@@ -30,9 +30,9 @@ File.open(filename, 'r') do |f1|
       new_user.save!
     rescue
       new_user = User.find_by_email(email.downcase)
-    end 
+    end
 
-    begin 
+    begin
       Registration.new(user_id: new_user.id, course_id: COURSE_ID).save!
     rescue
       puts "Skip registration"

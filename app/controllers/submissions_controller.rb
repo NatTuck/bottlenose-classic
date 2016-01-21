@@ -1,7 +1,7 @@
 class SubmissionsController < ApplicationController
   before_action :find_submission_and_assignment
   before_action :setup_breadcrumbs
-  
+
   before_filter :require_teacher, :except => [:new, :create, :show]
   before_filter :require_student
 
@@ -24,7 +24,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new
     @submission.assignment_id = @assignment.id
     @submission.user_id = @logged_in_user.id
-    
+
     @team = @logged_in_user.active_team(@course)
     @submission.team = @team
   end
@@ -32,7 +32,7 @@ class SubmissionsController < ApplicationController
   def edit
     add_breadcrumb @submission.name, @submission
     add_breadcrumb "Grading"
-    
+
     @team = @logged_in_user.active_team(@course)
   end
 

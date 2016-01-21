@@ -32,7 +32,7 @@ class BucketsController < ApplicationController
     @bucket.course_id = @course.id
 
     if @bucket.save
-      redirect_to course_buckets_path(@course), 
+      redirect_to course_buckets_path(@course),
         notice: 'Bucket was successfully created.'
     else
       render :new
@@ -42,7 +42,7 @@ class BucketsController < ApplicationController
   # PATCH/PUT /course/3/buckets/1
   def update
     if @bucket.update(bucket_params)
-      redirect_to course_buckets_url(@course), 
+      redirect_to course_buckets_url(@course),
         notice: "Bucket '#{@bucket.name}' was successfully updated."
     else
       render :edit
@@ -52,7 +52,7 @@ class BucketsController < ApplicationController
   # DELETE /course/3/buckets/1
   def destroy
     @bucket.destroy
-    redirect_to course_buckets_url(@course), 
+    redirect_to course_buckets_url(@course),
       notice: "Bucket '#{@bucket.name}' was successfully removed."
   end
 

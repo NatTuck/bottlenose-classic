@@ -6,7 +6,7 @@ require APP_PATH
 Rails.application.require_environment!
 
 puts "\n/|\\/|\\/|\\/|\\/|\\/|\\/|\\/|\\/|\\/|\\/|\\\n\n"
-puts "   Running the sandbox reaper " 
+puts "   Running the sandbox reaper "
 puts "\n/|\\/|\\/|\\/|\\/|\\/|\\/|\\/|\\/|\\/|\\/|\\\n\n"
 
 # First, check for submissions that are still active in the DB.
@@ -33,7 +33,7 @@ end
 
 7000.upto(7999) do |uid|
   sub = Submission.find_by_grading_uid(uid)
-  
+
   if sub.nil?
     system("/usr/local/bottlenose/bin/sandbox", "-reap", "#{uid}")
   else

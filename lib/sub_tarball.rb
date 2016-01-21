@@ -9,7 +9,7 @@ class SubTarball
     if temp.to_s =~ /tars\/assign/
       FileUtils.rm_rf(temp)
     end
-    
+
     FileUtils.mkdir_p(temp)
 
     afname = "assignment_#{@as.id}"
@@ -23,7 +23,7 @@ class SubTarball
       uu = sub.user
       dd = dirs.join(uu.dir_name)
       FileUtils.mkdir_p(dd)
-     
+
       FileUtils.mkdir_p(dd)
 
       FileUtils.cp(sub.file_full_path, dd)

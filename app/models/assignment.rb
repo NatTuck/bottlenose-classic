@@ -21,7 +21,7 @@ class Assignment < ActiveRecord::Base
   def assignment_upload
     Upload.find_by_id(assignment_upload_id)
   end
-  
+
   def grading_upload
     Upload.find_by_id(grading_upload_id)
   end
@@ -133,7 +133,7 @@ class Assignment < ActiveRecord::Base
       })
       up.store_upload!(@assignment_file_data)
       up.save!
-      
+
       self.assignment_upload_id = up.id
       self.save!
 
@@ -160,7 +160,7 @@ class Assignment < ActiveRecord::Base
 
       self.grading_upload_id = up.id
       self.save!
-      
+
       Audit.log("Assn #{id}: New grading file upload by #{user.name} " +
                 "(#{user.id}) with key #{up.secret_key}")
     end
@@ -184,7 +184,7 @@ class Assignment < ActiveRecord::Base
 
       self.solution_upload_id = up.id
       self.save!
-      
+
       Audit.log("Assn #{id}: New solution file upload by #{user.name} " +
                 "(#{user.id}) with key #{up.secret_key}")
     end
@@ -198,7 +198,7 @@ class Assignment < ActiveRecord::Base
 
     dir = "downloads/#{tar_key}/"
     FileUtils.mkdir_p(Rails.root.join('public', dir))
-    
+
     return '/' + dir + "assignment_#{id}.tar.gz"
   end
 
@@ -219,7 +219,7 @@ class Assignment < ActiveRecord::Base
 
   def best_sub_for(user)
     bs = BestSub.where(user_id: user.id, assignment_id: self.id).first
-    if bs.nil? 
+    if bs.nil?
       Submission.new(user_id: user.id, assignment_id: self.id)
     else
       bs.submission
@@ -256,10 +256,10 @@ class Assignment < ActiveRecord::Base
     end
 
     teacher_scores = subs.find_all {|ss| not ss.teacher_score.nil? }
-      
+
     if teacher_scores.empty?
-      subs.sort_by do |ss| 
-        sprintf("%06d%014d", ss.score || 0, ss.created_at.to_i) 
+      subs.sort_by do |ss|
+        sprintf("%06d%014d", ss.score || 0, ss.created_at.to_i)
       end.last
     else
       teacher_scores.sort_by {|ss| ss.score }.last

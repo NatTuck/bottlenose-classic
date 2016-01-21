@@ -1,6 +1,6 @@
 class Course < ActiveRecord::Base
   belongs_to :term
-  
+
   has_many :registrations, dependent: :destroy
   has_many :users, through: :registrations
 
@@ -31,9 +31,9 @@ class Course < ActiveRecord::Base
     reg = Registration.find_by_course_id_and_user_id(self.id, user.id)
     reg and reg.teacher?
   end
-  
+
   def regs_sorted
-    registrations.includes(:user).to_a.sort_by do |reg| 
+    registrations.includes(:user).to_a.sort_by do |reg|
       reg.user.invert_name.downcase
     end
   end
@@ -85,7 +85,7 @@ class Course < ActiveRecord::Base
 
     rr = registrations.where(user_id: uu.id).first
     if rr.nil?
-      rr = Registration.create(user_id: uu.id, course_id: self.id, 
+      rr = Registration.create(user_id: uu.id, course_id: self.id,
                                teacher: teacher, show_in_lists: !teacher)
     end
 
@@ -102,7 +102,7 @@ class Course < ActiveRecord::Base
       avails[aa.bucket_id] ||= 0
       avails[aa.bucket_id] += aa.points_available
 
-      aa.best_subs.each do |bs| 
+      aa.best_subs.each do |bs|
         scores[bs.user_id] ||= {}
         scores[bs.user_id][aa.bucket_id] ||= 0
         scores[bs.user_id][aa.bucket_id] += bs.score

@@ -15,7 +15,7 @@ task :upgrade do
   system("rake install")
   system("rake restart")
   system("bin/delayed_job start")
-end  
+end
 
 task :restart do
   system("touch tmp/restart.txt")
@@ -42,7 +42,7 @@ task :dump_sql do
   dbcfg = Rails.configuration.database_configuration
   dbname = dbcfg[Rails.env]["database"]
   dbuser = dbcfg[Rails.env]["username"]
-  
+
   cmd = %Q{pg_dump -U "#{dbuser}" "#{dbname}" > db/dump.sql}
   puts cmd
   system(cmd)
@@ -97,7 +97,7 @@ end
 task :nuke_uploads do
   puts
   puts "This will delete all student work."
-  puts 
+  puts
   puts "CTRL+C to cancel, or enter to continue"
   puts
   $stdin.readline

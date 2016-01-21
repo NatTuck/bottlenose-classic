@@ -11,7 +11,7 @@ then
     then
         (cd `dirname $CONFIG` && .bottlenose/prep)
     fi
-else 
+else
     echo "Falling back to old rules - re-unpacking grading tarball."
     if [[ -e "../grading.tar.gz" ]]
     then

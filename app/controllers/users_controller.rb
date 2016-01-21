@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :require_site_admin, except: [:new, :create, :update]
-  
+
   def index
     @users = User.order(:name)
     @user  = User.new
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
 
     if User.count == 0
       @user.site_admin = true
-    else 
+    else
       @user.site_admin = false
     end
 
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
       @user.send_auth_link_email!
 
       if @logged_in_user.nil?
-        redirect_to '/', 
+        redirect_to '/',
           notice: 'User created. Check your email for an authentication link.'
       else
         redirect_to @user, notice: 'User was successfully created.'
@@ -55,7 +55,7 @@ class UsersController < ApplicationController
       if @logged_in_user.site_admin?
         render action: "edit"
       else
-        redirect_to '/main/auth', 
+        redirect_to '/main/auth',
           alert: "Error updating name: #{@user.errors.full_messages.join('; ')}"
       end
     end
@@ -67,7 +67,7 @@ class UsersController < ApplicationController
 
     redirect_to users_url
   end
-  
+
   def impersonate
     @user = User.find(params[:id])
     session[:user_id] = @user.id
@@ -80,7 +80,7 @@ class UsersController < ApplicationController
   def user_params
     if @logged_in_user && @logged_in_user.site_admin?
       params[:user].permit(:email, :name, :site_admin, :auth_key)
-    else 
+    else
       params[:user].permit(:email, :name)
     end
   end

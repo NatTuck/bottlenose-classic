@@ -4,12 +4,12 @@ class CoursesController < ApplicationController
   before_action :find_course, except: [:index, :new, :create]
   before_action :setup_breadcrumbs
 
-  before_filter :require_course_permission, 
+  before_filter :require_course_permission,
     except: [:index, :new, :create, :show, :public]
   before_filter :require_logged_in_user, except: [:public]
   before_filter :require_teacher,    only: [:export_grades, :edit, :update]
   before_filter :require_site_admin, only: [:new, :create, :destroy]
- 
+
   def export_grades
     @subs = []
     @course.assignments.each do |assignment|
@@ -24,7 +24,7 @@ class CoursesController < ApplicationController
   def export_summary
     @buckets = @course.buckets
     @regs    = @course.active_registrations
-  
+
     render :formats => [:text]
   end
 
@@ -54,9 +54,9 @@ class CoursesController < ApplicationController
           next unless line[1] =~ /\@.*\./
           @course.add_registration(line[0], line[1])
           num_added += 1
-        end 
+        end
       end
-    
+
       flash[:notice] = "Added #{num_added} students."
     end
   end
@@ -65,11 +65,11 @@ class CoursesController < ApplicationController
     if @logged_in_user.site_admin?
       @course  = Course.new
     end
-      
+
     @courses = @logged_in_user.courses.order(:name)
     @courses_by_term = {}
     Term.all.each do |term|
-      @courses_by_term[term.id] = @courses.find_all {|cc| 
+      @courses_by_term[term.id] = @courses.find_all {|cc|
         cc.term_id == term.id }
     end
 
@@ -80,7 +80,7 @@ class CoursesController < ApplicationController
 
     @alls_by_term = {}
     Term.all.each do |term|
-      @alls_by_term[term.id] = @alls.find_all {|cc| 
+      @alls_by_term[term.id] = @alls.find_all {|cc|
         cc.term_id == term.id }
     end
 

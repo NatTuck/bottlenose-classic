@@ -37,7 +37,7 @@ class TeamsTest < ActionDispatch::IntegrationTest
 
     # Submit as a Team Member
     visit "/main/auth?email=#{@mary.email}&key=#{@mary.auth_key}"
-    
+
     click_link 'Your Courses'
     click_link @cs101.name
     click_link @pset.name
@@ -54,7 +54,7 @@ class TeamsTest < ActionDispatch::IntegrationTest
 
     # Grade the submission.
     visit "/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
-    
+
     click_link 'Your Courses'
     click_link @cs101.name
     click_link @pset.name
@@ -64,7 +64,7 @@ class TeamsTest < ActionDispatch::IntegrationTest
     row.click_button "Update Submission"
 
     assert find("td", text: @mary.name).find(:xpath, "..").has_content?("80")
-    
+
     mreg = @mary.registration_for(@cs101)
     greg = @greg.registration_for(@cs101)
     assert_equal mreg.total_score, greg.total_score

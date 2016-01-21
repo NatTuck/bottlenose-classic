@@ -10,7 +10,7 @@ class RequestRegTest < ActionDispatch::IntegrationTest
     # Register a new account
     visit "http://test.host/"
 
-    within "#register-form-div" do 
+    within "#register-form-div" do
       fill_in "Full Name", with: "Napoleon Bonaparte"
       fill_in "Email", with: "napolean@example.com"
       click_button "Register"
@@ -38,7 +38,7 @@ class RequestRegTest < ActionDispatch::IntegrationTest
     click_link "Your Courses"
     click_link @cs101.name
     first(:link, "View Registration Requests").click
-  
+
     within "#reg-req-#{req.id}" do
       click_button "Create Registration"
     end

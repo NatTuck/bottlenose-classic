@@ -47,12 +47,12 @@
 <table class="table table-striped">
 <tr>
   <td>Automatic Score:</td>
-  <td><%= show_score(@submission.auto_score) || "no data" %> / 
+  <td><%= show_score(@submission.auto_score) || "no data" %> /
     <%= @assignment.points_available %></td>
 </tr>
 <tr>
   <td>Teacher Score:</td>
-  <td><%= show_score(@submission.teacher_score) || "no data" %> / 
+  <td><%= show_score(@submission.teacher_score) || "no data" %> /
     <%= @assignment.points_available %></td>
 </tr>
 <% if @submission.late? %>
@@ -87,7 +87,7 @@
 </div>
 
   <% unless @submission.comments_upload_id.nil? %>
-    <p>Teacher Uploaded: <%= link_to @submission.comments_upload.file_name, 
+    <p>Teacher Uploaded: <%= link_to @submission.comments_upload.file_name,
       @submission.comments_upload.path %></p>
   <% end %>
 

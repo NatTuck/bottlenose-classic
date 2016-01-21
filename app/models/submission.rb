@@ -82,7 +82,7 @@ class Submission < ActiveRecord::Base
 
     self.upload_id = up.id
     self.save!
-      
+
     Audit.log("Sub #{id}: New submission upload by #{user.name} " +
               "(#{user.id}) with key #{up.secret_key}")
   end
@@ -109,7 +109,7 @@ class Submission < ActiveRecord::Base
     self.comments_upload_id = up.id
     self.save!
   end
- 
+
   def file_path
     if upload_id.nil?
       ""
@@ -143,12 +143,12 @@ class Submission < ActiveRecord::Base
     # Returns multiplier for post-penalty score.
     return 0.0 unless late?
     return 0.0 if ignore_late_penalty?
-    
+
     (pen, del, max) = course.late_opts
 
     percent_off = (days_late / del) * pen
     percent_off = max if percent_off > max
-    
+
     percent_off / 100.0
   end
 
@@ -182,7 +182,7 @@ class Submission < ActiveRecord::Base
   end
 
   def visible_to?(user)
-    user.course_admin?(course) || 
+    user.course_admin?(course) ||
       user.id == self.user_id ||
       (assignment.team_subs? &&
        team.users.map {|u| u.id}.include?(user.id))

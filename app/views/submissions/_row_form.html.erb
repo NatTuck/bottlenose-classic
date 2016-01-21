@@ -3,7 +3,7 @@
 <% if sub.errors.any? %>
   <td colspan="4">
     <div id="error_explanation">
-      <h2><%= pluralize(@submission.errors.count, "error") %> prohibited this 
+      <h2><%= pluralize(@submission.errors.count, "error") %> prohibited this
 	submission from being saved:</h2>
 
       <ul>
@@ -25,13 +25,13 @@
 <style> .field_with_errors {  display:inline-block; } </style>
 
 <td>
-  <%= form_for [sub.assignment, sub], namespace: "u#{user.id}", 
+  <%= form_for [sub.assignment, sub], namespace: "u#{user.id}",
     remote: true, html: { class: "sub-form" } do |f| %>
   <%= hidden_field_tag :row_user_id, user.id, id: "u#{user.id}-user-id" %>
   <%= f.hidden_field :user_id %>
   <%= f.hidden_field :assignment_id %>
   <%= f.hidden_field :file_name %>
-  <%= f.text_field :teacher_score, :size => 8, class: "grade-entry-box", 
+  <%= f.text_field :teacher_score, :size => 8, class: "grade-entry-box",
     autocomplete: "off", data: { user_id: user.id } %>&nbsp;<%=
     f.submit nil, class: 'btn btn-primary' %>
   <% end %>
@@ -39,7 +39,7 @@
 <td><%= sub.score.round(2) %>&nbsp;/&nbsp;<%= @assignment.points_available %></td>
 <td>
   <% if sub.new_record? %>
-    - 
+    -
   <% else %>
     <%= link_to("View", sub) %> |
     <%= link_to("Grade", [:edit, sub]) %>

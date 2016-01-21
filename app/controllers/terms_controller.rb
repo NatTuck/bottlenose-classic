@@ -1,7 +1,7 @@
 class TermsController < ApplicationController
   before_filter :require_site_admin
   before_filter :setup_breadcrumbs
-  
+
   def index
     @terms = Term.all_sorted
   end

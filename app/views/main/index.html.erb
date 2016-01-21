@@ -17,7 +17,7 @@
           <%= label_tag 'email' %>
           <%= email_field_tag :email, '', class: 'form-control' %>
         </div>
-    
+
         <div class="form-group">
           <%= submit_tag "Resend Link", class: 'btn btn-primary' %>
         </div>
@@ -31,15 +31,15 @@
     <div style="margin: 1em">
       <%= form_for @user do |ff| %>
         <div class="form-group">
-          <%= ff.label 'name', 'Full Name' %> 
-          <%= ff.text_field :name, class: 'form-control', 
+          <%= ff.label 'name', 'Full Name' %>
+          <%= ff.text_field :name, class: 'form-control',
             placeholder: "Sandra Day O'Connor" %>
         </div>
         <div class="form-group">
           <%= ff.label 'email' %>
           <%= ff.email_field :email, class: 'form-control' %>
         </div>
-        
+
         <div class="form-group">
           <%= submit_tag "Register", class: 'btn btn-primary' %>
         </div>

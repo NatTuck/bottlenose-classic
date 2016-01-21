@@ -18,7 +18,7 @@ gem 'uglifier'
 gem 'jquery-rails'
 
 gem 'bootstrap-sass'
-gem 'bootstrap-sass-extras' 
+gem 'bootstrap-sass-extras'
 gem 'bootstrap-datepicker-rails'
 gem 'font-awesome-rails'
 

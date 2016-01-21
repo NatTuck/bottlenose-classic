@@ -2,12 +2,12 @@
 <% if @submission.assignment.team_subs? && @submission.team %>
   <%  @submission.team.users.each do |uu| %>
     $('#sub-for-user-<%= uu.id %>').html("<%=
-      escape_javascript render('submissions/row_form', sub: @submission, user: uu )  
+      escape_javascript render('submissions/row_form', sub: @submission, user: uu )
     %>");
   <% end %>
 <% else %>
   $('#sub-for-user-<%= @submission.user.id %>').html("<%=
-    escape_javascript render('submissions/row_form', sub: @submission, user: @row_user )  
+    escape_javascript render('submissions/row_form', sub: @submission, user: @row_user )
   %>");
 <% end %>
 

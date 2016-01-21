@@ -15,7 +15,7 @@ Rails.application.require_environment!
 User.all.each do |user|
   if user.email =~ /[A-Z]/ || user.email =~ /\W$/
     puts "Fixing user email: #{user.email}"
-    
+
     unless user.save
         user.email = "invalid-user-#{user.id}@example.com"
         user.save!
@@ -37,7 +37,7 @@ User.all.each do |user|
                 puts "#{user.id} #{user.name}"
                 puts user.errors.full_messages
             end
-        end 
+        end
     end
 end
 

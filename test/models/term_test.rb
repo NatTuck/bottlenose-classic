@@ -12,16 +12,16 @@ class TermTest < ActiveSupport::TestCase
   test "term names are canonicalized as expected" do
     tt = Term.new(name: "Fall 2012")
     assert_equal "z 2012 4_Fall Fall 2012", tt.canonical_name
-    
+
     tt = Term.new(name: "2012 Spring")
     assert_equal "z 2012 2_Spring 2012 Spring", tt.canonical_name
-    
+
     tt = Term.new(name: "summer 12")
     assert_equal "z 2012 3_Summer summer 12", tt.canonical_name
-    
+
     tt = Term.new(name: "44 WINTER")
     assert_equal "z 2044 1_Winter 44 WINTER", tt.canonical_name
-    
+
     tt = Term.new(name: "99 Bacon", archived: true)
     assert_equal "a 2099 0_Top 99 Bacon", tt.canonical_name
   end

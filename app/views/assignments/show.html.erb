@@ -36,7 +36,7 @@
     <b>Grading File Download:</b>
     <%= link_to @assignment.grading_file_name, @assignment.grading_file_path %>
   </p>
-  
+
   <p>
     <b>Solution File Download:</b>
     <%= link_to @assignment.solution_file_name, @assignment.solution_file_path %>
@@ -46,12 +46,12 @@
 
   <p>
     <%= link_to "Manually Add Student Grade", assignment_path(@assignment) +
-      '/manual_grade' %> | 
+      '/manual_grade' %> |
     <%= link_to "Tarball of Submissions", assignment_path(@assignment) + '/tarball' %>
   </p>
-  
+
   <p>
-    Filter Tags: 
+    Filter Tags:
     <select id="tag-filter"></select>
     <button class="btn btn-default" id="apply-filter">Apply</button>
   </p>
@@ -75,7 +75,7 @@
       </tr>
     <% end %>
   </table>
-  
+
 <% end %>
 
 

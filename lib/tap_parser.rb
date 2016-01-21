@@ -31,7 +31,7 @@ class TapParser
         nn = mm[1].to_i
         tests[nn] = false
       end
-    end    
+    end
 
     # Count passing tests.
     points = 0
@@ -49,7 +49,7 @@ class TapParser
       mm = line.match(/# TOTAL POINTS: (\d+)/)
       if mm
         total_points = mm[1].to_i
-      end 
+      end
     end
 
     total_points

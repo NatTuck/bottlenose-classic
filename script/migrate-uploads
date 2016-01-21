@@ -38,7 +38,7 @@ Submission.all.each do |sub|
     #puts "#{sub.id}: Nil filename"
     next
   end
-  
+
   if sub.secret_dir.nil?
     #puts "#{sub.id}: Nil secret_dir"
     next
@@ -82,7 +82,7 @@ Assignment.all.each do |assn|
     #puts "#{assn.id}: Nil filename"
     next
   end
-  
+
   if assn.secret_dir.nil?
     puts "#{assn.id}: Nil secret_dir"
     next
@@ -126,7 +126,7 @@ Assignment.all.each do |assn|
     #puts "#{assn.id}: Nil filename"
     next
   end
-  
+
   if assn.secret_dir.nil?
     puts "#{assn.id}: Nil secret_dir"
     next

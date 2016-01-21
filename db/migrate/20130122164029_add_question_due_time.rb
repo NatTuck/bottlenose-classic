@@ -4,6 +4,6 @@ class AddQuestionDueTime < ActiveRecord::Migration
   end
 
   def down
-    remove_column :courses, :questions_due_time 
+    remove_column :courses, :questions_due_time
   end
 end

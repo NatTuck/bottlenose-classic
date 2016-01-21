@@ -27,7 +27,7 @@
   </tr>
   <tr>
     <td><strong>Automatic Score</strong></td>
-    <td><%= @submission.auto_score || "no data" %> / 
+    <td><%= @submission.auto_score || "no data" %> /
       <%= @assignment.points_available %></td>
   </tr>
   <tr>
@@ -59,11 +59,11 @@
   </div>
   <div class="form-group">
     <%= f.label :teacher_score, "Score" %><br>
-    <%= f.text_field :teacher_score, :size => 10 %> / 
+    <%= f.text_field :teacher_score, :size => 10 %> /
     <%= @assignment.points_available %></p>
   </div>
   <div class="form-group">
-    <%= f.label :ignore_late_penalty, "Ignore Late Penalty:" %> 
+    <%= f.label :ignore_late_penalty, "Ignore Late Penalty:" %>
     <%= f.check_box :ignore_late_penalty %>
   </div>
   <div class="form-group">

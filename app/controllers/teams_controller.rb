@@ -94,8 +94,8 @@ class TeamsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_course
     @course = Course.find(params[:course_id])
-  end  
-  
+  end
+
   def set_team
     @team = Team.find(params[:id])
   end

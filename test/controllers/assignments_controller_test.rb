@@ -3,7 +3,7 @@ require 'test_helper'
 class AssignmentsControllerTest < ActionController::TestCase
   setup do
     make_standard_course
-    
+
     @hello = create(:assignment, bucket: @bucket, course: @cs101)
     @bad   = create(:assignment, bucket: @bucket, course: @cs101)
   end
@@ -16,11 +16,11 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "should create assignment" do
     assert_difference('Assignment.count') do
       post :create, {course_id: @cs101.id,
-                     assignment: { assignment: "Dance a jig.",  
+                     assignment: { assignment: "Dance a jig.",
                                    points_available: 100,
-                                   name: "Useful Work", 
+                                   name: "Useful Work",
                                    bucket_id: @hello.bucket_id,
-                                   due_date: '2019-05-22'}}, 
+                                   due_date: '2019-05-22'}},
                     {user_id: @fred.id}
     end
 
@@ -38,7 +38,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   end
 
   test "should update assignment" do
-    put :update, {id: @hello, assignment: { assignment: @hello.assignment, 
+    put :update, {id: @hello, assignment: { assignment: @hello.assignment,
         name: "Something different" }}, {user_id: @fred.id}
     assert_redirected_to assignment_path(assigns(:assignment))
   end

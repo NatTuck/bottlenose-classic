@@ -46,16 +46,16 @@ class RegistrationsControllerTest < ActionController::TestCase
   end
 
   test "should update registration" do
-    put :update, {course_id: @cs301.id, id: @john_reg.id, 
-      registration: { user_id: @john.id, course_id: @cs301.id, teacher: true }}, 
+    put :update, {course_id: @cs301.id, id: @john_reg.id,
+      registration: { user_id: @john.id, course_id: @cs301.id, teacher: true }},
       {user_id: @fred.id}
 
     assert_response :redirect
   end
 
   test "should set tags" do
-    put :update, {course_id: @cs301.id, id: @john_reg.id, 
-      registration: { user_id: @john.id, course_id: @cs301.id, teacher: false, tags: "goat; honors" }}, 
+    put :update, {course_id: @cs301.id, id: @john_reg.id,
+      registration: { user_id: @john.id, course_id: @cs301.id, teacher: false, tags: "goat; honors" }},
       {user_id: @fred.id}
 
     assert_response :redirect
@@ -69,7 +69,7 @@ class RegistrationsControllerTest < ActionController::TestCase
 
   test "should destroy registration" do
     assert_difference('Registration.count', -1) do
-      delete :destroy, {:course_id => @cs301.id, id: @john_reg.id}, 
+      delete :destroy, {:course_id => @cs301.id, id: @john_reg.id},
         {user_id: @fred.id}
     end
 

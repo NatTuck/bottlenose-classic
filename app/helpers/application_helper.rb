@@ -39,7 +39,7 @@ module ApplicationHelper
 
   def status_image(sub)
     if (sub.nil? || sub.new_record?)
-      return image_tag("null-mark.png", height: 32) 
+      return image_tag("null-mark.png", height: 32)
     end
 
     if sub.auto_score.nil? and sub.teacher_score.nil?
@@ -62,8 +62,8 @@ module ApplicationHelper
       end
     end
 
-    if sub.score >= sub.assignment.points_available 
-      return image_tag("check-mark.png", height: 32) 
+    if sub.score >= sub.assignment.points_available
+      return image_tag("check-mark.png", height: 32)
     end
 
     if sub.score < (sub.assignment.points_available / 2)

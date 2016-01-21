@@ -9,7 +9,7 @@ run_on_page "assignments/show", () ->
 
   find_inputs = () ->
     inputs = $(".grade-entry-box")
-    
+
     by_user = {}
     inputs.each (ii, box) ->
       user_id = $(box).data("user-id")
@@ -31,11 +31,11 @@ run_on_page "assignments/show", () ->
 
       when "Down"
         focus_row(row_number + 1)
-  
+
   handle_form_send = (event) ->
     box = $(event.target).find(".grade-entry-box")[0]
     user_id = $(box).data("user-id")
-   
+
     row_number = by_user[user_id]
     focus_row(row_number + 1)
 
@@ -47,9 +47,9 @@ run_on_page "assignments/show", () ->
 
     $(".sub-form").off "ajax:send", handle_form_send
     $(".sub-form").on "ajax:send", handle_form_send
- 
+
   $(document).ajaxComplete () ->
     $('#ajax-status').text("ajax-status: done")
     setup_handlers()
-  
+
   setup_handlers()

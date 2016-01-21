@@ -8,7 +8,7 @@
 
 <%= form_for [@course, @registration] do |f| %>
   <%= f.hidden_field :course_id %>
-  
+
   <div class="form-group">
     <%= label_tag :user_email, "Email" %>
     <%= text_field_tag :user_email %>
@@ -44,11 +44,11 @@
   <td><%= teacher.email %></td>
   <td>
     <span class="show-user-<%= treg.id %>"><%= treg.show_in_lists? ? "Yes" : "No" %></span>
-    (<%= link_to "Toggle", registration_show_toggle_path(treg.id), 
+    (<%= link_to "Toggle", registration_show_toggle_path(treg.id),
                            remote: true, method: 'post' %>)
   </td>
   <td><%= link_to 'Edit', [:edit, @course, treg] %> |
-      <%= link_to 'Remove', [@course, treg], 
+      <%= link_to 'Remove', [@course, treg],
             { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>
 </tr>
 <% end %>
@@ -71,11 +71,11 @@
   <td><%= student.email %></td>
   <td>
     <span class="show-user-<%= sreg.id %>"><%= sreg.show_in_lists? ? "Yes" : "No" %></span>
-    (<%= link_to "Toggle", registration_show_toggle_path(sreg.id), 
+    (<%= link_to "Toggle", registration_show_toggle_path(sreg.id),
                            remote: true, method: 'post' %>)
   </td>
   <td><%= link_to 'Edit', [:edit, @course, sreg] %> |
-      <%= link_to 'Remove', [@course, sreg], 
+      <%= link_to 'Remove', [@course, sreg],
             { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>
 </tr>
 <% end %>

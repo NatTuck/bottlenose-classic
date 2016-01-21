@@ -12,7 +12,7 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
   include FactoryGirl::Syntax::Methods
-  
+
   def make_standard_course
     @ken      = create(:admin_user)
     @fred     = create(:user, name: "Fred McTeacher")
@@ -38,7 +38,7 @@ class ActiveSupport::TestCase
     aa.grading_file    = assign_upload_obj(name, 'grading.tar.gz')
     aa.save_uploads!
     aa.save!
-    
+
     aa
   end
 
@@ -53,7 +53,7 @@ class ActiveSupport::TestCase
     upl.save!
 
     sub = create(
-      :submission, 
+      :submission,
       assignment: aa,
       user: uu,
       upload_id: upl.id,
@@ -91,8 +91,8 @@ class ActionDispatch::IntegrationTest
   teardown do
     Capybara.reset_sessions!    # Forget the (simulated) browser state
     Capybara.use_default_driver # Revert Capybara.current_driver to Capybara.default_driver
-    
-    DatabaseCleaner.clean 
+
+    DatabaseCleaner.clean
     Upload.cleanup_test_uploads!
   end
 
@@ -105,4 +105,4 @@ end
 Capybara::Webkit.configure do |config|
   config.allow_url("test.host")
 end
- 
+

@@ -10,24 +10,24 @@
 /*global jQuery*/
 (function ($) {
     'use strict';
-    
+
     var KEY_SHIFT = 16,
         KEY_CTRL  = 17,
         KEY_ALT   = 18;
-    
+
     $.keyDecoder = {
         keyboardEventTypes: [
             'keydown',
             'keypress',
             'keyup'
         ],
-        
+
         modifiers: [
             KEY_SHIFT,
             KEY_CTRL,
             KEY_ALT
         ],
-        
+
         specialKeys: {
             8:   'Backspace',
             9:   'Tab',
@@ -81,7 +81,7 @@
             191: '/',
             224: 'Meta'
         },
-        
+
         shiftKeys: {
             '`':  '~',
             '1':  '!',
@@ -103,7 +103,7 @@
             '/':  '?',
             '\\': '|'
         },
-        
+
         /**
          * Translates an object to a hotkey string.
          * @param {object}
@@ -112,14 +112,14 @@
             if ($.isNumeric(obj)) {
                 return this.parseKeyCode.apply(this, arguments);
             }
-            
+
             if (this.isKeyboardEvent(obj)) {
                 return this.parseKeyboardEvent.apply(this, arguments);
             }
-            
+
             return '';
         },
-        
+
         /**
          * Converts a character code to string.
          * @param {string} Character code
@@ -128,7 +128,7 @@
         parseKeyCode: function (code) {
             return this.specialKeys[code] || String.fromCharCode(code).toUpperCase();
         },
-        
+
         /**
          * Translates a keyboard event to a string.
          * @param {object} Keyboard event object
@@ -139,17 +139,17 @@
             var modifier = '',
                 code = event.which,
                 key = this.parseKeyCode(code);
-            
+
             // If the keypress is a modifier then don't prepend it
             if (!this.isModifier(code)) {
                 if (event.altKey) {
                     modifier += this.parseKeyCode(KEY_ALT) + '+';
                 }
-                
+
                 if (event.ctrlKey) {
                     modifier += this.parseKeyCode(KEY_CTRL) + '+';
                 }
-                
+
                 if (event.shiftKey) {
                     if (translateShiftKeys === true && this.shiftKeys[key]) {
                         key = this.shiftKeys[key];
@@ -158,10 +158,10 @@
                     }
                 }
             }
-            
+
             return modifier + key;
         },
-        
+
         /**
          * Determines if a keycode is for a modifier key
          * @param {number} Keycode
@@ -170,7 +170,7 @@
         isModifier: function (code) {
             return ($.inArray(code, this.modifiers) > -1);
         },
-        
+
         /**
          * Determines if an object is a keyboard event.
          * @param {object} Event
@@ -179,5 +179,5 @@
             return (event && event.type && $.inArray(event.type, this.keyboardEventTypes) > -1);
         }
     };
-    
+
 }(jQuery));
