@@ -1,5 +1,6 @@
 
 Bottlenose::Application.routes.draw do
+  devise_for :users
   get "main/index"
   get "main/auth"
   post "main/resend_auth"
