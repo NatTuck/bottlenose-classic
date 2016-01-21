@@ -28,8 +28,8 @@ class SubmissionsControllerTest < ActionController::TestCase
       'files/HelloWorld/HelloWorld.tgz','application/octet-stream')
 
     assert_difference('Submission.count') do
-      post :create, { assignment_id: @hello.id, 
-        submission: { student_notes: "@@@skip tests@@@", 
+      post :create, { assignment_id: @hello.id,
+        submission: { student_notes: "@@@skip tests@@@",
                       file_name: "HelloWorld.tgz",
                       upload_file: upload }},
         {user_id: @john.id}
@@ -54,7 +54,7 @@ class SubmissionsControllerTest < ActionController::TestCase
   end
 
   test "should update submission" do
-    put :update, {id: @john_hello}, { submission: { student_notes: "Bacon!", 
+    put :update, {id: @john_hello}, { submission: { student_notes: "Bacon!",
       assignment_id: @john_hello.assignment_id, user_id: @john.id }}, {user_id: @fred.id}
     assert_response :redirect
   end

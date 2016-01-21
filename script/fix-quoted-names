@@ -9,7 +9,7 @@ require File.expand_path('../../config/boot',  __FILE__)
 require APP_PATH
 Rails.application.require_environment!
 
-COURSE_ID = 8 
+COURSE_ID = 8
 
 students = Course.find_by_id(COURSE_ID).students
 
@@ -18,7 +18,7 @@ students.each do |s|
   if s.name =~ /\".*,.*\"/
     name = s.name[1..-2]
     (last, first) = name.split(",")
-    
+
     newname = first + " " + last
     puts newname
     s.name = newname

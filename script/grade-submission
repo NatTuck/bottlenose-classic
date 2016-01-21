@@ -86,7 +86,7 @@ if output_lines.any? {|xx| xx.match(output_key)}
   score = 0
 
   begin
-    score = (parser.points_earned * sub.assignment.points_available) / 
+    score = (parser.points_earned * sub.assignment.points_available) /
       parser.points_available
   rescue ZeroDivisionError
     # Yay, no points available.
@@ -104,14 +104,14 @@ if File.exists?("#{test_dir}/sandbox/bin/bash")
 else
   system(%Q{rm --one-file-system -rf "#{test_dir}"}) if test_dir.match(/^\/tmp/)
 end
-             
+
 sub.grading_uid = nil
 sub.save!
 
 # Run the sandbox reaper occasionally.
 
 last_reap = Rails.root.join('tmp', 'last-reap')
-if !File.exists?(last_reap) || File.mtime(last_reap) < (Time.now - 6.hours) 
+if !File.exists?(last_reap) || File.mtime(last_reap) < (Time.now - 6.hours)
   File.write(last_reap, "#{Time.now}\n")
   system(%Q{cd #{Rails.root} && script/sandbox-reaper &})
 end

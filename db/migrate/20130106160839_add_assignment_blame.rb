@@ -11,6 +11,6 @@ class AddAssignmentBlame < ActiveRecord::Migration
   end
 
   def down
-    remove_column :assignments, :blame_id 
+    remove_column :assignments, :blame_id
   end
 end

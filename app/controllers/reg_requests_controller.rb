@@ -8,7 +8,7 @@ class RegRequestsController < ApplicationController
     @registration = Registration.new
   end
 
-  def show    
+  def show
   end
 
   def new
@@ -27,7 +27,7 @@ class RegRequestsController < ApplicationController
 
     if @reg_request.save
       @course.teachers.each do |teacher|
-        NotificationMailer.got_reg_request(teacher, 
+        NotificationMailer.got_reg_request(teacher,
           @reg_request, root_url).deliver_later
       end
 

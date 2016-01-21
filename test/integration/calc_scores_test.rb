@@ -23,7 +23,7 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
     @mary    = create(:user, name: "Mary McStudent")
     @john    = create(:user, name: "John McStudent")
     @mark    = create(:user, name: "Mark McStudent")
- 
+
     # Course 1
     @cs101   = create(:course, name: "CS 101", public: true)
     @hw101   = create(:bucket, name: "Homework", course: @cs101, weight: 0.5)
@@ -48,13 +48,13 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
     @mary102 = create(:registration, course: @cs102, user: @mary)
     @john102 = create(:registration, course: @cs102, user: @john)
     @mark102 = create(:registration, course: @cs102, user: @mark)
-    
+
     @cs102hw1 = create(:assignment, name: "cs2hw1", course: @cs102, bucket: @hw102)
     @cs102hw2 = create(:assignment, name: "cs2hw2", course: @cs102, bucket: @hw102, team_subs: true)
     @cs102qz1 = create(:assignment, name: "cs2qz1", course: @cs102, bucket: @qz102)
     @cs102qz2 = create(:assignment, name: "cs2qz2", course: @cs102, bucket: @qz102)
 
-    
+
     @tars_dir = Rails.root.join('test', 'fixtures', 'files')
     @upload_file = @tars_dir.join('HelloSingle', 'hello.c')
 
@@ -90,11 +90,11 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
     [@jane, @mary, @john, @mark].each do |user|
       enter_grade(@cs102qz2, user, 100)
     end
-    
+
     [@jane, @mary, @john, @mark].each do |user|
       enter_grade(@cs101qz1, user, 100)
     end
-    
+
     [@jane, @mary, @john, @mark].each do |user|
       enter_grade(@cs101qz2, user, 50)
     end
@@ -102,7 +102,7 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
     [@jane, @mary, @john, @mark].each do |user|
       enter_grade(@cs101hw1, user, 100)
     end
-    
+
     [@jane, @mary, @john, @mark].each do |user|
       enter_grade(@cs102hw1, user, 100)
     end
@@ -110,7 +110,7 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
     [@mary, @mark].each do |user|
       enter_grade(@cs101hw2, user, 100)
     end
-      
+
     enter_grade(@cs102hw2, @mary, 75)
     enter_grade(@cs102hw2, @mark, 25)
 
@@ -150,7 +150,7 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
 
     row = find("#students-summary td", text: user.name).find(:xpath, "..")
     grade_shown = row.find(".score-total").text
-    
+
     diff = (grade_shown.to_i - grade_expected).abs
     assert diff < 2, "Grade mismatch, teacher check for #{user.name}, diff = #{diff}"
   end
@@ -159,7 +159,7 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
     course = assign.course
 
     login_as(user)
-    
+
     click_link course.name
     click_link assign.name
     if has_content? "New Submission"
@@ -194,7 +194,7 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
       assert has_content?(uu.name)
     end
   end
-  
+
   def enter_grade(assign, user, grade)
     course = assign.course
     reg = user.registration_for(course) or raise Exception.new("User: #{user.name}, Course: #{course.name}")

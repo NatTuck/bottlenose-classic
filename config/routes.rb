@@ -43,12 +43,12 @@ Bottlenose::Application.routes.draw do
 
   get 'assignments/:assignment_id/manual_grade' =>
     'submissions#manual_grade'
-  
+
   get 'assignments/:id/tarball' =>
     'assignments#tarball'
 
   resources :submissions, except: [:destroy]
-  
+
   root :to => 'main#index'
 end
 

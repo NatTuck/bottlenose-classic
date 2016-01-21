@@ -13,7 +13,7 @@
       <td><%= bb.weight ? sprintf("%.02f", bb.weight) : 0.0 %></td>
       <td>
         <%= link_to 'Edit', edit_course_bucket_path(@course, bb) %> |
-        <%= link_to 'Remove', [@course, bb], 
+        <%= link_to 'Remove', [@course, bb],
            { method: :delete, data: { confirm: 'Are you sure?' }} %>
       </td>
     </tr>

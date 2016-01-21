@@ -6,7 +6,7 @@ class CreateUploads < ActiveRecord::Migration
       t.string  :secret_key
       t.timestamps
     end
-    
+
     add_index :uploads, [:secret_key], :unique => true
   end
 end

@@ -5,7 +5,7 @@ Bottlenose is a web app for managing assignment submission and grading in
 computer science courses. It provides a flexible mechanism for automatic
 grading of programming assignments.
 
-For detailed documentation, see the wiki on Github: 
+For detailed documentation, see the wiki on Github:
 
 https://github.com/NatTuck/bottlenose/wiki
 

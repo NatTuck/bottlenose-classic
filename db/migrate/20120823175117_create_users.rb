@@ -5,7 +5,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :email,    :null => false
       t.string :auth_key, :null => false
       t.boolean :site_admin
-      
+
       t.timestamps
     end
 

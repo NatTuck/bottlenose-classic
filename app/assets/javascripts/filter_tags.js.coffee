@@ -13,7 +13,7 @@ window.filter_tags = (tag) ->
     $('[data-tags]').each (_, row) ->
       $(row).show()
     return
-  
+
   $('[data-tags]').each (_, row) ->
     tags = $(row).data('tags').split(/\s*;\s*/)
     if tags.includes(tag)
@@ -25,12 +25,12 @@ window.fill_tag_select = () ->
   tags = find_tags()
 
   select = $('#tag-filter')[0]
-    
+
   opt = document.createElement("option")
   opt.innerHTML = "ALL"
   opt.value = ""
   select.appendChild(opt)
-  
+
   tags.forEach (tag) ->
     opt = document.createElement("option")
     opt.innerHTML = tag

@@ -10,7 +10,7 @@ Course.all.each do |course|
     chapter.assignments.each do |assgn|
        course.student_registrations.map {|reg| reg.user}.each do |student|
          subs = assgn.submissions.where(user_id: student.id)
-         puts "#{assgn.name} / #{student.name} / #{subs.count}"          
+         puts "#{assgn.name} / #{student.name} / #{subs.count}"
        end
     end
   end

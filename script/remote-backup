@@ -25,7 +25,7 @@ system(%Q{rake dump_sql})
 puts "Backing up ~/.config/bottlenose..."
 system(%Q{mkdir -p ~/.config/bottlenose})
 Dir.chdir(File.expand_path("~/.config"))
-system(%Q{tar czf "#{Rails.root}/config/bottlenose.tar.gz" bottlenose}) 
+system(%Q{tar czf "#{Rails.root}/config/bottlenose.tar.gz" bottlenose})
 Dir.chdir(Rails.root)
 
 puts "Rsyncing to remote server..."

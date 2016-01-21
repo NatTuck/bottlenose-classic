@@ -4,7 +4,7 @@ class CoursesControllerTest < ActionController::TestCase
   setup do
     make_standard_course
     @mike  = create(:user)
-    
+
     @course1 = @cs101
     @course2 = create(:course)
 
@@ -29,8 +29,8 @@ class CoursesControllerTest < ActionController::TestCase
 
   test "should create course" do
     assert_difference('Course.count') do
-      post :create, {course: { 
-        name: "Worst Course Ever", term_id: @term.id, late_options: "1,1,1" }}, 
+      post :create, {course: {
+        name: "Worst Course Ever", term_id: @term.id, late_options: "1,1,1" }},
         {:user_id => @ken.id}
     end
 
@@ -48,16 +48,16 @@ class CoursesControllerTest < ActionController::TestCase
   end
 
   test "should update course" do
-    put :update, {id: @course1, course: { name: @course1.name, late_options: "1,1,1" }}, 
+    put :update, {id: @course1, course: { name: @course1.name, late_options: "1,1,1" }},
       {:user_id => @fred.id}
     assert_redirected_to course_path(assigns(:course))
   end
-  
+
   test "updating late penalties should change scores" do
     a1  = create(:assignment, course: @course1, due_date: (Time.now - 5.days))
     sub = create(:submission, assignment: a1, user: @john, teacher_score: 100)
 
-    put :update, {id: @course1, course: { name: @course1.name, late_options: "5,1,12" }}, 
+    put :update, {id: @course1, course: { name: @course1.name, late_options: "5,1,12" }},
       {:user_id => @fred.id}
     assert_response :redirect
 

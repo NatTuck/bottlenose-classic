@@ -14,7 +14,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     pset = make_assignment(@bucket, "HelloWorld")
     sub  = make_submission(@john, pset, "john.tar.gz")
 
-    visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"    
+    visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
     visit 'http://test.host/' + edit_submission_path(sub)
 
     check 'submission[ignore_late_penalty]'
@@ -30,7 +30,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
 
     score0 = @john_reg.total_score
 
-    visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"    
+    visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
     click_link 'Your Courses'
     click_link @cs101.name
     click_link pset.name
@@ -76,9 +76,9 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     end
 
     assert_equal 100, @submission.auto_score
-    
+
     assert File.exists?(@submission.file_full_path)
-    
+
     # Download the submissions tarball.
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
 

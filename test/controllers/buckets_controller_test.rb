@@ -3,7 +3,7 @@ require 'test_helper'
 class BucketsControllerTest < ActionController::TestCase
   setup do
     @cs101  = create(:course, name: "Fundies 1")
-    @bucket = create(:bucket, name: "Problem Sets", 
+    @bucket = create(:bucket, name: "Problem Sets",
                               weight: 0.5, course_id: @cs101.id)
   end
 
@@ -20,9 +20,9 @@ class BucketsControllerTest < ActionController::TestCase
 
   test "should create bucket" do
     assert_difference('Bucket.count') do
-      post :create, course_id: @cs101, bucket: { 
-        course_id: @bucket.course_id, 
-        name: "Foos", 
+      post :create, course_id: @cs101, bucket: {
+        course_id: @bucket.course_id,
+        name: "Foos",
         weight: @bucket.weight
       }
     end
@@ -36,11 +36,11 @@ class BucketsControllerTest < ActionController::TestCase
   end
 
   test "should update bucket" do
-    patch :update, course_id: @cs101, 
-                   id: @bucket, bucket: { 
-      course_id: @bucket.course_id, 
-      name: "Bars", 
-      weight: 0.88 
+    patch :update, course_id: @cs101,
+                   id: @bucket, bucket: {
+      course_id: @bucket.course_id,
+      name: "Bars",
+      weight: 0.88
     }
 
     assert_redirected_to course_buckets_path(@cs101)

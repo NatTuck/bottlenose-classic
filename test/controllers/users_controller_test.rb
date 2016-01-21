@@ -18,7 +18,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :redirect
     assert_match "don't have permission", flash[:error]
   end
-  
+
   test "should get new" do
     get :new, {}, {:user_id => @admin.id}
     assert_response :success
@@ -26,7 +26,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should create user" do
     assert_difference('User.count') do
-      post :create, {user: { email: "bob@dole.com", name: "Bob Dole", auth_key: "derp" }}, 
+      post :create, {user: { email: "bob@dole.com", name: "Bob Dole", auth_key: "derp" }},
         {:user_id => @admin.id}
     end
 
