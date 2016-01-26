@@ -61,7 +61,7 @@
   <% bucket.assignments.order(:name).each do |assignment| %>
     <% sub = assignment.best_sub_for(@user) %>
     <% score = show_score(assignment.best_sub_for(@user).score, assignment); %>
-    <% if (score == "not ready") next else %>
+    <% unless score == "not ready" %>
       <tr>
         <td><%= link_to assignment.name, assignment %></td>
         <td><%= status_image(sub) %></td>
