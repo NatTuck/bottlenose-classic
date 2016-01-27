@@ -83,8 +83,12 @@
 <h1>Your Submissions</h1>
 
 <% if (@assignment.team_subs? && !@logged_in_user.course_admin?(@course)) %>
-  <p>Team Members: <%= @team.member_names %></p>
-  <p><%= link_to "New Team Submission", new_assignment_submission_path(@assignment) %></p>
+  <% if @team.nil? %>
+    <p>You must be on a team to submit.</p>
+  <% else %>
+    <p>Team Members: <%= @team.member_names %></p>
+    <p><%= link_to "New Team Submission", new_assignment_submission_path(@assignment) %></p>
+  <% end %>
 <% else %>
   <p><%= link_to "New Submission", new_assignment_submission_path(@assignment) %></p>
 <% end %>
