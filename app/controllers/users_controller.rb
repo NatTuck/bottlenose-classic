@@ -80,7 +80,7 @@ class UsersController < ApplicationController
 
   def user_params
     if current_user && current_user.site_admin?
-      params[:user].permit(:email, :name, :site_admin, :auth_key)
+      params[:user].permit(:email, :name, :site_admin)
     else
       params[:user].permit(:email, :name)
     end
