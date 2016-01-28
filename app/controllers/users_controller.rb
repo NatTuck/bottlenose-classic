@@ -32,7 +32,7 @@ class UsersController < ApplicationController
       @user.send_auth_link_email!
 
       if current_user.nil?
-        redirect_to '/', 
+        redirect_to '/',
           notice: 'User created. Check your email for an authentication link.'
       else
         redirect_to @user, notice: 'User was successfully created.'
@@ -69,6 +69,7 @@ class UsersController < ApplicationController
   end
 
   def impersonate
+    raise "TODO"
     @user = User.find(params[:id])
     session[:user_id] = @user.id
     show_notice "You are now #{@user.name}"

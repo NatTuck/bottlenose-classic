@@ -40,7 +40,7 @@
         <% end %>
         <% unless current_user.nil? %>
           <li><%= link_to "Your Courses", courses_url %></li>
-          <li><%= link_to "Log Out", '/main/logout' %></li>
+          <li><%= link_to "Log Out", destroy_user_session_path, method: :delete %></li>
         <% end %>
       </ul>
 
@@ -49,6 +49,11 @@
           &nbsp; &nbsp; &nbsp;
           (Logged in as <%= current_user.email %>)
         </div>
+      <% else %>
+        <ul class="nav navbar-nav">
+          <li><%= link_to "Log In", new_user_session_path %></li>
+          <li><%= link_to "Sign Up", new_user_registration_path %></li>
+        </ul>
       <% end %>
     </div><!--/.nav-collapse -->
   </div>
