@@ -9,6 +9,7 @@ FactoryGirl.define do
 
   factory :user do
     name  { generate(:user_name) }
+    password "password"
     email { name.downcase.gsub(/\W/, '_') + "@example.com" }
     site_admin false
 
