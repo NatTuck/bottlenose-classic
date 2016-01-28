@@ -15,7 +15,6 @@ class User < ActiveRecord::Base
   has_many :teams, through: :team_users, dependent: :destroy
 
   validates :email, :format => { :with => /\@.*\./ }
-  validates :auth_key, :presence => true
 
   validates :email, uniqueness: true
   validates :name,  length: { in: 2..30 }
@@ -25,23 +24,11 @@ class User < ActiveRecord::Base
   #validates :name,  :uniqueness => true
 
   before_validation do
-    if self.auth_key.nil?
-      self.auth_key = SecureRandom.urlsafe_base64
-    end
-
     unless self.email.nil?
       self.email = self.email.downcase
       self.email = self.email.strip
       self.email.sub!(/\W$/, '')
     end
-  end
-
-  def send_auth_link_email!
-    if self.auth_key.nil?
-        raise Exception.new("Must save User before sending auth link")
-    end
-
-    AuthMailer.auth_link_email(self).deliver_later
   end
 
   def course_admin?(course)

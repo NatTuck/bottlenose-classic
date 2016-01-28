@@ -33,8 +33,8 @@ class ApplicationController < ActionController::Base
 
   def find_user_session
     unless session['user_id'].nil?
-      @logged_in_user ||= User.find_by_id(session['user_id'])
-      if @logged_in_user.nil?
+      current_user ||= User.find_by_id(session['user_id'])
+      if current_user.nil?
         session['user_id'] = nil
       end
     end
@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
   def require_site_admin
     find_user_session
 
-    unless @logged_in_user && @logged_in_user.site_admin?
+    unless current_user && current_user.site_admin?
       show_error "You don't have permission to access that page."
       redirect_to '/courses'
       return
@@ -58,17 +58,17 @@ class ApplicationController < ActionController::Base
     find_user_session
     find_course
 
-    if @logged_in_user.nil?
+    if current_user.nil?
       show_error "You need to register first"
       redirect_to '/'
       return
     end
 
-    if @logged_in_user.course_admin?(@course)
+    if current_user.course_admin?(@course)
       return
     end
 
-    reg = @logged_in_user.registration_for(@course)
+    reg = current_user.registration_for(@course)
     if reg.nil?
       show_error "You're not registered for that course."
       redirect_to courses_url
@@ -80,7 +80,7 @@ class ApplicationController < ActionController::Base
     find_user_session
     find_course
 
-    if @logged_in_user.nil?
+    if current_user.nil?
       show_error "You need to register first"
       redirect_to '/'
       return
@@ -92,11 +92,11 @@ class ApplicationController < ActionController::Base
       return
     end
 
-    if @logged_in_user.site_admin?
+    if current_user.site_admin?
       return
     end
 
-    reg = @logged_in_user.registrations.where(course_id: @course.id)
+    reg = current_user.registrations.where(course_id: @course.id)
 
     if reg.nil? or reg.empty?
       show_error "You're not registered for that course."
@@ -109,7 +109,7 @@ class ApplicationController < ActionController::Base
     find_user_session
     find_course
 
-    if @logged_in_user.nil?
+    if current_user.nil?
       show_error "You need to register first"
       redirect_to '/'
       return
@@ -121,7 +121,7 @@ class ApplicationController < ActionController::Base
       return
     end
 
-    unless @logged_in_user.site_admin? or @course.taught_by?(@logged_in_user)
+    unless current_user.site_admin? or @course.taught_by?(current_user)
       show_error "You're not allowed to go there."
       redirect_to course_url(@course)
       return
@@ -131,7 +131,7 @@ class ApplicationController < ActionController::Base
   def require_logged_in_user
     find_user_session
 
-    if @logged_in_user.nil?
+    if current_user.nil?
       show_error "You need to register first"
       redirect_to '/'
       return
