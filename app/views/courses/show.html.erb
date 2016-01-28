@@ -1,14 +1,14 @@
 <% @page_title = "Course: #{@course.name}" %>
 
 <p>
-  <% if @logged_in_user.registration_for(@course) %>
+  <% if current_user.registration_for(@course) %>
     <%= link_to "Status Report", @registration %>
   <% else %>
     <%= link_to "Request Registration", new_course_reg_request_path(@course) %>
   <% end %>
 </p>
 
-<% if @logged_in_user.course_admin?(@course) %>
+<% if current_user.course_admin?(@course) %>
 <p>
   Course Admin:
   <%= link_to "Manage Registrations",  course_registrations_path(@course) %> |
@@ -23,7 +23,7 @@
 
   <h1><%= bb.name %></h1>
 
-  <% if @logged_in_user.course_admin?(@course) %>
+  <% if current_user.course_admin?(@course) %>
     <p>
       <%= link_to %Q{Edit Bucket "#{bb.name}"}, edit_course_bucket_path(@course, bb) %> |
       <%= link_to "New #{bb.name.singularize}", new_course_assignment_path(@course, bucket: bb.id) %>
@@ -47,7 +47,7 @@
 
 <% end %>
 
-<% if @logged_in_user.course_admin?(@course) %>
+<% if current_user.course_admin?(@course) %>
 
 <h1>Students</h1>
 

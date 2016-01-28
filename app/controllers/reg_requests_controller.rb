@@ -23,7 +23,7 @@ class RegRequestsController < ApplicationController
   def create
     @reg_request = RegRequest.new(reg_request_params)
     @reg_request.course_id = @course.id
-    @reg_request.user_id = @logged_in_user.id
+    @reg_request.user_id = current_user.id
 
     if @reg_request.save
       @course.teachers.each do |teacher|

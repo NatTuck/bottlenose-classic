@@ -13,7 +13,7 @@
     <td>Teacher?</td>
     <td>
       <%= @registration.teacher? ? "Yes" : "No" %>
-      <% if @logged_in_user.course_admin?(@course) %>
+      <% if current_user.course_admin?(@course) %>
         (<%= link_to "Edit", course_registrations_path(@course) %>)
       <% end %>
     </td>

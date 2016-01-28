@@ -1,6 +1,6 @@
 <% @page_title = "List of Courses" %>
 
-<% if @logged_in_user.site_admin? %>
+<% if current_user.site_admin? %>
   <p>
   <%= link_to "New Course", new_course_path %> |
   <%= link_to "Edit Terms", terms_path %>
@@ -19,10 +19,10 @@
     <% @courses_by_term[term.id].each do |course| %>
       <li>
       <%= link_to course.name, course %>
-      <% if @logged_in_user.course_admin?(course) %>
+      <% if current_user.course_admin?(course) %>
         (<%= link_to 'Edit Settings', edit_course_path(course) %>)
       <% end %>
-      <% if @logged_in_user.site_admin? %>
+      <% if current_user.site_admin? %>
         (<%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %>)
       <% end %>
       </li>
@@ -38,10 +38,10 @@
   <% @courses_no_term.each do |course| %>
     <li>
     <%= link_to course.name, course %>
-    <% if @logged_in_user.course_admin?(course) %>
+    <% if current_user.course_admin?(course) %>
       (<%= link_to 'Edit Settings', edit_course_path(course) %>)
     <% end %>
-    <% if @logged_in_user.site_admin? %>
+    <% if current_user.site_admin? %>
       (<%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %>)
     <% end %>
     </li>
@@ -59,10 +59,10 @@
     <% @alls_by_term[term.id].each do |course| %>
       <li>
       <%= link_to course.name, course %>
-      <% if @logged_in_user.course_admin?(course) %>
+      <% if current_user.course_admin?(course) %>
         (<%= link_to 'Edit Settings', edit_course_path(course) %>)
       <% end %>
-      <% if @logged_in_user.site_admin? %>
+      <% if current_user.site_admin? %>
         (<%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %>)
       <% end %>
       </li>
@@ -78,10 +78,10 @@
   <% @alls_no_term.each do |course| %>
     <li>
     <%= link_to course.name, course %>
-    <% if @logged_in_user.course_admin?(course) %>
+    <% if current_user.course_admin?(course) %>
       (<%= link_to 'Edit Settings', edit_course_path(course) %>)
     <% end %>
-    <% if @logged_in_user.site_admin? %>
+    <% if current_user.site_admin? %>
       (<%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %>)
     <% end %>
     </li>

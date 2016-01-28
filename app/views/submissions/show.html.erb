@@ -3,7 +3,7 @@
 <p>
   <%= link_to "Back to Assignment: #{@assignment.name}", @assignment %>
 
-  <% if @logged_in_user.course_admin?(@course) %>
+  <% if current_user.course_admin?(@course) %>
     | <%= link_to "Grade this Submission", [:edit, @submission] %>
   <% end %>
 </p>
@@ -80,7 +80,7 @@
 
 <% end %>
 
-<% if (not @assignment.hide_grading?) or @logged_in_user.course_admin?(@course) %>
+<% if (not @assignment.hide_grading?) or current_user.course_admin?(@course) %>
 
 <div class="prose">
 <%= raw @submission.teacher_notes || 'no data' %>

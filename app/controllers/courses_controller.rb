@@ -62,11 +62,11 @@ class CoursesController < ApplicationController
   end
 
   def index
-    if @logged_in_user.site_admin?
+    if current_user.site_admin?
       @course  = Course.new
     end
 
-    @courses = @logged_in_user.courses.order(:name)
+    @courses = current_user.courses.order(:name)
     @courses_by_term = {}
     Term.all.each do |term|
       @courses_by_term[term.id] = @courses.find_all {|cc|
@@ -88,10 +88,10 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @registration = @logged_in_user.registration_for(@course)
+    @registration = current_user.registration_for(@course)
     @registration ||= "javascript:alert('Not registered.');"
 
-    if @logged_in_user.course_admin?(@course)
+    if current_user.course_admin?(@course)
       @active_regs = @course.active_registrations.
         sort_by {|rr| rr.user.invert_name.downcase }
 
@@ -143,7 +143,7 @@ class CoursesController < ApplicationController
   end
 
   def public
-    unless @logged_in_user.nil?
+    unless current_user.nil?
       redirect_to @course
     end
 

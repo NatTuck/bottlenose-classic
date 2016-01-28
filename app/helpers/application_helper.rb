@@ -27,7 +27,7 @@ module ApplicationHelper
     return score if assignment.nil?
 
     if assignment.hide_grading?
-      if @logged_in_user.course_admin?(@course)
+      if current_user.course_admin?(@course)
         "(hidden #{score})"
       else
         "not ready"

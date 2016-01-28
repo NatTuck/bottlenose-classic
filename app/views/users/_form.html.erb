@@ -21,7 +21,7 @@
       <%= f.text_field :email, class: 'form-control' %>
     </div>
 
-    <% if @logged_in_user && @logged_in_user.site_admin? %>
+    <% if current_user && current_user.site_admin? %>
       <div class="form-group">
         <%= f.label :site_admin %>
         <%= f.check_box :site_admin %>

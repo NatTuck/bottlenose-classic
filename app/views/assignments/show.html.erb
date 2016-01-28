@@ -1,6 +1,6 @@
 <% @page_title = "Assignment: #{@assignment.name}" %>
 
-<% if @logged_in_user.course_admin?(@course) %>
+<% if current_user.course_admin?(@course) %>
   <p><%= link_to 'Edit this Assignment', edit_assignment_path(@assignment) %></p>
 <% end %>
 
@@ -8,7 +8,7 @@
 <p>Due Date: <%= @assignment.due_date %></p>
 <p>Grading Hidden? <%= @assignment.hide_grading? ? "yes" : "no" %></p>
 <p>Teams? <%= @assignment.team_subs? ? "yes" : "no" %>
-<% if (@logged_in_user.course_admin?(@course) && @assignment.team_subs?) %>
+<% if (current_user.course_admin?(@course) && @assignment.team_subs?) %>
   (<%= link_to "Manage Teams", course_teams_path(@course) %>)
 <% end %>
 </p>
@@ -31,7 +31,7 @@
   <%= link_to @assignment.assignment_file_name, @assignment.assignment_file_path %>
 </p>
 
-<% if @logged_in_user.course_admin?(@course) %>
+<% if current_user.course_admin?(@course) %>
   <p>
     <b>Grading File Download:</b>
     <%= link_to @assignment.grading_file_name, @assignment.grading_file_path %>
@@ -82,7 +82,7 @@
 
 <h1>Your Submissions</h1>
 
-<% if (@assignment.team_subs? && !@logged_in_user.course_admin?(@course)) %>
+<% if (@assignment.team_subs? && !current_user.course_admin?(@course)) %>
   <p>Team Members: <%= @team.member_names %></p>
   <p><%= link_to "New Team Submission", new_assignment_submission_path(@assignment) %></p>
 <% else %>
@@ -109,7 +109,7 @@
     <td>
       <%= link_to "View", sub %>
 
-      <% if @logged_in_user.course_admin?(@course) %>
+      <% if current_user.course_admin?(@course) %>
         | <%= link_to "Grade", [:edit, sub] %>
       <% end %>
     </td>

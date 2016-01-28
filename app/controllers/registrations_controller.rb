@@ -13,7 +13,7 @@ class RegistrationsController < ApplicationController
   def show
     add_breadcrumb "Student Status Report"
 
-    unless @logged_in_user.course_admin?(@course) or @registration.user.id == @logged_in_user.id
+    unless current_user.course_admin?(@course) or @registration.user.id == current_user.id
       show_error "I can't let you do that."
       redirect_to @course
       return

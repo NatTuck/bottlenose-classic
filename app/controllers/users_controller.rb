@@ -31,8 +31,8 @@ class UsersController < ApplicationController
     if @user.save
       @user.send_auth_link_email!
 
-      if @logged_in_user.nil?
-        redirect_to '/',
+      if current_user.nil?
+        redirect_to '/', 
           notice: 'User created. Check your email for an authentication link.'
       else
         redirect_to @user, notice: 'User was successfully created.'
@@ -46,13 +46,13 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     if @user.update_attributes(user_params)
-      if @logged_in_user.site_admin?
+      if current_user.site_admin?
         redirect_to @user, notice: 'User was successfully updated.'
       else
         redirect_to '/courses', notice: "Name successfully updated"
       end
     else
-      if @logged_in_user.site_admin?
+      if current_user.site_admin?
         render action: "edit"
       else
         redirect_to '/main/auth',
@@ -78,7 +78,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    if @logged_in_user && @logged_in_user.site_admin?
+    if current_user && current_user.site_admin?
       params[:user].permit(:email, :name, :site_admin, :auth_key)
     else
       params[:user].permit(:email, :name)

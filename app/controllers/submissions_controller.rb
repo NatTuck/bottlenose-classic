@@ -12,7 +12,7 @@ class SubmissionsController < ApplicationController
   def show
     add_breadcrumb @submission.name
 
-    unless @submission.visible_to?(@logged_in_user)
+    unless @submission.visible_to?(current_user)
       show_error "That's not your submission."
       redirect_to @assignment
     end
@@ -23,9 +23,9 @@ class SubmissionsController < ApplicationController
 
     @submission = Submission.new
     @submission.assignment_id = @assignment.id
-    @submission.user_id = @logged_in_user.id
+    @submission.user_id = current_user.id
 
-    @team = @logged_in_user.active_team(@course)
+    @team = current_user.active_team(@course)
     @submission.team = @team
   end
 
@@ -33,7 +33,7 @@ class SubmissionsController < ApplicationController
     add_breadcrumb @submission.name, @submission
     add_breadcrumb "Grading"
 
-    @team = @logged_in_user.active_team(@course)
+    @team = current_user.active_team(@course)
   end
 
   def create
@@ -42,10 +42,10 @@ class SubmissionsController < ApplicationController
 
     @row_user = User.find_by_id(params[:row_user_id])
 
-    if @logged_in_user.course_admin?(@course)
-      @submission.user ||= @logged_in_user
+    if current_user.course_admin?(@course)
+      @submission.user ||= current_user
     else
-      @submission.user = @logged_in_user
+      @submission.user = current_user
       @submission.ignore_late_penalty = false
     end
 
@@ -129,7 +129,7 @@ class SubmissionsController < ApplicationController
   end
 
   def submission_params
-    if @logged_in_user.course_admin?(@course)
+    if current_user.course_admin?(@course)
       params[:submission].permit(:assignment_id, :user_id, :student_notes,
                                  :auto_score, :calc_score, :updated_at, :upload,
                                  :grading_output, :grading_uid, :team_id,

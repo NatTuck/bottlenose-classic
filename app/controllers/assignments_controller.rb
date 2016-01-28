@@ -14,9 +14,9 @@ class AssignmentsController < ApplicationController
     add_breadcrumb @assignment.name
 
     @students    = @course.active_registrations
-    @submissions = @assignment.submissions.where(user_id: @logged_in_user.id)
+    @submissions = @assignment.submissions.where(user_id: current_user.id)
 
-    @team = @logged_in_user.active_team(@course)
+    @team = current_user.active_team(@course)
   end
 
   def new
@@ -37,7 +37,7 @@ class AssignmentsController < ApplicationController
   def create
     @assignment = Assignment.new(assignment_params)
     @assignment.course_id = @course.id
-    @assignment.blame_id = @logged_in_user.id
+    @assignment.blame_id = current_user.id
 
     if @assignment.save
       @assignment.save_uploads!
