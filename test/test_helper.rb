@@ -3,6 +3,10 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'capybara/rails'
 
+class ActionController::TestCase
+  include Devise::TestHelpers
+end
+
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
   #
@@ -105,4 +109,3 @@ end
 Capybara::Webkit.configure do |config|
   config.allow_url("test.host")
 end
-
