@@ -35,6 +35,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def to_s
+    self.email
+  end
+
   def course_admin?(course)
     self.site_admin? or course.taught_by?(self)
   end
