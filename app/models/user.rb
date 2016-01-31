@@ -3,7 +3,7 @@ require 'securerandom'
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :ldap_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_many :registrations
   has_many :courses, through: :registrations, :dependent => :restrict_with_error
@@ -22,6 +22,10 @@ class User < ActiveRecord::Base
   # Different people with the same name are fine.
   # If someone uses two emails, they get two accounts. So sad.
   #validates :name,  :uniqueness => true
+
+  def ldap_before_save
+    self.name = Devise::LDAP::Adapter.get_ldap_param(self.email, "displayname").first
+  end
 
   before_validation do
     unless self.email.nil?
