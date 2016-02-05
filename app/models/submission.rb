@@ -127,8 +127,12 @@ class Submission < ActiveRecord::Base
   end
 
   def late?
-    return false if new_record?
-    created_at.to_date > assignment.due_date
+    begin
+      return false if new_record?
+      created_at.to_date > assignment.due_date
+    rescue
+      false
+    end
   end
 
   def days_late
