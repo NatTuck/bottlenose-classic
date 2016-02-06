@@ -235,7 +235,10 @@ class Assignment < ActiveRecord::Base
 
   def update_best_subs!
     course.registrations.each do |reg|
-      update_best_sub_for!(reg.user)
+      begin
+        update_best_sub_for!(reg.user)
+      rescue Exception
+      end
     end
   end
 

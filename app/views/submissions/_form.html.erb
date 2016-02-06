@@ -14,7 +14,7 @@
     </div>
   <% end %>
 
-  <% unless @team.nil? %>
+  <% if @assignment.team_subs? %>
     <p>This will be a team submission.</p>
     <p>Team members: <%= @team.member_names %>
   <% end %>
