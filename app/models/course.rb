@@ -54,6 +54,9 @@ class Course < ActiveRecord::Base
     regs_sorted.find_all {|reg| reg.show_in_lists? }
   end
 
+  # TODO: Make these kinds of things return relations, not arrays. This
+  # will allow code like that found in teams#index to perform optimized
+  # joins.
   def students
     student_registrations.map {|reg| reg.user}
   end

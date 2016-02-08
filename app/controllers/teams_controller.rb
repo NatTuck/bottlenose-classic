@@ -10,6 +10,7 @@ class TeamsController < ApplicationController
     partition = @course.teams.partition(&:active?)
     @active_teams = partition.first
     @inactive_teams = partition.second
+    @students_without_active_team = students_without_active_team
   end
 
   # GET /teams/1
@@ -24,12 +25,12 @@ class TeamsController < ApplicationController
     @team = Team.new
     @team.course_id = @course.id
 
-    @others = other_users
+    @others = students_without_active_team
   end
 
   # GET /teams/1/edit
   def edit
-    @others = other_users
+    @others = students_without_active_team
   end
 
   # POST /teams
@@ -42,7 +43,7 @@ class TeamsController < ApplicationController
     if @team.save
       redirect_to course_team_path(@course, @team), notice: 'Team was successfully created.'
     else
-      @others = other_users
+      @others = students_without_active_team
       render :new
     end
   end
@@ -83,8 +84,11 @@ class TeamsController < ApplicationController
   end
 
   private
-  def other_users
-    @course.students.find_all {|uu| not @team.users.include?(uu) }
+  def students_without_active_team
+    # TODO: Optimize.
+    @course.students.reject do |student|
+      student.teams.where(course: @course).any? { |t| t.active? }
+    end
   end
 
   def setup_breadcrumbs
