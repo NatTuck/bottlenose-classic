@@ -7,7 +7,9 @@ class TeamsController < ApplicationController
 
   # GET /teams
   def index
-    @teams = @course.teams
+    partition = @course.teams.partition(&:active?)
+    @active_teams = partition.first
+    @inactive_teams = partition.second
   end
 
   # GET /teams/1
@@ -102,7 +104,6 @@ class TeamsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def team_params
-    params.require(:team).permit(:course_id, :start_date)
+    params.require(:team).permit(:course_id, :start_date, :end_date)
   end
 end
-

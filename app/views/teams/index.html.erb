@@ -4,31 +4,8 @@
 
 <%= link_to 'New Team', new_course_team_path(@course) %>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Members</th>
-      <th>Active</th>
-      <th>Start date</th>
-      <th>End date</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<h3>Active Teams</h3>
+<%= render "table", teams: @active_teams %>
 
-  <tbody>
-    <% @teams.each do |team| %>
-      <tr>
-        <td><%= team.member_names %></td>
-        <td><%= team.active? ? "true" : "false" %></td>
-        <td><%= team.start_date %></td>
-        <td><%= team.end_date || "∞" %></td>
-        <td><%= link_to 'Show', course_team_path(@course, team) %></td>
-        <td><%= link_to 'Edit', edit_course_team_path(@course, team) %></td>
-        <td><%= link_to 'Destroy', course_team_path(@course, team),
-          method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
+<h3>Inactive Teams</h3>
+<%= render "table", teams: @inactive_teams %>

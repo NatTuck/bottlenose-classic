@@ -25,6 +25,11 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :end_date %><br>
+    <%= f.date_select :end_date %>
+  </div>
+
+  <div class="form-group">
     <div class="col-sm-3">
       <%= f.label :users, "Team Users" %><br>
       Filter: <%= text_field_tag("user_filter", "", class: 'form-control', autocomplete: 'off') %><br>

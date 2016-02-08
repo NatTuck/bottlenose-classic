@@ -1,0 +1,24 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Members</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% teams.each do |team| %>
+      <tr>
+        <td><%= team.member_names %></td>
+        <td><%= team.start_date %></td>
+        <td><%= team.end_date || "∞" %></td>
+        <td><%= link_to 'Show', course_team_path(@course, team) %></td>
+        <td><%= link_to 'Edit', edit_course_team_path(@course, team) %></td>
+        <td><%= link_to 'Destroy', course_team_path(@course, team),
+          method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
