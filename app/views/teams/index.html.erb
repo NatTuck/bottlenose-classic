@@ -18,7 +18,7 @@
   <tbody>
     <% @teams.each do |team| %>
       <tr>
-        <td><%= team.users.map {|uu| uu.name }.join(", ") %></td>
+        <td><%= team.member_names %></td>
         <td><%= team.active? ? "true" : "false" %></td>
         <td><%= team.start_date %></td>
         <td><%= team.end_date || "∞" %></td>
