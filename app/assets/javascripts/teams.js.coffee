@@ -12,7 +12,6 @@ setup_form = () ->
       opt.selected = false
       $(opt).detach()
       $("#users [data-id='#{opt.value}']").show()
-      # $('#other_users').append(opt)
 
   $('#submit-btn').click (ev) ->
     $('#users option').each (i, opt) ->
