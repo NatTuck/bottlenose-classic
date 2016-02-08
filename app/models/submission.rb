@@ -28,7 +28,7 @@ class Submission < ActiveRecord::Base
 
   def set_team
     if assignment.team_subs?
-      self.team = user.active_team(course)
+      self.team = user.team_at(course, created_at)
     end
   end
 
