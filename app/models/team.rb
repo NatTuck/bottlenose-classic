@@ -12,6 +12,15 @@ class Team < ActiveRecord::Base
     users.sort_by {|uu| uu.invert_name }.map {|uu| uu.name }.join(", ")
   end
 
+  def active?
+    if self.end_date
+      # TODO: What assumptions about timezones does bottlenose make?
+      DateTime.current.between?(self.start_date, self.end_date)
+    else
+      true
+    end
+  end
+
   def add_error(msg)
     errors[:base] << msg
   end
