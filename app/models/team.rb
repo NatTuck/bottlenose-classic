@@ -6,6 +6,7 @@ class Team < ActiveRecord::Base
 
   validates :course_id,  presence: true
   validates :start_date, presence: true
+  validates :users, presence: true
 
   def member_names
     users.sort_by {|uu| uu.invert_name }.map {|uu| uu.name }.join(", ")
