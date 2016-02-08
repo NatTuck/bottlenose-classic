@@ -17,7 +17,8 @@ class TeamsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index, { course_id: @team.course }, { user_id: @fred }
     assert_response :success
-    assert_not_nil assigns(:teams)
+    assert_not_nil assigns(:active_teams)
+    assert_not_nil assigns(:inactive_teams)
   end
 
   test "should get new" do

@@ -183,10 +183,9 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
     click_link('New Team')
 
     users.each do |uu|
-      select(uu.name)
-      select(uu.name)
+      find('tr', text: uu.name).find('.add-user-btn').click
     end
-    click_button("Add User")
+
     click_button("Create Team")
 
     assert has_content?("Team was successfully created.")

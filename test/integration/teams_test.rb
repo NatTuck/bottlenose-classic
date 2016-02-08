@@ -26,9 +26,8 @@ class TeamsTest < ActionDispatch::IntegrationTest
     first(:link, 'Teams').click
     click_link('New Team')
 
-    select(@mary.name)
-    select(@greg.name)
-    click_button("Add User")
+    find('tr', text: @mary.name).find('.add-user-btn').click
+    find('tr', text: @greg.name).find('.add-user-btn').click
     click_button("Create Team")
 
     assert has_content?("Team was successfully created.")
