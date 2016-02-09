@@ -3,18 +3,21 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Start date:</strong>
-  <%= @team.start_date %>
+  Team starts on
+  <strong><%= @team.start_date.strftime("%b %d, %Y") %></strong>
+  <% if @team.end_date %>
+    and ends on
+    <strong><%= @team.end_date.strftime("%b %d, %Y") %></strong>.
+  <% else %>
+    and doesn't end.
+  <% end %>
 </p>
 
-<p><strong>Members:</strong></p>
-
+<h4>Members</h4>
 <ul>
   <% @team.users.each do |uu| %>
     <li><%= link_to uu.name, uu.registration_for(@course) %></li>
   <% end %>
 </ul>
 
-
-<%= link_to 'Edit', edit_course_team_path(@course, @team) %> |
-<%= link_to 'Back', course_teams_path(@course) %>
+<%= link_to "End now", course_team_divorce_path(@course, @team), class: "btn btn-danger btn-xs", method: :patch %>

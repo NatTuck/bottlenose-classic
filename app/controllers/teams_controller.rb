@@ -33,6 +33,12 @@ class TeamsController < ApplicationController
     @others = students_without_active_team
   end
 
+  def divorce
+    @team = Team.find(params[:team_id])
+    @team.update_attribute(:end_date, Date.current)
+    redirect_to :back
+  end
+
   # POST /teams
   def create
     @team = Team.new(team_params)

@@ -19,7 +19,9 @@ Bottlenose::Application.routes.draw do
     resources :reg_requests
     resources :buckets
     resources :assignments
-    resources :teams
+    resources :teams do
+      patch :divorce
+    end
   end
 
   post 'courses/:id/export_grades'  => 'courses#export_grades'
@@ -51,4 +53,3 @@ Bottlenose::Application.routes.draw do
 
   root :to => 'main#index'
 end
-
