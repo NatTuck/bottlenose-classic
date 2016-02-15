@@ -13,10 +13,15 @@ class Team < ActiveRecord::Base
     users.sort_by {|uu| uu.invert_name }.map {|uu| uu.name }.join(", ")
   end
 
+  # If the end date of a team is not set (nil) then this team does not
+  # have an end date, and as such will always be active. Start and end
+  # dates form a half open interval. This means that the team with a
+  # start date of 2016-02-05 and end date of 2016-02-10 was a team
+  # active for only 5 days, and specifically not active on the 10th of
+  # February.
   def active?
     if self.end_date
-      # TODO: What assumptions about timezones does bottlenose make?
-      Date.current.between?(self.start_date, self.end_date)
+      Date.current.between?(self.start_date, self.end_date - 1)
     else
       true
     end

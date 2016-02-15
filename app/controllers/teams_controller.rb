@@ -25,6 +25,7 @@ class TeamsController < ApplicationController
     @team = Team.new
     @team.course_id = @course.id
 
+    @teams = @course.teams.select(&:active?)
     @others = students_without_active_team
   end
 
@@ -47,7 +48,7 @@ class TeamsController < ApplicationController
     @team.users = users.map {|u_id| User.find(u_id.to_i) }
 
     if @team.save
-      redirect_to course_team_path(@course, @team), notice: 'Team was successfully created.'
+      redirect_to new_course_team_path(@course), notice: 'Team was successfully created.'
     else
       @others = students_without_active_team
       render :new
