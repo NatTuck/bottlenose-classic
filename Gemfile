@@ -13,7 +13,7 @@ gem 'therubyracer'
 gem 'yaml_db'
 
 gem 'coffee-rails'
-gem 'coffee-rails-source-maps'
+#gem 'coffee-rails-source-maps'
 gem 'uglifier'
 gem 'jquery-rails'
 
