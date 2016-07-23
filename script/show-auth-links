@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+APP_PATH = File.expand_path('../../config/application',  __FILE__)
+require File.expand_path('../../config/boot',  __FILE__)
+require APP_PATH
+Rails.application.require_environment!
+
+addrs = ARGV
+
+base = "https://bottlenose.ccs.neu.edu/main/auth?email="
+
+addrs.each do |addr|
+  uu = User.find_by_email(addr)
+
+  puts
+  puts "#{uu.name} <#{uu.email}>"
+  puts "#{base}#{uu.email.sub(/@/, '%40')}&key=#{uu.auth_key}"
+end

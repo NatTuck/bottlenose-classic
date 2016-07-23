@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+APP_PATH = File.expand_path('../../config/application',  __FILE__)
+require File.expand_path('../../config/boot',  __FILE__)
+require APP_PATH
+Rails.application.require_environment!
+
+COURSE_ID = 4
+
+course = Course.find(COURSE_ID)
+
+input = ARGV[0]
+
+File.open(input) do |ff|
+  ff.each do |line|
+    email, tags = line.split(/\s+/)
+    puts "Email: #{email}, Tags: #{tags}"
+
+    user = User.find_by_email(email) or raise Exception.new("No such user: #{email}")
+    reg  = user.registration_for(course) or raise Exception.new("Not registered: #{email}")
+
+    puts "Reg id = #{reg.id}"
+
+    reg.tags = tags
+    reg.save!
+  end
+end

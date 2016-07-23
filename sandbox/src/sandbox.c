@@ -19,7 +19,7 @@ const char*  GRADING_PREP_CMD = "/usr/local/bottlenose/scripts/grading-prep.sh s
 const char*  START_TEST_CMD   = "/usr/local/bottlenose/scripts/test-assignment.sh";
 
 const time_t TIME_LIMIT  = 300;
-const rlim_t MEM_LIMIT   = 768000000;
+const rlim_t MEM_LIMIT   = 1768000000;   
 const rlim_t PROC_LIMIT  = 1024;
 const rlim_t FSIZE_LIMIT = 512000000;
 
