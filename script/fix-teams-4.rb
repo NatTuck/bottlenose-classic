@@ -5,7 +5,7 @@ require File.expand_path('../../config/boot',  __FILE__)
 require APP_PATH
 Rails.application.require_environment!
 
-assign_id = 34
+assign_id = 41 
 
 aa = Assignment.find(assign_id)
 course = aa.course
@@ -19,10 +19,10 @@ course.assignments.each do |assign|
 
     right_team = user.team_at(course, sub.created_at)
 
-    if team.id != right_team.id
+    if team.nil? || (team.id != right_team.id)
       puts "Sub id: #{sub.id}"
       puts "User: #{user.name} (#{user.id})"
-      puts "Is: #{team.member_names}"
+      #puts "Is: #{team.member_names}"
       puts "Should be: #{right_team.member_names} (#{right_team.id})" 
       puts
 

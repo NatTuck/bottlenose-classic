@@ -1,0 +1,38 @@
+<% @page_title = "Teams Report for #{@course.name}" %>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  Filter Tags: 
+  <select id="tag-filter"></select>
+  <button class="btn btn-default" id="apply-filter">Apply</button>
+</p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Student</th>
+      <th>Tags</th>
+      <th>Assignment</td>
+      <th>Due Date</th>
+      <th>Team Members</th>
+      <th>Conflicts</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @table.each do |row| %>
+      <tr data-tags="<%= row[:tags] %>">
+        <td><%= row[:student] %></td>
+        <td><%= row[:tags] %></td>
+        <td><%= row[:assign] %></td>
+        <td><%= row[:due_date] %></td>
+        <td><%= row[:team] %></td>
+        <td><%= row[:conflicts] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

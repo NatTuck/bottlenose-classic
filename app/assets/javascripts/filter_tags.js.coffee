@@ -46,3 +46,4 @@ window.setup_filter_form = () ->
 
 run_on_page "courses/show", setup_filter_form
 run_on_page "assignments/show", setup_filter_form
+run_on_page "teams/status", setup_filter_form

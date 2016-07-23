@@ -5,6 +5,38 @@ class TeamsController < ApplicationController
   before_action :set_team, only: [:show, :edit, :update, :destroy]
   before_action :setup_breadcrumbs
 
+  # GET /course/1/team_status
+  def status
+    @table = []
+
+    @students = @course.active_registrations.each do |reg|
+      uu = reg.user
+
+      @course.assignments.each do |aa|
+        next unless aa.team_subs?
+	team = uu.team_at(@course, aa.due_date)
+
+      	row = {} 
+        row[:student] = uu.name
+        row[:tags] = reg.tags
+        row[:assign] = aa.name
+        row[:due_date]  = aa.due_date
+        row[:team] = team.nil? ? "" : team.member_names   
+
+	unless team.nil? 
+	  row[:conflicts] = []
+	  team.users.each do |tu|
+            ut = tu.team_at(@course, aa.due_date)
+            if ut.id != team.id
+              row[:conflicts] << tu.name
+            end
+          end 
+        end
+        @table << row
+      end
+    end 
+  end
+
   # GET /teams
   def index
     @teams = @course.teams
