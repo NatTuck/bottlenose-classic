@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Team Sets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Course</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @team_sets.each do |team_set| %>
+      <tr>
+        <td><%= team_set.name %></td>
+        <td><%= team_set.course_id %></td>
+        <td><%= link_to 'Show', team_set %></td>
+        <td><%= link_to 'Edit', edit_team_set_path(team_set) %></td>
+        <td><%= link_to 'Destroy', team_set, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Team set', new_team_set_path %>

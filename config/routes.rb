@@ -1,5 +1,6 @@
 
 Bottlenose::Application.routes.draw do
+  resources :team_sets
   get "main/index"
   get "main/auth"
   post "main/resend_auth"

@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @team_set.name %>
+</p>
+
+<p>
+  <strong>Course:</strong>
+  <%= @team_set.course_id %>
+</p>
+
+<%= link_to 'Edit', edit_team_set_path(@team_set) %> |
+<%= link_to 'Back', team_sets_path %>
