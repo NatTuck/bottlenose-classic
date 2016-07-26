@@ -7,6 +7,10 @@ class Registration < ActiveRecord::Base
 
   validates :user_id, :uniqueness => { :scope => :course_id }
 
+  after_save do
+    TeamSet.update_solo!(course)
+  end
+
   def self.get(c_id, u_id)
     Registration.find_by_course_id_and_user_id(c_id, u_id)
   end

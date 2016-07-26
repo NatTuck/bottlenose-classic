@@ -21,6 +21,10 @@ class ActiveSupport::TestCase
     @bucket   = create(:bucket, course: @cs101)
     @fred_reg = create(:registration, course: @cs101, user: @fred, teacher: true)
     @john_reg = create(:registration, course: @cs101, user: @john)
+    TeamSet.update_solo!(@cs101)
+
+    @solo      = @cs101.solo_team_set
+    @john_team = @solo.team_for(@john)
   end
 
   def assign_upload(assign, suffix)
@@ -34,6 +38,7 @@ class ActiveSupport::TestCase
 
   def make_assignment(bb, name)
     aa = build(:assignment, bucket: bb, course: bb.course, name: name)
+    aa.team_set = bb.course.solo_team_set
     aa.assignment_file = assign_upload_obj(name, 'assign.tar.gz')
     aa.grading_file    = assign_upload_obj(name, 'grading.tar.gz')
     aa.save_uploads!
@@ -54,6 +59,7 @@ class ActiveSupport::TestCase
 
     sub = create(
       :submission,
+      team: aa.team_for(uu),
       assignment: aa,
       user: uu,
       upload_id: upl.id,

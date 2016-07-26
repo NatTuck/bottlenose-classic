@@ -1,15 +1,19 @@
 <% @page_title = "Assignment: #{@assignment.name}" %>
 
 <% if @logged_in_user.course_admin?(@course) %>
-  <p><%= link_to 'Edit this Assignment', edit_assignment_path(@assignment) %></p>
+  <p><%= link_to 'Edit this Assignment', 
+    edit_assignment_path(@assignment),
+    class: "btn btn-default" %></p>
 <% end %>
 
 <p>Bucket: <%= @assignment.bucket.name %></p>
 <p>Due Date: <%= @assignment.due_date %></p>
 <p>Grading Hidden? <%= @assignment.hide_grading? ? "yes" : "no" %></p>
-<p>Teams? <%= @assignment.team_subs? ? "yes" : "no" %>
-<% if (@logged_in_user.course_admin?(@course) && @assignment.team_subs?) %>
-  (<%= link_to "Manage Teams", course_teams_path(@course) %>)
+<p>Teams: 
+<% if @logged_in_user.course_admin?(@course) %>
+  <%= link_to @assignment.team_set.name, [@course, @assignment.team_set] %>
+<% else %>
+  <%= @assignment.team_set.name %>
 <% end %>
 </p>
 
@@ -45,9 +49,8 @@
   <h1>Student Submissions</h1>
 
   <p>
-    <%= link_to "Manually Add Student Grade", assignment_path(@assignment) +
-      '/manual_grade' %> |
-    <%= link_to "Tarball of Submissions", assignment_path(@assignment) + '/tarball' %>
+    <%= link_to("Tarball of Submissions", 
+      assignment_path(@assignment) + '/tarball') %>
   </p>
 
   <p>
@@ -82,15 +85,13 @@
 
 <h1>Your Submissions</h1>
 
-<% if (@assignment.team_subs? && !@logged_in_user.course_admin?(@course)) %>
-  <% if @team.nil? %>
-    <p>You must be on a team to submit.</p>
-  <% else %>
-    <p>Team Members: <%= @team.member_names %></p>
-    <p><%= link_to "New Team Submission", new_assignment_submission_path(@assignment) %></p>
-  <% end %>
+<% if @team.nil? %>
+  <p>You must be on a team to submit.</p>
 <% else %>
-  <p><%= link_to "New Submission", new_assignment_submission_path(@assignment) %></p>
+  <p>Team Members: <%= @team.member_names %></p>
+  <p><%= link_to "New Submission", 
+    new_assignment_submission_path(@assignment),
+    class: "btn btn-primary" %></p>
 <% end %>
 
 <table class="table table-striped">

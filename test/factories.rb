@@ -27,11 +27,17 @@ FactoryGirl.define do
 
     sequence(:name) {|n| "Computing #{n}" }
     footer "Link to Piazza: *Link*"
+
+    after(:create) do |cc|
+      TeamSet.create_solo!(cc)
+      TeamSet.create(name: "Simple Teams", course: cc)
+    end
   end
 
   factory :assignment do
     course
     bucket
+    team_set { course.solo_team_set }
     association :blame, factory: :user
 
     sequence(:name) {|n| "Homework #{n}" }
@@ -53,6 +59,12 @@ FactoryGirl.define do
     assignment
     user
     upload
+    team { 
+      tt = Team.new(course: assignment.course, team_set: assignment.team_set)
+      tt.users = [user]
+      tt.save!
+      tt
+    }
 
     after(:build) do |sub|
       unless sub.user.registration_for(sub.course)
@@ -86,6 +98,7 @@ FactoryGirl.define do
 
   factory :team do
     course
+    team_set { course.team_sets.last }
 
     after(:build) do |team|
       u1 = create(:user)
@@ -95,7 +108,11 @@ FactoryGirl.define do
       r2 = create(:registration, user: u2, course: team.course)
 
       team.users = [u1, u2]
-      team.start_date = Time.now - 2.days
     end
+  end
+
+  factory :team_set do
+    name "A Team Set"
+    course
   end
 end

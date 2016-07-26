@@ -34,8 +34,14 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
     @john101 = create(:registration, course: @cs101, user: @john)
     @mark101 = create(:registration, course: @cs101, user: @mark)
 
+    create_team(@cs101, [@john, @mary])
+    create_team(@cs101, [@mark, @jane])
+    
+    @ts101 = @cs101.team_sets.where(name: "Auto Team Set").first
+
     @cs101hw1 = create(:assignment, name: "cs1hw1", course: @cs101, bucket: @hw101)
-    @cs101hw2 = create(:assignment, name: "cs1hw2", course: @cs101, bucket: @hw101, team_subs: true)
+    @cs101hw2 = create(:assignment, name: "cs1hw2", course: @cs101, bucket: @hw101, 
+                       team_set: @ts101)
     @cs101qz1 = create(:assignment, name: "cs1qz1", course: @cs101, bucket: @qz101)
     @cs101qz2 = create(:assignment, name: "cs1qz2", course: @cs101, bucket: @qz101)
 
@@ -49,8 +55,13 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
     @john102 = create(:registration, course: @cs102, user: @john)
     @mark102 = create(:registration, course: @cs102, user: @mark)
 
+    create_team(@cs102, [@jane, @mary])
+    create_team(@cs102, [@mark, @john])
+    @ts102 = @cs102.team_sets.where(name: "Auto Team Set").first
+
     @cs102hw1 = create(:assignment, name: "cs2hw1", course: @cs102, bucket: @hw102)
-    @cs102hw2 = create(:assignment, name: "cs2hw2", course: @cs102, bucket: @hw102, team_subs: true)
+    @cs102hw2 = create(:assignment, name: "cs2hw2", course: @cs102, bucket: @hw102,
+                       team_set: @ts102) 
     @cs102qz1 = create(:assignment, name: "cs2qz1", course: @cs102, bucket: @qz102)
     @cs102qz2 = create(:assignment, name: "cs2qz2", course: @cs102, bucket: @qz102)
 
@@ -63,11 +74,6 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
     enter_grade(@cs102qz1, @mary, 61)
     enter_grade(@cs102qz1, @john, 82)
     enter_grade(@cs102qz1, @mark, 67)
-
-    create_team(@cs102, [@jane, @mary])
-    create_team(@cs102, [@mark, @john])
-    create_team(@cs101, [@john, @mary])
-    create_team(@cs101, [@mark, @jane])
 
     submit_work(@cs102hw1, @mark, @upload_file)
     submit_work(@cs102hw1, @jane, @upload_file)
@@ -162,9 +168,13 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
 
     click_link course.name
     click_link assign.name
+    
+
     if has_content? "New Submission"
       click_link "New Submission"
     else
+      save_and_open_page
+      sleep 20
       click_link "New Team Submission"
     end
 
@@ -180,16 +190,31 @@ class CalcScoresTest < ActionDispatch::IntegrationTest
     click_link course.name
 
     first(:link, 'Teams').click
-    click_link('New Team')
+    
+    assert has_content?("Team Sets for")
+    if has_content?("Auto Team Set")
+      click_link("Auto Team Set")
+    else
+      click_link('New Team set')
 
-    users.each do |uu|
+      assert has_content?("New Team Set")
+
+      fill_in("Name", with: "Auto Team Set")
+      click_button("Create Team set")
+    end
+
+    u0 = users.first
+    row = find("td", text: u0.name).find(:xpath, "..")
+    row.click_button("New Team")
+
+    users.drop(1).each do |uu|
       select(uu.name)
       select(uu.name)
     end
     click_button("Add User")
-    click_button("Create Team")
+    click_button("Update Team")
 
-    assert has_content?("Team was successfully created.")
+    assert has_content?("Team was successfully updated.")
     users.each do |uu|
       assert has_content?(uu.name)
     end

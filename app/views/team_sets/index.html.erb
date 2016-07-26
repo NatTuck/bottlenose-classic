@@ -1,24 +1,24 @@
-<p id="notice"><%= notice %></p>
+<% @page_title = "Team Sets for #{@course.name}" %>
 
-<h1>Listing Team Sets</h1>
-
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Name</th>
-      <th>Course</th>
-      <th colspan="3"></th>
+      <th>Actions</th>
     </tr>
   </thead>
 
   <tbody>
     <% @team_sets.each do |team_set| %>
       <tr>
-        <td><%= team_set.name %></td>
-        <td><%= team_set.course_id %></td>
-        <td><%= link_to 'Show', team_set %></td>
-        <td><%= link_to 'Edit', edit_team_set_path(team_set) %></td>
-        <td><%= link_to 'Destroy', team_set, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to(team_set.name, [@course, team_set]) %></td>
+        <td>
+          <%= link_to 'Clone', course_team_set_path(@course, team_set) + '/clone',
+                method: :post, class: "btn btn-default" %>
+          <%= link_to 'Delete', course_team_set_path(@course, team_set), 
+                method: :delete, data: { confirm: 'Are you sure?' },
+                class: "btn btn-danger" %>
+        </td>
       </tr>
     <% end %>
   </tbody>
@@ -26,4 +26,5 @@
 
 <br>
 
-<%= link_to 'New Team set', new_team_set_path %>
+<%= link_to 'New Team set', new_course_team_set_path(@course), 
+  class: "btn btn-primary" %>

@@ -2,48 +2,59 @@ require 'test_helper'
 
 class TeamSetsControllerTest < ActionController::TestCase
   setup do
-    @team_set = team_sets(:one)
+    @course   = create(:course)
+    @team_set = create(:team_set, course: @course)
+
+    @fred = create(:user)
+    @mark = create(:user)
+    create(:registration, user: @fred, course: @course, teacher: true)
   end
 
   test "should get index" do
-    get :index
+    get :index, { course_id: @course }, { user_id: @fred }
     assert_response :success
     assert_not_nil assigns(:team_sets)
   end
 
+  test "student should not get index" do
+    get :index, { course_id: @course }, { user_id: @mark }
+    assert_response :redirect
+  end
+
   test "should get new" do
-    get :new
+    get :new, { course_id: @course }, { user_id: @fred }
     assert_response :success
   end
 
   test "should create team_set" do
     assert_difference('TeamSet.count') do
-      post :create, team_set: { course_id: @team_set.course_id, name: @team_set.name }
+      post :create, { course_id: @course, 
+                      team_set: { course_id: @team_set.course_id, 
+                                  name: "Another Team Set" }},
+                    { user_id: @fred }
     end
 
-    assert_redirected_to team_set_path(assigns(:team_set))
+    assert_redirected_to course_team_set_path(@course, assigns(:team_set))
   end
 
   test "should show team_set" do
-    get :show, id: @team_set
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, id: @team_set
+    get :show, { course_id: @course, id: @team_set }, { user_id: @fred }
     assert_response :success
   end
 
   test "should update team_set" do
-    patch :update, id: @team_set, team_set: { course_id: @team_set.course_id, name: @team_set.name }
-    assert_redirected_to team_set_path(assigns(:team_set))
+    patch :update, { course_id: @course, id: @team_set, 
+                     team_set: { course_id: @team_set.course_id, 
+                                 name: "Another Name" } },
+                   { user_id: @fred }
+    assert_redirected_to course_team_set_path(@course, assigns(:team_set))
   end
 
   test "should destroy team_set" do
     assert_difference('TeamSet.count', -1) do
-      delete :destroy, id: @team_set
+      delete :destroy, { course_id: @course, id: @team_set }, { user_id: @fred }
     end
 
-    assert_redirected_to team_sets_path
+    assert_redirected_to course_team_sets_path(@course)
   end
 end

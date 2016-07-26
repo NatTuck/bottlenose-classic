@@ -16,7 +16,7 @@ class AssignmentsController < ApplicationController
     @students    = @course.active_registrations
     @submissions = @assignment.submissions.where(user_id: @logged_in_user.id)
 
-    @team = @logged_in_user.active_team(@course)
+    @team        = @assignment.team_for(@logged_in_user)
   end
 
   def new
@@ -97,6 +97,6 @@ class AssignmentsController < ApplicationController
     params[:assignment].permit(:name, :assignment, :due_date,
                                :points_available, :hide_grading, :blame_id,
                                :assignment_file, :grading_file, :solution_file,
-                               :bucket_id, :course_id, :team_subs)
+                               :bucket_id, :course_id, :team_set_id)
   end
 end

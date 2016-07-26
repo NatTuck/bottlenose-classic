@@ -63,26 +63,4 @@ class User < ActiveRecord::Base
   def reasonable_name?
     name =~ /\s/ && name.downcase != name
   end
-
-  def team_at(course, time)
-    teams = Team.joins(:team_users).where("team_users.user_id = ?", self.id).
-      where("course_id = ?", course.id).where("start_date <= ?", time).
-      order(:start_date).reverse
-    if teams.size > 0
-      teams.first
-    else
-      nil
-    end
-  end
-
-  def active_team(course)
-    teams = Team.joins(:team_users).where("team_users.user_id = ?", self.id).
-      where("course_id = ?", course.id).where("start_date <= now()").
-      order(:start_date).reverse
-    if teams.size > 0
-      teams.first
-    else
-      nil
-    end
-  end
 end

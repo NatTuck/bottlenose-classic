@@ -37,11 +37,6 @@ class TeamsController < ApplicationController
     end 
   end
 
-  # GET /teams
-  def index
-    @teams = @course.teams
-  end
-
   # GET /teams/1
   def show
     add_breadcrumb "Team ##{@team.id}"
@@ -65,12 +60,13 @@ class TeamsController < ApplicationController
   # POST /teams
   def create
     @team = Team.new(team_params)
+    @team.course_id = @course.id
 
     users = params["users"] || []
     @team.users = users.map {|u_id| User.find(u_id.to_i) }
 
     if @team.save
-      redirect_to course_team_path(@course, @team), notice: 'Team was successfully created.'
+      redirect_to [:edit, @course, @team], notice: 'Team was successfully created.'
     else
       @others = other_users
       render :new
@@ -95,9 +91,11 @@ class TeamsController < ApplicationController
     end
 
     if @team.update(team_params)
-      redirect_to course_team_path(@course, @team), notice: 'Team was successfully updated.'
+      redirect_to course_team_set_path(@course, @team.team_set), 
+        notice: 'Team was successfully updated.'
     else
-      redirect_to edit_course_team_path(@course, @team)
+      redirect_to edit_course_team_path(@course, @team),
+        alert: 'Error saving team.'
     end
   end
 
@@ -105,22 +103,32 @@ class TeamsController < ApplicationController
   def destroy
     if @team.submissions.empty?
       @team.destroy
-      redirect_to course_teams_path(@course), notice: 'Team was successfully destroyed.'
+      redirect_to course_team_set_path(@course, @team.team_set), 
+        notice: 'Team was successfully destroyed.'
     else
       show_error "Can't delete. Team has submissions."
-      redirect_to course_teams_path(@course)
+      redirect_to course_team_set_path(@course, @team.team_set)
     end
   end
 
   private
   def other_users
-    @course.students.find_all {|uu| not @team.users.include?(uu) }
+    @team.team_set.extra_students.find_all do |uu|
+      not @team.users.include?(uu)
+    end
   end
 
   def setup_breadcrumbs
     add_root_breadcrumb
     add_breadcrumb @course.name, @course
-    add_breadcrumb "Teams", course_teams_path(@course)
+    add_breadcrumb "Teams", course_team_sets_path(@course)
+    
+    if @team.nil?
+      add_breadcrumb "Huh?"
+    else
+      add_breadcrumb "Team Set", course_team_set_path(@course, @team.team_set)
+      add_breadcrumb "Team", course_team_path(@course, @team)
+    end
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -134,7 +142,7 @@ class TeamsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def team_params
-    params.require(:team).permit(:course_id, :start_date)
+    params.require(:team).permit(:course_id, :team_set_id)
   end
 end
 

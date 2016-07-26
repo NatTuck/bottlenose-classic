@@ -1,9 +1,3 @@
-<%= javascript_tag do %>
-
-
-
-<% end %>
-
 <%= form_for([@course, @team]) do |f| %>
   <% if @team.errors.any? %>
     <div id="error_explanation">
@@ -18,11 +12,6 @@
   <% end %>
 
   <%= f.hidden_field :course_id %>
-
-  <div class="form-group">
-    <%= f.label :start_date %><br>
-    <%= f.date_select :start_date %>
-  </div>
 
   <div class="form-group">
     <div class="col-sm-3">

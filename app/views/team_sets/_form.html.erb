@@ -1,4 +1,6 @@
-<%= form_for(@team_set) do |f| %>
+<%= form_for([@course, @team_set]) do |f| %>
+  <%= f.hidden_field :course_id %>
+
   <% if @team_set.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@team_set.errors.count, "error") %> prohibited this team_set from being saved:</h2>
@@ -11,15 +13,11 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :course_id %><br>
-    <%= f.number_field :course_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="form-group">
+    <%= f.submit class: "btn btn-primary" %>
   </div>
 <% end %>

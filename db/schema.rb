@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160107232558) do
+ActiveRecord::Schema.define(version: 20160724150208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 20160107232558) do
     t.string   "tar_key"
     t.integer  "bucket_id"
     t.integer  "course_id",                            null: false
-    t.boolean  "team_subs"
+    t.integer  "team_set_id"
   end
 
   create_table "best_subs", force: :cascade do |t|
@@ -45,11 +45,11 @@ ActiveRecord::Schema.define(version: 20160107232558) do
   end
 
   create_table "buckets", force: :cascade do |t|
-    t.integer  "course_id"
-    t.string   "name"
-    t.float    "weight"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "course_id",                null: false
+    t.string   "name",                     null: false
+    t.float    "weight",     default: 1.0, null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.boolean  "team_subs"
   end
 
@@ -59,11 +59,9 @@ ActiveRecord::Schema.define(version: 20160107232558) do
     t.datetime "updated_at"
     t.string   "late_options", default: "10,1,0"
     t.text     "footer"
-    t.integer  "term_id"
+    t.integer  "term_id",                         null: false
     t.integer  "sub_max_size", default: 5,        null: false
     t.boolean  "public",       default: false,    null: false
-    t.integer  "team_min"
-    t.integer  "team_max"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -83,20 +81,20 @@ ActiveRecord::Schema.define(version: 20160107232558) do
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "reg_requests", force: :cascade do |t|
-    t.integer  "course_id"
+    t.integer  "course_id",  null: false
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
+    t.integer  "user_id",    null: false
   end
 
   create_table "registrations", force: :cascade do |t|
-    t.integer  "course_id",                  null: false
-    t.integer  "user_id",                    null: false
-    t.boolean  "teacher"
+    t.integer  "course_id",                     null: false
+    t.integer  "user_id",                       null: false
+    t.boolean  "teacher",       default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "show_in_lists"
+    t.boolean  "show_in_lists", default: true,  null: false
     t.string   "tags",          default: ""
   end
 
@@ -128,31 +126,39 @@ ActiveRecord::Schema.define(version: 20160107232558) do
   add_index "submissions", ["user_id", "assignment_id"], name: "index_submissions_on_user_id_and_assignment_id", using: :btree
   add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
 
-  create_table "team_users", force: :cascade do |t|
-    t.integer  "team_id"
-    t.integer  "user_id"
+  create_table "team_sets", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.integer  "course_id",  null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "team_users", force: :cascade do |t|
+    t.integer  "team_id",     null: false
+    t.integer  "user_id",     null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "team_set_id", null: false
   end
 
   create_table "teams", force: :cascade do |t|
-    t.integer  "course_id"
-    t.date     "start_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "course_id",   null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "team_set_id", null: false
   end
 
   create_table "terms", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                       null: false
     t.boolean  "archived",   default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "uploads", force: :cascade do |t|
-    t.integer  "user_id"
-    t.string   "file_name"
-    t.string   "secret_key"
+    t.integer  "user_id",    null: false
+    t.string   "file_name",  null: false
+    t.string   "secret_key", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -160,10 +166,10 @@ ActiveRecord::Schema.define(version: 20160107232558) do
   add_index "uploads", ["secret_key"], name: "index_uploads_on_secret_key", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.string   "email",      null: false
-    t.string   "auth_key",   null: false
-    t.boolean  "site_admin"
+    t.string   "name",                       null: false
+    t.string   "email",                      null: false
+    t.string   "auth_key",                   null: false
+    t.boolean  "site_admin", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -25,30 +25,6 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     assert sub.reload.ignore_late_penalty?, "Ignore late penalty is set."
   end
 
-  test "teacher manually submit a grade" do
-    pset = create(:assignment, bucket: @bucket, course: @cs101)
-
-    score0 = @john_reg.total_score
-
-    visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"
-    click_link 'Your Courses'
-    click_link @cs101.name
-    click_link pset.name
-    click_link 'Manually Add Student Grade'
-
-    select @john.name,  :from => 'submission[user_id]'
-    fill_in 'submission[teacher_notes]', :with => 'manually entered grade'
-    fill_in 'submission[teacher_score]', :with => '85'
-    click_button 'Save Grade'
-
-    sub = Submission.find_by_teacher_notes('manually entered grade')
-    assert_equal @john.id, sub.user_id
-    assert_equal sub.score, 85
-
-    # Make sure score summary updates properly.
-    assert_not_equal(@john_reg.reload.total_score, score0, "Updated summary")
-  end
-
   test "submit and grade a submission" do
     pset = make_assignment(@bucket, 'HelloWorld')
 

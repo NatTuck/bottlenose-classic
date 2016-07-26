@@ -9,6 +9,7 @@ class Course < ActiveRecord::Base
   has_many :buckets,     dependent: :destroy
   has_many :assignments, dependent: :restrict_with_error
   has_many :teams,       dependent: :destroy
+  has_many :team_sets,   dependent: :destroy
 
   validates :name,    :length      => { :minimum => 2 },
                       :uniqueness  => true
@@ -55,11 +56,11 @@ class Course < ActiveRecord::Base
   end
 
   def students
-    student_registrations.map {|reg| reg.user}
+    student_registrations.map {|reg| reg.user }
   end
 
   def teachers
-    teacher_registrations.map {|reg| reg.user}
+    teacher_registrations.map {|reg| reg.user }
   end
 
   def first_teacher
@@ -136,5 +137,9 @@ class Course < ActiveRecord::Base
     end
 
     [percents, totals]
+  end
+
+  def solo_team_set
+    team_sets.where(name: "Solo").first
   end
 end
