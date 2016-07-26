@@ -6,7 +6,11 @@
     <td><%= @submission.assignment.name %></td>
   </tr>
   <tr>
-    <td><strong>Student</strong></td>
+    <td><strong>Team Members</strong></td>
+    <td><%= @submission.team.member_names %></td>
+  </tr>
+  <tr>
+    <td><strong>Submitter</strong></td>
     <td><%= @submission.user.name %></td>
   </tr>
   <tr>
@@ -51,15 +55,18 @@
 <%= form_for @submission do |f| %>
   <div class="form-group">
     <%= f.label :teacher_notes, "Teacher Comments" %> <br>
-    <%= f.text_area :teacher_notes, :class => "rich-text" %>
+    <%= f.text_area :teacher_notes, class: "rich-text form-control" %>
   </div>
   <div class="form-group">
-    <%= f.label :comments_upload_file, "Upload Comments File" %>
-    <%= f.file_field :comments_upload_file %>
+    <%= f.label(:comments_upload_file,
+                class: "btn btn-default btn-file") do %>
+      Upload Comments File
+      <%= f.file_field :comments_upload_file, style: "display: none" %>
+    <% end %>
   </div>
   <div class="form-group">
     <%= f.label :teacher_score, "Score" %><br>
-    <%= f.text_field :teacher_score, :size => 10 %> /
+    <%= f.text_field :teacher_score, size: 10, class: "form-control" %> /
     <%= @assignment.points_available %></p>
   </div>
   <div class="form-group">
@@ -67,6 +74,6 @@
     <%= f.check_box :ignore_late_penalty %>
   </div>
   <div class="form-group">
-    <%= f.submit "Set Teacher Score" %>
+    <%= f.submit "Set Teacher Score", class: "btn btn-primary" %>
   </div>
 <% end %>

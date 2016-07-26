@@ -3,11 +3,11 @@
 <table class="table table-striped">
   <tr>
     <td>Course</td>
-    <td><%= @course.name %></td>
+    <td><%= link_to @course.name, @course %></td>
   </tr>
   <tr>
     <td>User</td>
-    <td><%= @user.name %></td>
+    <td><%= link_to @user.name, @user %></td>
   </tr>
   <tr>
     <td>Teacher?</td>

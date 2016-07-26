@@ -1,0 +1,50 @@
+<% @page_title = "Teams: #{@team_set.name}" %>
+
+<p>
+  <strong>Course:</strong>
+  <%= link_to(@team_set.course.name, @team_set.course) %>
+</p>
+
+<%= render 'form' %>
+
+<div class="row">
+  <div class="col-sm-3">
+    <h2>Teams</h2>
+
+    <table class="table table-striped">
+    <% @teams.each do |tt| %>
+      <tr>
+        <td><%= tt.member_names %></td>
+        <td>
+          <%= link_to "Edit", [:edit, @course, tt], 
+            class: "btn btn-default" %>
+          <%= link_to 'Delete', [@course, tt], method: :delete, 
+            data: { confirm: 'Are you sure?' },
+            class: "btn btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+    </table>
+  </div>
+
+  <div class="col-sm-3">
+    <h2>Teamless Students</h2>
+
+    <table class="table table-striped">
+    <% @extras.each do |uu| %>
+      <tr>
+        <td><%= uu.name %></td>
+        <td>
+          <%= form_for([@course, Team.new(team_set: @team_set)]) do |ff| %>
+            <%= hidden_field_tag "users[]", uu.id %>
+            <%= ff.hidden_field :team_set_id %>
+            <%= ff.submit "New Team", class: "btn btn-default" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </table>
+  </div>
+</div>
+
+<p><%= link_to "Back", course_team_sets_path(@course) %></p>

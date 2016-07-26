@@ -25,7 +25,7 @@ class SubmissionsController < ApplicationController
     @submission.assignment_id = @assignment.id
     @submission.user_id = @logged_in_user.id
 
-    @team = @logged_in_user.active_team(@course)
+    @team = @assignment.team_for(@logged_in_user)
     @submission.team = @team
   end
 
@@ -33,7 +33,7 @@ class SubmissionsController < ApplicationController
     add_breadcrumb @submission.name, @submission
     add_breadcrumb "Grading"
 
-    @team = @logged_in_user.active_team(@course)
+    @team = @submission.team
   end
 
   def create
@@ -92,14 +92,6 @@ class SubmissionsController < ApplicationController
 
     # @submission.destroy
     # redirect_to assignment_submissions_url(@assignment)
-  end
-
-  def manual_grade
-    @submission = Submission.new
-    @submission.assignment_id = @assignment.id
-    @submission.ignore_late_penalty = true
-
-    @users = @course.users
   end
 
   private

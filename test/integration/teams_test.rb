@@ -12,7 +12,8 @@ class TeamsTest < ActionDispatch::IntegrationTest
     @mary = create(:registration, course: @cs101).user
     @greg = create(:registration, course: @cs101).user
 
-    @pset = create(:assignment, course: @cs101, bucket: @bucket, team_subs: true)
+    @tset = create(:team_set, course: @cs101, name: "The Teams")
+    @pset = create(:assignment, course: @cs101, bucket: @bucket, team_set: @tset)
   end
 
   def test_create_team_submit_and_grade
@@ -24,24 +25,23 @@ class TeamsTest < ActionDispatch::IntegrationTest
     click_link @cs101.name
 
     first(:link, 'Teams').click
-    click_link('New Team')
+    click_link "The Teams"
 
-    select(@mary.name)
+    row = find("td", text: @mary.name).find(:xpath, "..")
+    row.click_button("New Team")
     select(@greg.name)
     click_button("Add User")
-    click_button("Create Team")
+    click_button("Update Team")
 
-    assert has_content?("Team was successfully created.")
-    assert has_content?(@mary.name)
-    assert has_no_content?(@mark.name)
-
+    assert has_content?("Team was successfully updated.")
+  
     # Submit as a Team Member
     visit "/main/auth?email=#{@mary.email}&key=#{@mary.auth_key}"
 
     click_link 'Your Courses'
     click_link @cs101.name
     click_link @pset.name
-    click_link "New Team Submission"
+    click_link "New Submission"
 
     fill_in "Student notes", with: "Greg did the comments"
     attach_file 'Upload', assign_upload('HelloWorld', 'john.tar.gz')

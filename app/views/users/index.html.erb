@@ -20,12 +20,14 @@
   <tr>
     <td><%= user.name %></td>
     <td><%= user.email %></td>
-    <td><%= link_to 'Show', user %></td>
-    <td><%= link_to 'Edit', edit_user_path(user) %></td>
+    <td><%= link_to 'Show', user, class: 'btn btn-default' %></td>
+    <td><%= link_to 'Edit', edit_user_path(user), class: 'btn btn-default' %></td>
     <td>
-      <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %>
+      <%= link_to 'Destroy', user, method: :delete, 
+        data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
     </td>
-    <td><%= link_to('Impersonate', user_path(user) + '/impersonate', method: 'post') %></td>
+    <td><%= link_to('Impersonate', user_path(user) + '/impersonate', 
+                    method: 'post', class: 'btn btn-warning') %></td>
   </tr>
 <% end %>
 </table>

@@ -1,0 +1,30 @@
+<% @page_title = "Team Sets for #{@course.name}" %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @team_sets.each do |team_set| %>
+      <tr>
+        <td><%= link_to(team_set.name, [@course, team_set]) %></td>
+        <td>
+          <%= link_to 'Clone', course_team_set_path(@course, team_set) + '/clone',
+                method: :post, class: "btn btn-default" %>
+          <%= link_to 'Delete', course_team_set_path(@course, team_set), 
+                method: :delete, data: { confirm: 'Are you sure?' },
+                class: "btn btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Team set', new_course_team_set_path(@course), 
+  class: "btn btn-primary" %>

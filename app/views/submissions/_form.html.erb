@@ -14,10 +14,8 @@
     </div>
   <% end %>
 
-  <% if @assignment.team_subs? %>
-    <p>This will be a team submission.</p>
-    <p>Team members: <%= @team.member_names %>
-  <% end %>
+  <p>You are submitting for these team members:
+  <br><%= @team.member_names %></p>
 
   <div class="form-group">
     <%= f.label :student_notes %>

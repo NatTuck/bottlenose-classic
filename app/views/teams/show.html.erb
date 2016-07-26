@@ -3,8 +3,8 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Start date:</strong>
-  <%= @team.start_date %>
+  <strong>Team Set:</strong>
+  <%= @team.team_set.name %>
 </p>
 
 <p><strong>Members:</strong></p>
@@ -17,4 +17,4 @@
 
 
 <%= link_to 'Edit', edit_course_team_path(@course, @team) %> |
-<%= link_to 'Back', course_teams_path(@course) %>
+<%= link_to 'Back', course_team_set_path(@course, @team.team_set) %>

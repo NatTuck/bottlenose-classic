@@ -6,6 +6,7 @@ class Assignment < ActiveRecord::Base
 
   belongs_to :bucket
   belongs_to :course
+  belongs_to :team_set
 
   has_many :submissions, :dependent => :restrict_with_error
   has_many :best_subs, :dependent => :destroy
@@ -17,6 +18,24 @@ class Assignment < ActiveRecord::Base
   validates :blame_id,  :presence => true
   validates :bucket_id, :presence => true
   validates :points_available, :numericality => true
+
+  def team_for(user)
+    if team_set.nil?
+      self.team_set = course.solo_team_set
+      save!
+    end
+
+    ut = TeamUser.where(user: user, team_set: team_set).first
+    if ut.nil?
+      if user.course_admin?(course)
+        team_set.make_teacher_team!
+      else
+        nil
+      end
+    else
+      ut.team
+    end
+  end
 
   def assignment_upload
     Upload.find_by_id(assignment_upload_id)
@@ -207,14 +226,10 @@ class Assignment < ActiveRecord::Base
   end
 
   def submissions_for(user)
-    if team_subs?
-      Submission.
-        joins("JOIN teams ON submissions.team_id = teams.id JOIN team_users ON team_users.team_id = teams.id").
-        where("team_users.user_id = ? and submissions.assignment_id = ?", user.id, self.id).
-        order(:created_at).reverse
-    else
-      submissions.where(user_id: user.id).order(:created_at).reverse
-    end
+    Submission.
+      joins("JOIN teams ON submissions.team_id = teams.id JOIN team_users ON team_users.team_id = teams.id").
+      where("team_users.user_id = ? and submissions.assignment_id = ?", user.id, self.id).
+      order(:created_at).reverse
   end
 
   def best_sub_for(user)

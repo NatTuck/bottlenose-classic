@@ -22,12 +22,17 @@
 
 <h2>Enrolled Courses</h2>
 
-<ul>
+<table class="table table-striped">
 <% @user.registrations.sort_by {|rr| rr.course.name }.each do |reg| %>
-<li><%= reg.course.name %>
-  <% if reg.teacher? %>
-  (Teacher)
-  <% end %>
-(<%= link_to "View", reg.course %>)</li>
+  <tr>
+    <td>
+      <%= link_to reg.course.name, reg.course %>
+      <% if reg.teacher? %>
+        (Teacher)
+      <% end %>
+    </td>
+    <td>
+      <%= link_to "Status", reg %>
+    </td>
 <% end %>
-</ul>
+</table>

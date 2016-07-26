@@ -7,7 +7,7 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Start date</th>
+      <th>Team Set</th>
       <th>Members</th>
       <th colspan="3"></th>
     </tr>
@@ -16,7 +16,7 @@
   <tbody>
     <% @teams.each do |team| %>
       <tr>
-        <td><%= team.start_date %></td>
+        <td><%= team.team_set.name %></td>
         <td><%= team.users.map {|uu| uu.name }.join(", ") %></td>
         <td><%= link_to 'Show', course_team_path(@course, team) %></td>
         <td><%= link_to 'Edit', edit_course_team_path(@course, team) %></td>

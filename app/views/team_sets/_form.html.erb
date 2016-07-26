@@ -1,0 +1,23 @@
+<%= form_for([@course, @team_set]) do |f| %>
+  <%= f.hidden_field :course_id %>
+
+  <% if @team_set.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@team_set.errors.count, "error") %> prohibited this team_set from being saved:</h2>
+
+      <ul>
+      <% @team_set.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name %><br>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

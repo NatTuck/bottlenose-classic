@@ -120,6 +120,7 @@ class CoursesController < ApplicationController
     @course.late_options = [params[:late_penalty], params[:late_repeat], params[:late_maximum]].join(',') unless params[:late_penalty].nil?
 
     if @course.save
+      TeamSet.create_solo!(@course)
       redirect_to @course, notice: 'Course was successfully created.'
     else
       render action: "new"

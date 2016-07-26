@@ -19,7 +19,8 @@ Bottlenose::Application.routes.draw do
     resources :reg_requests
     resources :buckets
     resources :assignments
-    resources :teams
+    resources :teams, except: [:index, :new]
+    resources :team_sets, except: [:edit]
   end
 
   post 'courses/:id/export_grades'  => 'courses#export_grades'
@@ -27,7 +28,8 @@ Bottlenose::Application.routes.draw do
   get  'courses/:id/bulk_add'       => 'courses#bulk_add'
   post 'courses/:id/bulk_add'       => 'courses#bulk_add'
   get  'courses/:id/public'         => 'courses#public'
-  get  'courses/:course_id/team_status'    => 'teams#status'
+  get  'courses/:course_id/team_status' => 'teams#status'
+  post 'courses/:course_id/team_sets/:id/clone' => 'team_sets#clone'
 
   resources :registrations, except: [:new]
 
@@ -41,9 +43,6 @@ Bottlenose::Application.routes.draw do
   resources :assignments do
     resources :submissions, except: [:destroy]
   end
-
-  get 'assignments/:assignment_id/manual_grade' =>
-    'submissions#manual_grade'
 
   get 'assignments/:id/tarball' =>
     'assignments#tarball'

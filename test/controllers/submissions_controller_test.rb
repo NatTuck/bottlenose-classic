@@ -4,8 +4,9 @@ class SubmissionsControllerTest < ActionController::TestCase
   setup do
     make_standard_course
 
-    @hello = create(:assignment, course: @cs101, bucket: @bucket)
-    @john_hello = create(:submission, user: @john, assignment: @hello)
+    @hello = create(:assignment, course: @cs101, bucket: @bucket, team_set: @solo )
+    @john_hello = create(:submission, user: @john, 
+                         assignment: @hello, team: @john_team)
   end
 
   teardown do
@@ -45,11 +46,6 @@ class SubmissionsControllerTest < ActionController::TestCase
 
   test "should get edit" do
     get :edit, {id: @john_hello}, {user_id: @fred.id}
-    assert_response :success
-  end
-
-  test "should get manual grade" do
-    get :manual_grade, {assignment_id: @hello.id}, {user_id: @fred.id}
     assert_response :success
   end
 
