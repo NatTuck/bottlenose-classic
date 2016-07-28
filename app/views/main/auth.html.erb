@@ -34,9 +34,11 @@ page to to access the site without clicking the link in your email.</p>
 
 <p><strong>Your Courses:</strong></p>
 
-<ul>
+<table class="table table-striped">
   <% @logged_in_user.courses.order(:created_at).each do |cc| %>
-    <li><%= link_to cc.name, cc %></li>
+    <tr>
+      <td><%= link_to cc.name, cc %></td>
+    </tr>
   <% end %>
-</ul>
+</table>
 

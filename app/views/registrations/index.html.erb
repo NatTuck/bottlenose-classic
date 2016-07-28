@@ -44,12 +44,14 @@
   <td><%= teacher.email %></td>
   <td>
     <span class="show-user-<%= treg.id %>"><%= treg.show_in_lists? ? "Yes" : "No" %></span>
-    (<%= link_to "Toggle", registration_show_toggle_path(treg.id),
-                           remote: true, method: 'post' %>)
+    <%= link_to "Toggle", registration_show_toggle_path(treg.id),
+                           remote: true, method: 'post', class: 'btn btn-default' %>
   </td>
-  <td><%= link_to 'Edit', [:edit, @course, treg] %> |
+  <td><%= link_to 'Edit', [:edit, @course, treg], class: 'btn btn-default' %> 
       <%= link_to 'Remove', [@course, treg],
-            { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>
+            :method => :delete, :data => { confirm: 'Are you sure?' },
+            class: 'btn btn-danger' %>
+  </td>
 </tr>
 <% end %>
 </table>
@@ -71,12 +73,13 @@
   <td><%= student.email %></td>
   <td>
     <span class="show-user-<%= sreg.id %>"><%= sreg.show_in_lists? ? "Yes" : "No" %></span>
-    (<%= link_to "Toggle", registration_show_toggle_path(sreg.id),
-                           remote: true, method: 'post' %>)
+    <%= link_to "Toggle", registration_show_toggle_path(sreg.id),
+                           remote: true, method: 'post', class: 'btn btn-default' %>
   </td>
-  <td><%= link_to 'Edit', [:edit, @course, sreg] %> |
+  <td><%= link_to 'Edit', [:edit, @course, sreg], class: 'btn btn-default' %> 
       <%= link_to 'Remove', [@course, sreg],
-            { :method => :delete, :data => { confirm: 'Are you sure?' } } %></td>
+        :method => :delete, :data => { confirm: 'Are you sure?' },
+        class: 'btn btn-danger' %></td>
 </tr>
 <% end %>
 </table>

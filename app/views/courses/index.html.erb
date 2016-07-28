@@ -15,19 +15,24 @@
   <% unless @courses_by_term[term.id].empty? %>
     <h2><%= term.name %></h2>
 
-    <ul>
+    <table class="table table-striped">
     <% @courses_by_term[term.id].each do |course| %>
-      <li>
-      <%= link_to course.name, course %>
-      <% if @logged_in_user.course_admin?(course) %>
-        (<%= link_to 'Edit Settings', edit_course_path(course) %>)
-      <% end %>
-      <% if @logged_in_user.site_admin? %>
-        (<%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %>)
-      <% end %>
-      </li>
+      <tr>
+        <td><%= link_to course.name, course %></td>
+        <td>
+          <% if @logged_in_user.course_admin?(course) %>
+            <%= link_to 'Edit Settings', edit_course_path(course),
+              class: 'btn btn-default' %>
+          <% end %>
+          &nbsp;
+          <% if @logged_in_user.site_admin? %>
+            <%= link_to 'Destroy', course, method: :delete, 
+              data: { confirm: 'Are you sure?' },
+              class: 'btn btn-danger' %>
+          <% end %>
+      </tr>
     <% end %>
-    </ul>
+    </table>
   <% end %>
 <% end %>
 

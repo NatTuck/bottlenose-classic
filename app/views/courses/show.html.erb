@@ -2,7 +2,7 @@
 
 <p>
   <% if @logged_in_user.registration_for(@course) %>
-    <%= link_to "Status Report", @registration %>
+    <big><%= link_to "Your Status Report", @registration %></big>
   <% else %>
     <%= link_to "Request Registration", new_course_reg_request_path(@course) %>
   <% end %>
