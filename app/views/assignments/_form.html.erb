@@ -38,6 +38,10 @@
     <%= f.file_field :solution_file %>
   </div>
   <div class="form-group">
+    <%= f.label :grading_driver %>
+    <%= f.select :grading_driver, @drivers.map {|dd| [dd, dd]} %>
+  </div>
+  <div class="form-group">
     <%= f.label :points_available %>
     <br>(This is a weight relative to other assignments in the same bucket.)
     <%= f.text_field :points_available, {size: 10, default: 100, class: 'form-control' } %>

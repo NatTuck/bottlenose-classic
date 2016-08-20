@@ -1,12 +1,6 @@
 #!/usr/bin/env ruby
+require '/tmp/bn/lib/bn_grade'
 require 'fileutils'
-
-def run(cmd)
-  system(cmd) or do
-    puts "Error running cmd: #{cmd}"
-    exit(1)
-  end
-end
 
 sub = `ls /tmp/bn/sub/*`.chomp
 gra = `ls /tmp/bn/gra/*`.chomp

@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160817185722) do
+ActiveRecord::Schema.define(version: 20160820180109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "assignments", force: :cascade do |t|
-    t.string   "name",                                 null: false
-    t.date     "due_date",                             null: false
+    t.string   "name",                                        null: false
+    t.date     "due_date",                                    null: false
     t.string   "assignment_file_name"
     t.string   "grading_file_name"
     t.text     "assignment"
@@ -33,8 +33,10 @@ ActiveRecord::Schema.define(version: 20160817185722) do
     t.integer  "solution_upload_id"
     t.string   "tar_key"
     t.integer  "bucket_id"
-    t.integer  "course_id",                            null: false
+    t.integer  "course_id",                                   null: false
     t.integer  "team_set_id"
+    t.string   "grading_driver",       default: "default.rb"
+    t.string   "grading_image",        default: "bn-base"
   end
 
   create_table "best_subs", force: :cascade do |t|
@@ -95,8 +97,6 @@ ActiveRecord::Schema.define(version: 20160817185722) do
   create_table "submissions", force: :cascade do |t|
     t.integer  "assignment_id",                       null: false
     t.integer  "user_id",                             null: false
-    t.string   "secret_dir"
-    t.string   "file_name"
     t.float    "auto_score"
     t.text     "student_notes"
     t.float    "teacher_score"

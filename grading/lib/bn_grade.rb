@@ -1,25 +1,35 @@
 require 'json'
 
-def unpack_to_home(file)
-  Dir.chdir "/home/student" do
-    if (file =~ /\.tar\.gz$/i) || file =~ (/\.tgz$/i)
-      system(%Q{tar xzf "#{file}"})
-    elsif (file =~ /\.zip/i)
-      system(%Q{unzip "#{file}"})
-    else
-      system(%Q{cp "#{file}" .})
+def run(cmd)
+  puts "Running: #{cmd}"
+  system(cmd) or begin
+      puts "Command failed: #{cmd}"
+      exit(1)
     end
+end
 
-    system("chown -R student:student ~student") 
+def unpack_to_home(file)
+  Dir.chdir "/home/student"
+
+  if (file =~ /\.tar\.gz$/i) || file =~ (/\.tgz$/i)
+    run(%Q{tar xzf "#{file}"})
+  elsif (file =~ /\.zip/i)
+    run(%Q{unzip "#{file}"})
+  else
+    run(%Q{cp "#{file}" .})
   end
 end
 
 def unpack_submission
-  unpack_to_home(ENV["BN_SUB"])
+  if ENV["BN_SUB"]
+    unpack_to_home(ENV["BN_SUB"])
+  end
 end
 
 def unpack_grading
-  unpack_to_home(ENV["BN_GRADE"])
+  if ENV["BN_GRADE"]
+    unpack_to_home(ENV["BN_GRADE"])
+  end
 end
 
 class BnScore

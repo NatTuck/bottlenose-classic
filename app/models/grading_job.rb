@@ -18,10 +18,10 @@ class GradingJob < ActiveRecord::Base
     return if active >= @@MAX_CONC 
 
     root = Rails.root.to_s
-    system(%Q{(cd "#{root}" && script/run-grading-job #{self.id})&})
+    system(%Q{(cd "#{root}" && script/run-grading-job #{self.id} 2>&1) &})
   end
 
   def driver_script_path
-    Rails.root.join("grading", "scripts", "default.rb")
+    Rails.root.join("grading", "drivers", submission.assignment.grading_driver)
   end
 end

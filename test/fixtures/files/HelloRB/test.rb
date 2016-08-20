@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
-require 'bn_grade.rb'
+require 'bn_grade'
 
 score = BnScore.new
+
+unpack_submission
 
 load 'hello.rb'
 
