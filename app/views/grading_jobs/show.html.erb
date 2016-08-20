@@ -1,4 +1,4 @@
-<p id="notice"><%= notice %></p>
+<% @page_title = "Grading Job ##{@grading_job.id}" %>
 
 <p>
   <strong>Submission:</strong>
@@ -10,5 +10,4 @@
   <%= @grading_job.started_at %>
 </p>
 
-<%= link_to 'Edit', edit_grading_job_path(@grading_job) %> |
 <%= link_to 'Back', grading_jobs_path %>

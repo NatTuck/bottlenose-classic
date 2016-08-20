@@ -1,29 +1,29 @@
-<p id="notice"><%= notice %></p>
+<% @page_title = "Active Grading Jobs" %>
 
-<h1>Listing Grading Jobs</h1>
-
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Submission</th>
       <th>Started at</th>
-      <th colspan="3"></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @grading_jobs.each do |grading_job| %>
       <tr>
-        <td><%= grading_job.submission_id %></td>
+        <td>
+          <% if grading_job.submission_id %>
+            <%= link_to "Sub", grading_job.submission %>
+          <% else %>
+            <%= grading_job.submission_id %>
+          <% end %>
+        </td>
         <td><%= grading_job.started_at %></td>
         <td><%= link_to 'Show', grading_job %></td>
-        <td><%= link_to 'Edit', edit_grading_job_path(grading_job) %></td>
         <td><%= link_to 'Destroy', grading_job, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'New Grading job', new_grading_job_path %>

@@ -1,4 +1,6 @@
 class GradingJobsController < ApplicationController
+  before_filter :require_site_admin
+
   before_action :set_grading_job, only: [:show, :edit, :update, :destroy]
 
   # GET /grading_jobs

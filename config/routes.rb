@@ -1,6 +1,5 @@
 
 Bottlenose::Application.routes.draw do
-  resources :grading_jobs
   get "main/index"
   get "main/auth"
   post "main/resend_auth"
@@ -23,6 +22,8 @@ Bottlenose::Application.routes.draw do
     resources :teams, except: [:index, :new]
     resources :team_sets, except: [:edit]
   end
+  
+  resources :grading_jobs, only: [:index, :show, :destroy]
 
   post 'courses/:id/export_grades'  => 'courses#export_grades'
   post 'courses/:id/export_summary' => 'courses#export_summary'
