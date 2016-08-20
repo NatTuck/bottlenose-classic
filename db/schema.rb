@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160724150208) do
+ActiveRecord::Schema.define(version: 20160817185722) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,21 +64,12 @@ ActiveRecord::Schema.define(version: 20160724150208) do
     t.boolean  "public",       default: false,    null: false
   end
 
-  create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",   default: 0, null: false
-    t.integer  "attempts",   default: 0, null: false
-    t.text     "handler",                null: false
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "grading_jobs", force: :cascade do |t|
+    t.integer  "submission_id"
+    t.datetime "started_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
-
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "reg_requests", force: :cascade do |t|
     t.integer  "course_id",  null: false
@@ -110,7 +101,6 @@ ActiveRecord::Schema.define(version: 20160724150208) do
     t.text     "student_notes"
     t.float    "teacher_score"
     t.text     "teacher_notes"
-    t.integer  "grading_uid"
     t.text     "grading_output"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -122,7 +112,6 @@ ActiveRecord::Schema.define(version: 20160724150208) do
   end
 
   add_index "submissions", ["assignment_id"], name: "index_submissions_on_assignment_id", using: :btree
-  add_index "submissions", ["grading_uid"], name: "index_submissions_on_grading_uid", unique: true, using: :btree
   add_index "submissions", ["user_id", "assignment_id"], name: "index_submissions_on_user_id_and_assignment_id", using: :btree
   add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
 

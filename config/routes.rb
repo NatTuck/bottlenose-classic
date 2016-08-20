@@ -1,5 +1,6 @@
 
 Bottlenose::Application.routes.draw do
+  resources :grading_jobs
   get "main/index"
   get "main/auth"
   post "main/resend_auth"

@@ -22,7 +22,7 @@ gem 'bootstrap-sass-extras'
 gem 'bootstrap-datepicker-rails'
 gem 'font-awesome-rails'
 
-gem 'delayed_job_active_record'
+#gem 'delayed_job_active_record'
 gem 'daemons'
 
 gem 'momentjs-rails'
