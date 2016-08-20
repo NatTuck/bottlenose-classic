@@ -13,6 +13,11 @@ unpack_grading
 unpack_submission
 
 def run_in_sub(cmd)
+  count = `find . -name "Makefile" | wc -l`.chomp.to_i
+  if count != 1
+    raise Exception.new("Too many Makefiles: #{count}")
+  end
+
   Dir.chdir "/home/student"
   dir = `dirname $(find . -name "Makefile" | head -1)`.chomp
   run(%Q{chown -R student:student "#{dir}"})

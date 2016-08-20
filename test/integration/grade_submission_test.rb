@@ -26,7 +26,7 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
   end
 
   test "submit and grade a submission" do
-    pset = make_assignment(@bucket, 'HelloWorld')
+    pset = make_assignment(@bucket, 'HelloWorld', 'classic_makefile.rb')
 
     assert File.exists?(pset.assignment_full_path)
     assert File.exists?(pset.grading_full_path)
@@ -89,7 +89,8 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
   end
 
   test "submit and grade a single file submission with specially valued tests" do
-    pset = create(:assignment, bucket: @bucket, course: @bucket.course, name: "HelloSingle")
+    pset = create(:assignment, bucket: @bucket, course: @bucket.course, 
+                  name: "HelloSingle", grading_driver: 'classic_makefile.rb')
 
     # Add test assignment.
     visit "http://test.host/main/auth?email=#{@fred.email}&key=#{@fred.auth_key}"

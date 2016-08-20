@@ -83,7 +83,7 @@ class Container
 end
 
 # Boot up the container.
-con = Container.new("bn-#{job.id}")
+con = Container.new("bn-#{Rails.env}-#{job.id}")
 con.start!
 sleep 2
 
