@@ -27,7 +27,7 @@ task :install do
 end
 
 task :prereqs do
-  system("sudo apt-get install lxc2 criu lxd-tools")
+  system("sudo apt-get install -y lxc2 criu lxd lxd-tools")
 end
 
 task :start_delayed_job do
