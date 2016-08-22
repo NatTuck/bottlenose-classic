@@ -26,6 +26,8 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
   end
 
   test "submit and grade a submission" do
+    skip if ENV["TRAVIS"]
+
     pset = make_assignment(@bucket, 'HelloWorld', 'classic_makefile.rb')
 
     assert File.exists?(pset.assignment_full_path)
@@ -89,6 +91,8 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
   end
 
   test "submit and grade a single file submission with specially valued tests" do
+    skip if ENV["TRAVIS"]
+    
     pset = create(:assignment, bucket: @bucket, course: @bucket.course, 
                   name: "HelloSingle", grading_driver: 'classic_makefile.rb')
 
