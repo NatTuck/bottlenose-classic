@@ -22,6 +22,6 @@ class Bucket < ActiveRecord::Base
   end
 
   def points_percent(user)
-    (points_ratio(user) * 100).round
+    (points_ratio(user) * 100).round(1)
   end
 end
