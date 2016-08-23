@@ -10,6 +10,42 @@ class GradeSubmissionTest < ActionDispatch::IntegrationTest
     Upload.cleanup_test_uploads!
   end
 
+  test "grade with new-style test script" do
+    skip if ENV["TRAVIS"]
+
+    pset = make_assign(@bucket, 'HelloRB', 'hello.rb', 'test.rb')
+
+    assert File.exists?(pset.assignment_full_path)
+    assert File.exists?(pset.grading_full_path)
+
+    # Log in as a student.
+    visit "http://test.host/main/auth?email=#{@john.email}&key=#{@john.auth_key}"
+
+    click_link 'Your Courses'
+    click_link @cs101.name
+
+    click_link pset.name
+
+    click_link 'New Submission'
+
+    fill_in 'Student notes', :with => "grade_submission_test"
+    base = Rails.root.join('test', 'fixtures', 'files')
+    upload_file = base.join('HelloRB', 'hello.rb')
+
+    attach_file 'Upload', upload_file
+    click_button 'Create Submission'
+
+    repeat_until(60) do
+      sleep 2
+      @submission = Submission.find_by_student_notes("grade_submission_test")
+      not @submission.auto_score.nil?
+    end
+
+    assert_equal 100, @submission.auto_score
+
+    assert File.exists?(@submission.file_full_path)
+  end
+
   test "teacher sets ignore late penalty flag" do
     pset = make_assignment(@bucket, "HelloWorld")
     sub  = make_submission(@john, pset, "john.tar.gz")

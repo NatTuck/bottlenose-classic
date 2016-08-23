@@ -48,6 +48,23 @@ class ActiveSupport::TestCase
     aa
   end
 
+  def make_assign(bb, name, asgn, grad, driver = "default.rb")
+    aa = build(:assignment, bucket: bb, course: bb.course, name: name)
+    aa.team_set = bb.course.solo_team_set
+
+    base = Rails.root.join('test', 'fixtures', 'files')
+    asgn_upload = fixture_file_upload(base.join(name, asgn), 'application/octet-stream')
+    aa.assignment_file = asgn_upload
+    grad_upload = fixture_file_upload(base.join(name, grad), 'application/octet-stream')
+    aa.grading_file    = grad_upload
+
+    aa.grading_driver  = driver
+    aa.save_uploads!
+    aa.save!
+
+    aa
+  end
+
   def make_submission(uu, aa, file)
     upl = build(:upload)
     upl.store_meta!({
