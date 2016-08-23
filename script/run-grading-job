@@ -73,7 +73,7 @@ class Container
 
   def exec_driver(path)
     push(path, "/root/bn_driver.rb")
-    File.popen(%Q{lxc exec #{@name} -- bash -c '(cd && ruby -I /tmp/bn/lib bn_driver.rb)'})
+    File.popen(%Q{lxc exec #{@name} -- bash -c '(cd && ruby -I /tmp/bn/lib bn_driver.rb) 2>&1'})
   end
 
   def stop!
@@ -147,6 +147,9 @@ begin
     puts "Points: #{pts} / #{max}"
 
     sub.auto_score = sub.assignment.points_available * pts / max
+    sub.save!
+  else
+    sub.auto_score = 0
     sub.save!
   end
 rescue Exception => ee

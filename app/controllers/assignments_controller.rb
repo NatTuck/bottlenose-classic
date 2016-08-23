@@ -15,7 +15,9 @@ class AssignmentsController < ApplicationController
     add_breadcrumb @assignment.name
 
     @students    = @course.active_registrations
-    @submissions = @assignment.submissions.where(user_id: @logged_in_user.id)
+
+    team = @assignment.team_for(@logged_in_user)
+    @submissions = team.submissions.where(assignment_id: @assignment.id)
 
     @team        = @assignment.team_for(@logged_in_user)
   end
@@ -54,6 +56,10 @@ class AssignmentsController < ApplicationController
       redirect_to @assignment, notice: 'Assignment was successfully updated.'
     else
       render action: "edit"
+    end
+
+    if params["update_teams"]
+      @assignment.update_teams!
     end
   end
 

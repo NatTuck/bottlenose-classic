@@ -30,7 +30,7 @@ class TeamSet < ActiveRecord::Base
 
   def extra_students
     on_teams = team_users.map {|tu| tu.user }
-    course.students - on_teams
+    (course.students - on_teams).sort_by {|uu| uu.invert_name.downcase }
   end
 
   def make_teacher_team!

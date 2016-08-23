@@ -187,10 +187,7 @@ class Submission < ActiveRecord::Base
   end
 
   def visible_to?(user)
-    user.course_admin?(course) ||
-      user.id == self.user_id ||
-      (assignment.team_subs? &&
-       team.users.map {|u| u.id}.include?(user.id))
+    user.course_admin?(course) || team.users.any? {|uu| uu.id == user.id }
   end
 
   private

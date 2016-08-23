@@ -15,10 +15,11 @@
     <% @teams.each do |tt| %>
       <tr>
         <td><%= tt.member_names %></td>
-        <td>
+        <td style="white-space: nowrap">
           <%= link_to "Edit", [:edit, @course, tt], 
             class: "btn btn-default" %>
-          <%= link_to 'Delete', [@course, tt], method: :delete, 
+          <%= link_to 'Delete', 
+            [@course, tt], method: :delete, 
             data: { confirm: 'Are you sure?' },
             class: "btn btn-danger" %>
         </td>

@@ -96,7 +96,7 @@ class Course < ActiveRecord::Base
   def score_summary
     as = self.assignments.includes(:best_subs)
 
-    # Partition scores by user.
+    # Partition scores by user and bucket.
     avails = {}
     scores = {}
     as.each do |aa|

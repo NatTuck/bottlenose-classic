@@ -260,6 +260,13 @@ class Assignment < ActiveRecord::Base
   def update_best_sub_for!(user)
     sub = calc_best_sub_for(user)
 
+    if sub.nil?
+      BestSub.where(user_id: user.id, assignment_id: self.id).each do |bs|
+        bs.destroy
+      end
+      return
+    end
+
     best = BestSub.find_or_initialize_by(user_id: user.id, assignment_id: self.id)
     best.submission_id = sub.id
     best.score = sub.score
@@ -269,8 +276,7 @@ class Assignment < ActiveRecord::Base
   def calc_best_sub_for(user)
     subs = submissions_for(user)
     if subs.empty?
-      logger.info("Trying to calculate best subs for {user = #{user.id}, assign = #{self.id}}")
-      raise Exception.new("Couldn't find any submissions")
+      return nil
     end
 
     teacher_scores = subs.find_all {|ss| not ss.teacher_score.nil? }
@@ -282,6 +288,15 @@ class Assignment < ActiveRecord::Base
     else
       teacher_scores.sort_by {|ss| ss.score }.last
     end
+  end
+
+  def update_teams!
+    submissions.each do |sub|
+      sub.team = team_for(sub.user)
+      sub.save!
+    end
+
+    update_best_subs!
   end
 end
 
