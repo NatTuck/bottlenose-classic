@@ -36,11 +36,29 @@ class ActiveSupport::TestCase
     fixture_file_upload(assign_upload(assign, suffix), 'application/octet-stream')
   end
 
-  def make_assignment(bb, name)
+  def make_assignment(bb, name, driver = "default.rb")
     aa = build(:assignment, bucket: bb, course: bb.course, name: name)
     aa.team_set = bb.course.solo_team_set
     aa.assignment_file = assign_upload_obj(name, 'assign.tar.gz')
     aa.grading_file    = assign_upload_obj(name, 'grading.tar.gz')
+    aa.grading_driver  = driver
+    aa.save_uploads!
+    aa.save!
+
+    aa
+  end
+
+  def make_assign(bb, name, asgn, grad, driver = "default.rb")
+    aa = build(:assignment, bucket: bb, course: bb.course, name: name)
+    aa.team_set = bb.course.solo_team_set
+
+    base = Rails.root.join('test', 'fixtures', 'files')
+    asgn_upload = fixture_file_upload(base.join(name, asgn), 'application/octet-stream')
+    aa.assignment_file = asgn_upload
+    grad_upload = fixture_file_upload(base.join(name, grad), 'application/octet-stream')
+    aa.grading_file    = grad_upload
+
+    aa.grading_driver  = driver
     aa.save_uploads!
     aa.save!
 

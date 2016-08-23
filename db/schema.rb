@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160724150208) do
+ActiveRecord::Schema.define(version: 20160820180109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "assignments", force: :cascade do |t|
-    t.string   "name",                                 null: false
-    t.date     "due_date",                             null: false
+    t.string   "name",                                        null: false
+    t.date     "due_date",                                    null: false
     t.string   "assignment_file_name"
     t.string   "grading_file_name"
     t.text     "assignment"
@@ -33,8 +33,10 @@ ActiveRecord::Schema.define(version: 20160724150208) do
     t.integer  "solution_upload_id"
     t.string   "tar_key"
     t.integer  "bucket_id"
-    t.integer  "course_id",                            null: false
+    t.integer  "course_id",                                   null: false
     t.integer  "team_set_id"
+    t.string   "grading_driver",       default: "default.rb"
+    t.string   "grading_image",        default: "bn-base"
   end
 
   create_table "best_subs", force: :cascade do |t|
@@ -64,21 +66,12 @@ ActiveRecord::Schema.define(version: 20160724150208) do
     t.boolean  "public",       default: false,    null: false
   end
 
-  create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",   default: 0, null: false
-    t.integer  "attempts",   default: 0, null: false
-    t.text     "handler",                null: false
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "grading_jobs", force: :cascade do |t|
+    t.integer  "submission_id"
+    t.datetime "started_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
-
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "reg_requests", force: :cascade do |t|
     t.integer  "course_id",  null: false
@@ -104,13 +97,10 @@ ActiveRecord::Schema.define(version: 20160724150208) do
   create_table "submissions", force: :cascade do |t|
     t.integer  "assignment_id",                       null: false
     t.integer  "user_id",                             null: false
-    t.string   "secret_dir"
-    t.string   "file_name"
     t.float    "auto_score"
     t.text     "student_notes"
     t.float    "teacher_score"
     t.text     "teacher_notes"
-    t.integer  "grading_uid"
     t.text     "grading_output"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -122,7 +112,6 @@ ActiveRecord::Schema.define(version: 20160724150208) do
   end
 
   add_index "submissions", ["assignment_id"], name: "index_submissions_on_assignment_id", using: :btree
-  add_index "submissions", ["grading_uid"], name: "index_submissions_on_grading_uid", unique: true, using: :btree
   add_index "submissions", ["user_id", "assignment_id"], name: "index_submissions_on_user_id_and_assignment_id", using: :btree
   add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
 

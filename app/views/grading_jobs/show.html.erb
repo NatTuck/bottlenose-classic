@@ -1,0 +1,13 @@
+<% @page_title = "Grading Job ##{@grading_job.id}" %>
+
+<p>
+  <strong>Submission:</strong>
+  <%= @grading_job.submission_id %>
+</p>
+
+<p>
+  <strong>Started at:</strong>
+  <%= @grading_job.started_at %>
+</p>
+
+<%= link_to 'Back', grading_jobs_path %>

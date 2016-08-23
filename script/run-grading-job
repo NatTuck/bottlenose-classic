@@ -1,0 +1,163 @@
+#!/usr/bin/env ruby
+require 'securerandom'
+require 'timeout'
+require 'json'
+
+APP_PATH = File.expand_path('../../config/application',  __FILE__)
+require File.expand_path('../../config/boot',  __FILE__)
+require APP_PATH
+Rails.application.require_environment!
+
+job = GradingJob.find(ARGV[0])
+job.started_at = Time.now
+job.save!
+
+sub = job.submission
+
+if job.nil?
+  puts "Must provide valid job id."
+  exit(0)
+end
+
+unless sub.assignment.has_grading?
+  puts "No grading file. Submission must be graded manually."
+  exit(0)
+end
+
+def run(cmd)
+  #puts "Running: #{cmd}"
+  system(cmd) or begin
+    puts "Error running command: #{cmd}"
+    exit(1)
+  end
+end
+
+class Container
+  def initialize(name)
+    @name = name
+  end
+
+  def start!
+    run(
+      %Q{lxc launch bn-base #{@name} -e \
+           -c "limits.cpu.allowance=10ms/50ms" \
+           -c "limits.memory=512MB" \
+           -c "limits.processes=256"}
+    )
+
+    run("lxc exec #{@name} -- hostname #{@name}")
+  end
+
+  def mkdir(path, mode = 0755)
+    run(%Q{lxc exec #{@name} -- mkdir -m 0#{mode.to_s(8)} -p #{path}})
+  end
+
+  def push(src, dst)
+    run(%Q{lxc file push "#{src}" "#{@name}/#{dst}"})
+  end
+
+  def push_dir(src, dst)
+    src_parent = File.dirname(src)
+    src_name   = File.basename(src)
+    run(%Q{(cd "#{src_parent}" && tar cf - "#{src_name}") | \
+        lxc exec #{@name} -- bash -c '(cd "#{dst}" && tar xf -)'})
+  end
+
+  def pull(src, dst)
+    raise Exception.new("TODO")
+  end
+
+  def chmod(path, mode)
+    run(%Q{lxc exec #{@name} -- chmod 0#{mode.to_s(8)} "#{path}"})
+  end
+
+  def exec_driver(path)
+    push(path, "/root/bn_driver.rb")
+    File.popen(%Q{lxc exec #{@name} -- bash -c '(cd && ruby -I /tmp/bn/lib bn_driver.rb)'})
+  end
+
+  def stop!
+    run("lxc stop #{@name} --timeout 5")
+    system("(lxc stop #{@name} --force 2>&1) > /dev/null")
+  end
+end
+
+# Boot up the container.
+con = Container.new("bn-#{Rails.env}-#{job.id}")
+con.start!
+sleep 2
+
+# Copy the files into the container.
+con.mkdir("/tmp/bn")
+
+con.mkdir("/tmp/bn/sub")
+con.push(sub.file_full_path, "/tmp/bn/sub/#{sub.upload.file_name}")
+
+con.mkdir("/tmp/bn/gra")
+gra_up = sub.assignment.grading_upload
+con.push(sub.assignment.grading_full_path, "/tmp/bn/gra/#{gra_up.file_name}")
+
+bnlib = Rails.root.join("grading", "lib")
+con.push_dir(bnlib, "/tmp/bn")
+
+# Make a test output key, copy that over.
+output_key = SecureRandom.urlsafe_base64
+
+key = Tempfile.new("output_key")
+key.puts(output_key)
+key.close
+con.push(key.path, "/root/bn_output_key")
+key.unlink
+
+# Exec the grading script.
+driver = job.driver_script_path
+puts "Driver = #{driver}"
+pipe = con.exec_driver(driver)
+
+output_lines = []
+
+begin
+  Timeout::timeout(150) do
+    begin
+      while not pipe.eof?
+        line = pipe.readline()
+        if line
+          puts line
+          output_lines << line
+          sub.grading_output = output_lines.join
+          sub.save!
+        end
+      end
+    rescue Exception => ee
+      output_lines << ee.to_s
+      sub.grading_output = output_lines.join
+      sub.save!
+      
+      output_lines = []
+    end
+  end
+
+  _, score_lines = output_lines.split(output_key + "\n")
+  if score_lines
+    score = JSON.parse(score_lines.join("\n"))
+
+    pts = score["pts"]
+    max = score["max"]
+
+    puts "Points: #{pts} / #{max}"
+
+    sub.auto_score = sub.assignment.points_available * pts / max
+    sub.save!
+  end
+rescue Exception => ee
+  puts "Timeout: " + ee.to_s
+  puts ee.backtrace
+
+  output_lines << ee.to_s
+  output_lines << "\n\n Timeout! \n\n"
+  sub.grading_output = output_lines.join
+  sub.save!
+end
+
+con.stop!
+job.destroy

@@ -1,8 +1,9 @@
 class AssignmentsController < ApplicationController
   before_action :find_assignment
   before_action :setup_breadcrumbs
+  before_action :load_drivers_list, only: [:new, :edit]
 
-  before_filter :require_teacher, :except => [:show]
+  before_filter :require_teacher, except: [:show]
   before_filter :require_course_permission
 
   def index
@@ -83,6 +84,10 @@ class AssignmentsController < ApplicationController
 
   end
 
+  def load_drivers_list
+    @drivers = Dir.entries(Rails.root.join("grading", "drivers")).grep(/\.rb$/)
+  end
+
   def setup_breadcrumbs
     add_root_breadcrumb
     add_breadcrumb "Courses", courses_path
@@ -97,6 +102,7 @@ class AssignmentsController < ApplicationController
     params[:assignment].permit(:name, :assignment, :due_date,
                                :points_available, :hide_grading, :blame_id,
                                :assignment_file, :grading_file, :solution_file,
-                               :bucket_id, :course_id, :team_set_id)
+                               :bucket_id, :course_id, :team_set_id,
+                               :grading_driver)
   end
 end

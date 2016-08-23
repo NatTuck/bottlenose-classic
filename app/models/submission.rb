@@ -7,6 +7,7 @@ class Submission < ActiveRecord::Base
   belongs_to :upload
   belongs_to :comments_upload, class_name: "Upload"
   has_many :best_subs, dependent: :destroy
+  has_one  :grading_job, dependent: :restrict_with_error
 
   validates :assignment_id, :presence => true
   validates :user_id,       :presence => true
@@ -174,9 +175,11 @@ class Submission < ActiveRecord::Base
     return if upload_id.nil?
     return if assignment.grading_upload_id.nil?
     return if student_notes == "@@@skip tests@@@"
+    return unless grading_job.nil?
 
-    root = Rails.root.to_s
-    system(%Q{(cd "#{root}" && script/grade-submission #{self.id})&})
+    job = GradingJob.new(submission: self)
+    job.save!
+    job.try_start!
   end
 
   def cleanup!

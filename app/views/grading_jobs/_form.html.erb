@@ -1,0 +1,25 @@
+<%= form_for(@grading_job) do |f| %>
+  <% if @grading_job.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@grading_job.errors.count, "error") %> prohibited this grading_job from being saved:</h2>
+
+      <ul>
+      <% @grading_job.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :submission_id %><br>
+    <%= f.number_field :submission_id %>
+  </div>
+  <div class="field">
+    <%= f.label :started_at %><br>
+    <%= f.datetime_select :started_at %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

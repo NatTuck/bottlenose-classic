@@ -26,6 +26,10 @@ task :install do
   system("cd sandbox/src && make install")
 end
 
+task :prereqs do
+  system("sudo apt-get install -y lxc2 criu lxd lxd-tools")
+end
+
 task :start_delayed_job do
   system("cd #{Rails.root} && bin/delayed_job start > /dev/null")
 end
