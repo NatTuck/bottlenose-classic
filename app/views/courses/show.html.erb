@@ -79,9 +79,9 @@
     <td><%= reg.user.name %><br>
       <%= reg.user.email %></td>
     <% @buckets.each do |bb| %>
-      <td><%= @scores[reg.user_id][bb.id].round %>%</td>
+      <td><%= @scores[reg.user_id][bb.id].round(1) %>%</td>
     <% end %>
-    <td class="score-total"><%= @totals[reg.user_id].round  %>%</td>
+    <td class="score-total"><%= @totals[reg.user_id].round(1)  %>%</td>
     <td><%= link_to "View", reg %></td>
   </tr>
 <% end %>

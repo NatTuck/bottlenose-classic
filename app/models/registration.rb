@@ -35,6 +35,6 @@ class Registration < ActiveRecord::Base
       total += ratio * bb.weight
     end
 
-    (total * 100.0).round
+    (total * 100.0).round(1)
   end
 end

@@ -22,6 +22,8 @@ module ApplicationHelper
 
     if score.nil?
       score = "∅"
+    else
+      score = score.round(1)
     end
 
     return score if assignment.nil?
