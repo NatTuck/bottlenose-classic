@@ -73,6 +73,14 @@ class SubmissionsController < ApplicationController
   def update
     @row_user = User.find_by_id(params[:row_user_id])
 
+    if params[:rerun_autograding]
+      @submission.grading_output = "regrade requested"
+      @submission.save!
+      @submission.grade!
+      redirect_to @submission, notice: "Autograding queued."
+      return
+    end
+
     if @submission.update_attributes(submission_params)
       respond_to do |format|
         format.html { redirect_to @submission, notice: 'Submission was successfully updated.' }

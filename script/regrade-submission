@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+require 'securerandom'
+require 'timeout'
+require 'json'
+
+APP_PATH = File.expand_path('../../config/application',  __FILE__)
+require File.expand_path('../../config/boot',  __FILE__)
+require APP_PATH
+Rails.application.require_environment!
+
+sub = Submission.find(ARGV[0])
+
+puts "Grading sub #{sub.id}"
+
+job = GradingJob.new(submission: sub)
+job.save!
+
+puts "Job id = #{job.id}"
+
+system("#{Rails.root}/script/run-grading-job #{job.id}")

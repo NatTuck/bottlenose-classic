@@ -77,3 +77,10 @@
     <%= f.submit "Set Teacher Score", class: "btn btn-primary" %>
   </div>
 <% end %>
+
+<%= form_for @submission do |f| %>
+  <%= hidden_field_tag :rerun_autograding, true %>
+  <div class="form-group">
+    <%= f.submit "Rerun Autograding", class: "btn btn-default" %>
+  </div>
+<% end %>

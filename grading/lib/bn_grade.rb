@@ -47,7 +47,10 @@ class BnScore
 
   def test(txt, max)
     pts = yield
-    add(txt, max, pts)
+    pts = 1 if pts == true
+    pts = 0 if pts == false
+
+    add(txt, pts, max)
 
     puts "Test\t##{@tst_no}:\t#{pts} / #{max}\t#{txt}"
   end
