@@ -12,7 +12,7 @@ def unpack_to_home(file)
   Dir.chdir "/home/student"
 
   if (file =~ /\.tar\.gz$/i) || file =~ (/\.tgz$/i)
-    run(%Q{tar xzf "#{file}"})
+    run(%Q{tar xzvf "#{file}"})
   elsif (file =~ /\.zip/i)
     run(%Q{unzip "#{file}"})
   else

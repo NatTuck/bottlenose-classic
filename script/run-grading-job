@@ -40,8 +40,8 @@ class Container
   def start!
     run(
       %Q{lxc launch bn-base #{@name} -e \
-           -c "limits.cpu.allowance=10ms/50ms" \
-           -c "limits.memory=512MB" \
+           -c "limits.cpu.allowance=25ms/50ms" \
+           -c "limits.memory=1024MB" \
            -c "limits.processes=256"}
     )
 
@@ -117,7 +117,7 @@ pipe = con.exec_driver(driver)
 output_lines = []
 
 begin
-  Timeout::timeout(150) do
+  Timeout::timeout(300) do
     begin
       while not pipe.eof?
         line = pipe.readline()
@@ -164,3 +164,5 @@ end
 
 con.stop!
 job.destroy
+
+GradingJob.try_start_next!
